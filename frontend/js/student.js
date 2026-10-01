@@ -547,7 +547,12 @@ const StudentApp = {
       const totalDisc = couponDiscount + loyaltyDiscount + (facultyDiscount || 0);
       if (totalDisc > 0) {
         discountRow.style.display = 'flex';
+        discountEl.style.color = '#10B981';
         discountEl.textContent = `-₹${totalDisc}${facultyDiscount > 0 ? ' (10% Faculty Subsidy)' : ''}`;
+      } else if (this.appliedCoupon && subtotal > 0 && subtotal < (this.appliedCoupon.minimum_order || 0)) {
+        discountRow.style.display = 'flex';
+        discountEl.style.color = '#F59E0B';
+        discountEl.textContent = `Add ₹${this.appliedCoupon.minimum_order - subtotal} for ${this.appliedCoupon.code}`;
       } else {
         discountRow.style.display = 'none';
       }
@@ -586,6 +591,16 @@ const StudentApp = {
         </div>
       </div>
     `).join('');
+  },
+
+  applyHeroCoupon() {
+    const input = document.getElementById('hero-combo-coupon-input');
+    const code = input ? input.value.trim() : 'CAMPUS20';
+    if (!code) {
+      App.showToast('Please type a coupon code (e.g. CAMPUS20)', 'warning');
+      return;
+    }
+    this.applyCouponCode(code);
   },
 
   applyDesktopCoupon() {
@@ -899,13 +914,16 @@ const StudentApp = {
   calculateCartBill() {
     const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
-    // Coupon discount
+    // Coupon discount (verifies minimum order requirement)
     let couponDiscount = 0;
     if (this.appliedCoupon) {
-      if (this.appliedCoupon.discount_type === 'percentage') {
-        couponDiscount = Math.min(Math.round((subtotal * this.appliedCoupon.discount_value) / 100), this.appliedCoupon.max_discount || 100);
-      } else {
-        couponDiscount = Math.min(this.appliedCoupon.discount_value, subtotal);
+      const minOrder = this.appliedCoupon.minimum_order || 0;
+      if (subtotal >= minOrder) {
+        if (this.appliedCoupon.discount_type === 'percentage') {
+          couponDiscount = Math.min(Math.round((subtotal * this.appliedCoupon.discount_value) / 100), this.appliedCoupon.max_discount || 100);
+        } else {
+          couponDiscount = Math.min(this.appliedCoupon.discount_value, subtotal);
+        }
       }
     }
 
@@ -957,25 +975,62 @@ const StudentApp = {
   },
 
   async applyCouponCode(code) {
-    const input = document.getElementById('coupon-input-field');
-    const couponCode = (code || (input ? input.value : '')).trim();
+    const heroInput = document.getElementById('hero-combo-coupon-input');
+    const desktopInput = document.getElementById('desktop-sidebar-coupon-input');
+    const cartInput = document.getElementById('coupon-input-field');
+    const mobileInput = document.getElementById('coupon-input');
+
+    const couponCode = (code || 
+      (heroInput ? heroInput.value : '') || 
+      (desktopInput ? desktopInput.value : '') || 
+      (cartInput ? cartInput.value : '') || 
+      (mobileInput ? mobileInput.value : '')).trim().toUpperCase();
 
     if (!couponCode) {
-      App.showToast('Please enter a coupon code', 'warning');
+      App.showToast('Please type a coupon code', 'warning');
       return;
     }
+
+    // Keep all inputs in sync with typed code
+    if (heroInput) heroInput.value = couponCode;
+    if (desktopInput) desktopInput.value = couponCode;
+    if (cartInput) cartInput.value = couponCode;
+    if (mobileInput) mobileInput.value = couponCode;
 
     const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     try {
       const res = await window.api.applyCoupon(couponCode, subtotal);
-      if (res.success) {
+      if (res && res.success) {
         this.appliedCoupon = res.coupon;
         this.calculateCartBill();
-        App.showToast(res.message, 'success');
-        if (input) input.value = res.coupon.code;
+        this.renderDesktopCart();
+
+        // Update hero apply button UI feedback
+        const heroBtn = document.getElementById('hero-combo-apply-btn');
+        if (heroBtn) {
+          heroBtn.textContent = '✓ Active';
+          heroBtn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+          setTimeout(() => {
+            if (heroBtn) {
+              heroBtn.textContent = 'Apply Code';
+              heroBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366F1)';
+            }
+          }, 3500);
+        }
+
+        App.showToast(res.message || `Coupon ${couponCode} activated successfully!`, 'success');
+      } else {
+        if (res && res.coupon) {
+          this.appliedCoupon = res.coupon;
+          this.calculateCartBill();
+          this.renderDesktopCart();
+          App.showToast(res.message || `Minimum order of ₹${res.coupon.minimum_order} required for ${couponCode}`, 'info');
+        } else {
+          App.showToast((res && res.message) || 'Invalid coupon code. Try CAMPUS20', 'error');
+        }
       }
     } catch (e) {
-      App.showToast('Invalid coupon code or minimum order not met', 'error');
+      App.showToast('Invalid coupon code. Try CAMPUS20 for 20% OFF.', 'error');
     }
   },
 

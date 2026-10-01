@@ -167,10 +167,23 @@
           <div class="desktop-hero-promo-card">
             <span style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.5px;">🔥 Today's Campus Special</span>
             <div style="font-size:18px;font-weight:800;color:white;margin:4px 0 6px;">20% OFF on All Combo Meals</div>
-            <p style="font-size:12px;color:#94A3B8;margin-bottom:12px;">Valid on orders above ₹150 for all university students & staff.</p>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,90,31,0.12);border:1px dashed var(--primary);border-radius:10px;padding:6px 12px;">
-              <code style="font-size:13px;font-weight:800;color:var(--primary);letter-spacing:1px;">CAMPUS20</code>
-              <button onclick="StudentApp.applyCouponCode('CAMPUS20')" style="background:var(--primary);color:white;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">
+            <p style="font-size:12px;color:#94A3B8;margin-bottom:12px;">Valid on orders above ₹100 for all university students & staff.</p>
+            <div class="combo-coupon-interactive-wrap" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1.5px dashed rgba(165,180,252,0.6);border-radius:12px;padding:6px 8px;transition:border-color 0.2s ease;">
+              <input 
+                type="text" 
+                id="hero-combo-coupon-input" 
+                value="CAMPUS20" 
+                placeholder="Enter coupon code..." 
+                title="Type or edit coupon code here"
+                style="flex:1;background:transparent;border:none;outline:none;color:#FFFFFF;font-family:var(--font-heading);font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;"
+                onkeydown="if(event.key==='Enter') StudentApp.applyHeroCoupon()"
+              >
+              <button 
+                id="hero-combo-apply-btn" 
+                onclick="StudentApp.applyHeroCoupon()" 
+                class="combo-apply-btn"
+                style="background:linear-gradient(135deg, var(--primary), #6366F1);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s ease;box-shadow:0 2px 8px rgba(79,70,229,0.35);white-space:nowrap;"
+              >
                 Apply Code
               </button>
             </div>

@@ -31,9 +31,19 @@ router.post('/apply', (req, res) => {
 
   const orderAmount = Number(subtotal) || 0;
   if (orderAmount < coupon.minimum_order) {
+    if (orderAmount === 0) {
+      return res.json({
+        success: true,
+        preapplied: true,
+        message: `Offer code ${coupon.code} activated! 20% OFF will apply automatically when your tray reaches ₹${coupon.minimum_order}.`,
+        discount: 0,
+        coupon: coupon
+      });
+    }
     return res.status(400).json({ 
       success: false, 
-      message: `Minimum order amount of ₹${coupon.minimum_order} required for code ${coupon.code}` 
+      coupon: coupon,
+      message: `Minimum order amount of ₹${coupon.minimum_order} required for code ${coupon.code}. Add ₹${coupon.minimum_order - orderAmount} more!` 
     });
   }
 
