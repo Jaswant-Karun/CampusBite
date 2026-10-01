@@ -16,6 +16,7 @@ const loyaltyRoutes = require('./routes/loyalty');
 const reviewsRoutes = require('./routes/reviews');
 const analyticsRoutes = require('./routes/analytics');
 const demandPredictionRoutes = require('./routes/demandPrediction');
+const chatbotRoutes = require('./routes/chatbot');
 const db = require('./data/db');
 const { mongoManager, User, Product, Order } = require('./data/mongo');
 
@@ -39,6 +40,7 @@ app.use('/api/loyalty', loyaltyRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/demand-prediction', demandPredictionRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Health check & System Info
 app.get('/api/health', (req, res) => {

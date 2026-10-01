@@ -1,0 +1,683 @@
+/* ==========================================================================
+   CampusBite - BiteBot AI Assistant Styling (Laptop Website & Mobile App)
+   Glassmorphic, Responsive, Dark/Light Theme Aware
+   ========================================================================== */
+
+/* Launcher Floating Action Button */
+.bitebot-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #FF5A1F 0%, #FF8A48 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 10px 18px 10px 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -4px rgba(255, 90, 31, 0.5), 0 0 20px rgba(255, 120, 60, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
+  font-family: var(--font-body);
+}
+
+.bitebot-launcher:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 14px 30px -4px rgba(255, 90, 31, 0.65), 0 0 28px rgba(255, 120, 60, 0.45);
+}
+
+.bitebot-launcher:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.bitebot-launcher-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.bitebot-online-badge {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  background: #10B981;
+  border-radius: 50%;
+  border: 2px solid #FF5A1F;
+  box-shadow: 0 0 6px #10B981;
+  animation: bitebotPulse 2s infinite;
+}
+
+@keyframes bitebotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.25); }
+}
+
+.bitebot-launcher-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.bitebot-launcher-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.bitebot-launcher-sub {
+  font-size: 10.5px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Chatbot Floating Window */
+.bitebot-window {
+  position: fixed;
+  bottom: 92px;
+  right: 28px;
+  width: 400px;
+  height: 590px;
+  max-height: calc(100vh - 120px);
+  background: rgba(17, 24, 39, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 90, 31, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-body);
+}
+
+.bitebot-window.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Light Theme Adaptations */
+[data-theme="light"] .bitebot-window {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.2), 0 0 30px rgba(255, 90, 31, 0.1);
+}
+
+/* Header */
+.bitebot-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(255, 90, 31, 0.12) 0%, rgba(30, 41, 59, 0.4) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+[data-theme="light"] .bitebot-header {
+  background: linear-gradient(135deg, rgba(255, 90, 31, 0.08) 0%, rgba(241, 245, 249, 0.7) 100%);
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.bitebot-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bitebot-header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF5A1F 0%, #FF8A48 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 12px rgba(255, 90, 31, 0.35);
+}
+
+.bitebot-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.bitebot-header-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  color: #F8FAFC;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+[data-theme="light"] .bitebot-header-name {
+  color: #0F172A;
+}
+
+.bitebot-ai-pill {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 90, 31, 0.2);
+  color: #FF7A45;
+  border: 1px solid rgba(255, 90, 31, 0.35);
+  text-transform: uppercase;
+}
+
+.bitebot-header-status {
+  font-size: 11px;
+  color: #10B981;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.bitebot-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bitebot-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+[data-theme="light"] .bitebot-icon-btn {
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+  color: #64748B;
+}
+
+.bitebot-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+[data-theme="light"] .bitebot-icon-btn:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+/* Chat Messages Container */
+.bitebot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.bitebot-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.bitebot-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+/* Message Bubbles */
+.bitebot-msg {
+  display: flex;
+  gap: 10px;
+  max-width: 88%;
+  animation: bitebotMsgIn 0.25s ease forwards;
+}
+
+@keyframes bitebotMsgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bitebot-msg.bot {
+  align-self: flex-start;
+}
+
+.bitebot-msg.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.bitebot-msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 90, 31, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.bitebot-msg-content {
+  padding: 11px 15px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.bitebot-msg.bot .bitebot-msg-content {
+  background: #1E293B;
+  color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-left-radius: 4px;
+}
+
+[data-theme="light"] .bitebot-msg.bot .bitebot-msg-content {
+  background: #F1F5F9;
+  color: #1E293B;
+  border: 1px solid #E2E8F0;
+}
+
+.bitebot-msg.user .bitebot-msg-content {
+  background: linear-gradient(135deg, #FF5A1F 0%, #E0480F 100%);
+  color: #FFFFFF;
+  border-top-right-radius: 4px;
+  box-shadow: 0 4px 14px rgba(255, 90, 31, 0.3);
+}
+
+.bitebot-msg-content p {
+  margin: 0 0 6px 0;
+}
+
+.bitebot-msg-content p:last-child {
+  margin-bottom: 0;
+}
+
+.bitebot-msg-time {
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+  display: block;
+}
+
+[data-theme="light"] .bitebot-msg-time {
+  color: #94A3B8;
+}
+
+.bitebot-msg.user .bitebot-msg-time {
+  text-align: right;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Embedded Product Recommendation Card in Chat */
+.bitebot-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.bitebot-food-card {
+  background: rgba(11, 15, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+[data-theme="light"] .bitebot-food-card {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.bitebot-food-card:hover {
+  border-color: #FF5A1F;
+  transform: translateY(-2px);
+}
+
+.bitebot-food-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bitebot-food-emoji {
+  font-size: 22px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bitebot-food-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #F8FAFC;
+  display: block;
+}
+
+[data-theme="light"] .bitebot-food-title {
+  color: #0F172A;
+}
+
+.bitebot-food-meta {
+  font-size: 11px;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.bitebot-food-price {
+  font-weight: 800;
+  color: #FF7A45;
+}
+
+.bitebot-add-cart-btn {
+  background: linear-gradient(135deg, #FF5A1F 0%, #E0480F 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.bitebot-add-cart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 90, 31, 0.4);
+}
+
+/* Action Button inside Chat Bubble */
+.bitebot-action-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 90, 31, 0.15);
+  border: 1px solid rgba(255, 90, 31, 0.35);
+  color: #FF7A45;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.bitebot-action-trigger:hover {
+  background: #FF5A1F;
+  color: #FFFFFF;
+}
+
+/* Quick Suggestion Pills */
+.bitebot-quick-chips {
+  padding: 8px 16px 10px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.bitebot-quick-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.bitebot-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .bitebot-chip {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
+}
+
+.bitebot-chip:hover {
+  background: rgba(255, 90, 31, 0.18);
+  border-color: #FF5A1F;
+  color: #FF7A45;
+  transform: translateY(-1px);
+}
+
+/* Typing Indicator */
+.bitebot-typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: #1E293B;
+  border-radius: 16px;
+  border-top-left-radius: 4px;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .bitebot-typing {
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+}
+
+.bitebot-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94A3B8;
+  animation: bitebotBounce 1.4s infinite ease-in-out both;
+}
+
+.bitebot-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.bitebot-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bitebotBounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* Chat Input Bar */
+.bitebot-input-area {
+  padding: 12px 16px;
+  background: rgba(11, 15, 25, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+[data-theme="light"] .bitebot-input-area {
+  background: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+}
+
+.bitebot-input-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0 14px;
+  transition: all 0.2s;
+}
+
+[data-theme="light"] .bitebot-input-box {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+.bitebot-input-box:focus-within {
+  border-color: #FF5A1F;
+  box-shadow: 0 0 0 2px rgba(255, 90, 31, 0.2);
+}
+
+.bitebot-input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #F8FAFC;
+  font-size: 13px;
+  padding: 10px 0;
+  font-family: var(--font-body);
+}
+
+[data-theme="light"] .bitebot-input-box input {
+  color: #0F172A;
+}
+
+.bitebot-input-box input::placeholder {
+  color: #64748B;
+}
+
+.bitebot-mic-btn {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.bitebot-mic-btn:hover {
+  color: #FF5A1F;
+}
+
+.bitebot-mic-btn.listening {
+  color: #EF4444;
+  animation: bitebotMicPulse 1s infinite;
+}
+
+@keyframes bitebotMicPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.bitebot-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF5A1F 0%, #E0480F 100%);
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 90, 31, 0.35);
+  transition: all 0.2s;
+}
+
+.bitebot-send-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px rgba(255, 90, 31, 0.5);
+}
+
+.bitebot-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS & DEDICATED PHONE APP VIEW
+   ========================================================================== */
+@media (max-width: 768px) {
+  .bitebot-launcher {
+    bottom: 82px; /* Positioned above mobile bottom navigation bar */
+    right: 18px;
+    padding: 8px 14px 8px 10px;
+    box-shadow: 0 8px 20px -2px rgba(255, 90, 31, 0.55);
+  }
+
+  .bitebot-launcher-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .bitebot-launcher-title {
+    font-size: 12px;
+  }
+
+  .bitebot-launcher-sub {
+    font-size: 10px;
+  }
+
+  .bitebot-window {
+    bottom: 80px; /* Above mobile bottom nav */
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: 440px;
+    height: 72vh;
+    max-height: 560px;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  .bitebot-msg {
+    max-width: 92%;
+  }
+}
