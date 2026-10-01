@@ -436,6 +436,66 @@
       "expiry_date": "2026-11-30",
       "is_active": true,
       "badge": "📚 Study Hours"
+    },
+    {
+      "id": "c-4",
+      "code": "SPIN20",
+      "description": "Flat ₹20 OFF Campus Wheel Reward",
+      "discount_type": "flat",
+      "discount_value": 20,
+      "minimum_order": 40,
+      "max_discount": 20,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "🎡 Spin Winner"
+    },
+    {
+      "id": "c-5",
+      "code": "CHEESE",
+      "description": "Free Extra Cheese Upgrade Voucher",
+      "discount_type": "flat",
+      "discount_value": 15,
+      "minimum_order": 30,
+      "max_discount": 15,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "🧀 Wheel Perk"
+    },
+    {
+      "id": "c-6",
+      "code": "FREECHAI",
+      "description": "Free Kadak Chai with Snack",
+      "discount_type": "flat",
+      "discount_value": 15,
+      "minimum_order": 30,
+      "max_discount": 15,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "☕ Wheel Perk"
+    },
+    {
+      "id": "c-7",
+      "code": "BENTO30",
+      "description": "₹30 OFF Mystery Bento Box",
+      "discount_type": "flat",
+      "discount_value": 30,
+      "minimum_order": 70,
+      "max_discount": 30,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "🍱 Mystery Drop"
+    },
+    {
+      "id": "c-8",
+      "code": "SNACK15",
+      "description": "15% OFF on Sandwiches & Rolls",
+      "discount_type": "percentage",
+      "discount_value": 15,
+      "minimum_order": 40,
+      "max_discount": 35,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "🥪 Wheel Perk"
     }
   ],
   "orders": [

@@ -1106,11 +1106,17 @@ const StudentApp = {
   },
 
   showUpiSimulationModal(amount) {
-    document.getElementById('upi-modal-amount').textContent = `₹${amount}`;
-    App.openModal('upi-simulation-modal');
+    if (window.CampusUPI) {
+      window.CampusUPI.openUpiModal(amount, 'CB' + Math.floor(1000 + Math.random() * 9000));
+    } else {
+      const amtEl = document.getElementById('upi-modal-amount');
+      if (amtEl) amtEl.textContent = `₹${amount}`;
+      App.openModal('upi-payment-modal');
+    }
   },
 
   async confirmUpiSuccess() {
+    App.closeModal('upi-payment-modal');
     App.closeModal('upi-simulation-modal');
     App.showToast('UPI Payment Approved! Verifying with MongoDB...', 'success');
     await this.finalizeOrderPlacement();

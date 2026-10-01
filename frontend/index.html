@@ -57,6 +57,15 @@
       <button class="desktop-nav-btn" data-screen="nutrition" onclick="StudentApp.navigateTo('nutrition')">
         <span>🥗</span> Nutrition
       </button>
+      <button class="desktop-nav-btn" onclick="CampusVoice.openVoiceModal()" style="color:#2DD4BF;font-weight:700;">
+        <span>🎙️</span> Voice AI
+      </button>
+      <button class="desktop-nav-btn" onclick="CampusTimetable.openTimetableModal()">
+        <span>🔔</span> Bell Sync
+      </button>
+      <button class="desktop-nav-btn" onclick="CampusWheel.openWheelModal()" style="color:#F59E0B;font-weight:700;">
+        <span>🎡</span> Spin & Win
+      </button>
       <button class="desktop-nav-btn" onclick="window.open('/counter', '_blank')" style="color:#2DD4BF;">
         <span>📺</span> Counter TV
       </button>
@@ -175,34 +184,43 @@
 
             <!-- Unique Feature Quick Actions -->
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-              <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:10px 22px;font-size:13.5px;">
+              <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:10px 20px;font-size:13.5px;">
                 <span>🍔</span> Order For Next Break
               </button>
-              <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 18px;font-size:13px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.18);">
-                <span>👥</span> Start Bench Pool (Split Tray)
-                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">NEW</span>
+              <button class="btn-glass" onclick="CampusVoice.openVoiceModal()" style="padding:10px 16px;font-size:13px;border-color:rgba(45,212,191,0.55);background:rgba(20,184,166,0.18);color:#2DD4BF;font-weight:700;">
+                <span>🎙️</span> Voice AI (தமிழ் / Eng / हिंदी)
+                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">TRY</span>
               </button>
-              <button class="btn-glass" onclick="StudentApp.openVsComparisonModal()" style="padding:10px 16px;font-size:12.5px;color:#CBD5E1;">
-                <span>⚡</span> CampusBite vs Amazon
+              <button class="btn-glass" onclick="CampusTimetable.openTimetableModal()" style="padding:10px 15px;font-size:12.5px;color:#FCD34D;border-color:rgba(252,211,77,0.45);background:rgba(245,158,11,0.12);">
+                <span>🔔</span> Bell Sync
+              </button>
+              <button class="btn-glass" onclick="CampusWheel.openWheelModal()" style="padding:10px 15px;font-size:12.5px;color:#F472B6;border-color:rgba(244,114,182,0.45);background:rgba(236,72,153,0.12);">
+                <span>🎡</span> Daily Spin 🎁
+              </button>
+              <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 16px;font-size:12.5px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.18);">
+                <span>👥</span> Bench Pool
+              </button>
+              <button class="btn-glass" onclick="StudentApp.openVsComparisonModal()" style="padding:10px 14px;font-size:12px;color:#CBD5E1;">
+                <span>⚡</span> vs Amazon
               </button>
             </div>
 
             <div class="desktop-hero-metrics">
-              <div class="desktop-metric-item">
+              <div class="desktop-metric-item" onclick="StudentApp.navigateTo('menu')" style="cursor:pointer;" title="Click to browse rapid break pickup menu">
                 <span class="icon">⏱️</span>
                 <span>2-Min Break Pickup</span>
               </div>
-              <div class="desktop-metric-item">
+              <div class="desktop-metric-item" onclick="StudentApp.openGroupPoolModal()" style="cursor:pointer;" title="Click to start study-bench pooling">
                 <span class="icon">👥</span>
                 <span>Bench Tray Pooling</span>
               </div>
-              <div class="desktop-metric-item">
+              <div class="desktop-metric-item" onclick="CampusTimetable.openTimetableModal()" style="cursor:pointer;" title="Click to view lecture bell sync">
                 <span class="icon">🔔</span>
                 <span>Bell-Ring AI Sync</span>
               </div>
-              <div class="desktop-metric-item">
-                <span class="icon">🍃</span>
-                <span>Zero Food Waste</span>
+              <div class="desktop-metric-item" onclick="CampusWheel.openWheelModal()" style="cursor:pointer;" title="Click to spin and win mystery bento">
+                <span class="icon">🎡</span>
+                <span>Spin & Win Bento</span>
               </div>
             </div>
           </div>
@@ -1636,11 +1654,230 @@
     </div>
   </div>
 
+  <!-- ========================================================================
+       SPECIAL FEATURE 1: MULTILINGUAL AI VOICE ORDERING MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="voice-order-modal">
+    <div class="modal-window" style="max-width:520px;text-align:center;">
+      <button class="modal-close-btn" onclick="CampusVoice.stopListening()">&times;</button>
+      
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:26px;">🎙️</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Multilingual Voice Assistant</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Speak naturally in your preferred campus language. We'll add your dishes directly to your tray!
+      </p>
+
+      <!-- Language Switcher Pills -->
+      <div class="voice-lang-pills">
+        <button class="voice-lang-btn active" data-lang="en-IN" onclick="CampusVoice.setLanguage('en-IN')">
+          🇬🇧 English
+        </button>
+        <button class="voice-lang-btn" data-lang="ta-IN" onclick="CampusVoice.setLanguage('ta-IN')">
+          🇮🇳 தமிழ் (Tamil)
+        </button>
+        <button class="voice-lang-btn" data-lang="hi-IN" onclick="CampusVoice.setLanguage('hi-IN')">
+          🇮🇳 हिंदी (Hindi)
+        </button>
+      </div>
+
+      <!-- Pulse Mic Centerpiece -->
+      <div class="voice-pulse-ring" id="voice-pulse-ring">
+        <button class="voice-mic-icon-btn" onclick="CampusVoice.startListening()" title="Tap to Speak">
+          🎙️
+        </button>
+      </div>
+
+      <div id="voice-status-text" style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">
+        Select a language and tap Start Speaking
+      </div>
+
+      <div style="background:var(--bg-elevated);border:1px dashed var(--border-subtle);border-radius:12px;padding:12px;margin-bottom:14px;min-height:48px;display:flex;align-items:center;justify-content:center;">
+        <span id="voice-recognized-text" style="font-size:13px;color:#14B8A6;font-style:italic;font-weight:600;">
+          "Speak now or click a sample phrase below..."
+        </span>
+      </div>
+
+      <!-- Parsed Feedback Box -->
+      <div id="voice-feedback-box" style="margin-bottom:16px;"></div>
+
+      <!-- 1-Click Interactive Phrases -->
+      <div style="text-align:left;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;margin-bottom:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">
+          ⚡ Try 1-Click Voice Demos:
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <button class="btn-glass" onclick="CampusVoice.simulateSample('Oru classic burger and cold coffee', 'ta-IN')" style="font-size:11px;padding:5px 10px;">
+            🗣️ "Oru classic burger and cold coffee" (தமிழ்)
+          </button>
+          <button class="btn-glass" onclick="CampusVoice.simulateSample('2 veg grilled sandwich', 'en-IN')" style="font-size:11px;padding:5px 10px;">
+            🗣️ "2 veg grilled sandwich" (Eng)
+          </button>
+          <button class="btn-glass" onclick="CampusVoice.simulateSample('Ek dum biryani aur nimbu juice', 'hi-IN')" style="font-size:11px;padding:5px 10px;">
+            🗣️ "Ek dum biryani aur nimbu juice" (हिंदी)
+          </button>
+          <button class="btn-glass" onclick="CampusVoice.simulateSample('Warm choco lava cake', 'en-IN')" style="font-size:11px;padding:5px 10px;">
+            🗣️ "Warm choco lava cake" (Eng)
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn-primary" id="voice-start-btn" onclick="CampusVoice.startListening()" style="flex:1;padding:11px;">
+          🎙️ Start Speaking
+        </button>
+        <button class="btn-outline" onclick="CampusVoice.stopListening(); App.closeModal('voice-order-modal');" style="padding:11px 18px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SPECIAL FEATURE 2: UNIVERSITY TIMETABLE BELL SYNC MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="timetable-sync-modal">
+    <div class="modal-window" style="max-width:580px;">
+      <button class="modal-close-btn">&times;</button>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:26px;">🔔</span>
+        <div>
+          <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Lecture ➔ Lunch AI Bell Sync</h3>
+          <span style="font-size:11.5px;color:#14B8A6;font-weight:700;">Live University Class Bell & Kitchen Warmer Coordination</span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Select your upcoming break. CampusBite syncs with your lecture bell, timing kitchen grills and fryers to finish 2 minutes before the bell rings!
+      </p>
+
+      <!-- Current University Status -->
+      <div id="timetable-current-status" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;margin-bottom:14px;">
+        <!-- Injected dynamically by CampusTimetable.renderTimetable() -->
+      </div>
+
+      <!-- Schedule List -->
+      <div id="timetable-periods-list" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;margin-bottom:16px;padding-right:4px;">
+        <!-- Injected dynamically -->
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn-outline" onclick="App.closeModal('timetable-sync-modal')" style="padding:10px 20px;">
+          Close Schedule
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SPECIAL FEATURE 3: REAL DYNAMIC UPI QR PAYMENT MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="upi-payment-modal">
+    <div class="modal-window" style="max-width:480px;text-align:center;">
+      <button class="modal-close-btn">&times;</button>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
+        <span style="font-size:24px;">💳</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Real Dynamic UPI Payment</h3>
+      </div>
+      <div id="upi-modal-order-ref" style="font-size:11px;font-weight:800;color:#14B8A6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
+        Order Token #CB1024
+      </div>
+
+      <div style="font-size:28px;font-weight:900;color:var(--text-primary);margin-bottom:12px;" id="upi-modal-amount">
+        ₹180.00
+      </div>
+
+      <!-- QR Frame Container -->
+      <div class="upi-qr-card-frame">
+        <div id="upi-qr-display-container"></div>
+        <div style="font-size:11px;color:#475569;font-weight:700;margin-top:8px;">
+          Scan with Any UPI App (GPay / PhonePe / Paytm)
+        </div>
+      </div>
+
+      <!-- UPI Merchant VPA & Copy -->
+      <div style="display:inline-flex;align-items:center;gap:8px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:6px 14px;margin-bottom:12px;">
+        <span style="font-size:11.5px;color:var(--text-muted);">UPI VPA:</span>
+        <strong style="font-size:12px;color:var(--text-primary);">campusbite@okaxis</strong>
+        <button class="btn-glass" onclick="CampusUPI.copyUpiId()" style="padding:3px 8px;font-size:10.5px;margin-left:4px;">
+          📋 Copy
+        </button>
+      </div>
+
+      <!-- Smartphone Deep-Link Apps -->
+      <div class="upi-deep-link-apps">
+        <a id="upi-link-gpay" class="upi-app-chip" href="upi://pay" target="_blank">
+          <span>🟢</span> Google Pay
+        </a>
+        <a id="upi-link-phonepe" class="upi-app-chip" href="upi://pay" target="_blank">
+          <span>🟣</span> PhonePe
+        </a>
+        <a id="upi-link-paytm" class="upi-app-chip" href="upi://pay" target="_blank">
+          <span>🔵</span> Paytm
+        </a>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:14px;">
+        <button class="btn-primary" onclick="CampusUPI.confirmUpiPaid()" style="flex:1;padding:12px;background:linear-gradient(135deg,#10B981,#059669);border-color:#10B981;">
+          ✅ I Have Paid (Verify Order)
+        </button>
+        <button class="btn-outline" onclick="App.closeModal('upi-payment-modal')" style="padding:12px 18px;">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SPECIAL FEATURE 4: GAMIFIED SPIN THE CAMPUS WHEEL MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="spin-wheel-modal">
+    <div class="modal-window" style="max-width:500px;text-align:center;">
+      <button class="modal-close-btn">&times;</button>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
+        <span style="font-size:26px;">🎡</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Spin the Campus Wheel</h3>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+        Daily chance to win ₹20 vouchers, free cheese, double loyalty points, or a Mystery Bento drop!
+      </p>
+
+      <!-- Canvas Wheel with Top Pointer -->
+      <div class="spin-wheel-wrapper">
+        <div class="spin-wheel-pointer"></div>
+        <canvas id="spin-wheel-canvas" width="320" height="320"></canvas>
+      </div>
+
+      <!-- Result Banner -->
+      <div id="wheel-result-display" style="margin-bottom:14px;min-height:46px;">
+        <span style="font-size:12px;color:var(--text-muted);">
+          Tap the button below to test your campus luck today!
+        </span>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn-primary" id="spin-wheel-btn" onclick="CampusWheel.spin()" style="flex:1;padding:12px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#EC4899,#8B5CF6);border-color:#EC4899;box-shadow:0 4px 15px rgba(236,72,153,0.35);">
+          🎁 Spin Wheel Now!
+        </button>
+        <button class="btn-outline" onclick="App.closeModal('spin-wheel-modal')" style="padding:12px 18px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/api.js"></script>
   <script src="js/qr-code.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/notifications.js"></script>
+  <script src="js/voice-order.js"></script>
+  <script src="js/timetable-sync.js"></script>
+  <script src="js/upi-payment.js"></script>
+  <script src="js/spin-wheel.js"></script>
   <script src="js/student.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/chatbot.js"></script>
