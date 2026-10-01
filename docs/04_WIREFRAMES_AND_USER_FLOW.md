@@ -1,19 +1,22 @@
 # CampusBite — Wireframes & Navigation Architecture
 
-This document specifies the wireframe specifications, interaction states, and user journeys across the 10 customer screens and executive admin dashboard in compliance with the E-Business Management assignment criteria (minimum 6 wireframes required; 10 provided).
+This document specifies the wireframe specifications, interaction states, and user journeys across the 12 customer screens and executive admin dashboard backed by MongoDB, in compliance with the E-Business Management assignment criteria (minimum 6 wireframes required; 12 provided).
 
 ---
 
 ## 1. End-to-End System Navigation Flow
 
 ```
-[ Splash Screen ]
+[ Motion Title Splash ] ───(Kinetic "CampusBite" Animated Display)
        │
        ▼
-[ Login / Register ] ────(Pre-filled Student Credential)
+[ Dedicated Sign In / Sign Up ] ──(Student / Staff / Admin + Campus SSO)
        │
        ▼
- [ Home Screen ] ─────────────┬──────────────┬───────────────┐
+ [ Home Screen ] ─────────────┬──────────────┬───────────────┬────────────────┐
+       │                      │              │               │                │
+       ▼                      ▼              ▼               ▼                ▼
+ [ Crowding Radar ]     [ CampusPay Wallet ] [ Menu Catalog ] [ Promo Banner ] [ Popular Items ]
        │                      │              │               │
        ▼                      ▼              ▼               ▼
  [ Search/Filter ]      [ Promo Banner ]  [ Category ]  [ Popular Items ]
