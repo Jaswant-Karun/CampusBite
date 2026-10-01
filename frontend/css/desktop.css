@@ -257,6 +257,7 @@
 .desktop-hero-title span {
   background: linear-gradient(135deg, #FF7A45 0%, #FFB088 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
