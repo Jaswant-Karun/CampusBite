@@ -1,0 +1,597 @@
+{
+  "users": [
+    {
+      "id": "u-101",
+      "name": "Jaswant Karun",
+      "email": "jaswant@campus.edu",
+      "phone": "+91 87541 59344",
+      "role": "student",
+      "studentId": "CB-2024-2028",
+      "department": "Computer Science & Business Systems",
+      "loyalty_points": 436,
+      "avatar": "👨🎓"
+    },
+    {
+      "id": "u-102",
+      "name": "Ananya Sharma",
+      "email": "ananya@campus.edu",
+      "phone": "+91 98765 12345",
+      "role": "student",
+      "studentId": "CB-2024-5512",
+      "department": "Business Management",
+      "loyalty_points": 150,
+      "avatar": "👩🎓"
+    },
+    {
+      "id": "u-admin",
+      "name": "Ramesh Canteen Manager",
+      "email": "admin@campusbite.com",
+      "phone": "+91 98765 00000",
+      "role": "admin",
+      "avatar": "👨💼"
+    },
+    {
+      "id": "u-staff",
+      "name": "Chef Raju",
+      "email": "kitchen@campusbite.com",
+      "phone": "+91 98765 99999",
+      "role": "staff",
+      "avatar": "👨🍳"
+    }
+  ],
+  "products": [
+    {
+      "id": "p-1",
+      "name": "Classic Burger",
+      "description": "Crispy patty, fresh lettuce, sliced tomatoes, house sauce in a toasted sesame bun.",
+      "price": 80,
+      "category": "Snacks",
+      "image_emoji": "🍔",
+      "stock": 42,
+      "is_available": true,
+      "rating": 4.8,
+      "prep_time": "8 mins",
+      "is_veg": false,
+      "popular": true,
+      "calories": "380 kcal"
+    },
+    {
+      "id": "p-2",
+      "name": "Cheese Burger Deluxe",
+      "description": "Double melted cheddar, grilled patty, caramelised onions & tangy pickle relish.",
+      "price": 100,
+      "category": "Snacks",
+      "image_emoji": "🍔",
+      "stock": 18,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "10 mins",
+      "is_veg": false,
+      "popular": true,
+      "calories": "450 kcal"
+    },
+    {
+      "id": "p-3",
+      "name": "Veg Grilled Sandwich",
+      "description": "Crispy grilled bread layered with cucumber, capsicum, mint chutney and spiced cheese.",
+      "price": 60,
+      "category": "Snacks",
+      "image_emoji": "🥪",
+      "stock": 8,
+      "is_available": true,
+      "rating": 4.6,
+      "prep_time": "6 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "280 kcal"
+    },
+    {
+      "id": "p-4",
+      "name": "Paneer Tikka Roll",
+      "description": "Char-grilled spicy paneer cubes rolled in flaky paratha with crunchy onion salad.",
+      "price": 90,
+      "category": "Snacks",
+      "image_emoji": "🌯",
+      "stock": 15,
+      "is_available": true,
+      "rating": 4.7,
+      "prep_time": "9 mins",
+      "is_veg": true,
+      "popular": false,
+      "calories": "340 kcal"
+    },
+    {
+      "id": "p-5",
+      "name": "Fresh Lemon Juice",
+      "description": "Chilled zesty lemonade with black salt and fresh mint leaves. Instant refresher!",
+      "price": 40,
+      "category": "Drinks",
+      "image_emoji": "🍋",
+      "stock": 1,
+      "is_available": true,
+      "rating": 4.5,
+      "prep_time": "3 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "90 kcal"
+    },
+    {
+      "id": "p-6",
+      "name": "Cold Coffee with Ice Cream",
+      "description": "Rich blended espresso, velvety chilled milk topped with a vanilla bean scoop.",
+      "price": 70,
+      "category": "Drinks",
+      "image_emoji": "🥤",
+      "stock": 40,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "4 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "260 kcal"
+    },
+    {
+      "id": "p-7",
+      "name": "Special Masala Chai",
+      "description": "Aromatic campus kadak chai brewed with crushed ginger, cardamom and clove.",
+      "price": 20,
+      "category": "Drinks",
+      "image_emoji": "☕",
+      "stock": 65,
+      "is_available": true,
+      "rating": 4.7,
+      "prep_time": "2 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "75 kcal"
+    },
+    {
+      "id": "p-8",
+      "name": "South Indian Special Thali",
+      "description": "Steamed Basmati Rice, Sambar, Rasam, 2 Poriyals, Appalam, Curd & Sweet.",
+      "price": 110,
+      "category": "Meals",
+      "image_emoji": "🍛",
+      "stock": 25,
+      "is_available": true,
+      "rating": 4.8,
+      "prep_time": "5 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "620 kcal"
+    },
+    {
+      "id": "p-9",
+      "name": "Hyderabadi Chicken Biryani",
+      "description": "Dum-cooked fragrant basmati rice with marinated chicken pieces and rich spices.",
+      "price": 140,
+      "category": "Meals",
+      "image_emoji": "🍗",
+      "stock": 30,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "5 mins",
+      "is_veg": false,
+      "popular": true,
+      "calories": "680 kcal"
+    },
+    {
+      "id": "p-10",
+      "name": "Veg Hakka Noodles & Manchurian",
+      "description": "Wok-tossed stir fry noodles paired with savory vegetable Manchurian gravy.",
+      "price": 120,
+      "category": "Meals",
+      "image_emoji": "🍜",
+      "stock": 16,
+      "is_available": true,
+      "rating": 4.6,
+      "prep_time": "8 mins",
+      "is_veg": true,
+      "popular": false,
+      "calories": "510 kcal"
+    },
+    {
+      "id": "p-11",
+      "name": "Warm Choco Lava Cake",
+      "description": "Molten dark chocolate center that oozes with pure cocoa bliss.",
+      "price": 65,
+      "category": "Desserts",
+      "image_emoji": "🍫",
+      "stock": 14,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "4 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "320 kcal"
+    },
+    {
+      "id": "p-12",
+      "name": "Hot Gulab Jamun (2 Pcs)",
+      "description": "Golden fried khoya dumplings soaked in saffron rose cardamom sugar syrup.",
+      "price": 45,
+      "category": "Desserts",
+      "image_emoji": "🍰",
+      "stock": 22,
+      "is_available": true,
+      "rating": 4.7,
+      "prep_time": "2 mins",
+      "is_veg": true,
+      "popular": false,
+      "calories": "290 kcal"
+    }
+  ],
+  "coupons": [
+    {
+      "id": "c-1",
+      "code": "CAMPUS20",
+      "description": "20% OFF on Canteen Combo & Meals",
+      "discount_type": "percentage",
+      "discount_value": 20,
+      "minimum_order": 100,
+      "max_discount": 50,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "🔥 Today's Best Offer"
+    },
+    {
+      "id": "c-2",
+      "code": "STUDENT10",
+      "description": "10% Student special discount on any order",
+      "discount_type": "percentage",
+      "discount_value": 10,
+      "minimum_order": 50,
+      "max_discount": 30,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "⭐ Everyday Saver"
+    },
+    {
+      "id": "c-3",
+      "code": "EXAMSNACK",
+      "description": "Flat ₹25 OFF during study break hours",
+      "discount_type": "flat",
+      "discount_value": 25,
+      "minimum_order": 150,
+      "max_discount": 25,
+      "expiry_date": "2026-11-30",
+      "is_active": true,
+      "badge": "📚 Study Hours"
+    }
+  ],
+  "orders": [
+    {
+      "id": "CB1031",
+      "user_id": "u-101",
+      "customer_name": "Jeshwanth Karun",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 2,
+          "image_emoji": "🍔"
+        },
+        {
+          "product_id": "p-5",
+          "name": "Fresh Lemon Juice",
+          "price": 40,
+          "quantity": 1,
+          "image_emoji": "🍋"
+        }
+      ],
+      "subtotal": 200,
+      "discount": 40,
+      "coupon_code": "CAMPUS20",
+      "total_amount": 160,
+      "payment_method": "UPI",
+      "payment_status": "Paid (Simulated)",
+      "order_status": "Ready",
+      "pickup_slot": "12:30 PM – 12:40 PM",
+      "pickup_counter": 2,
+      "created_at": "2026-10-01T04:20:53.329Z",
+      "updated_at": "2026-10-01T04:20:53.358Z",
+      "loyalty_points_earned": 16
+    },
+    {
+      "id": "CB1024",
+      "user_id": "u-101",
+      "customer_name": "Jeshwanth Karun",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 2
+        },
+        {
+          "product_id": "p-5",
+          "name": "Fresh Lemon Juice",
+          "price": 40,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 200,
+      "discount": 20,
+      "coupon_code": "CAMPUS20",
+      "total_amount": 180,
+      "payment_method": "UPI",
+      "payment_status": "Paid (Simulated UPI)",
+      "order_status": "Ready",
+      "pickup_slot": "12:30 PM - 12:40 PM",
+      "pickup_counter": 2,
+      "created_at": "2026-10-01T04:01:17.497Z",
+      "updated_at": "2026-10-01T04:14:17.499Z",
+      "loyalty_points_earned": 18
+    },
+    {
+      "id": "CB1025",
+      "user_id": "u-102",
+      "customer_name": "Ananya Sharma",
+      "customer_phone": "+91 98765 12345",
+      "items": [
+        {
+          "product_id": "p-3",
+          "name": "Veg Grilled Sandwich",
+          "price": 60,
+          "quantity": 1
+        },
+        {
+          "product_id": "p-5",
+          "name": "Fresh Lemon Juice",
+          "price": 40,
+          "quantity": 2
+        }
+      ],
+      "subtotal": 140,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 140,
+      "payment_method": "UPI",
+      "payment_status": "Paid (Simulated UPI)",
+      "order_status": "Preparing",
+      "pickup_slot": "12:40 PM - 12:50 PM",
+      "pickup_counter": 1,
+      "created_at": "2026-10-01T03:51:17.499Z",
+      "updated_at": "2026-10-01T04:06:17.499Z",
+      "loyalty_points_earned": 14
+    },
+    {
+      "id": "CB1026",
+      "user_id": "u-101",
+      "customer_name": "Jeshwanth Karun",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-8",
+          "name": "South Indian Special Thali",
+          "price": 110,
+          "quantity": 2
+        }
+      ],
+      "subtotal": 220,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 220,
+      "payment_method": "Card",
+      "payment_status": "Paid",
+      "order_status": "Confirmed",
+      "pickup_slot": "01:00 PM - 01:15 PM",
+      "pickup_counter": 3,
+      "created_at": "2026-10-01T03:41:17.499Z",
+      "updated_at": "2026-10-01T03:56:17.499Z",
+      "loyalty_points_earned": 22
+    },
+    {
+      "id": "CB1020",
+      "user_id": "u-101",
+      "customer_name": "Jeshwanth Karun",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-2",
+          "name": "Cheese Burger Deluxe",
+          "price": 100,
+          "quantity": 1
+        },
+        {
+          "product_id": "p-6",
+          "name": "Cold Coffee with Ice Cream",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 170,
+      "discount": 17,
+      "coupon_code": "STUDENT10",
+      "total_amount": 153,
+      "payment_method": "UPI",
+      "payment_status": "Paid",
+      "order_status": "Completed",
+      "pickup_slot": "11:15 AM - 11:25 AM",
+      "pickup_counter": 2,
+      "created_at": "2026-10-01T02:16:17.499Z",
+      "updated_at": "2026-10-01T02:41:17.499Z",
+      "loyalty_points_earned": 15
+    }
+  ],
+  "reviews": [
+    {
+      "id": "r-1",
+      "order_id": "CB1020",
+      "user_name": "Jeshwanth Karun",
+      "rating": 5,
+      "food_quality": 5,
+      "service_speed": 5,
+      "app_experience": 5,
+      "comment": "Saved me 20 minutes before my Operating Systems lecture! The burger was hot and ready at Counter 2.",
+      "created_at": "2026-10-01T02:46:17.499Z"
+    },
+    {
+      "id": "r-2",
+      "order_id": "CB1018",
+      "user_name": "Kavya Menon",
+      "rating": 4,
+      "food_quality": 4,
+      "service_speed": 5,
+      "app_experience": 4,
+      "comment": "Super convenient pickup slots. Cold coffee was fantastic!",
+      "created_at": "2026-10-01T01:16:17.499Z"
+    },
+    {
+      "id": "r-3",
+      "order_id": "CB1015",
+      "user_name": "Rahul Verma",
+      "rating": 5,
+      "food_quality": 5,
+      "service_speed": 4,
+      "app_experience": 5,
+      "comment": "The UPI simulation and loyalty points make this feel like Zomato built for our college.",
+      "created_at": "2026-10-01T00:16:17.499Z"
+    }
+  ],
+  "loyalty_transactions": [
+    {
+      "id": "lt-1790828453330",
+      "user_id": "u-101",
+      "points": 16,
+      "type": "earned",
+      "description": "Order #CB1031 purchase reward",
+      "date": "2026-10-01T04:20:53.329Z"
+    },
+    {
+      "id": "lt-1",
+      "user_id": "u-101",
+      "points": 15,
+      "type": "earned",
+      "description": "Order #CB1020 reward (10% back)",
+      "date": "2026-10-01T02:16:17.499Z"
+    },
+    {
+      "id": "lt-2",
+      "user_id": "u-101",
+      "points": 18,
+      "type": "earned",
+      "description": "Order #CB1024 reward",
+      "date": "2026-10-01T04:01:17.499Z"
+    },
+    {
+      "id": "lt-3",
+      "user_id": "u-101",
+      "points": -50,
+      "type": "redeemed",
+      "description": "Redeemed for ₹10 off coupon on last week's order",
+      "date": "2026-09-30T04:16:17.499Z"
+    }
+  ],
+  "analytics": {
+    "today_revenue": 12610,
+    "today_orders": 187,
+    "total_customers": 142,
+    "pending_orders": 24,
+    "avg_rating": 4.5,
+    "ratings_breakdown": {
+      "food_quality": 4.6,
+      "service": 4.3,
+      "app_experience": 4.5
+    },
+    "top_selling": [
+      {
+        "name": "Burger",
+        "sales_count": 75,
+        "revenue": 6300
+      },
+      {
+        "name": "Sandwich",
+        "sales_count": 62,
+        "revenue": 3720
+      },
+      {
+        "name": "Lemon Juice",
+        "sales_count": 51,
+        "revenue": 2040
+      },
+      {
+        "name": "Coffee",
+        "sales_count": 38,
+        "revenue": 2660
+      }
+    ],
+    "weekly_revenue": [
+      {
+        "day": "Mon",
+        "revenue": 8400,
+        "orders": 120
+      },
+      {
+        "day": "Tue",
+        "revenue": 10200,
+        "orders": 154
+      },
+      {
+        "day": "Wed",
+        "revenue": 7800,
+        "orders": 110
+      },
+      {
+        "day": "Thu",
+        "revenue": 11900,
+        "orders": 175
+      },
+      {
+        "day": "Fri",
+        "revenue": 13800,
+        "orders": 205
+      },
+      {
+        "day": "Sat",
+        "revenue": 6500,
+        "orders": 90
+      },
+      {
+        "day": "Sun",
+        "revenue": 2200,
+        "orders": 35
+      }
+    ],
+    "orders_by_hour": [
+      {
+        "hour": "9 AM",
+        "orders": 14,
+        "label": "Breakfast Rush"
+      },
+      {
+        "hour": "10 AM",
+        "orders": 22,
+        "label": "Morning Tea"
+      },
+      {
+        "hour": "11 AM",
+        "orders": 38,
+        "label": "Pre-lunch Snack"
+      },
+      {
+        "hour": "12 PM",
+        "orders": 84,
+        "label": "Peak Lunch Hour 1"
+      },
+      {
+        "hour": "1 PM",
+        "orders": 96,
+        "label": "Peak Lunch Hour 2"
+      },
+      {
+        "hour": "2 PM",
+        "orders": 42,
+        "label": "Post-lunch Refreshment"
+      },
+      {
+        "hour": "3 PM",
+        "orders": 28,
+        "label": "Evening Snacks"
+      }
+    ]
+  }
+}

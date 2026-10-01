@@ -1,0 +1,26 @@
+{
+  "name": "campusbite",
+  "version": "1.0.0",
+  "description": "Smart Campus Canteen E-Business & Management Platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "keywords": [
+    "campusbite",
+    "canteen",
+    "food-ordering",
+    "e-business",
+    "inventory-management",
+    "demand-prediction",
+    "pos"
+  ],
+  "author": "Jaswant Karun",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^9.10.3"
+  }
+}
