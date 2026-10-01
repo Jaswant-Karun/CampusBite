@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusBite Admin - Operations, Kitchen Kanban & BI Hub</title>
+  <meta name="description" content="CampusBite Admin Dashboard - Live order dispatch, kitchen kanban, inventory automation, and AI predictive demand management.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💼</text></svg>">
+  <style>
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       ADMIN TOPBAR (Deep Navy #172554)
+       ======================================================================== -->
+  <header class="master-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon" style="background:#4F46E5;">👨‍💼</div>
+      <div class="brand-title">
+        CAMPUSBITE <span style="font-size:13px;font-weight:500;color:#CBD5E1;margin-left:4px;">| Admin Operations</span>
+      </div>
+    </div>
+
+    <!-- Active Status Indicator -->
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);padding:6px 14px;border-radius:999px;font-size:12px;color:#CBD5E1;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#14B8A6;box-shadow:0 0 6px #14B8A6;"></span>
+      <span>Live Canteen Sync Active</span>
+    </div>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <!-- Reset Demo Scenario -->
+      <button class="reset-btn" onclick="AdminApp.resetDemoDatabase()" title="Reset DB to Default Demo State">
+        <span>🔄</span> Reset Demo
+      </button>
+
+      <!-- Customer Website Link -->
+      <a href="/" style="color:#FFFFFF;background:#4F46E5;text-decoration:none;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+        <span>🖥️</span> Customer Website →
+      </a>
+
+      <!-- Dark / Light Mode Toggle -->
+      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" title="Toggle Dark / Light Mode">
+        <span>🌙</span> Dark
+      </button>
+
+      <!-- Admin Profile Pill -->
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);padding:6px 12px;border-radius:10px;font-size:12px;color:#FFFFFF;">
+        <span style="font-size:16px;">👨‍💼</span>
+        <div style="line-height:1.2;">
+          <strong style="display:block;">Ramesh Kumar</strong>
+          <span style="font-size:10.5px;color:#94A3B8;">Canteen Manager</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- ========================================================================
+       CANTEEN ADMIN DASHBOARD (EXECUTIVE VIEW)
+       ======================================================================== -->
+  <section id="admin-viewport-section" class="admin-viewport-wrapper">
+    
+    <!-- Sidebar Navigation - Deep Navy #172554 -->
+    <aside class="admin-sidebar">
+      <div>
+        <div class="sidebar-heading">Management</div>
+        <ul class="sidebar-menu">
+          <li>
+            <button class="sidebar-item-btn active" data-tab="orders">
+              <span class="sidebar-icon">📋</span>
+              <span>Live Orders</span>
+              <span class="sidebar-badge alert" id="sidebar-pending-badge">23</span>
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item-btn" data-tab="inventory">
+              <span class="sidebar-icon">📦</span>
+              <span>Inventory & Stock</span>
+              <span class="sidebar-badge alert" id="sidebar-stock-badge">4</span>
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item-btn" data-tab="analytics">
+              <span class="sidebar-icon">📊</span>
+              <span>Sales & Analytics</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="sidebar-heading">Intelligence & CRM</div>
+        <ul class="sidebar-menu">
+          <li>
+            <button class="sidebar-item-btn" data-tab="demand">
+              <span class="sidebar-icon">🤖</span>
+              <span>AI Demand Prediction</span>
+              <span class="sidebar-badge ai">Innovation</span>
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item-btn" data-tab="marketing">
+              <span class="sidebar-icon">🏷️</span>
+              <span>Offers & Coupons</span>
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item-btn" data-tab="reviews">
+              <span class="sidebar-icon">⭐</span>
+              <span>Customer Feedback</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div style="margin-top:auto;padding:12px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);font-size:11.5px;color:#CBD5E1;">
+        <div>Logged in as:</div>
+        <strong style="color:#FFFFFF;">Ramesh (Canteen Manager)</strong>
+        <div style="color:#14B8A6;margin-top:2px;font-weight:600;">● MongoDB Synchronized</div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area - Soft Slate #F8FAFC -->
+    <div class="admin-main-area">
+      
+      <!-- Top Title & Quick Stats -->
+      <div class="admin-header-row">
+        <div class="admin-page-title">
+          <h1 style="color:#0F172A;">Good Morning, Admin 👋</h1>
+          <p style="color:#64748B;">Real-time order dispatch, inventory automation, and predictive intelligence</p>
+        </div>
+        <div class="admin-action-controls">
+          <button class="btn-primary" onclick="AdminApp.openAddProductModal()" style="padding:8px 16px;font-size:13px;">
+            + Add Food Item
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Cards Grid -->
+      <div class="kpi-cards-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Today's Revenue</span>
+            <span class="kpi-icon-pill">💰</span>
+          </div>
+          <div class="kpi-value" id="kpi-revenue">₹12,450</div>
+          <div class="kpi-trend positive" style="color:#14B8A6;">↑ +18.4% vs yesterday</div>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-top">
+            <span class="kpi-label">Today's Orders</span>
+            <span class="kpi-icon-pill">🛒</span>
+          </div>
+          <div class="kpi-value" id="kpi-orders">186</div>
+          <div class="kpi-trend positive" style="color:#14B8A6;">↑ 42 peak lunch surge</div>
+        </div>
+
+        <div class="kpi-card indigo">
+          <div class="kpi-top">
+            <span class="kpi-label">Active Customers</span>
+            <span class="kpi-icon-pill">👥</span>
+          </div>
+          <div class="kpi-value" id="kpi-customers">142</div>
+          <div class="kpi-trend positive" style="color:#4F46E5;">Students & Faculty</div>
+        </div>
+
+        <div class="kpi-card amber">
+          <div class="kpi-top">
+            <span class="kpi-label">Pending Kitchen Orders</span>
+            <span class="kpi-icon-pill">⏳</span>
+          </div>
+          <div class="kpi-value" id="kpi-pending">23</div>
+          <div class="kpi-trend neutral" style="color:#F59E0B;">Across Counter 1, 2, 3</div>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-top">
+            <span class="kpi-label">Average Satisfaction</span>
+            <span class="kpi-icon-pill">⭐</span>
+          </div>
+          <div class="kpi-value" id="kpi-rating">4.5 ★</div>
+          <div class="kpi-trend positive" style="color:#14B8A6;">From 84 student reviews</div>
+        </div>
+
+        <div class="kpi-card rose">
+          <div class="kpi-top">
+            <span class="kpi-label">Low Stock Alerts</span>
+            <span class="kpi-icon-pill">⚠️</span>
+          </div>
+          <div class="kpi-value" id="kpi-low-stock">4</div>
+          <div class="kpi-trend neutral" style="color:#DC2626;">Action required</div>
+        </div>
+      </div>
+
+      <!-- TAB 1: LIVE ORDERS BOARD -->
+      <div id="admin-tab-orders" class="admin-tab-panel active">
+        <div class="orders-filter-bar">
+          <div class="orders-filter-chips">
+            <button class="order-filter-btn active" data-status="All">All Orders</button>
+            <button class="order-filter-btn" data-status="Placed">Placed</button>
+            <button class="order-filter-btn" data-status="Confirmed">Confirmed</button>
+            <button class="order-filter-btn" data-status="Preparing">Preparing</button>
+            <button class="order-filter-btn" data-status="Ready">Ready for Pickup</button>
+            <button class="order-filter-btn" data-status="Completed">Completed</button>
+          </div>
+          <button class="reset-btn" onclick="AdminApp.loadOrders()">🔄 Refresh Orders</button>
+        </div>
+
+        <div class="orders-grid-cards" id="admin-orders-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- TAB 2: INVENTORY & STOCK MANAGEMENT -->
+      <div id="admin-tab-inventory" class="admin-tab-panel">
+        <div class="orders-filter-bar">
+          <h3 style="font-size:18px;font-weight:700;color:#0F172A;">Real-Time Inventory & Stock Counts</h3>
+          <button class="btn-primary" onclick="AdminApp.openAddProductModal()" style="padding:8px 16px;font-size:13px;">+ Add New Product</button>
+        </div>
+
+        <div class="table-card-container">
+          <table class="inventory-table">
+            <thead>
+              <tr>
+                <th>Product & Category</th>
+                <th>Price</th>
+                <th>Live Stock Units</th>
+                <th>Status</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody id="admin-inventory-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: SALES & PEAK SURGE ANALYTICS -->
+      <div id="admin-tab-analytics" class="admin-tab-panel">
+        <div class="analytics-grid-two-col">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Weekly Revenue Trends</div>
+                <div style="font-size:12px;color:var(--text-muted);">Total revenue generated per day (Mon - Sun)</div>
+              </div>
+              <span style="font-size:12px;font-weight:700;color:#14B8A6;">₹64,600 Total Week</span>
+            </div>
+            <div class="chart-canvas-wrapper" id="weekly-revenue-chart-canvas"></div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Top Selling Items</div>
+              <span style="font-size:11px;color:var(--text-muted);">Units Sold</span>
+            </div>
+            <div class="top-selling-list" id="admin-top-selling-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Peak Rush Hour Traffic Analysis (9 AM – 3 PM)</div>
+              <div style="font-size:12px;color:var(--text-muted);">Order volume distribution to plan kitchen staffing</div>
+            </div>
+            <span style="font-size:12px;background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:999px;font-weight:700;">
+              Peak: 12:00 PM – 1:30 PM (180+ orders)
+            </span>
+          </div>
+          <div class="chart-canvas-wrapper" id="hourly-demand-chart-canvas"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: AI DEMAND PREDICTION ENGINE (CORE INNOVATION) -->
+      <div id="admin-tab-demand" class="admin-tab-panel">
+        <div class="ai-banner-card">
+          <div class="ai-banner-badge">
+            <span>✨</span> Core Innovation Module
+          </div>
+          <div class="ai-banner-title">AI Predictive Demand & Batch Prep Advisor</div>
+          <div class="ai-banner-desc">
+            CampusBite analyzes historical order averages from MongoDB, student timetables, and campus promotions to predict tomorrow's lunch rush before it occurs. Avoid stock-outs and minimize food waste.
+          </div>
+        </div>
+
+        <div class="ai-prediction-cards-grid" id="ai-predictions-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- TAB 5: DIGITAL MARKETING & COUPONS -->
+      <div id="admin-tab-marketing" class="admin-tab-panel">
+        <div class="marketing-grid">
+          <div class="campaign-form-card">
+            <h3 style="color:#0F172A;font-weight:700;">Publish New Offer Campaign</h3>
+            <div class="form-group">
+              <label class="form-label">Coupon Code</label>
+              <input type="text" class="form-input" id="new-coupon-code" placeholder="e.g. WEEKEND30" style="text-transform:uppercase;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Discount Percentage (%)</label>
+              <input type="number" class="form-input" id="new-coupon-discount" placeholder="e.g. 20" min="5" max="90">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Minimum Order (₹)</label>
+              <input type="number" class="form-input" id="new-coupon-min" placeholder="e.g. 100" value="100">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Campaign Description</label>
+              <input type="text" class="form-input" id="new-coupon-desc" placeholder="e.g. Special exam week study snack combo">
+            </div>
+
+            <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="AdminApp.createNewCouponCampaign()">
+              🚀 Publish Offer to Student App
+            </button>
+          </div>
+
+          <div class="campaign-form-card">
+            <h3 style="color:#0F172A;font-weight:700;">Active Campaign Offers</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;" id="admin-coupons-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: CUSTOMER FEEDBACK & CRM -->
+      <div id="admin-tab-reviews" class="admin-tab-panel">
+        <div class="chart-card" style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="font-size:18px;font-weight:700;color:#0F172A;">Student Satisfaction Benchmark</h3>
+              <p style="font-size:12px;color:var(--text-muted);">Real customer ratings collected post-order pickup</p>
+            </div>
+            <div style="font-size:24px;font-weight:800;color:#F59E0B;">4.5 / 5.0 ★</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;background:#F8FAFC;border:1px solid #E2E8F0;padding:14px;border-radius:12px;text-align:center;">
+            <div>
+              <div style="font-size:11.5px;color:var(--text-muted);">Food Quality</div>
+              <div style="font-size:18px;font-weight:700;color:#16A34A;">4.6 ★</div>
+            </div>
+            <div>
+              <div style="font-size:11.5px;color:var(--text-muted);">Pickup Speed</div>
+              <div style="font-size:18px;font-weight:700;color:#4F46E5;">4.3 ★</div>
+            </div>
+            <div>
+              <div style="font-size:11.5px;color:var(--text-muted);">App Experience</div>
+              <div style="font-size:18px;font-weight:700;color:#2563EB;">4.5 ★</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reviews-grid" id="admin-reviews-list">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+    </div> <!-- End .admin-main-area -->
+  </section>
+
+  <!-- Add Product Modal -->
+  <div class="modal-overlay" id="add-product-modal">
+    <div class="modal-window">
+      <button class="modal-close-btn">&times;</button>
+      <div class="modal-header">
+        <h3 class="modal-title">Add Canteen Menu Product</h3>
+      </div>
+      <form id="add-product-form" onsubmit="AdminApp.handleProductSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Dish Name</label>
+          <input type="text" class="form-input" id="prod-name" placeholder="e.g. Schezwan Paneer Wrap" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-input" id="prod-category" required>
+            <option value="Snacks">Snacks & Fast Bites</option>
+            <option value="Meals">Lunch & Dinner Meals</option>
+            <option value="Drinks">Beverages & Juices</option>
+            <option value="Healthy">Healthy & Bowls</option>
+            <option value="Bakery">Bakery & Sweet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (₹)</label>
+          <input type="number" class="form-input" id="prod-price" placeholder="e.g. 75" min="5" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-input" id="prod-desc" rows="2" placeholder="Ingredients and flavor highlights"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Initial Stock Count</label>
+          <input type="number" class="form-input" id="prod-stock" value="25" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dietary Type</label>
+          <select class="form-input" id="prod-is-veg">
+            <option value="true">🟢 Pure Vegetarian</option>
+            <option value="false">🔴 Non-Vegetarian</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;margin-top:14px;">
+          Add to Live Canteen Menu
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    // Standalone Admin Initialization
+    window.App = {
+      openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.add('open');
+      },
+      closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove('open');
+      },
+      showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+      }
+    };
+
+    // Close modals
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    });
+    document.querySelectorAll('.modal-close-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modal = btn.closest('.modal-overlay');
+        if (modal) modal.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      AdminApp.init();
+    });
+  </script>
+</body>
+</html>

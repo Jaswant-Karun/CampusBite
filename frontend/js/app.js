@@ -52,44 +52,34 @@ const App = {
   handleInitialRoute() {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#admin') {
-      this.switchViewMode('admin');
-    } else {
-      this.switchViewMode('student');
+      window.location.href = '/admin';
+      return;
     }
+    if (hash === '#mobile') {
+      window.location.href = '/mobile';
+      return;
+    }
+    this.switchViewMode('student');
   },
 
   switchViewMode(mode) {
-    this.currentView = mode;
-
-    document.querySelectorAll('.mode-switch-container .mode-btn').forEach(btn => {
-      const btnMode = btn.dataset.mode;
-      const isTarget = btnMode === mode || (mode === 'student' && btnMode === 'desktop');
-      btn.classList.toggle('active', isTarget);
-    });
-
-    const studentContainer = document.getElementById('student-viewport-section');
-    const adminContainer = document.getElementById('admin-viewport-section');
-
     if (mode === 'admin') {
-      if (studentContainer) studentContainer.style.display = 'none';
-      if (adminContainer) adminContainer.style.display = 'flex';
-      window.location.hash = 'admin';
-      if (window.AdminApp) {
-        window.AdminApp.loadAllData();
-      }
-    } else {
-      // Student Food Portal Website
-      if (studentContainer) {
-        studentContainer.style.display = 'flex';
-        studentContainer.classList.add('desktop-mode');
-      }
-      if (adminContainer) adminContainer.style.display = 'none';
-      if (window.location.hash === '#admin') {
-        window.location.hash = '';
-      }
-      if (window.StudentApp) {
-        window.StudentApp.syncActiveView();
-      }
+      window.location.href = '/admin';
+      return;
+    }
+    if (mode === 'mobile') {
+      window.location.href = '/mobile';
+      return;
+    }
+
+    this.currentView = 'student';
+    const studentContainer = document.getElementById('student-viewport-section');
+    if (studentContainer) {
+      studentContainer.style.display = 'flex';
+      studentContainer.classList.add('desktop-mode');
+    }
+    if (window.StudentApp) {
+      window.StudentApp.syncActiveView();
     }
   },
 

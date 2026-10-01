@@ -93,7 +93,7 @@ app.get('/desktop', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-  res.redirect('/#admin');
+  res.sendFile(path.join(frontendPath, 'admin.html'));
 });
 
 // Fallback to index.html for SPA routing
@@ -106,8 +106,8 @@ app.listen(PORT, () => {
   console.log(`====================================================`);
   console.log(`🚀 CAMPUSBITE PLATFORM RUNNING`);
   console.log(`📦 Database: MongoDB (${mongoManager.connectionUri})`);
-  console.log(`📍 Web App & API: http://localhost:${PORT}`);
-  console.log(`📊 Admin Dashboard: http://localhost:${PORT}#admin`);
-  console.log(`📱 Student Mobile:  http://localhost:${PORT}#student`);
+  console.log(`📍 Customer Website:   http://localhost:${PORT}`);
+  console.log(`📊 Admin Operations:   http://localhost:${PORT}/admin`);
+  console.log(`📱 Standalone Mobile:  http://localhost:${PORT}/mobile`);
   console.log(`====================================================`);
 });
