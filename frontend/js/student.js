@@ -100,7 +100,7 @@ const StudentApp = {
   },
 
   initTheme() {
-    const savedTheme = localStorage.getItem('campusbite_theme') || 'dark';
+    const savedTheme = localStorage.getItem('campusbite_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
@@ -109,7 +109,7 @@ const StudentApp = {
   },
 
   toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('campusbite_theme', next);

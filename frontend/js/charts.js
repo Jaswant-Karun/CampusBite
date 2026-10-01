@@ -1,5 +1,10 @@
 /**
  * CampusBite Custom Lightweight SVG / Canvas Charts
+ * Professional Chart System:
+ * Main chart: #4F46E5 (Indigo)
+ * Secondary: #14B8A6 (Teal)
+ * Warning: #F59E0B (Amber)
+ * Negative / Peak: #DC2626 (Red)
  */
 
 const CampusCharts = {
@@ -8,7 +13,7 @@ const CampusCharts = {
     if (!container) return;
 
     if (!weeklyData || !weeklyData.length) {
-      container.innerHTML = '<div style="color:var(--text-muted);padding:40px;text-align:center;">No data available</div>';
+      container.innerHTML = '<div style="color:#64748B;padding:40px;text-align:center;">No data available</div>';
       return;
     }
 
@@ -28,8 +33,8 @@ const CampusCharts = {
         <g class="chart-bar-group" style="cursor:pointer;">
           <title>${item.day}: ₹${item.revenue.toLocaleString()} (${item.orders} orders)</title>
           <rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="6" fill="url(#barGradient)" />
-          <text x="${x + (barWidth / 2)}" y="${height - 6}" font-size="11" fill="#94A3B8" text-anchor="middle" font-weight="600">${item.day}</text>
-          <text x="${x + (barWidth / 2)}" y="${y - 6}" font-size="10" fill="#CBD5E1" text-anchor="middle" font-weight="700">₹${(item.revenue / 1000).toFixed(1)}k</text>
+          <text x="${x + (barWidth / 2)}" y="${height - 6}" font-size="11" fill="#64748B" text-anchor="middle" font-weight="500">${item.day}</text>
+          <text x="${x + (barWidth / 2)}" y="${y - 6}" font-size="10.5" fill="#0F172A" text-anchor="middle" font-weight="600">₹${(item.revenue / 1000).toFixed(1)}k</text>
         </g>
       `;
     });
@@ -38,11 +43,11 @@ const CampusCharts = {
       <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="overflow:visible;">
         <defs>
           <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FF5A1F" />
-            <stop offset="100%" stop-color="#EA580C" />
+            <stop offset="0%" stop-color="#4F46E5" />
+            <stop offset="100%" stop-color="#6366F1" />
           </linearGradient>
         </defs>
-        <line x1="20" y1="${height - 24}" x2="${width - 10}" y2="${height - 24}" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+        <line x1="20" y1="${height - 24}" x2="${width - 10}" y2="${height - 24}" stroke="#E2E8F0" stroke-width="1" />
         ${barsSvg}
       </svg>
     `;
@@ -55,7 +60,7 @@ const CampusCharts = {
     if (!container) return;
 
     if (!hourlyData || !hourlyData.length) {
-      container.innerHTML = '<div style="color:var(--text-muted);padding:40px;text-align:center;">No data available</div>';
+      container.innerHTML = '<div style="color:#64748B;padding:40px;text-align:center;">No data available</div>';
       return;
     }
 
@@ -78,10 +83,10 @@ const CampusCharts = {
     points.forEach(p => {
       const isPeak = p.orders > 70;
       dotsSvg += `
-        <circle cx="${p.x}" cy="${p.y}" r="${isPeak ? 6 : 4}" fill="${isPeak ? '#EF4444' : '#6366F1'}" stroke="#0F172A" stroke-width="2">
+        <circle cx="${p.x}" cy="${p.y}" r="${isPeak ? 5 : 4}" fill="${isPeak ? '#DC2626' : '#14B8A6'}" stroke="#FFFFFF" stroke-width="2">
           <title>${p.hour}: ${p.orders} orders (${p.label})</title>
         </circle>
-        <text x="${p.x}" y="${height - 8}" font-size="10" fill="#94A3B8" text-anchor="middle" font-weight="600">${p.hour}</text>
+        <text x="${p.x}" y="${height - 8}" font-size="10" fill="#64748B" text-anchor="middle" font-weight="500">${p.hour}</text>
       `;
     });
 
@@ -89,12 +94,12 @@ const CampusCharts = {
       <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="overflow:visible;">
         <defs>
           <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#6366F1" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="#6366F1" stop-opacity="0.0"/>
+            <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#4F46E5" stop-opacity="0.0"/>
           </linearGradient>
         </defs>
         <polygon points="${points[0].x},${height - 30} ${pointsStr} ${points[points.length-1].x},${height - 30}" fill="url(#areaGradient)" />
-        <polyline fill="none" stroke="#818CF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pointsStr}" />
+        <polyline fill="none" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${pointsStr}" />
         ${dotsSvg}
       </svg>
     `;

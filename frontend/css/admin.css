@@ -9,11 +9,11 @@
   color: var(--text-primary);
 }
 
-/* Sidebar Navigation */
+/* Sidebar Navigation - Deep Navy SaaS Theme */
 .admin-sidebar {
   width: 250px;
-  background: var(--bg-surface);
-  border-right: 1px solid var(--border-subtle);
+  background: #172554;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: #94A3B8;
   padding: 0 12px 6px;
 }
 
@@ -42,28 +42,30 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
-  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  border-radius: var(--radius-btn);
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: #CBD5E1;
   font-family: var(--font-body);
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: left;
 }
 
 .sidebar-item-btn:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 .sidebar-item-btn.active {
-  background: linear-gradient(135deg, rgba(255, 90, 31, 0.15), rgba(255, 90, 31, 0.05));
-  color: var(--primary);
-  border: 1px solid rgba(255, 90, 31, 0.3);
+  background: #4F46E5;
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+  border: none;
 }
 
 .sidebar-item-btn .sidebar-icon {
@@ -179,15 +181,15 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 3px;
   height: 100%;
-  background: var(--primary);
+  background: #4F46E5;
 }
 
-.kpi-card.green::before { background: var(--accent-emerald); }
-.kpi-card.amber::before { background: var(--accent-amber); }
-.kpi-card.indigo::before { background: var(--accent-indigo); }
-.kpi-card.rose::before { background: var(--accent-rose); }
+.kpi-card.green::before { background: #14B8A6; }
+.kpi-card.amber::before { background: #F59E0B; }
+.kpi-card.indigo::before { background: #4F46E5; }
+.kpi-card.rose::before { background: #DC2626; }
 
 .kpi-top {
   display: flex;
