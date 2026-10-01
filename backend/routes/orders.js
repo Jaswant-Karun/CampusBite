@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
+const eventBus = require('../services/eventBus');
 
 // GET all orders (with optional filters)
 router.get('/', (req, res) => {
@@ -176,6 +177,42 @@ router.post('/', (req, res) => {
 
   db.saveData();
 
+  // 1. Broadcast live notification to Admin Kitchen Kanban
+  eventBus.broadcast({
+    type: 'NEW_ORDER',
+    target: 'admin',
+    icon: '🔔',
+    title: `New Order #${newOrder.id} Placed!`,
+    message: `${newOrder.customer_name} placed an order for ₹${newOrder.total_amount} (${newOrder.items.length} items). Routed to Counter ${newOrder.pickup_counter}.`,
+    data: { orderId: newOrder.id, order: newOrder, counter: newOrder.pickup_counter }
+  });
+
+  // 2. Broadcast live notification to Student / Customer
+  eventBus.broadcast({
+    type: 'ORDER_PLACED',
+    target: 'student',
+    userId: newOrder.user_id,
+    icon: '✅',
+    title: `Order Confirmed: Token #${newOrder.id}`,
+    message: `Payment successful! Your order has reached Counter ${newOrder.pickup_counter}. Slot: ${newOrder.pickup_slot}.`,
+    data: { orderId: newOrder.id, token: newOrder.id, counter: newOrder.pickup_counter }
+  });
+
+  // 3. Check for low stock alerts on affected items
+  for (const item of processedItems) {
+    const p = db.data.products.find(prod => prod.id === item.product_id);
+    if (p && p.stock <= 3) {
+      eventBus.broadcast({
+        type: 'LOW_STOCK',
+        target: 'admin',
+        icon: '⚠️',
+        title: `Low Stock Alert: ${p.name}`,
+        message: `Only ${p.stock} units remaining in stock. Consider restocking soon.`,
+        data: { productId: p.id, stock: p.stock }
+      });
+    }
+  }
+
   res.status(201).json({
     success: true,
     message: 'Order placed successfully! Skip the queue with your pickup token.',
@@ -208,6 +245,35 @@ router.put('/:id/status', (req, res) => {
   }
 
   db.saveData();
+
+  // Determine user friendly icon & message for status transition
+  let statusIcon = '📋';
+  let statusMsg = `Order #${order.id} status is now ${status}.`;
+
+  if (status === 'Preparing') {
+    statusIcon = '👨‍🍳';
+    statusMsg = `Kitchen is actively preparing Order #${order.id} at Counter ${order.pickup_counter}.`;
+  } else if (status === 'Ready') {
+    statusIcon = '🎉';
+    statusMsg = `Order #${order.id} is READY FOR PICKUP at Counter ${order.pickup_counter}! Show your token #${order.id}.`;
+  } else if (status === 'Completed') {
+    statusIcon = '✨';
+    statusMsg = `Order #${order.id} has been picked up. Thank you for dining with CampusBite!`;
+  } else if (status === 'Cancelled') {
+    statusIcon = '❌';
+    statusMsg = `Order #${order.id} was cancelled. Refund credited to CampusPay wallet.`;
+  }
+
+  // Broadcast to both Customer and Admin
+  eventBus.broadcast({
+    type: 'ORDER_STATUS_CHANGED',
+    target: 'all',
+    userId: order.user_id,
+    icon: statusIcon,
+    title: `Order #${order.id}: ${status}`,
+    message: statusMsg,
+    data: { orderId: order.id, status: status, counter: order.pickup_counter, order: order }
+  });
 
   res.json({
     success: true,

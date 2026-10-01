@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
+const eventBus = require('../services/eventBus');
 
 // GET all coupons
 router.get('/', (req, res) => {
@@ -74,6 +75,15 @@ router.post('/', (req, res) => {
 
   db.data.coupons.unshift(newCoupon);
   db.saveData();
+
+  eventBus.broadcast({
+    type: 'NEW_OFFER',
+    target: 'student',
+    icon: '🏷️',
+    title: `🔥 New Deal Drop: ${newCoupon.code}`,
+    message: `${newCoupon.description} Use code ${newCoupon.code} to get ${newCoupon.discount_value}% OFF!`,
+    data: { coupon: newCoupon }
+  });
 
   res.status(201).json({
     success: true,

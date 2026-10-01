@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="css/notifications.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💼</text></svg>">
   <style>
     body {
@@ -43,6 +44,41 @@
       <button class="reset-btn" onclick="AdminApp.resetDemoDatabase()" title="Reset DB to Default Demo State">
         <span>🔄</span> Reset Demo
       </button>
+
+      <!-- Live Notifications Bell & Dropdown -->
+      <div style="position:relative;display:inline-block;">
+        <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications">
+          <span>🔔</span>
+          <span class="notif-unread-badge" id="notif-unread-badge">0</span>
+        </button>
+
+        <div class="notif-dropdown-panel" id="notif-dropdown-panel">
+          <div class="notif-panel-header">
+            <div class="notif-panel-title">
+              <span class="live-sync-pulse-dot"></span>
+              <span>Kitchen & Orders Feed</span>
+              <span id="notif-sync-label" style="font-size:10px;color:#14B8A6;font-weight:700;margin-left:4px;">Live</span>
+            </div>
+            <div class="notif-panel-controls">
+              <button class="notif-tool-btn" id="notif-sound-btn" onclick="CampusNotifications.toggleSound()" title="Toggle Sound">
+                🔔 Sound On
+              </button>
+              <button class="notif-tool-btn" onclick="CampusNotifications.markAllRead()" title="Mark all as read">
+                ✓ Mark Read
+              </button>
+            </div>
+          </div>
+          <div class="notif-list-container" id="notif-items-list">
+            <!-- Rendered dynamically -->
+          </div>
+          <div class="notif-panel-footer">
+            <span style="color:#94A3B8;">SSE Real-Time Stream</span>
+            <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
+              <span>⚡</span> Test Push
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Customer Website Link -->
       <a href="/" style="color:#FFFFFF;background:#4F46E5;text-decoration:none;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
@@ -427,6 +463,7 @@
   <!-- Scripts -->
   <script src="js/api.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/notifications.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/chatbot.js"></script>
   <script>
@@ -466,6 +503,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       AdminApp.init();
+      if (window.CampusNotifications) {
+        window.CampusNotifications.init('admin', 'u-admin');
+      }
     });
   </script>
 </body>

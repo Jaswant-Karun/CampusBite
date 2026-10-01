@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/mobile-shell.css">
   <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="css/notifications.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍔</text></svg>">
   <style>
     /* Dedicated Mobile View Wrapper */
@@ -301,9 +302,46 @@
             <h3>Hi, Jaswant 👋</h3>
             <p>Campus Main Canteen • Open</p>
           </div>
-          <div class="loyalty-chip" onclick="StudentApp.navigateTo('profile')">
-            <span>⭐</span>
-            <span id="home-loyalty-chip-pts">420 pts</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <!-- Live Notification Bell & Dropdown -->
+            <div style="position:relative;display:inline-block;">
+              <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications" style="width:34px;height:34px;font-size:15px;background:rgba(255,255,255,0.08);">
+                <span>🔔</span>
+                <span class="notif-unread-badge" id="notif-unread-badge">0</span>
+              </button>
+
+              <div class="notif-dropdown-panel" id="notif-dropdown-panel">
+                <div class="notif-panel-header">
+                  <div class="notif-panel-title">
+                    <span class="live-sync-pulse-dot"></span>
+                    <span>Live Updates</span>
+                    <span id="notif-sync-label" style="font-size:10px;color:#14B8A6;font-weight:700;margin-left:4px;">Live</span>
+                  </div>
+                  <div class="notif-panel-controls">
+                    <button class="notif-tool-btn" id="notif-sound-btn" onclick="CampusNotifications.toggleSound()" title="Toggle Sound">
+                      🔔 Sound On
+                    </button>
+                    <button class="notif-tool-btn" onclick="CampusNotifications.markAllRead()" title="Mark all as read">
+                      ✓ Read
+                    </button>
+                  </div>
+                </div>
+                <div class="notif-list-container" id="notif-items-list">
+                  <!-- Rendered dynamically -->
+                </div>
+                <div class="notif-panel-footer">
+                  <span style="color:#94A3B8;">SSE Stream Active</span>
+                  <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
+                    <span>⚡</span> Test
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="loyalty-chip" onclick="StudentApp.navigateTo('profile')">
+              <span>⭐</span>
+              <span id="home-loyalty-chip-pts">420 pts</span>
+            </div>
           </div>
         </div>
 
@@ -1051,8 +1089,16 @@
   <!-- Scripts -->
   <script src="js/api.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/notifications.js"></script>
   <script src="js/student.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.CampusNotifications) {
+        window.CampusNotifications.init('student', 'u-101');
+      }
+    });
+  </script>
 </body>
 </html>
