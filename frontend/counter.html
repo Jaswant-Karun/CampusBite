@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CampusBite - Counter 2 TV & Kitchen Display System (KDS)</title>
   <link rel="stylesheet" href="css/counter.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23FF5A1F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>">
 </head>
 <body class="kds-body">
 
   <!-- Header Strip -->
   <header class="kds-header">
     <div class="kds-brand">
-      <span class="kds-logo">🍔</span>
+      <span class="kds-logo" style="font-weight:900;font-size:13px;background:var(--primary);color:white;padding:3px 8px;border-radius:6px;letter-spacing:0.5px;">CB</span>
       <div>
         <div class="kds-title">
           <span>CAMPUSBITE KDS</span>
@@ -43,13 +43,13 @@
     <!-- Actions & Clock -->
     <div class="kds-header-actions">
       <button class="kds-btn active" id="kds-audio-btn" onclick="KdsApp.toggleAudio()" title="Toggle Campus Bell Sound">
-        🔔 Chime: ON
+        Audio: ON
       </button>
       <button class="kds-btn" onclick="KdsApp.toggleFullscreen()" title="Fullscreen for Wall TV">
-        ⛶ TV Fullscreen
+        Fullscreen
       </button>
       <button class="kds-btn" onclick="window.location.href='/admin'" title="Back to Admin Hub">
-        ⚙️ Admin
+        Admin Console
       </button>
       <div class="kds-clock" id="kds-live-clock">--:--:--</div>
     </div>
@@ -61,7 +61,7 @@
     <section class="kds-column preparing">
       <div class="kds-column-header">
         <div class="kds-col-title">
-          <span>🍳</span>
+          <span>●</span>
           <span>Now Preparing</span>
         </div>
         <span class="kds-col-count" id="kds-prep-col-count">0 Orders</span>
@@ -75,7 +75,7 @@
     <section class="kds-column ready">
       <div class="kds-column-header">
         <div class="kds-col-title">
-          <span>🟢</span>
+          <span class="status-pulse-dot" style="margin-right:4px;"></span>
           <span>Ready for Pickup (Counter 2)</span>
         </div>
         <span class="kds-col-count" id="kds-ready-col-count">0 Ready</span>

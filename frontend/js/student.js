@@ -14,7 +14,7 @@ const StudentApp = {
     department: "Computer Science & Business Systems",
     loyalty_points: 420,
     wallet_balance: 850,
-    avatar: "👨🎓"
+    avatar: "JK"
   },
 
   selectedAuthRole: 'student',
@@ -59,9 +59,9 @@ const StudentApp = {
     'p-16': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=320&q=80'
   },
   groupPoolMembers: [
-    { name: "Jaswant Karun (You • Host)", avatar: "👨‍🎓", item: "Classic Veg Burger", price: 80 },
-    { name: "Priya Sundaram (Desk 2)", avatar: "👩‍🎓", item: "Cold Coffee with Ice Cream", price: 70 },
-    { name: "Rahul Verma (Desk 3)", avatar: "👨‍💻", item: "Veg Grilled Sandwich", price: 60 }
+    { name: "Jaswant Karun (You • Host)", avatar: "JK", item: "Classic Veg Burger", price: 80 },
+    { name: "Priya Sundaram (Desk 2)", avatar: "PS", item: "Cold Coffee with Ice Cream", price: 70 },
+    { name: "Rahul Verma (Desk 3)", avatar: "RV", item: "Veg Grilled Sandwich", price: 60 }
   ],
 
   profiles: [
@@ -76,7 +76,7 @@ const StudentApp = {
       department: "Computer Science & Business Systems",
       loyalty_points: 429,
       wallet_balance: 850,
-      avatar: "👨🎓"
+      avatar: "JK"
     },
     {
       id: "u-102",
@@ -88,7 +88,7 @@ const StudentApp = {
       department: "School of Management & Business",
       loyalty_points: 890,
       wallet_balance: 1450,
-      avatar: "👩🏫"
+      avatar: "PS"
     },
     {
       id: "u-103",
@@ -100,7 +100,7 @@ const StudentApp = {
       department: "Central Library & Lab Administration",
       loyalty_points: 180,
       wallet_balance: 320,
-      avatar: "🧑💼"
+      avatar: "KR"
     },
     {
       id: "u-admin",
@@ -112,7 +112,7 @@ const StudentApp = {
       department: "Campus Hospitality & Dining",
       loyalty_points: 2500,
       wallet_balance: 5000,
-      avatar: "👨💼"
+      avatar: "RC"
     }
   ],
 
@@ -140,7 +140,7 @@ const StudentApp = {
     document.documentElement.setAttribute('data-theme', savedTheme);
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
-      themeBtn.innerHTML = savedTheme === 'dark' ? '<span>🌙</span> Dark' : '<span>☀️</span> Light';
+      themeBtn.innerHTML = savedTheme === 'dark' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Dark' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Light';
     }
   },
 
@@ -151,7 +151,7 @@ const StudentApp = {
     localStorage.setItem('campusbite_theme', next);
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
-      themeBtn.innerHTML = next === 'dark' ? '<span>🌙</span> Dark' : '<span>☀️</span> Light';
+      themeBtn.innerHTML = next === 'dark' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Dark' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Light';
     }
     App.showToast(`Switched to ${next.toUpperCase()} theme`, 'info');
   },
@@ -203,7 +203,7 @@ const StudentApp = {
     if (couponInput) couponInput.value = couponCode;
 
     App.closeModal('rewards-store-modal');
-    App.showToast(`🎉 Reward Claimed! ₹${discountAmount} voucher applied to your meal tray.`, 'success');
+    App.showToast(`Reward Claimed: ₹${discountAmount} voucher applied to your meal tray.`, 'success');
   },
 
   openCustomerReviewModal() {
@@ -401,10 +401,10 @@ const StudentApp = {
     if (pwdInput) {
       if (pwdInput.type === 'password') {
         pwdInput.type = 'text';
-        if (icon) icon.textContent = '🙈';
+        if (icon) icon.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
       } else {
         pwdInput.type = 'password';
-        if (icon) icon.textContent = '👁️';
+        if (icon) icon.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
       }
     }
   },
@@ -524,7 +524,7 @@ const StudentApp = {
     const greetingEl = document.querySelector('.user-greeting h3');
     if (greetingEl) {
       const firstName = (this.currentUser.name || 'Jaswant').split(' ')[0];
-      greetingEl.textContent = `Hi, ${firstName} 👋`;
+      greetingEl.textContent = `Welcome, ${firstName}`;
     }
 
     // 2. Topbar user pill
@@ -543,7 +543,7 @@ const StudentApp = {
     const profId = document.getElementById('profile-user-id');
     if (profId) profId.textContent = `${this.currentUser.studentId || 'CB-2024-2028'} • ${this.currentUser.department || 'Computer Science & Business Systems'}`;
     const profPhone = document.getElementById('profile-user-phone');
-    if (profPhone) profPhone.textContent = `📱 ${this.currentUser.phone || '87541 59344'}`;
+    if (profPhone) profPhone.textContent = `${this.currentUser.phone || '87541 59344'}`;
 
     // 4. Wallet Card
     this.updateWalletUI();
@@ -591,7 +591,7 @@ const StudentApp = {
     if (!this.cart.length) {
       container.innerHTML = `
         <div style="text-align:center;padding:24px 10px;color:#94A3B8;">
-          <span style="font-size:28px;display:block;margin-bottom:6px;">🍔</span>
+          <span style="display:inline-block;margin-bottom:6px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></span>
           <div style="font-size:12.5px;font-weight:600;">Your tray is empty</div>
           <div style="font-size:11px;color:#64748B;margin-top:2px;">Add delicious campus meals from the menu</div>
         </div>
@@ -602,7 +602,7 @@ const StudentApp = {
     container.innerHTML = this.cart.map(item => `
       <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:18px;">${item.image_emoji || '🍲'}</span>
+          <span class="avatar-monogram sm" style="width:22px;height:22px;font-size:10px;">${item.name.substring(0, 2).toUpperCase()}</span>
           <div>
             <div style="font-size:12.5px;font-weight:700;color:#F8FAFC;">${item.name}</div>
             <div style="font-size:11px;color:#94A3B8;">₹${item.price} × ${item.quantity}</div>
@@ -684,7 +684,7 @@ const StudentApp = {
     if (!itemsToRender.length) {
       container.innerHTML = `
         <div style="text-align:center;padding:40px 20px;color:#94A3B8;">
-          <div style="font-size:36px;margin-bottom:8px;">🔍</div>
+          <div style="margin-bottom:8px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
           <p style="font-weight:600;">No delicious items match your search</p>
         </div>
       `;
@@ -701,24 +701,24 @@ const StudentApp = {
           <div class="food-photo-wrap">
             ${photoUrl ? `
               <img src="${photoUrl}" alt="${item.name}" class="food-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div class="food-emoji-fallback" style="display:none;">${item.image_emoji}</div>
+              <div class="food-emoji-fallback" style="display:none;font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
             ` : `
-              <div class="food-emoji-fallback">${item.image_emoji}</div>
+              <div class="food-emoji-fallback" style="font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
             `}
             <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" title="${item.is_veg ? 'Pure Vegetarian' : 'Non-Vegetarian'}"></span>
           </div>
           <div class="food-info-col" style="flex:1;">
             <div class="food-title">
               <span>${item.name}</span>
-              <span style="font-size:11.5px;color:#F59E0B;font-weight:700;">★ ${item.rating || 4.8}</span>
+              <span style="font-size:11px;background:rgba(217,119,6,0.12);color:#D97706;padding:2px 7px;border-radius:4px;font-weight:700;">${item.rating || 4.8} / 5</span>
             </div>
             <div class="food-desc">${item.description}</div>
             <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap;">
-              <span class="food-meta-pill">⏱️ ${item.prep_time || '8 mins'}</span>
-              <span class="food-meta-pill">🔥 ${item.calories || '380 kcal'}</span>
-              ${item.protein_g ? `<span class="food-meta-pill" style="color:#4F46E5;font-weight:700;">💪 ${item.protein_g}g Pro</span>` : ''}
-              ${item.stall_name ? `<span class="food-meta-pill" style="color:#0F766E;">🏪 ${item.stall_name}</span>` : ''}
-              ${item.is_veg ? '<span class="food-meta-pill" style="color:#10B981;font-weight:700;">🟢 Veg</span>' : '<span class="food-meta-pill" style="color:#EF4444;font-weight:700;">🔴 Non-Veg</span>'}
+              <span class="food-meta-pill">${item.prep_time || '8 mins'}</span>
+              <span class="food-meta-pill">${item.calories || '380 kcal'}</span>
+              ${item.protein_g ? `<span class="food-meta-pill" style="color:#4F46E5;font-weight:700;">${item.protein_g}g Protein</span>` : ''}
+              ${item.stall_name ? `<span class="food-meta-pill" style="color:#0F766E;">${item.stall_name}</span>` : ''}
+              <span class="food-meta-pill" style="color:${item.is_veg ? '#059669' : '#DC2626'};font-weight:700;">${item.is_veg ? 'Vegetarian' : 'Non-Vegetarian'}</span>
             </div>
             <div class="food-bottom-row">
               <span class="food-price">₹${item.price}</span>
@@ -729,7 +729,7 @@ const StudentApp = {
                   <button class="stepper-btn" onclick="StudentApp.addToCart('${item.id}')">+</button>
                 ` : `
                   <button class="add-mini-btn" style="padding:6px 14px;font-size:12px;font-weight:800;" onclick="StudentApp.openCustomizationModal('${item.id}')">
-                    + Add to Tray
+                    Add to Tray
                   </button>
                 `}
               </div>
@@ -824,13 +824,13 @@ const StudentApp = {
         <label style="font-size:12px;font-weight:700;color:#CBD5E1;display:block;margin-bottom:6px;">Choose Spice Level:</label>
         <div style="display:flex;gap:6px;">
           <label style="flex:1;padding:8px;background:rgba(255,255,255,0.06);border-radius:10px;text-align:center;font-size:11.5px;cursor:pointer;">
-            <input type="radio" name="cust-spice" value="Mild" checked> 🟢 Mild
+            <input type="radio" name="cust-spice" value="Mild" checked> <span class="status-pulse-dot" style="margin-right:2px;"></span> Mild
           </label>
           <label style="flex:1;padding:8px;background:rgba(255,255,255,0.06);border-radius:10px;text-align:center;font-size:11.5px;cursor:pointer;">
-            <input type="radio" name="cust-spice" value="Medium"> 🟡 Medium
+            <input type="radio" name="cust-spice" value="Medium"> <span class="status-pulse-dot amber" style="margin-right:2px;"></span> Medium
           </label>
           <label style="flex:1;padding:8px;background:rgba(255,255,255,0.06);border-radius:10px;text-align:center;font-size:11.5px;cursor:pointer;">
-            <input type="radio" name="cust-spice" value="Spicy"> 🔴 Spicy 🔥
+            <input type="radio" name="cust-spice" value="Spicy"> <span class="status-pulse-dot red" style="margin-right:2px;"></span> Hot
           </label>
         </div>
       </div>
@@ -838,7 +838,7 @@ const StudentApp = {
       <div style="margin-bottom:14px;">
         <label style="font-size:12px;font-weight:700;color:#CBD5E1;display:block;margin-bottom:6px;">Add-Ons & Extras:</label>
         <label style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px;font-size:12.5px;cursor:pointer;">
-          <span>🧀 Extra Melted Cheese Slice</span>
+          <span>Extra Melted Cheese Slice</span>
           <div style="display:flex;align-items:center;gap:6px;">
             <span style="color:var(--primary);font-weight:700;">+₹15</span>
             <input type="checkbox" id="addon-cheese" style="accent-color:var(--primary);width:16px;height:16px;">
@@ -1270,7 +1270,7 @@ const StudentApp = {
     document.getElementById('profile-user-id').textContent = `${this.currentUser.studentId} • ${this.currentUser.department}`;
     const phoneEl = document.getElementById('profile-user-phone');
     if (phoneEl) {
-      phoneEl.textContent = `📱 ${this.currentUser.phone}`;
+      phoneEl.textContent = `${this.currentUser.phone}`;
     }
     document.getElementById('profile-loyalty-pts').textContent = this.currentUser.loyalty_points;
 
@@ -1295,7 +1295,7 @@ const StudentApp = {
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;border-top:1px dashed #E2E8F0;padding-top:6px;">
               <span style="font-weight:800;font-size:13px;color:#0F172A;">₹${o.total_amount}</span>
               <button class="add-mini-btn" style="width:auto;padding:3px 10px;" onclick="StudentApp.reorderPastItems('${o.id}')">
-                🔄 Reorder
+                Reorder
               </button>
             </div>
           </div>
@@ -1406,7 +1406,7 @@ const StudentApp = {
 
     this.groupPoolMembers.push({
       name: `${this.currentUser.name} (Added item)`,
-      avatar: this.currentUser.avatar || '👨‍🎓',
+      avatar: this.currentUser.avatar || 'JK',
       item: cleanName,
       price: price
     });
@@ -1450,11 +1450,11 @@ const StudentApp = {
     const split = Math.round(total / Math.max(1, this.groupPoolMembers.length));
 
     App.closeModal('group-pool-modal');
-    App.showToast(`🎉 Group Bench Order Placed! Token #T-BENCH-402 ready at Counter 2. Your share ₹${split} paid!`, 'success');
+    App.showToast(`Group Bench Order Placed: Token #T-BENCH-402 ready at Counter 2. Share ₹${split} paid.`, 'success');
 
     if (window.NotificationHandler) {
       window.NotificationHandler.showLocalNotification(
-        '👥 Bench Pool Order Confirmed!',
+        'Bench Pool Order Confirmed',
         `Token #T-BENCH-402 ready for lab group at Counter 2. 1 person picks up for all.`
       );
     }

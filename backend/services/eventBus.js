@@ -10,31 +10,31 @@ class NotificationEventBus {
     this.notifications = [
       {
         id: "notif-init-1",
-        title: "🍔 Welcome to CampusBite!",
+        title: "Welcome to CampusBite",
         message: "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
         type: "SYSTEM",
         target: "all",
-        icon: "🎉",
+        icon: "",
         created_at: new Date(Date.now() - 3600000).toISOString(),
         read: false
       },
       {
         id: "notif-init-2",
-        title: "🔥 Flash Offer Active",
+        title: "Flash Offer Active",
         message: "Use code FIRSTBITE for 20% discount on your student meal tray!",
         type: "PROMO",
         target: "student",
-        icon: "🏷️",
+        icon: "",
         created_at: new Date(Date.now() - 1800000).toISOString(),
         read: false
       },
       {
         id: "notif-init-3",
-        title: "👨‍🍳 Kitchen System Online",
+        title: "Kitchen System Online",
         message: "Live POS sync with MongoDB active. Real-time token dispatch enabled.",
         type: "ADMIN",
         target: "admin",
-        icon: "⚡",
+        icon: "",
         created_at: new Date(Date.now() - 2400000).toISOString(),
         read: false
       }
@@ -104,7 +104,7 @@ class NotificationEventBus {
       type: notification.type || "INFO",
       target: notification.target || "all", // 'all', 'student', 'admin', 'user'
       userId: notification.userId || null,
-      icon: notification.icon || "🔔",
+      icon: notification.icon || "",
       data: notification.data || null,
       created_at: new Date().toISOString(),
       read: false

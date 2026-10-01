@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
       phone: "+91 98765 00000",
       role: role || 'student',
       loyalty_points: 100,
-      avatar: role === 'admin' ? '👨💼' : '👨🎓'
+      avatar: role === 'admin' ? 'RC' : 'JK'
     };
     db.data.users.push(user);
     db.saveData();
@@ -73,7 +73,7 @@ router.post('/register', (req, res) => {
     studentId: studentId || 'CB-2024-' + Math.floor(1000 + Math.random() * 9000),
     department: department || 'General Studies',
     loyalty_points: 50, // Welcome bonus points!
-    avatar: role === 'admin' ? '👨💼' : '👨🎓'
+    avatar: role === 'admin' ? 'RC' : 'JK'
   };
 
   db.data.users.push(newUser);

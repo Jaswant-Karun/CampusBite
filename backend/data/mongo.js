@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   department: { type: String },
   loyalty_points: { type: Number, default: 0 },
   wallet_balance: { type: Number, default: 850 },
-  avatar: { type: String, default: '👨🎓' }
+  avatar: { type: String, default: 'JK' }
 }, { timestamps: true });
 
 // Product Schema
@@ -32,7 +32,7 @@ const ProductSchema = new mongoose.Schema({
   description: { type: String },
   price: { type: Number, required: true },
   category: { type: String, required: true },
-  image_emoji: { type: String, default: '🍲' },
+  image_emoji: { type: String, default: 'CB' },
   stock: { type: Number, default: 20 },
   is_available: { type: Boolean, default: true },
   rating: { type: Number, default: 4.8 },
@@ -83,7 +83,7 @@ const CouponSchema = new mongoose.Schema({
   max_discount: { type: Number, default: 100 },
   expiry_date: { type: String },
   is_active: { type: Boolean, default: true },
-  badge: { type: String, default: '🔥 Special Offer' }
+  badge: { type: String, default: 'Special Offer' }
 }, { timestamps: true });
 
 // Review Schema
@@ -134,13 +134,13 @@ class MongoManager {
         serverSelectionTimeoutMS: 5000
       });
       this.isConnected = true;
-      console.log(`✅ [MongoDB] Connected successfully to ${this.connectionUri}`);
+      console.log(` [MongoDB] Connected successfully to ${this.connectionUri}`);
 
       if (initialSeedData) {
         await this.seedIfEmpty(initialSeedData);
       }
     } catch (err) {
-      console.warn(`⚠️ [MongoDB] Connection notice: ${err.message}. Operating with hybrid in-memory sync.`);
+      console.warn(` [MongoDB] Connection notice: ${err.message}. Operating with hybrid in-memory sync.`);
       this.isConnected = false;
     }
   }
@@ -149,34 +149,34 @@ class MongoManager {
     try {
       const productCount = await Product.countDocuments();
       if (productCount === 0 && seedData.products) {
-        console.log(`🌱 [MongoDB] Seeding initial products collection...`);
+        console.log(` [MongoDB] Seeding initial products collection...`);
         await Product.insertMany(seedData.products);
       }
 
       const userCount = await User.countDocuments();
       if (userCount === 0 && seedData.users) {
-        console.log(`🌱 [MongoDB] Seeding initial users collection...`);
+        console.log(` [MongoDB] Seeding initial users collection...`);
         await User.insertMany(seedData.users);
       }
 
       const orderCount = await Order.countDocuments();
       if (orderCount === 0 && seedData.orders) {
-        console.log(`🌱 [MongoDB] Seeding initial orders collection...`);
+        console.log(` [MongoDB] Seeding initial orders collection...`);
         await Order.insertMany(seedData.orders);
       }
 
       const couponCount = await Coupon.countDocuments();
       if (couponCount === 0 && seedData.coupons) {
-        console.log(`🌱 [MongoDB] Seeding initial coupons collection...`);
+        console.log(` [MongoDB] Seeding initial coupons collection...`);
         await Coupon.insertMany(seedData.coupons);
       }
 
       const reviewCount = await Review.countDocuments();
       if (reviewCount === 0 && seedData.reviews) {
-        console.log(`🌱 [MongoDB] Seeding initial reviews collection...`);
+        console.log(` [MongoDB] Seeding initial reviews collection...`);
         await Review.insertMany(seedData.reviews);
       }
-      console.log(`✅ [MongoDB] Database synchronized and populated!`);
+      console.log(` [MongoDB] Database synchronized and populated!`);
     } catch (e) {
       console.error(`Error during MongoDB seeding:`, e);
     }

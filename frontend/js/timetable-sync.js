@@ -48,7 +48,7 @@ const CampusTimetable = {
         <div style="font-size:12px;color:var(--text-muted);">Current University Period:</div>
         <strong style="font-size:14px;color:var(--text-primary);">${info.current}</strong>
         <div style="font-size:12px;color:#10B981;font-weight:700;margin-top:2px;">
-          🔔 Next Bell Sync: ${info.nextBreak}
+          Next Scheduled Break: ${info.nextBreak}
         </div>
       `;
     }
@@ -58,7 +58,9 @@ const CampusTimetable = {
       return `
         <div style="display:flex;justify-content:space-between;align-items:center;background:${isBreak ? 'linear-gradient(135deg,rgba(20,184,166,0.1),rgba(79,70,229,0.08))' : 'var(--bg-elevated)'};border:1px solid ${isBreak ? '#14B8A6' : 'var(--border-subtle)'};border-radius:12px;padding:10px 14px;">
           <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:22px;">${isBreak ? '🔔' : '📚'}</span>
+            <div style="width:32px;height:32px;border-radius:8px;background:${isBreak ? 'rgba(20,184,166,0.2)' : 'rgba(255,255,255,0.06)'};display:flex;align-items:center;justify-content:center;color:${isBreak ? '#14B8A6' : 'var(--text-secondary)'};font-size:11px;font-weight:800;">
+              ${isBreak ? 'BREAK' : 'CLASS'}
+            </div>
             <div>
               <strong style="font-size:13px;color:var(--text-primary);">${item.name}</strong>
               <div style="font-size:11px;color:var(--text-muted);">${item.time} • ${item.room}</div>
@@ -66,10 +68,10 @@ const CampusTimetable = {
           </div>
           ${isBreak ? `
             <button class="btn-primary" onclick="CampusTimetable.selectBreakSlot('${item.slot}')" style="padding:6px 14px;font-size:11.5px;">
-              ⚡ Sync Pre-Order
+              Sync Pre-Order
             </button>
           ` : `
-            <span style="font-size:11px;color:var(--text-muted);font-weight:600;">In Class</span>
+            <span style="font-size:11px;color:var(--text-muted);font-weight:600;">In Lecture</span>
           `}
         </div>
       `;
@@ -83,7 +85,7 @@ const CampusTimetable = {
       if (slotDisplay) slotDisplay.textContent = slot;
     }
     App.closeModal('timetable-sync-modal');
-    App.showToast(`🔔 Canteen synced! Hot tray will be ready on warmers for: ${slot}`, 'success');
+    App.showToast(`Canteen schedule synchronized: Pickup at ${slot}`, 'success');
   }
 };
 

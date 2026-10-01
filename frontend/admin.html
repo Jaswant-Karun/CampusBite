@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/chatbot.css">
   <link rel="stylesheet" href="css/notifications.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💼</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%234F46E5%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>">
   <style>
     body {
       background-color: var(--bg-main);
@@ -26,7 +26,7 @@
        ======================================================================== -->
   <header class="master-header">
     <div class="brand-section">
-      <div class="brand-logo-icon" style="background:#4F46E5;">👨‍💼</div>
+      <div class="brand-logo-icon" style="background:#4F46E5;font-weight:900;font-size:12px;color:white;display:flex;align-items:center;justify-content:center;">CB</div>
       <div class="brand-title">
         CAMPUSBITE <span style="font-size:13px;font-weight:500;color:#CBD5E1;margin-left:4px;">| Admin Operations</span>
       </div>
@@ -42,18 +42,18 @@
     <div class="header-actions">
       <!-- Counter KDS TV Link -->
       <button class="reset-btn" onclick="window.open('/counter', '_blank')" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(20,184,166,0.25));border-color:#14B8A6;color:#2DD4BF;font-weight:700;" title="Open Kitchen Display System on Counter TV">
-        <span>📺</span> Counter 2 KDS
+        Counter 2 KDS
       </button>
 
       <!-- Reset Demo Scenario -->
       <button class="reset-btn" onclick="AdminApp.resetDemoDatabase()" title="Reset DB to Default Demo State">
-        <span>🔄</span> Reset Demo
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> Reset Demo
       </button>
 
       <!-- Live Notifications Bell & Dropdown -->
       <div style="position:relative;display:inline-block;">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications">
-          <span>🔔</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
           <span class="notif-unread-badge" id="notif-unread-badge">0</span>
         </button>
 
@@ -66,10 +66,10 @@
             </div>
             <div class="notif-panel-controls">
               <button class="notif-tool-btn" id="notif-sound-btn" onclick="CampusNotifications.toggleSound()" title="Toggle Sound">
-                🔔 Sound On
+                Audio On
               </button>
               <button class="notif-tool-btn" onclick="CampusNotifications.markAllRead()" title="Mark all as read">
-                ✓ Mark Read
+                Mark Read
               </button>
             </div>
           </div>
@@ -79,7 +79,7 @@
           <div class="notif-panel-footer">
             <span style="color:#94A3B8;">SSE Real-Time Stream</span>
             <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
-              <span>⚡</span> Test Push
+              Test Notification
             </button>
           </div>
         </div>
@@ -87,17 +87,17 @@
 
       <!-- Customer Website Link -->
       <a href="/" style="color:#FFFFFF;background:#4F46E5;text-decoration:none;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
-        <span>🖥️</span> Customer Website →
+        Customer Portal →
       </a>
 
       <!-- Dark / Light Mode Toggle -->
       <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" title="Toggle Dark / Light Mode">
-        <span>🌙</span> Dark
+        Theme
       </button>
 
       <!-- Admin Profile Pill -->
       <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);padding:6px 12px;border-radius:10px;font-size:12px;color:#FFFFFF;">
-        <span style="font-size:16px;">👨‍💼</span>
+        <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">AD</span>
         <div style="line-height:1.2;">
           <strong style="display:block;">Ramesh Kumar</strong>
           <span style="font-size:10.5px;color:#94A3B8;">Canteen Manager</span>
@@ -121,21 +121,21 @@
         <ul class="sidebar-menu">
           <li>
             <button class="sidebar-item-btn active" data-tab="orders">
-              <span class="sidebar-icon">📋</span>
+              <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
               <span>Live Orders</span>
               <span class="sidebar-badge alert" id="sidebar-pending-badge">23</span>
             </button>
           </li>
           <li>
             <button class="sidebar-item-btn" data-tab="inventory">
-              <span class="sidebar-icon">📦</span>
+              <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></span>
               <span>Inventory & Stock</span>
               <span class="sidebar-badge alert" id="sidebar-stock-badge">4</span>
             </button>
           </li>
           <li>
             <button class="sidebar-item-btn" data-tab="analytics">
-              <span class="sidebar-icon">📊</span>
+              <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>
               <span>Sales & Analytics</span>
             </button>
           </li>
@@ -147,14 +147,14 @@
         <ul class="sidebar-menu">
           <li>
             <button class="sidebar-item-btn" data-tab="demand">
-              <span class="sidebar-icon">🤖</span>
+              <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
               <span>AI Demand Prediction</span>
               <span class="sidebar-badge ai">Innovation</span>
             </button>
           </li>
           <li>
             <button class="sidebar-item-btn" data-tab="marketing">
-              <span class="sidebar-icon">🏷️</span>
+              <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></span>
               <span>Offers & Coupons</span>
             </button>
           </li>
@@ -180,7 +180,7 @@
       <!-- Top Title & Quick Stats -->
       <div class="admin-header-row">
         <div class="admin-page-title">
-          <h1 style="color:#0F172A;">Good Morning, Admin 👋</h1>
+          <h1 style="color:#0F172A;">Canteen Operations Hub</h1>
           <p style="color:#64748B;">Real-time order dispatch, inventory automation, and predictive intelligence</p>
         </div>
         <div class="admin-action-controls">
@@ -195,7 +195,7 @@
         <div class="kpi-card">
           <div class="kpi-top">
             <span class="kpi-label">Today's Revenue</span>
-            <span class="kpi-icon-pill">💰</span>
+            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg></span>
           </div>
           <div class="kpi-value" id="kpi-revenue">₹12,450</div>
           <div class="kpi-trend positive" style="color:#14B8A6;">↑ +18.4% vs yesterday</div>
@@ -204,7 +204,7 @@
         <div class="kpi-card green">
           <div class="kpi-top">
             <span class="kpi-label">Today's Orders</span>
-            <span class="kpi-icon-pill">🛒</span>
+            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>
           </div>
           <div class="kpi-value" id="kpi-orders">186</div>
           <div class="kpi-trend positive" style="color:#14B8A6;">↑ 42 peak lunch surge</div>
@@ -213,7 +213,7 @@
         <div class="kpi-card indigo">
           <div class="kpi-top">
             <span class="kpi-label">Active Customers</span>
-            <span class="kpi-icon-pill">👥</span>
+            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
           </div>
           <div class="kpi-value" id="kpi-customers">142</div>
           <div class="kpi-trend positive" style="color:#4F46E5;">Students & Faculty</div>
@@ -231,16 +231,16 @@
         <div class="kpi-card green">
           <div class="kpi-top">
             <span class="kpi-label">Average Satisfaction</span>
-            <span class="kpi-icon-pill">⭐</span>
+            <span class="kpi-icon-pill"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
           </div>
-          <div class="kpi-value" id="kpi-rating">4.5 ★</div>
+          <div class="kpi-value" id="kpi-rating">4.5 / 5.0</div>
           <div class="kpi-trend positive" style="color:#14B8A6;">From 84 student reviews</div>
         </div>
 
         <div class="kpi-card rose">
           <div class="kpi-top">
             <span class="kpi-label">Low Stock Alerts</span>
-            <span class="kpi-icon-pill">⚠️</span>
+            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
           </div>
           <div class="kpi-value" id="kpi-low-stock">4</div>
           <div class="kpi-trend neutral" style="color:#DC2626;">Action required</div>
@@ -260,9 +260,9 @@
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <button class="btn-primary" onclick="AdminApp.openQrScannerModal()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
-              <span>📷</span> Scan Token QR
+              Scan Token QR
             </button>
-            <button class="reset-btn" onclick="AdminApp.loadOrders()">🔄 Refresh</button>
+            <button class="reset-btn" onclick="AdminApp.loadOrders()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> Refresh</button>
           </div>
         </div>
 
@@ -343,7 +343,7 @@
       <div id="admin-tab-demand" class="admin-tab-panel">
         <div class="ai-banner-card">
           <div class="ai-banner-badge">
-            <span>✨</span> Core Innovation Module
+            Core Innovation Module
           </div>
           <div class="ai-banner-title">AI Predictive Demand & Batch Prep Advisor</div>
           <div class="ai-banner-desc">
@@ -379,7 +379,7 @@
             </div>
 
             <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="AdminApp.createNewCouponCampaign()">
-              🚀 Publish Offer to Student App
+              Publish Offer to Student App
             </button>
           </div>
 
@@ -400,20 +400,20 @@
               <h3 style="font-size:18px;font-weight:700;color:#0F172A;">Student Satisfaction Benchmark</h3>
               <p style="font-size:12px;color:var(--text-muted);">Real customer ratings collected post-order pickup</p>
             </div>
-            <div style="font-size:24px;font-weight:800;color:#F59E0B;">4.5 / 5.0 ★</div>
+            <div style="font-size:24px;font-weight:800;color:#F59E0B;">4.5 / 5.0</div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;background:#F8FAFC;border:1px solid #E2E8F0;padding:14px;border-radius:12px;text-align:center;">
             <div>
               <div style="font-size:11.5px;color:var(--text-muted);">Food Quality</div>
-              <div style="font-size:18px;font-weight:700;color:#16A34A;">4.6 ★</div>
+              <div style="font-size:18px;font-weight:700;color:#16A34A;">4.6 / 5.0</div>
             </div>
             <div>
               <div style="font-size:11.5px;color:var(--text-muted);">Pickup Speed</div>
-              <div style="font-size:18px;font-weight:700;color:#4F46E5;">4.3 ★</div>
+              <div style="font-size:18px;font-weight:700;color:#4F46E5;">4.3 / 5.0</div>
             </div>
             <div>
               <div style="font-size:11.5px;color:var(--text-muted);">App Experience</div>
-              <div style="font-size:18px;font-weight:700;color:#2563EB;">4.5 ★</div>
+              <div style="font-size:18px;font-weight:700;color:#2563EB;">4.5 / 5.0</div>
             </div>
           </div>
         </div>
@@ -441,7 +441,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Emoji</label>
-            <input type="text" class="form-input" id="prod-emoji" placeholder="🍲" value="🍲" style="text-align:center;font-size:18px;">
+            <input type="text" class="form-input" id="prod-emoji" placeholder="Category" value="Meal" style="text-align:center;font-size:13px;">
           </div>
         </div>
 
@@ -476,8 +476,8 @@
         <div class="form-group">
           <label class="form-label">Dietary Type</label>
           <select class="form-input" id="prod-is-veg">
-            <option value="true">🟢 Pure Vegetarian</option>
-            <option value="false">🔴 Non-Vegetarian</option>
+            <option value="true">Pure Vegetarian</option>
+            <option value="false">Non-Vegetarian</option>
           </select>
         </div>
 
@@ -498,7 +498,7 @@
     <div class="modal-window">
       <button class="modal-close-btn">&times;</button>
       <div class="modal-header">
-        <h3 class="modal-title">✏️ Edit Food Price & Details</h3>
+        <h3 class="modal-title">Edit Food Price & Details</h3>
       </div>
       <form id="edit-product-form" onsubmit="AdminApp.handleEditProductSubmit(event)">
         <input type="hidden" id="edit-prod-id">
@@ -545,8 +545,8 @@
         <div class="form-group">
           <label class="form-label">Dietary Classification</label>
           <select class="form-input" id="edit-prod-is-veg">
-            <option value="true">🟢 Pure Vegetarian</option>
-            <option value="false">🔴 Non-Vegetarian</option>
+            <option value="true">Pure Vegetarian</option>
+            <option value="false">Non-Vegetarian</option>
           </select>
         </div>
 
@@ -564,7 +564,7 @@
 
         <div style="display:flex;gap:10px;margin-top:16px;">
           <button type="submit" class="btn-primary" style="flex:1;">
-            💾 Save Price & Changes
+            Save Price & Changes
           </button>
           <button type="button" class="btn-outline" onclick="App.closeModal('edit-product-modal')">
             Cancel
@@ -579,7 +579,7 @@
     <div class="modal-window" style="max-width:500px;">
       <button class="modal-close-btn">&times;</button>
       <div class="modal-header">
-        <h3 class="modal-title">📷 Counter 2 Token QR Scanner</h3>
+        <h3 class="modal-title">Counter 2 Token QR Scanner</h3>
       </div>
       <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
         Scan student pickup QR code with your camera or enter token number for 2-second contactless verification.
@@ -589,7 +589,7 @@
       <div style="position:relative;background:#0F172A;border-radius:14px;height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #334155;margin-bottom:14px;">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#10B981;box-shadow:0 0 12px #10B981;animation:scannerSweep 2s infinite alternate ease-in-out;"></div>
         <div style="text-align:center;color:#94A3B8;">
-          <span style="font-size:42px;display:block;margin-bottom:6px;">📷</span>
+          <div style="margin-bottom:8px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
           <span style="font-size:12px;font-weight:600;">Position Student QR Code Within Frame</span>
         </div>
         <style>
@@ -636,7 +636,7 @@
           Classic Veg Burger × 2, Cold Coffee × 1
         </div>
         <button class="btn-primary" id="scanned-handover-btn" onclick="AdminApp.completeScannedOrder()" style="width:100%;padding:10px;background:linear-gradient(135deg, #10B981, #059669);">
-          ✅ Hand Over Tray & Complete Order
+          Hand Over Tray & Complete Order
         </button>
       </div>
     </div>

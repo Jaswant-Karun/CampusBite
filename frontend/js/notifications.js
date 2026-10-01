@@ -207,7 +207,7 @@ class CampusNotificationManager {
 
     toast.className = `live-notif-toast ${toastTypeClass}`;
     toast.innerHTML = `
-      <div class="live-notif-icon">${notif.icon || '🔔'}</div>
+      <div class="live-notif-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
       <div class="live-notif-content">
         <div class="live-notif-title">
           <span>${notif.title}</span>
@@ -309,7 +309,7 @@ class CampusNotificationManager {
     if (!this.notifications.length) {
       container.innerHTML = `
         <div class="notif-empty-state">
-          <span style="font-size:32px;display:block;margin-bottom:8px;">🔕</span>
+          <div style="margin-bottom:8px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></div>
           <strong>No new notifications</strong>
           <p style="margin:4px 0 0;font-size:11px;color:#64748B;">You're all caught up with canteen updates!</p>
         </div>
@@ -322,7 +322,7 @@ class CampusNotificationManager {
       const isUnread = !n.read;
       return `
         <div class="notif-item ${isUnread ? 'unread' : ''}" onclick="CampusNotifications.markRead('${n.id}')">
-          <div class="notif-item-icon">${n.icon || '🔔'}</div>
+          <div class="notif-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
           <div class="notif-item-body">
             <div class="notif-item-header">
               <span class="notif-item-title">${n.title}</span>
@@ -383,7 +383,7 @@ class CampusNotificationManager {
     localStorage.setItem('campusbite_sound_notif', String(this.soundEnabled));
     const btn = document.getElementById('notif-sound-btn');
     if (btn) {
-      btn.innerHTML = this.soundEnabled ? '🔔 Sound On' : '🔕 Muted';
+      btn.innerHTML = this.soundEnabled ? 'Audio On' : 'Muted';
     }
     if (this.soundEnabled) {
       this.playChime();
@@ -462,17 +462,17 @@ class CampusNotificationManager {
     try {
       const isStudent = this.role !== 'admin';
       const sample = isStudent ? {
-        title: "👨‍🍳 Kitchen Preparing Order #CB1028",
+        title: "Kitchen Preparing Order #CB1028",
         message: "Your Masala Dosa combo is actively cooking at Counter 2. Token ready in 3 mins!",
         type: "ORDER_STATUS_CHANGED",
         target: "student",
-        icon: "🥞"
+        icon: ""
       } : {
-        title: "🔔 New Order #CB1029 Arrived!",
+        title: "New Order #CB1029 Arrived",
         message: "Jaswant Karun ordered Paneer Roll + Cold Coffee (₹140). Counter 1.",
         type: "NEW_ORDER",
         target: "admin",
-        icon: "🛒"
+        icon: ""
       };
 
       await fetch('/api/notifications/test', {

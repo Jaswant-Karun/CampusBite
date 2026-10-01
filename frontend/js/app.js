@@ -13,7 +13,7 @@ const App = {
     if (window.StudentApp) window.StudentApp.init();
     if (window.AdminApp) window.AdminApp.init();
 
-    console.log("🚀 CampusBite E-Business Platform Initialized!");
+    console.log("CampusBite E-Business Platform Initialized");
   },
 
   bindGlobalEvents() {
@@ -102,12 +102,12 @@ const App = {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     
-    let icon = 'ℹ️';
-    if (type === 'success') icon = '✅';
-    if (type === 'warning') icon = '⚠️';
-    if (type === 'error') icon = '❌';
+    let icon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+    if (type === 'success') icon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+    if (type === 'warning') icon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+    if (type === 'error') icon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
 
-    toast.innerHTML = `<span>${icon}</span> <div>${message}</div>`;
+    toast.innerHTML = `<span style="display:inline-flex;align-items:center;">${icon}</span> <div>${message}</div>`;
     container.appendChild(toast);
 
     setTimeout(() => {
@@ -131,7 +131,7 @@ const App = {
 
   // Automated 5-Minute Guided Demo Script Walkthrough
   async runAutomatedDemoWalkthrough() {
-    this.showToast("🎬 Starting CampusBite 5-Minute Live Presentation Flow...", "info");
+    this.showToast("Starting CampusBite Live Demonstration Flow...", "info");
 
     // 1. Switch to Student view
     this.switchViewMode('student');
@@ -139,20 +139,20 @@ const App = {
 
     setTimeout(() => {
       // 2. Add Classic Burger & Lemon Juice
-      this.showToast("🍔 Step 1: Student adds Classic Burger + Lemon Juice to cart", "info");
+      this.showToast("Step 1: Adding Classic Burger and Fresh Juice to cart", "info");
       StudentApp.cart = [];
       StudentApp.addToCart('p-1'); // Classic Burger
       StudentApp.addToCart('p-5'); // Lemon Juice
 
       setTimeout(() => {
         // 3. Open Cart & Apply CAMPUS20
-        this.showToast("🏷️ Step 2: Applying promo coupon CAMPUS20 for 20% discount", "info");
+        this.showToast("Step 2: Applying promo voucher CAMPUS20 for 20% discount", "info");
         StudentApp.navigateTo('cart');
         StudentApp.applyCouponCode('CAMPUS20');
 
         setTimeout(() => {
           // 4. Open Checkout
-          this.showToast("💳 Step 3: Proceeding to Checkout with Simulated UPI payment", "info");
+          this.showToast("Step 3: Proceeding to Checkout with UPI payment verification", "info");
           StudentApp.navigateTo('checkout');
 
           setTimeout(() => {
@@ -164,23 +164,23 @@ const App = {
 
               setTimeout(() => {
                 // 6. Switch to Live Order Tracking
-                this.showToast("📍 Step 4: Order Placed! Live pickup token generated.", "success");
+                this.showToast("Step 4: Order Placed! Live pickup token generated.", "success");
                 StudentApp.navigateTo('tracking');
 
                 setTimeout(() => {
                   // 7. Transition to Admin Dashboard
-                  this.showToast("👨💼 Step 5: Transitioning to Canteen Executive Admin...", "info");
+                  this.showToast("Step 5: Switching to Canteen Executive Admin Hub...", "info");
                   this.switchViewMode('admin');
                   AdminApp.switchTab('orders');
 
                   setTimeout(() => {
                     // 8. Show Analytics
-                    this.showToast("📊 Step 6: Viewing Sales Analytics & Rush-Hour Surge...", "info");
+                    this.showToast("Step 6: Reviewing Live Revenue & Hourly Rush Analytics...", "info");
                     AdminApp.switchTab('analytics');
 
                     setTimeout(() => {
                       // 9. Show Core Innovation: AI Demand Prediction
-                      this.showToast("🤖 Step 7: Core Innovation — AI Demand Prediction & Kitchen Prep Sheet", "success");
+                      this.showToast("Step 7: AI Demand Prediction & Predictive Kitchen Sheet", "success");
                       AdminApp.switchTab('demand');
                     }, 4000);
                   }, 4000);

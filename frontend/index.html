@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/chatbot.css">
   <link rel="stylesheet" href="css/notifications.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍔</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23FF5A1F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M18 8h1a4 4 0 0 1 0 8h-1%22></path><path d=%22M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z%22></path><line x1=%226%22 y1=%221%22 x2=%226%22 y2=%224%22></line><line x1=%2210%22 y1=%221%22 x2=%2210%22 y2=%224%22></line><line x1=%2214%22 y1=%221%22 x2=%2214%22 y2=%224%22></line></svg>">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#172554">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,67 +27,77 @@
        ======================================================================== -->
   <header class="master-header desktop-nav-header">
     <div class="brand-section" onclick="StudentApp.navigateTo('home')" style="cursor:pointer;">
-      <div class="brand-logo-icon">🍔</div>
+      <div class="brand-logo-icon" style="display:flex;align-items:center;justify-content:center;color:#2DD4BF;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+          <line x1="6" y1="2" x2="6" y2="5"/>
+          <line x1="10" y1="2" x2="10" y2="5"/>
+          <line x1="14" y1="2" x2="14" y2="5"/>
+        </svg>
+      </div>
       <div class="brand-title">CAMPUSBITE</div>
     </div>
 
     <!-- Website Master Navigation Tabs -->
     <nav class="master-nav-links" style="display:flex;align-items:center;gap:4px;">
       <button class="desktop-nav-btn active" data-screen="home" onclick="StudentApp.navigateTo('home')">
-        <span>🍔</span> Menu & Order
+        Menu & Order
       </button>
       <button class="desktop-nav-btn" data-screen="crowd-meter" onclick="StudentApp.navigateTo('crowd-meter')">
-        <span>⚡</span> Rush Radar
+        Rush Radar
       </button>
       <button class="desktop-nav-btn" data-screen="wallet" onclick="StudentApp.navigateTo('wallet')">
-        <span>💳</span> CampusPay
+        CampusPay
       </button>
       <button class="desktop-nav-btn" data-screen="tracking" onclick="StudentApp.navigateTo('tracking')">
-        <span>📍</span> Track Order
+        Track Order
       </button>
       <button class="desktop-nav-btn" data-screen="rewards-store" onclick="StudentApp.openLoyaltyStoreModal()">
-        <span>🎁</span> Rewards
+        Rewards
       </button>
       <button class="desktop-nav-btn" data-screen="feedback" onclick="StudentApp.openCustomerReviewModal()">
-        <span>⭐</span> Feedback
+        Feedback
       </button>
       <button class="desktop-nav-btn" data-screen="sustainability" onclick="StudentApp.navigateTo('sustainability')">
-        <span>🌱</span> Eco Tracker
+        Eco Tracker
       </button>
       <button class="desktop-nav-btn" data-screen="nutrition" onclick="StudentApp.navigateTo('nutrition')">
-        <span>🥗</span> Nutrition
+        Nutrition
       </button>
       <button class="desktop-nav-btn" onclick="CampusVoice.openVoiceModal()" style="color:#2DD4BF;font-weight:700;">
-        <span>🎙️</span> Voice AI
+        Voice AI
       </button>
       <button class="desktop-nav-btn" onclick="CampusTimetable.openTimetableModal()">
-        <span>🔔</span> Bell Sync
+        Bell Sync
       </button>
       <button class="desktop-nav-btn" onclick="CampusWheel.openWheelModal()" style="color:#F59E0B;font-weight:700;">
-        <span>🎡</span> Spin & Win
+        Daily Spin
       </button>
       <button class="desktop-nav-btn" onclick="window.open('/counter', '_blank')" style="color:#2DD4BF;">
-        <span>📺</span> Counter TV
+        Counter TV
       </button>
     </nav>
 
     <!-- Header Quick Search -->
     <div style="position:relative;width:200px;min-width:160px;">
-      <span style="position:absolute;left:10px;top:7px;font-size:12px;opacity:0.7;">🔍</span>
-      <input type="text" id="desktop-search-input" oninput="StudentApp.searchProducts(this.value)" placeholder="Search meals, drinks..." style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 12px 6px 30px;color:white;font-size:12px;outline:none;">
+      <span style="position:absolute;left:10px;top:8px;opacity:0.7;display:flex;align-items:center;color:#94A3B8;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" id="desktop-search-input" oninput="StudentApp.searchProducts(this.value)" placeholder="Search catalog..." style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 12px 6px 30px;color:white;font-size:12px;outline:none;">
     </div>
 
     <!-- Active User & Quick Actions -->
     <div class="header-actions">
       <!-- Install PWA App Button -->
       <button class="desktop-action-btn" id="pwa-install-app-btn" onclick="window.installCampusBitePWA()" style="display:inline-flex;align-items:center;gap:6px;background:rgba(20,184,166,0.15);border:1px solid #14B8A6;color:#2DD4BF;font-weight:700;font-size:12px;padding:6px 12px;border-radius:10px;cursor:pointer;" title="Install CampusBite on your phone or PC">
-        <span>📲</span> Install App
+        Install App
       </button>
 
       <!-- Live Notifications Bell & Dropdown -->
       <div style="position:relative;display:inline-block;">
-        <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications">
-          <span>🔔</span>
+        <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notif-unread-badge" id="notif-unread-badge">0</span>
         </button>
 
@@ -100,10 +110,10 @@
             </div>
             <div class="notif-panel-controls">
               <button class="notif-tool-btn" id="notif-sound-btn" onclick="CampusNotifications.toggleSound()" title="Toggle Sound">
-                🔔 Sound On
+                Sound On
               </button>
               <button class="notif-tool-btn" onclick="CampusNotifications.markAllRead()" title="Mark all as read">
-                ✓ Mark Read
+                Mark Read
               </button>
             </div>
           </div>
@@ -113,26 +123,27 @@
           <div class="notif-panel-footer">
             <span style="color:#94A3B8;">SSE Real-Time Stream</span>
             <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
-              <span>⚡</span> Test Push
+              Test Push
             </button>
           </div>
         </div>
       </div>
 
       <!-- Dark / Light Mode Toggle -->
-      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" title="Toggle Dark / Light Mode">
-        <span>🌙</span> Dark
+      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" title="Toggle Dark / Light Mode" style="display:inline-flex;align-items:center;gap:5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span>Theme</span>
       </button>
 
       <!-- Cart Quick Button -->
-      <button class="desktop-cart-quick-btn" onclick="StudentApp.navigateTo('cart')" style="margin:0;">
-        <span>🛒</span>
+      <button class="desktop-cart-quick-btn" onclick="StudentApp.navigateTo('cart')" style="margin:0;display:inline-flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span id="topbar-cart-text">Tray (0)</span>
       </button>
 
       <!-- Active User Quick Profile Pill (1-Tap Switcher) -->
       <div class="user-account-top-pill" onclick="StudentApp.openProfileSwitcherModal()" title="Click to view or switch profile (Student, Faculty, Staff, Admin)">
-        <span class="user-avatar-mini" id="topbar-avatar">👨‍🎓</span>
+        <span class="user-avatar-mini" id="topbar-avatar" style="font-size:11px;font-weight:800;background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:6px;">JK</span>
         <div style="text-align:left;line-height:1.2;">
           <strong id="topbar-user-name" style="font-size:12.5px;display:block;">Jaswant Karun</strong>
           <span id="topbar-user-id" style="font-size:10.5px;color:#94A3B8;">CB-2024-2028 • CSBS</span>
@@ -141,10 +152,10 @@
       </div>
 
       <button class="demo-trigger-btn" onclick="App.runAutomatedDemoWalkthrough()" title="Plays the recommended 5-minute academic presentation sequence">
-        <span>⚡</span> 5-Min Tour
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> 5-Min Tour
       </button>
       <button class="reset-btn" onclick="App.resetDemoScenario()" title="Reset data in MongoDB to initial presentation state">
-        🔄 Reset
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> Reset
       </button>
     </div>
   </header>
@@ -169,8 +180,7 @@
                 <span>AI BELL SYNCHRONIZATION</span>
               </div>
               <div class="hero-feature-pill-badge">
-                <span>⚡</span>
-                <span>2-Minute Break Pre-Order</span>
+                <span>BREAK EXPRESS PRE-ORDER</span>
               </div>
             </div>
 
@@ -188,35 +198,30 @@
                 Explore Today's Menu →
               </button>
               <button class="btn-glass" onclick="CampusVoice.openVoiceModal()" style="padding:10px 18px;font-size:13px;border-color:rgba(45,212,191,0.55);background:rgba(20,184,166,0.14);color:#2DD4BF;font-weight:700;">
-                <span>🎙️</span> Voice AI Assistant
-                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">தமிழ் • Eng • हिंदी</span>
+                Voice Ordering
+                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">Multilingual</span>
               </button>
               <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 16px;font-size:12.5px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.15);">
-                <span>👥</span> Study-Bench Pool
+                Study-Bench Pool
               </button>
             </div>
 
             <!-- Sleek Feature Quick-Action Pills -->
             <div class="desktop-hero-metrics">
               <div class="desktop-metric-item" onclick="StudentApp.navigateTo('menu')" style="cursor:pointer;" title="Click to browse rapid break pickup menu">
-                <span class="icon">⏱️</span>
                 <span>2-Min Break Pickup</span>
               </div>
               <div class="desktop-metric-item" onclick="CampusTimetable.openTimetableModal()" style="cursor:pointer;" title="Click to view lecture bell sync">
-                <span class="icon">🔔</span>
                 <span>Lecture Bell Sync</span>
               </div>
               <div class="desktop-metric-item" onclick="CampusUPI.openUpiModal(180, 'CB1024')" style="cursor:pointer;" title="Click to test dynamic UPI QR">
-                <span class="icon">💳</span>
-                <span>1-Tap Dynamic UPI</span>
+                <span>Instant UPI Payment</span>
               </div>
               <div class="desktop-metric-item" onclick="CampusWheel.openWheelModal()" style="cursor:pointer;" title="Click to spin and win mystery bento">
-                <span class="icon">🎁</span>
-                <span>Daily Wheel Drops</span>
+                <span>Daily Rewards Wheel</span>
               </div>
               <div class="desktop-metric-item" onclick="StudentApp.openVsComparisonModal()" style="cursor:pointer;" title="Click to view CampusBite vs Traditional Delivery">
-                <span class="icon">⚡</span>
-                <span>vs Amazon</span>
+                <span>Platform Comparison</span>
               </div>
             </div>
           </div>
@@ -233,14 +238,14 @@
                   <div class="hero-slide-content">
                     <div class="hero-slide-top-tags">
                       <span class="slide-tag-pill teal">CHEF'S SPECIAL COMBO</span>
-                      <span class="slide-rating-pill">★ 4.9 (420+ reviews)</span>
+                      <span class="slide-rating-pill">4.9 / 5 (420+ Reviews)</span>
                     </div>
                     <h3 class="hero-slide-title">Grand Canteen Feast</h3>
                     <p class="hero-slide-subtitle">Cheese Burger Deluxe + Iced Cold Coffee + Warm Choco Lava Cake</p>
                     <div class="hero-slide-meta">
-                      <span class="slide-meta-badge">⏱️ 8 mins prep</span>
-                      <span class="slide-meta-badge">🔥 520 kcal</span>
-                      <span class="slide-meta-badge save">Save ₹40</span>
+                      <span class="slide-meta-badge">Prep: 8 mins</span>
+                      <span class="slide-meta-badge">520 kcal</span>
+                      <span class="slide-meta-badge save">Save 20%</span>
                     </div>
                     <div class="hero-slide-footer">
                       <div class="hero-slide-pricing">
@@ -248,7 +253,7 @@
                         <span class="original-price">₹200</span>
                       </div>
                       <button class="slide-cta-btn" onclick="HeroSlider.addComboToTray(['p-2', 'p-6', 'p-11'])">
-                        <span>+</span> Add Feast to Tray
+                        Add Feast to Tray
                       </button>
                     </div>
                   </div>
@@ -261,14 +266,14 @@
                   <div class="hero-slide-content">
                     <div class="hero-slide-top-tags">
                       <span class="slide-tag-pill amber">BELL-SYNC EXPRESS</span>
-                      <span class="slide-rating-pill">🔔 Counter 2 Pickup</span>
+                      <span class="slide-rating-pill">Counter 2 Pickup</span>
                     </div>
                     <h3 class="hero-slide-title">Lecture-to-Break Hot Biryani</h3>
                     <p class="hero-slide-subtitle">Pre-warmed on grills 2 mins before class bell rings</p>
                     <div class="hero-slide-meta">
-                      <span class="slide-meta-badge">⏱️ 2-Min Break Slot</span>
-                      <span class="slide-meta-badge">🔥 Fresh & Steaming</span>
-                      <span class="slide-meta-badge save">Save ₹20</span>
+                      <span class="slide-meta-badge">2-Min Break Slot</span>
+                      <span class="slide-meta-badge">Freshly Prepared</span>
+                      <span class="slide-meta-badge save">Special Pricing</span>
                     </div>
                     <div class="hero-slide-footer">
                       <div class="hero-slide-pricing">
@@ -276,7 +281,7 @@
                         <span class="original-price">₹140</span>
                       </div>
                       <button class="slide-cta-btn" onclick="CampusTimetable.openTimetableModal()">
-                        Sync With Bell →
+                        Schedule Pre-Order →
                       </button>
                     </div>
                   </div>
@@ -289,22 +294,22 @@
                   <div class="hero-slide-content">
                     <div class="hero-slide-top-tags">
                       <span class="slide-tag-pill indigo">BENCH POOLING TRAY</span>
-                      <span class="slide-rating-pill">👥 Up to 4 Friends</span>
+                      <span class="slide-rating-pill">Up to 4 Students</span>
                     </div>
                     <h3 class="hero-slide-title">Lab Bench Snacks & Chai</h3>
                     <p class="hero-slide-subtitle">Pool food with benchmates & split bill seamlessly via UPI</p>
                     <div class="hero-slide-meta">
-                      <span class="slide-meta-badge">☕ 3x Kadak Chai</span>
-                      <span class="slide-meta-badge">🥪 2x Veg Sandwich</span>
-                      <span class="slide-meta-badge save">15% Split Saver</span>
+                      <span class="slide-meta-badge">3x Masala Chai</span>
+                      <span class="slide-meta-badge">2x Grilled Sandwiches</span>
+                      <span class="slide-meta-badge save">Split Savings: 15%</span>
                     </div>
                     <div class="hero-slide-footer">
                       <div class="hero-slide-pricing">
                         <span class="current-price">₹70</span>
-                        <span class="original-price" style="font-size:12px;">/ person</span>
+                        <span class="original-price" style="font-size:12px;">/ student</span>
                       </div>
                       <button class="slide-cta-btn" onclick="StudentApp.openGroupPoolModal()">
-                        Start Bench Pool →
+                        Create Group Tray →
                       </button>
                     </div>
                   </div>
@@ -317,21 +322,21 @@
                   <div class="hero-slide-content">
                     <div class="hero-slide-top-tags">
                       <span class="slide-tag-pill pink">DAILY WHEEL DROPS</span>
-                      <span class="slide-rating-pill">🎁 100% Free Daily Spin</span>
+                      <span class="slide-rating-pill">Daily Complimentary Spin</span>
                     </div>
                     <h3 class="hero-slide-title">Midnight Maggi & Mystery Bento</h3>
                     <p class="hero-slide-subtitle">Spin today's campus wheel to unlock free cheese & mystery perks</p>
                     <div class="hero-slide-meta">
-                      <span class="slide-meta-badge">🧀 Free Cheese</span>
-                      <span class="slide-meta-badge">⭐ +100 Points</span>
-                      <span class="slide-meta-badge save">₹20 OFF Voucher</span>
+                      <span class="slide-meta-badge">Extra Cheese Voucher</span>
+                      <span class="slide-meta-badge">100 Bonus Points</span>
+                      <span class="slide-meta-badge save">Flat ₹20 Voucher</span>
                     </div>
                     <div class="hero-slide-footer">
                       <div class="hero-slide-pricing">
                         <span class="current-price">Free Spin</span>
                       </div>
                       <button class="slide-cta-btn" onclick="CampusWheel.openWheelModal()">
-                        Spin Wheel Now →
+                        Launch Rewards Wheel →
                       </button>
                     </div>
                   </div>
@@ -382,9 +387,9 @@
               <!-- Header -->
               <div class="auth-header-card">
                 <div class="auth-brand-pill">
-                  <span>🍔</span> CAMPUSBITE AUTH
+                  <span style="font-weight:900;letter-spacing:1px;color:var(--primary);">CAMPUSBITE AUTH</span>
                 </div>
-                <h2 class="auth-title-text">Welcome Back! 👋</h2>
+                <h2 class="auth-title-text">Welcome Back</h2>
                 <p class="auth-subtitle-text">Sign in to your campus canteen account</p>
               </div>
 
@@ -403,15 +408,15 @@
                 <span class="role-selector-label">Select Your Role:</span>
                 <div class="role-pills-row">
                   <button class="role-pill-btn active" data-role="student" onclick="StudentApp.selectAuthRole('student')">
-                    <span class="role-pill-icon">👨🎓</span>
+                    <span class="avatar-monogram sm" style="width:22px;height:22px;font-size:10px;">ST</span>
                     <span>Student</span>
                   </button>
                   <button class="role-pill-btn" data-role="staff" onclick="StudentApp.selectAuthRole('staff')">
-                    <span class="role-pill-icon">👨🍳</span>
+                    <span class="avatar-monogram sm" style="width:22px;height:22px;font-size:10px;">KS</span>
                     <span>Kitchen Staff</span>
                   </button>
                   <button class="role-pill-btn" data-role="admin" onclick="StudentApp.selectAuthRole('admin')">
-                    <span class="role-pill-icon">👨💼</span>
+                    <span class="avatar-monogram sm" style="width:22px;height:22px;font-size:10px;">AD</span>
                     <span>Canteen Admin</span>
                   </button>
                 </div>
@@ -421,27 +426,27 @@
               <form id="auth-form" onsubmit="event.preventDefault(); StudentApp.handleAuthSubmit();">
                 <!-- Input Fields -->
                 <div class="modern-input-wrap">
-                  <span class="modern-input-icon">✉️</span>
+                  <span class="modern-input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span>
                   <input type="text" id="auth-email-input" class="modern-input-field" placeholder="Campus Email, Student ID, or Phone" value="jaswant@campus.edu" required>
                 </div>
 
                 <!-- Registration Extra Fields (Hidden by default) -->
                 <div id="auth-register-extra-fields" style="display:none;">
                   <div class="modern-input-wrap">
-                    <span class="modern-input-icon">👤</span>
+                    <span class="modern-input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
                     <input type="text" id="auth-name-input" class="modern-input-field" placeholder="Full Student Name" value="Jaswant Karun">
                   </div>
                   <div class="modern-input-wrap">
-                    <span class="modern-input-icon">🏫</span>
+                    <span class="modern-input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 10h2M10 10h2M14 10h2M6 14h2M10 14h2M14 14h2M6 18h2M10 18h2M14 18h2M9 3l6 4v14"></path></svg></span>
                     <input type="text" id="auth-dept-input" class="modern-input-field" placeholder="Department / Branch" value="Computer Science & Business Systems">
                   </div>
                 </div>
 
                 <div class="modern-input-wrap">
-                  <span class="modern-input-icon">🔒</span>
+                  <span class="modern-input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
                   <input type="password" id="auth-password-input" class="modern-input-field" placeholder="Enter Password" value="password123" required>
                   <button type="button" class="password-toggle-btn" onclick="StudentApp.togglePasswordVisibility()">
-                    <span id="pwd-toggle-icon">👁️</span>
+                    <span id="pwd-toggle-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
                   </button>
                 </div>
 
@@ -474,14 +479,14 @@
               <!-- 1-Tap Quick Demo Account Logins -->
               <div class="quick-demo-accounts-wrap">
                 <div class="quick-demo-heading">
-                  <span>⚡</span> 1-Tap Quick Demo Credentials:
+                  Quick Demo Credentials:
                 </div>
                 <button class="quick-chip-btn" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
                   <div>
                     <strong>Jaswant Karun</strong>
                     <div style="font-size:10.5px;color:#64748B;">Student • CB-2024-2028 • CS & Business Systems</div>
                   </div>
-                  <span class="quick-chip-badge">⭐ 420 Pts</span>
+                  <span class="quick-chip-badge">420 Pts</span>
                 </button>
 
                 <button class="quick-chip-btn" onclick="StudentApp.quickLogin('admin', 'admin@campusbite.com')">
@@ -497,11 +502,11 @@
               <div class="sso-divider-row">OR SIGN IN VIA CAMPUS SSO</div>
 
               <button class="sso-button" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
-                <span>🌐</span> Sign In with University Google SSO
+                Sign In with University Google SSO
               </button>
 
               <button class="sso-button" onclick="App.showToast('Barcode NFC scanner active. Simulating ID tap...', 'info'); setTimeout(() => StudentApp.quickLogin('student', 'jaswant@campus.edu'), 600);">
-                <span>🪪</span> Scan Student Physical ID Barcode
+                Scan Student Physical ID Barcode
               </button>
             </div>
           </div>
@@ -512,7 +517,7 @@
           <div id="screen-home" class="mob-screen active">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Hi, Jaswant 👋</h3>
+                <h3>Welcome, Jaswant</h3>
                 <p>Campus Main Canteen • Open</p>
               </div>
               <div class="loyalty-chip" onclick="StudentApp.navigateTo('profile')">
@@ -524,7 +529,7 @@
             <!-- Search Bar -->
             <div class="search-bar-wrap">
               <div class="search-input-box">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
                 <input type="text" id="student-search-input" class="mob-search-input" placeholder="Search burgers, juices, meals...">
               </div>
             </div>
@@ -532,14 +537,14 @@
             <!-- Quick Action Feature Banners -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 12px;">
               <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('crowd-meter')">
-                <span style="font-size:22px;">🟢</span>
+                <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></span>
                 <div>
                   <strong style="font-size:11.5px;color:#0F172A;">Crowding Radar</strong>
                   <div style="font-size:10px;color:#10B981;">3 min wait • Low</div>
                 </div>
               </div>
               <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('wallet')">
-                <span style="font-size:22px;">💳</span>
+                <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></span>
                 <div>
                   <strong style="font-size:11.5px;color:#0F172A;">CampusPay Wallet</strong>
                   <div style="font-size:10px;color:var(--primary);" id="home-wallet-pill">₹850 Balance</div>
@@ -547,7 +552,7 @@
               </div>
               <div style="grid-column: span 2; background: linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(20,184,166,0.1) 100%); border: 1px solid rgba(79,70,229,0.25); border-radius: 14px; padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;" onclick="StudentApp.openGroupPoolModal()">
                 <div style="display:flex;align-items:center;gap:10px;">
-                  <span style="font-size:22px;">👥</span>
+                  <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
                   <div>
                     <div style="display:flex;align-items:center;gap:6px;">
                       <strong style="font-size:12px;color:var(--text-primary);">Group Bench Pool</strong>
@@ -562,7 +567,7 @@
 
             <!-- Promo Banner Carousel -->
             <div class="promo-banner" onclick="StudentApp.navigateTo('menu'); StudentApp.applyCouponCode('CAMPUS20');">
-              <span class="promo-tag">🔥 Today's Offer</span>
+              <span class="promo-tag">Today's Offer</span>
               <div class="promo-title">20% OFF on Combo Meals</div>
               <div class="promo-code-badge">
                 <span>CAMPUS20</span>
@@ -580,7 +585,7 @@
                 <div class="campus-stalls-hub-wrap" style="margin-bottom:14px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 14px;">
                   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                     <div style="display:flex;align-items:center;gap:6px;">
-                      <span style="font-size:16px;">🏪</span>
+                      
                       <strong style="font-size:13px;color:var(--text-primary);letter-spacing:0.3px;">Campus Food Stalls & Canteens:</strong>
                     </div>
                     <span style="font-size:11px;color:#10B981;font-weight:700;">● 4 Spots Open Live</span>
@@ -590,51 +595,51 @@
                       All Spots (16)
                     </button>
                     <button class="stall-pill-btn" data-stall="stall_main" onclick="StudentApp.selectStall('stall_main', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
-                      🍔 Main Food Court (Counters 1 & 2)
+                      Main Food Court (Counters 1 & 2)
                     </button>
                     <button class="stall-pill-btn" data-stall="stall_library" onclick="StudentApp.selectStall('stall_library', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
-                      ☕ Library Brews & Cafe
+                      Library Brews & Cafe
                     </button>
                     <button class="stall-pill-btn" data-stall="stall_sports" onclick="StudentApp.selectStall('stall_sports', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
-                      🥤 Sports Juice Bar
+                      Sports Juice Bar
                     </button>
                     <button class="stall-pill-btn" data-stall="stall_night" onclick="StudentApp.selectStall('stall_night', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
-                      🌙 Hostel Night Canteen
+                      Hostel Night Canteen
                     </button>
                   </div>
                 </div>
 
                 <!-- Categories Filter -->
                 <div class="category-chips-row" id="home-category-chips">
-                  <button class="cat-chip active" data-category="All">🍔 All Categories</button>
-                  <button class="cat-chip" data-category="Snacks">🥪 Snacks</button>
-                  <button class="cat-chip" data-category="Meals">🍛 Meals</button>
-                  <button class="cat-chip" data-category="Drinks">🥤 Drinks</button>
-                  <button class="cat-chip" data-category="Desserts">🍰 Desserts</button>
+                  <button class="cat-chip active" data-category="All">All Categories</button>
+                  <button class="cat-chip" data-category="Snacks">Snacks</button>
+                  <button class="cat-chip" data-category="Meals">Meals</button>
+                  <button class="cat-chip" data-category="Drinks">Beverages</button>
+                  <button class="cat-chip" data-category="Desserts">Desserts</button>
                 </div>
 
                 <!-- Smart Diet & Speed Quick Filters -->
                 <div class="smart-diet-filters-row">
                   <button class="diet-chip active" data-diet="all" onclick="StudentApp.filterByDiet('all', this)">
-                    <span>🍽️</span> All Items
+                    <span>All</span> All Items
                   </button>
                   <button class="diet-chip" data-diet="veg" onclick="StudentApp.filterByDiet('veg', this)">
-                    <span style="color:#10B981;">🟢</span> Pure Veg Only
+                    <span class="fssai-veg-mark"><span class="fssai-dot"></span></span> Pure Veg Only
                   </button>
                   <button class="diet-chip" data-diet="popular" onclick="StudentApp.filterByDiet('popular', this)">
-                    <span>🔥</span> Campus Bestsellers
+                    <span>Top</span> Campus Bestsellers
                   </button>
                   <button class="diet-chip" data-diet="under50" onclick="StudentApp.filterByDiet('under50', this)">
-                    <span>⚡</span> Pocket Bites (≤₹50)
+                    <span>≤₹50</span> Value Bites
                   </button>
                   <button class="diet-chip" data-diet="fast" onclick="StudentApp.filterByDiet('fast', this)">
-                    <span>⏱️</span> Fast Prep (&lt;10m)
+                    <span>Fast</span> Express (&lt;10m)
                   </button>
                 </div>
 
                 <!-- Popular Today Row -->
                 <div class="section-header-row">
-                  <span class="section-title">🔥 Popular Today</span>
+                  <span class="section-title">Popular Today</span>
                   <span class="view-all-link" onclick="StudentApp.navigateTo('menu')">View Full Catalog →</span>
                 </div>
                 <div class="popular-scroll-row" id="home-popular-container">
@@ -646,7 +651,7 @@
                   <span class="section-title">Recommended for You</span>
                   <label style="font-size:11.5px;display:flex;align-items:center;gap:4px;cursor:pointer;">
                     <input type="checkbox" id="veg-only-filter">
-                    <span>Veg Only 🟢</span>
+                    <span>Veg Only <span class="fssai-veg-mark"><span class="fssai-dot"></span></span></span>
                   </label>
                 </div>
 
@@ -660,7 +665,7 @@
               <aside class="desktop-cart-sidebar" id="desktop-cart-sidebar">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;">
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="font-size:20px;">🛒</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                     <strong style="font-size:15px;color:#FFFFFF;font-family:var(--font-heading);">Your Meal Tray</strong>
                   </div>
                   <span class="desktop-cart-badge-chip" id="desktop-sidebar-cart-count" style="font-size:11px;background:rgba(255,90,31,0.15);color:var(--primary);padding:3px 9px;border-radius:999px;font-weight:700;">
@@ -724,7 +729,7 @@
           <div id="screen-crowd-meter" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Crowding Radar 📡</h3>
+                <h3>Live Counter Traffic Monitor</h3>
                 <p>Real-time queue & table occupancy</p>
               </div>
             </div>
@@ -733,7 +738,7 @@
             <div class="radar-gauge-card">
               <div class="gauge-circle-wrap">
                 <div class="gauge-inner-center">
-                  <span style="font-size:24px;">🟢</span>
+                  <span class="status-pulse-dot" style="width:16px;height:16px;"></span>
                   <strong style="font-size:13px;color:#0F172A;">Low Rush</strong>
                 </div>
               </div>
@@ -786,7 +791,7 @@
           <div id="screen-wallet" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>CampusPay Wallet 💳</h3>
+                <h3>CampusPay Digital Balance</h3>
                 <p>Contactless student dining pass</p>
               </div>
             </div>
@@ -795,7 +800,7 @@
             <div class="wallet-card-virtual">
               <div style="display:flex;justify-content:space-between;align-items:center;">
                 <span style="font-size:12px;letter-spacing:1px;font-weight:700;opacity:0.8;">CAMPUSBITE STUDENT PASS</span>
-                <span style="font-size:18px;">📶</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
               </div>
               <div class="wallet-card-chip"></div>
               <div style="font-size:11px;opacity:0.8;">Available Dining Balance</div>
@@ -819,7 +824,7 @@
 
             <!-- Subsidy Badge -->
             <div style="margin:0 18px 16px;background:#EFF6FF;border:1px solid #BFDBFE;padding:12px;border-radius:14px;font-size:12px;color:#1E40AF;display:flex;align-items:center;gap:8px;">
-              <span>🎓</span>
+              <span style="font-size:12px;font-weight:700;color:var(--text-secondary);">ID:</span>
               <div>
                 <strong>Campus Subsidy Active:</strong>
                 <div>Get 5% bonus cashback credited on wallet orders</div>
@@ -831,15 +836,15 @@
               <strong style="font-size:13px;color:#1E293B;margin-bottom:8px;display:block;">This Month's Canteen Spend:</strong>
               <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:14px;font-size:12.5px;">
                 <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                  <span>🍔 Snacks & Fast Food</span>
+                  <span>Snacks & Fast Food</span>
                   <strong>₹520 (42%)</strong>
                 </div>
                 <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                  <span>🍛 Balanced Lunch Meals</span>
+                  <span>Balanced Lunch Meals</span>
                   <strong>₹480 (38%)</strong>
                 </div>
                 <div style="display:flex;justify-content:space-between;">
-                  <span>🥤 Fresh Juices & Cold Coffee</span>
+                  <span>Fresh Juices & Cold Brew</span>
                   <strong>₹240 (20%)</strong>
                 </div>
               </div>
@@ -852,7 +857,7 @@
           <div id="screen-sustainability" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Campus Green Impact 🌱</h3>
+                <h3>Campus Sustainability & ESG</h3>
                 <p>Zero food waste initiative</p>
               </div>
             </div>
@@ -865,12 +870,12 @@
 
             <div class="eco-stats-grid">
               <div class="eco-stat-card">
-                <span style="font-size:24px;">🍲</span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                 <div style="font-family:var(--font-heading);font-size:20px;font-weight:800;color:#059669;">840</div>
                 <div style="font-size:11px;color:#64748B;">Meals Preserved</div>
               </div>
               <div class="eco-stat-card">
-                <span style="font-size:24px;">🌍</span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                 <div style="font-family:var(--font-heading);font-size:20px;font-weight:800;color:#2563EB;">610 kg</div>
                 <div style="font-size:11px;color:#64748B;">CO₂ Emissions Reduced</div>
               </div>
@@ -883,7 +888,7 @@
           <div id="screen-nutrition" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Campus Nutrition & Fitness 🥗</h3>
+                <h3>Campus Nutrition & Wellness</h3>
                 <p>Track macros & eat healthy between classes</p>
               </div>
             </div>
@@ -906,7 +911,7 @@
               <div style="display:flex;flex-direction:column;gap:10px;">
                 <div>
                   <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
-                    <span style="color:#4F46E5;">💪 Protein: 48g / 75g Target</span>
+                    <span style="color:#4F46E5;font-weight:700;">Protein: 48g / 75g Target</span>
                     <span style="color:var(--text-muted);">64%</span>
                   </div>
                   <div style="height:8px;background:rgba(79,70,229,0.12);border-radius:999px;overflow:hidden;">
@@ -916,7 +921,7 @@
 
                 <div>
                   <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
-                    <span style="color:#0284C7;">🍞 Carbohydrates: 145g / 250g Target</span>
+                    <span style="color:#0284C7;font-weight:700;">Carbohydrates: 145g / 250g Target</span>
                     <span style="color:var(--text-muted);">58%</span>
                   </div>
                   <div style="height:8px;background:rgba(2,132,199,0.12);border-radius:999px;overflow:hidden;">
@@ -926,7 +931,7 @@
 
                 <div>
                   <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
-                    <span style="color:#D97706;">🥑 Healthy Fats: 32g / 65g Target</span>
+                    <span style="color:#D97706;font-weight:700;">Healthy Fats: 32g / 65g Target</span>
                     <span style="color:var(--text-muted);">49%</span>
                   </div>
                   <div style="height:8px;background:rgba(217,119,6,0.12);border-radius:999px;overflow:hidden;">
@@ -939,7 +944,7 @@
             <!-- AI Campus Nutritionist Coach Tip -->
             <div style="background:linear-gradient(135deg,rgba(20,184,166,0.1) 0%,rgba(79,70,229,0.08) 100%);border:1px solid rgba(20,184,166,0.3);border-radius:16px;padding:14px 18px;margin:0 18px 16px;">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                <span style="font-size:20px;">💡</span>
+                <span style="font-weight:800;color:#F59E0B;">TIP:</span>
                 <strong style="font-size:13px;color:var(--text-primary);">Campus Nutritionist Coach:</strong>
               </div>
               <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin:0;">
@@ -950,16 +955,16 @@
             <!-- Curated Goals & 1-Tap Add Recommendations -->
             <div style="padding:0 18px 20px;">
               <h4 style="font-size:14px;font-weight:800;color:var(--text-primary);margin-bottom:10px;">
-                🎯 Canteen Picks for Your Fitness Goal:
+                Recommended for Your Fitness Goals:
               </h4>
 
               <div style="display:flex;flex-direction:column;gap:10px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:28px;">🥤</span>
+                    <div style="font-size:12px;font-weight:800;color:var(--text-secondary);background:var(--bg-elevated);padding:6px 10px;border-radius:8px;">SHAKE</div>
                     <div>
                       <strong style="font-size:13px;color:var(--text-primary);">Whey Protein Peanut Shake</strong>
-                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">💪 30g Protein • 340 kcal</div>
+                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">30g Protein • 340 kcal</div>
                     </div>
                   </div>
                   <button class="add-mini-btn" onclick="StudentApp.addToCart('p-13'); App.showToast('Added Whey Protein Shake to Cart!', 'success');" style="padding:6px 14px;">
@@ -969,10 +974,10 @@
 
                 <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:28px;">🥒</span>
+                    <div style="font-size:12px;font-weight:800;color:var(--text-secondary);background:var(--bg-elevated);padding:6px 10px;border-radius:8px;">SALAD</div>
                     <div>
                       <strong style="font-size:13px;color:var(--text-primary);">Detox Green Vitality Juice</strong>
-                      <div style="font-size:11px;color:#10B981;font-weight:700;">🌿 Low Calorie • 110 kcal • Cleanse</div>
+                      <div style="font-size:11px;color:#10B981;font-weight:700;">Low Calorie • 110 kcal • Cleanse</div>
                     </div>
                   </div>
                   <button class="add-mini-btn" onclick="StudentApp.addToCart('p-14'); App.showToast('Added Detox Green Juice to Cart!', 'success');" style="padding:6px 14px;">
@@ -982,10 +987,10 @@
 
                 <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:28px;">🌯</span>
+                    <div style="font-size:12px;font-weight:800;color:var(--text-secondary);background:var(--bg-elevated);padding:6px 10px;border-radius:8px;">WRAP</div>
                     <div>
                       <strong style="font-size:13px;color:var(--text-primary);">Paneer Tikka Roll</strong>
-                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">💪 18g Protein • 340 kcal</div>
+                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">18g Protein • 340 kcal</div>
                     </div>
                   </div>
                   <button class="add-mini-btn" onclick="StudentApp.addToCart('p-4'); App.showToast('Added Paneer Tikka Roll to Cart!', 'success');" style="padding:6px 14px;">
@@ -1001,7 +1006,7 @@
           <div id="screen-cart" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Your Cart 🛒</h3>
+                <h3>Your Meal Order</h3>
                 <p>Review items & apply offers</p>
               </div>
             </div>
@@ -1009,7 +1014,7 @@
             <div class="cart-page-content">
               <!-- Empty state -->
               <div id="cart-empty-state" style="text-align:center;padding:50px 20px;display:none;">
-                <div style="font-size:48px;margin-bottom:10px;">🛒</div>
+                <div style="margin-bottom:12px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
                 <h4 style="font-weight:700;color:#1E293B;">Your cart is empty</h4>
                 <p style="font-size:12px;color:#64748B;margin:6px 0 16px;">Add delicious snacks or drinks to skip the queue!</p>
                 <button class="splash-btn" onclick="StudentApp.navigateTo('home')">Browse Menu</button>
@@ -1076,7 +1081,7 @@
           <div id="screen-checkout" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Checkout & Pickup 📍</h3>
+                <h3>Checkout & Pickup Slot</h3>
                 <p>Campus Main Canteen</p>
               </div>
             </div>
@@ -1108,7 +1113,7 @@
               <div class="payment-options-list">
                 <div class="payment-method-card active" data-method="UPI">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:20px;">🟢</span>
+                    <span class="status-pulse-dot"></span>
                     <div>
                       <strong style="font-size:13px;color:#0F172A;">Simulated UPI (GPay / PhonePe / Paytm)</strong>
                       <div style="font-size:11px;color:#10B981;">Instant QR & Zero Queue Token</div>
@@ -1119,7 +1124,7 @@
 
                 <div class="payment-method-card" data-method="Wallet">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:20px;">💳</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     <div>
                       <strong style="font-size:13px;color:#0F172A;">CampusPay Student Wallet</strong>
                       <div style="font-size:11px;color:#6366F1;">Instant 1-tap deduction (₹850 balance)</div>
@@ -1129,7 +1134,7 @@
 
                 <div class="payment-method-card" data-method="Cash">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:20px;">💵</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
                     <div>
                       <strong style="font-size:13px;color:#0F172A;">Pay Cash at Counter</strong>
                       <div style="font-size:11px;color:#64748B;">Pay when picking up order</div>
@@ -1149,7 +1154,7 @@
                ---------------------------------------------------------------- -->
           <div id="screen-confirmation" class="mob-screen">
             <div style="text-align:center;padding:40px 20px 20px;">
-              <div style="font-size:60px;margin-bottom:12px;">🎉</div>
+              <div style="width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid #10B981;color:#10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
               <h2 style="font-family:var(--font-heading);font-size:24px;font-weight:800;color:#0F172A;">Order Confirmed!</h2>
               <p style="font-size:13px;color:#64748B;margin-top:4px;">Persisted into MongoDB & dispatched to kitchen.</p>
 
@@ -1177,7 +1182,7 @@
               </div>
 
               <button class="splash-btn" onclick="StudentApp.navigateTo('tracking')">
-                Track Order Live 📍
+                Track Order Live →
               </button>
             </div>
           </div>
@@ -1188,13 +1193,13 @@
           <div id="screen-tracking" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Live Order Tracking 📡</h3>
+                <h3>Live Order Tracking</h3>
                 <p>Real-time canteen prep status</p>
               </div>
             </div>
 
             <div id="order-ready-banner-alert" style="display:none;margin:0 18px 12px;background:#DCFCE7;border:1px solid #86EFAC;color:#166534;padding:12px;border-radius:12px;font-size:12.5px;font-weight:700;text-align:center;">
-              🔔 YOUR ORDER IS READY FOR PICKUP AT THE COUNTER!
+              ORDER READY FOR PICKUP AT COUNTER
             </div>
 
             <div class="tracking-header-card">
@@ -1208,7 +1213,7 @@
             <!-- Digital QR Code Token Card for Contactless Pickup -->
             <div style="background:var(--bg-card);border:2px dashed rgba(79,70,229,0.3);border-radius:16px;padding:16px;margin:0 18px 16px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.03);">
               <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
-                📷 Contactless Pickup QR Code
+                Contactless Verification QR Code
               </div>
               <div id="tracking-qr-container" style="display:inline-block;padding:8px;background:#FFFFFF;border-radius:12px;border:1px solid var(--border-subtle);margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <!-- Dynamic SVG QR Code -->
@@ -1237,7 +1242,7 @@
               </div>
 
               <div class="tracking-step-item current" id="track-step-preparing">
-                <div class="step-circle">🍳</div>
+                <div class="step-circle" style="font-size:12px;font-weight:800;">2</div>
                 <div class="step-content">
                   <h4>Preparing in Kitchen</h4>
                   <p>Chef is cooking fresh batch</p>
@@ -1253,7 +1258,7 @@
               </div>
 
               <div class="tracking-step-item" id="track-step-completed">
-                <div class="step-circle">🏁</div>
+                <div class="step-circle" style="font-size:12px;font-weight:800;">4</div>
                 <div class="step-content">
                   <h4>Completed</h4>
                   <p>Order picked up & enjoyed!</p>
@@ -1274,19 +1279,19 @@
           <div id="screen-profile" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>My Campus Profile 👤</h3>
+                <h3>Campus Profile</h3>
                 <p>Rewards, Coupons & History</p>
               </div>
             </div>
 
             <div class="profile-card">
-              <div class="profile-avatar-box">👨🎓</div>
+              <div class="avatar-monogram lg" style="margin:0 auto 10px;">JK</div>
               <div class="profile-info">
                 <h3 id="profile-user-name">Jaswant Karun</h3>
                 <p id="profile-user-id">CB-2024-2028 • Computer Science & Business Systems</p>
-                <p id="profile-user-phone" style="font-size:12px;color:#64748B;margin-top:2px;">📱 87541 59344</p>
+                <p id="profile-user-phone" style="font-size:12px;color:#64748B;margin-top:2px;">87541 59344</p>
                 <div style="display:inline-block;font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:999px;margin-top:4px;">
-                  🥇 Gold Campus Diner
+                  Gold Tier Diner
                 </div>
               </div>
             </div>
@@ -1309,10 +1314,10 @@
             <!-- Quick Navigation Shortcuts -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 14px;">
               <button class="add-mini-btn" style="padding:10px;background:white;color:#0F172A;" onclick="StudentApp.navigateTo('wallet')">
-                💳 CampusPay Wallet
+                CampusPay Wallet
               </button>
               <button class="add-mini-btn" style="padding:10px;background:white;color:#0F172A;" onclick="StudentApp.navigateTo('sustainability')">
-                🌱 Green Sustainability
+                Sustainability ESG
               </button>
             </div>
 
@@ -1354,14 +1359,14 @@
   <div class="modal-overlay" id="upi-simulation-modal">
     <div class="modal-window" style="text-align:center;">
       <button class="modal-close-btn">&times;</button>
-      <div style="font-size:40px;margin-bottom:8px;">📱</div>
+      <div style="margin-bottom:8px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div>
       <h3 style="font-size:20px;font-weight:800;color:var(--text-primary);">Simulated UPI Gateway</h3>
       <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Scan with GPay / PhonePe / Paytm or tap Simulate Approval</p>
 
       <div class="upi-qr-card">
         <div style="font-size:11px;color:#64748B;margin-bottom:6px;">PAY TO: CAMPUSBITE MAIN CANTEEN</div>
         <div class="upi-qr-canvas">
-          <span style="font-size:44px;margin-bottom:4px;">🏁</span>
+          <div style="margin-bottom:4px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <span>campusbite@upi</span>
         </div>
         <div style="font-family:var(--font-heading);font-size:22px;font-weight:800;color:#0F172A;" id="upi-modal-amount">₹180</div>
@@ -1369,7 +1374,7 @@
       </div>
 
       <button class="splash-btn" onclick="StudentApp.confirmUpiSuccess()">
-        ⚡ Simulate Successful Payment
+        Verify Payment & Confirm Token
       </button>
     </div>
   </div>
@@ -1403,7 +1408,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">Food Emoji Icon</label>
-        <input type="text" class="form-input" id="new-prod-emoji" placeholder="e.g. 🥟" value="🥟">
+        <input type="text" class="form-input" id="new-prod-emoji" placeholder="Category Tag" value="Snack">
       </div>
       <div class="form-group" style="display:flex;align-items:center;gap:8px;">
         <input type="checkbox" id="new-prod-isveg" checked style="width:18px;height:18px;">
@@ -1450,7 +1455,7 @@
     <div class="modal-window" style="max-width:540px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-        <span style="font-size:24px;">👤</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Switch User Profile</h3>
       </div>
       <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:18px;">
@@ -1461,7 +1466,7 @@
         <!-- Jaswant Karun (Student) -->
         <div class="profile-select-card active" onclick="StudentApp.switchProfileById('u-101')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👨🎓</span>
+            <span class="avatar-monogram sm">JK</span>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <strong style="font-size:14.5px;color:var(--text-primary);">Jaswant Karun</strong>
@@ -1470,7 +1475,7 @@
               <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
                 CB-2024-2028 • Computer Science & Business Systems
               </span>
-              <span style="font-size:11px;color:var(--text-muted);">📱 87541 59344</span>
+              <span style="font-size:11px;color:var(--text-muted);">87541 59344</span>
             </div>
           </div>
           <div style="text-align:right;">
@@ -1482,7 +1487,7 @@
         <!-- Dr. Priya Sundaram (Faculty) -->
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-102')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👩🏫</span>
+            <span class="avatar-monogram sm">PS</span>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <strong style="font-size:14.5px;color:var(--text-primary);">Dr. Priya Sundaram</strong>
@@ -1491,7 +1496,7 @@
               <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
                 FAC-8821 • School of Management & Business
               </span>
-              <span style="font-size:11px;color:var(--text-muted);">📱 98401 22334 • 10% Campus Subsidy</span>
+              <span style="font-size:11px;color:var(--text-muted);">98401 22334 • 10% Faculty Subsidy</span>
             </div>
           </div>
           <div style="text-align:right;">
@@ -1503,7 +1508,7 @@
         <!-- Karthik Raman (Staff) -->
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-103')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">🧑💼</span>
+            <span class="avatar-monogram sm">KR</span>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <strong style="font-size:14.5px;color:var(--text-primary);">Karthik Raman</strong>
@@ -1512,7 +1517,7 @@
               <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
                 STF-4402 • Central Library & Lab Administration
               </span>
-              <span style="font-size:11px;color:var(--text-muted);">📱 97911 55667</span>
+              <span style="font-size:11px;color:var(--text-muted);">97911 55667</span>
             </div>
           </div>
           <div style="text-align:right;">
@@ -1524,7 +1529,7 @@
         <!-- Ramesh Canteen Manager (Admin) -->
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-admin')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👨💼</span>
+            <span class="avatar-monogram sm">RC</span>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <strong style="font-size:14.5px;color:var(--text-primary);">Ramesh Canteen Manager</strong>
@@ -1550,7 +1555,7 @@
     <div class="modal-window" style="max-width:520px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-        <span style="font-size:24px;">🎁</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
         <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Campus Loyalty Voucher Store</h3>
       </div>
       <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
@@ -1562,7 +1567,7 @@
           <span style="font-size:11px;font-weight:800;color:#92400E;text-transform:uppercase;">Your Active Loyalty Points:</span>
           <div style="font-size:22px;font-weight:900;color:#B45309;" id="store-active-points">429 Points</div>
         </div>
-        <span style="font-size:32px;">🏆</span>
+        <div style="font-weight:900;font-size:24px;color:#F59E0B;">TIER 1</div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1580,7 +1585,7 @@
         <!-- Voucher 2 -->
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
           <div>
-            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">Free Cold Coffee / Lemon Iced Tea 🥤</strong>
+            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">Complimentary Cold Coffee / Lemon Iced Tea</strong>
             <span style="font-size:11.5px;color:var(--text-muted);">Redeemable at Express Counter 3</span>
           </div>
           <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(200, 'FREECOFFEE', 40)" style="padding:6px 14px;font-size:12px;">
@@ -1591,7 +1596,7 @@
         <!-- Voucher 3 -->
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
           <div>
-            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">₹50 Super Combo Voucher 🍛</strong>
+            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">₹50 Executive Combo Voucher</strong>
             <span style="font-size:11.5px;color:var(--text-muted);">Valid on meals above ₹150</span>
           </div>
           <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(350, 'MEGA50', 50)" style="padding:6px 14px;font-size:12px;">
@@ -1608,7 +1613,7 @@
     <div class="modal-window" style="max-width:540px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-        <span style="font-size:26px;">👥</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         <div>
           <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Group Bench Food Pool</h3>
           <span style="font-size:11px;font-weight:700;color:#14B8A6;text-transform:uppercase;">⭐ Unique Campus Feature • Not on Amazon / Flipkart</span>
@@ -1625,7 +1630,7 @@
           <div style="font-family:var(--font-heading);font-size:22px;font-weight:900;color:var(--primary);letter-spacing:1px;" id="group-pool-code">#LAB-CSBS-B4</div>
         </div>
         <button class="btn-glass" onclick="StudentApp.copyBenchCode()" style="padding:6px 14px;font-size:12px;background:rgba(79,70,229,0.12);color:var(--primary);border-color:rgba(79,70,229,0.3);">
-          📋 Copy Code
+          Copy Code
         </button>
       </div>
 
@@ -1638,7 +1643,7 @@
         <div style="display:flex;flex-direction:column;gap:8px;" id="group-pool-members-list">
           <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span>👨‍🎓</span>
+              <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">JK</span>
               <div>
                 <strong style="font-size:12.5px;color:var(--text-primary);">Jaswant Karun (You • Host)</strong>
                 <div style="font-size:11px;color:var(--text-muted);">Added: Classic Veg Burger (₹80)</div>
@@ -1648,7 +1653,7 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span>👩‍🎓</span>
+              <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">PS</span>
               <div>
                 <strong style="font-size:12.5px;color:var(--text-primary);">Priya Sundaram (Desk 2)</strong>
                 <div style="font-size:11px;color:var(--text-muted);">Added: Cold Coffee with Ice Cream (₹70)</div>
@@ -1658,7 +1663,7 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span>👨‍💻</span>
+              <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">RV</span>
               <div>
                 <strong style="font-size:12.5px;color:var(--text-primary);">Rahul Verma (Desk 3)</strong>
                 <div style="font-size:11px;color:var(--text-muted);">Added: Veg Grilled Sandwich (₹60)</div>
@@ -1672,10 +1677,10 @@
       <!-- Quick Add Item to Pooled Tray -->
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <select id="group-pool-quick-select" style="flex:1;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text-primary);">
-          <option value="p-1">🍔 Classic Burger Deluxe (₹80)</option>
-          <option value="p-3">🥪 Veg Grilled Sandwich (₹60)</option>
-          <option value="p-5">🥤 Cold Coffee (₹70)</option>
-          <option value="p-6">🍰 Chocolate Brownie (₹90)</option>
+          <option value="p-1">Classic Burger Deluxe (₹80)</option>
+          <option value="p-3">Veg Grilled Sandwich (₹60)</option>
+          <option value="p-5">Cold Coffee (₹70)</option>
+          <option value="p-6">Chocolate Brownie (₹90)</option>
         </select>
         <button class="add-mini-btn" onclick="StudentApp.addItemToGroupPool()" style="padding:8px 16px;">
           + Add to Bench Tray
@@ -1693,7 +1698,7 @@
           <span id="group-pool-split-val">₹70 / person</span>
         </div>
         <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
-          ⚡ Token <strong>#T-BENCH-402</strong> prepared together at Counter 2. 1 person picks up for all 3!
+          Consolidated Token <strong>#T-BENCH-402</strong> prepared at Counter 2. Single pickup verification for all participants.
         </div>
       </div>
 
@@ -1715,7 +1720,7 @@
     <div class="modal-window" style="max-width:560px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <span style="font-size:26px;">⚡</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
         <div>
           <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Why CampusBite is Unique</h3>
           <span style="font-size:11.5px;color:var(--primary);font-weight:700;">CampusBite vs Generic E-Commerce (Amazon & Flipkart)</span>
@@ -1738,7 +1743,7 @@
 
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <strong style="font-size:13px;color:var(--text-primary);">👥 Study-Group Bench Food Pooling</strong>
+            <strong style="font-size:13px;color:var(--text-primary);">Group Bench Dining & Order Pooling</strong>
             <span style="font-size:10px;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:999px;font-weight:800;">Exclusive</span>
           </div>
           <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
@@ -1748,7 +1753,7 @@
 
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <strong style="font-size:13px;color:var(--text-primary);">🔔 Timetable Bell Synchronization AI</strong>
+            <strong style="font-size:13px;color:var(--text-primary);">Timetable Bell Synchronization AI</strong>
             <span style="font-size:10px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:999px;font-weight:800;">Smart Campus</span>
           </div>
           <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
@@ -1758,7 +1763,7 @@
 
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <strong style="font-size:13px;color:var(--text-primary);">🍃 Zero-Waste Reusable Bento Trays</strong>
+            <strong style="font-size:13px;color:var(--text-primary);">Zero-Waste Reusable Bento Program</strong>
             <span style="font-size:10px;background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:999px;font-weight:800;">Eco-First</span>
           </div>
           <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
@@ -1781,7 +1786,7 @@
       <button class="modal-close-btn" onclick="CampusVoice.stopListening()">&times;</button>
       
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;">
-        <span style="font-size:26px;">🎙️</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
         <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Multilingual Voice Assistant</h3>
       </div>
       <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
@@ -1791,20 +1796,20 @@
       <!-- Language Switcher Pills -->
       <div class="voice-lang-pills">
         <button class="voice-lang-btn active" data-lang="en-IN" onclick="CampusVoice.setLanguage('en-IN')">
-          🇬🇧 English
+          English
         </button>
         <button class="voice-lang-btn" data-lang="ta-IN" onclick="CampusVoice.setLanguage('ta-IN')">
-          🇮🇳 தமிழ் (Tamil)
+          Tamil (தமிழ்)
         </button>
         <button class="voice-lang-btn" data-lang="hi-IN" onclick="CampusVoice.setLanguage('hi-IN')">
-          🇮🇳 हिंदी (Hindi)
+          Hindi (हिंदी)
         </button>
       </div>
 
       <!-- Pulse Mic Centerpiece -->
       <div class="voice-pulse-ring" id="voice-pulse-ring">
         <button class="voice-mic-icon-btn" onclick="CampusVoice.startListening()" title="Tap to Speak">
-          🎙️
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
         </button>
       </div>
 
@@ -1824,27 +1829,27 @@
       <!-- 1-Click Interactive Phrases -->
       <div style="text-align:left;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;margin-bottom:16px;">
         <div style="font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">
-          ⚡ Try 1-Click Voice Demos:
+          Quick Voice Samples:
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           <button class="btn-glass" onclick="CampusVoice.simulateSample('Oru classic burger and cold coffee', 'ta-IN')" style="font-size:11px;padding:5px 10px;">
-            🗣️ "Oru classic burger and cold coffee" (தமிழ்)
+            "Oru classic burger and cold coffee" (Tamil)
           </button>
           <button class="btn-glass" onclick="CampusVoice.simulateSample('2 veg grilled sandwich', 'en-IN')" style="font-size:11px;padding:5px 10px;">
-            🗣️ "2 veg grilled sandwich" (Eng)
+            "2 veg grilled sandwich" (English)
           </button>
           <button class="btn-glass" onclick="CampusVoice.simulateSample('Ek dum biryani aur nimbu juice', 'hi-IN')" style="font-size:11px;padding:5px 10px;">
-            🗣️ "Ek dum biryani aur nimbu juice" (हिंदी)
+            "Ek dum biryani aur nimbu juice" (Hindi)
           </button>
           <button class="btn-glass" onclick="CampusVoice.simulateSample('Warm choco lava cake', 'en-IN')" style="font-size:11px;padding:5px 10px;">
-            🗣️ "Warm choco lava cake" (Eng)
+            "Warm choco lava cake" (English)
           </button>
         </div>
       </div>
 
       <div style="display:flex;gap:10px;">
         <button class="btn-primary" id="voice-start-btn" onclick="CampusVoice.startListening()" style="flex:1;padding:11px;">
-          🎙️ Start Speaking
+          Start Voice Assistant
         </button>
         <button class="btn-outline" onclick="CampusVoice.stopListening(); App.closeModal('voice-order-modal');" style="padding:11px 18px;">
           Close
@@ -1861,9 +1866,9 @@
       <button class="modal-close-btn">&times;</button>
 
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <span style="font-size:26px;">🔔</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         <div>
-          <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Lecture ➔ Lunch AI Bell Sync</h3>
+          <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Lecture Schedule & Break Synchronization</h3>
           <span style="font-size:11.5px;color:#14B8A6;font-weight:700;">Live University Class Bell & Kitchen Warmer Coordination</span>
         </div>
       </div>
@@ -1897,7 +1902,7 @@
       <button class="modal-close-btn">&times;</button>
 
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
-        <span style="font-size:24px;">💳</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
         <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Real Dynamic UPI Payment</h3>
       </div>
       <div id="upi-modal-order-ref" style="font-size:11px;font-weight:800;color:#14B8A6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
@@ -1921,26 +1926,26 @@
         <span style="font-size:11.5px;color:var(--text-muted);">UPI VPA:</span>
         <strong style="font-size:12px;color:var(--text-primary);">campusbite@okaxis</strong>
         <button class="btn-glass" onclick="CampusUPI.copyUpiId()" style="padding:3px 8px;font-size:10.5px;margin-left:4px;">
-          📋 Copy
+          Copy
         </button>
       </div>
 
       <!-- Smartphone Deep-Link Apps -->
       <div class="upi-deep-link-apps">
         <a id="upi-link-gpay" class="upi-app-chip" href="upi://pay" target="_blank">
-          <span>🟢</span> Google Pay
+          <span class="status-pulse-dot" style="margin-right:4px;"></span> Google Pay
         </a>
         <a id="upi-link-phonepe" class="upi-app-chip" href="upi://pay" target="_blank">
-          <span>🟣</span> PhonePe
+          <span class="status-pulse-dot" style="background:#7C3AED;margin-right:4px;"></span> PhonePe
         </a>
         <a id="upi-link-paytm" class="upi-app-chip" href="upi://pay" target="_blank">
-          <span>🔵</span> Paytm
+          <span class="status-pulse-dot" style="background:#0284C7;margin-right:4px;"></span> Paytm
         </a>
       </div>
 
       <div style="display:flex;gap:10px;margin-top:14px;">
         <button class="btn-primary" onclick="CampusUPI.confirmUpiPaid()" style="flex:1;padding:12px;background:linear-gradient(135deg,#10B981,#059669);border-color:#10B981;">
-          ✅ I Have Paid (Verify Order)
+          Verify & Confirm Payment
         </button>
         <button class="btn-outline" onclick="App.closeModal('upi-payment-modal')" style="padding:12px 18px;">
           Cancel
@@ -1957,7 +1962,7 @@
       <button class="modal-close-btn">&times;</button>
 
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
-        <span style="font-size:26px;">🎡</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Spin the Campus Wheel</h3>
       </div>
       <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
@@ -1979,7 +1984,7 @@
 
       <div style="display:flex;gap:10px;">
         <button class="btn-primary" id="spin-wheel-btn" onclick="CampusWheel.spin()" style="flex:1;padding:12px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#EC4899,#8B5CF6);border-color:#EC4899;box-shadow:0 4px 15px rgba(236,72,153,0.35);">
-          🎁 Spin Wheel Now!
+          Spin Wheel
         </button>
         <button class="btn-outline" onclick="App.closeModal('spin-wheel-modal')" style="padding:12px 18px;">
           Close
@@ -2029,11 +2034,11 @@
         deferredPrompt.prompt();
         const choice = await deferredPrompt.userChoice;
         if (choice.outcome === 'accepted') {
-          App.showToast('🎉 CampusBite App Installed successfully!', 'success');
+          App.showToast('CampusBite App Installed successfully!', 'success');
         }
         deferredPrompt = null;
       } else {
-        App.showToast('📱 To install on iOS/Safari: tap Share ➔ "Add to Home Screen"', 'info');
+        App.showToast('To install on iOS/Safari: tap Share ➔ "Add to Home Screen"', 'info');
       }
     };
   </script>

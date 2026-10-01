@@ -42,7 +42,7 @@ const CampusUPI = {
 
   confirmUpiPaid() {
     App.closeModal('upi-payment-modal');
-    App.showToast('✅ UPI Payment Verified! Preparing your meal token now.', 'success');
+    App.showToast('UPI Payment Verified: Preparing your meal token now.', 'success');
     if (window.StudentApp && typeof window.StudentApp.confirmUpiSuccess === 'function') {
       window.StudentApp.confirmUpiSuccess();
     }

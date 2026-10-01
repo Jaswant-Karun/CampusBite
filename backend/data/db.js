@@ -21,7 +21,7 @@ const INITIAL_DATA = {
       department: "Computer Science & Business Systems",
       loyalty_points: 420,
       wallet_balance: 850,
-      avatar: "👨🎓"
+      avatar: "JK"
     },
     {
       id: "u-102",
@@ -33,7 +33,7 @@ const INITIAL_DATA = {
       department: "School of Management & Business",
       loyalty_points: 890,
       wallet_balance: 1450,
-      avatar: "👩🏫"
+      avatar: "PS"
     },
     {
       id: "u-103",
@@ -45,7 +45,7 @@ const INITIAL_DATA = {
       department: "Central Library & Lab Administration",
       loyalty_points: 180,
       wallet_balance: 320,
-      avatar: "🧑💼"
+      avatar: "KR"
     },
     {
       id: "u-admin",
@@ -57,7 +57,7 @@ const INITIAL_DATA = {
       department: "Campus Hospitality & Dining",
       loyalty_points: 2500,
       wallet_balance: 5000,
-      avatar: "👨💼"
+      avatar: "RC"
     },
     {
       id: "u-staff",
@@ -65,7 +65,7 @@ const INITIAL_DATA = {
       email: "kitchen@campusbite.com",
       phone: "+91 98765 99999",
       role: "staff",
-      avatar: "👨🍳"
+      avatar: "KS"
     }
   ],
   products: [
@@ -75,7 +75,7 @@ const INITIAL_DATA = {
       description: "Crispy patty, fresh lettuce, sliced tomatoes, house sauce in a toasted sesame bun.",
       price: 80,
       category: "Snacks",
-      image_emoji: "🍔",
+      image_emoji: "CB",
       stock: 24,
       is_available: true,
       rating: 4.8,
@@ -90,7 +90,7 @@ const INITIAL_DATA = {
       description: "Double melted cheddar, grilled patty, caramelised onions & tangy pickle relish.",
       price: 100,
       category: "Snacks",
-      image_emoji: "🍔",
+      image_emoji: "CB",
       stock: 18,
       is_available: true,
       rating: 4.9,
@@ -105,7 +105,7 @@ const INITIAL_DATA = {
       description: "Crispy grilled bread layered with cucumber, capsicum, mint chutney and spiced cheese.",
       price: 60,
       category: "Snacks",
-      image_emoji: "🥪",
+      image_emoji: "VS",
       stock: 8,
       is_available: true,
       rating: 4.6,
@@ -120,7 +120,7 @@ const INITIAL_DATA = {
       description: "Char-grilled spicy paneer cubes rolled in flaky paratha with crunchy onion salad.",
       price: 90,
       category: "Snacks",
-      image_emoji: "🌯",
+      image_emoji: "PR",
       stock: 15,
       is_available: true,
       rating: 4.7,
@@ -135,7 +135,7 @@ const INITIAL_DATA = {
       description: "Chilled zesty lemonade with black salt and fresh mint leaves. Instant refresher!",
       price: 40,
       category: "Drinks",
-      image_emoji: "🍋",
+      image_emoji: "LM",
       stock: 2,
       is_available: true,
       rating: 4.5,
@@ -150,7 +150,7 @@ const INITIAL_DATA = {
       description: "Rich blended espresso, velvety chilled milk topped with a vanilla bean scoop.",
       price: 70,
       category: "Drinks",
-      image_emoji: "🥤",
+      image_emoji: "CC",
       stock: 40,
       is_available: true,
       rating: 4.9,
@@ -165,7 +165,7 @@ const INITIAL_DATA = {
       description: "Aromatic campus kadak chai brewed with crushed ginger, cardamom and clove.",
       price: 20,
       category: "Drinks",
-      image_emoji: "☕",
+      image_emoji: "MS",
       stock: 65,
       is_available: true,
       rating: 4.7,
@@ -180,7 +180,7 @@ const INITIAL_DATA = {
       description: "Steamed Basmati Rice, Sambar, Rasam, 2 Poriyals, Appalam, Curd & Sweet.",
       price: 110,
       category: "Meals",
-      image_emoji: "🍛",
+      image_emoji: "BM",
       stock: 25,
       is_available: true,
       rating: 4.8,
@@ -195,7 +195,7 @@ const INITIAL_DATA = {
       description: "Dum-cooked fragrant basmati rice with marinated chicken pieces and rich spices.",
       price: 140,
       category: "Meals",
-      image_emoji: "🍗",
+      image_emoji: "BC",
       stock: 30,
       is_available: true,
       rating: 4.9,
@@ -210,7 +210,7 @@ const INITIAL_DATA = {
       description: "Wok-tossed stir fry noodles paired with savory vegetable Manchurian gravy.",
       price: 120,
       category: "Meals",
-      image_emoji: "🍜",
+      image_emoji: "MN",
       stock: 16,
       is_available: true,
       rating: 4.6,
@@ -225,7 +225,7 @@ const INITIAL_DATA = {
       description: "Molten dark chocolate center that oozes with pure cocoa bliss.",
       price: 65,
       category: "Desserts",
-      image_emoji: "🍫",
+      image_emoji: "CL",
       stock: 14,
       is_available: true,
       rating: 4.9,
@@ -240,7 +240,7 @@ const INITIAL_DATA = {
       description: "Golden fried khoya dumplings soaked in saffron rose cardamom sugar syrup.",
       price: 45,
       category: "Desserts",
-      image_emoji: "🍰",
+      image_emoji: "BR",
       stock: 22,
       is_available: true,
       rating: 4.7,
@@ -261,7 +261,7 @@ const INITIAL_DATA = {
       max_discount: 50,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "🔥 Today's Best Offer"
+      badge: "Today's Best Offer"
     },
     {
       id: "c-2",
@@ -285,7 +285,7 @@ const INITIAL_DATA = {
       max_discount: 25,
       expiry_date: "2026-11-30",
       is_active: true,
-      badge: "📚 Study Hours"
+      badge: "Study Hours"
     },
     {
       id: "c-4",
@@ -297,7 +297,7 @@ const INITIAL_DATA = {
       max_discount: 20,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "🎡 Spin Winner"
+      badge: "Spin Winner"
     },
     {
       id: "c-5",
@@ -309,7 +309,7 @@ const INITIAL_DATA = {
       max_discount: 15,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "🧀 Wheel Perk"
+      badge: "Wheel Perk"
     },
     {
       id: "c-6",
@@ -321,7 +321,7 @@ const INITIAL_DATA = {
       max_discount: 15,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "☕ Wheel Perk"
+      badge: "Wheel Perk"
     },
     {
       id: "c-7",
@@ -333,7 +333,7 @@ const INITIAL_DATA = {
       max_discount: 30,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "🍱 Mystery Drop"
+      badge: "Mystery Drop"
     },
     {
       id: "c-8",
@@ -345,7 +345,7 @@ const INITIAL_DATA = {
       max_discount: 35,
       expiry_date: "2026-12-31",
       is_active: true,
-      badge: "🥪 Wheel Perk"
+      badge: "Wheel Perk"
     }
   ],
   orders: [

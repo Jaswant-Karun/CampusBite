@@ -87,7 +87,7 @@ const KdsApp = {
     this.audioEnabled = !this.audioEnabled;
     const btn = document.getElementById('kds-audio-btn');
     if (btn) {
-      btn.innerHTML = this.audioEnabled ? '🔔 Chime: ON' : '🔕 Chime: OFF';
+      btn.innerHTML = this.audioEnabled ? 'Audio: ON' : 'Audio: OFF';
       btn.classList.toggle('active', this.audioEnabled);
     }
     if (this.audioEnabled) {
@@ -150,7 +150,7 @@ const KdsApp = {
     if (preparingOrders.length === 0) {
       prepContainer.innerHTML = `
         <div class="kds-empty-box">
-          <div class="kds-empty-icon">🍳</div>
+          <div class="kds-empty-icon" style="font-size:12px;font-weight:700;color:#94A3B8;">NO ACTIVE COOKING</div>
           <h3>Kitchen Queue All Clear</h3>
           <p style="font-size:13px;margin-top:4px;">No pending orders to cook. Ready for next break rush!</p>
         </div>
@@ -163,7 +163,7 @@ const KdsApp = {
     if (readyOrders.length === 0) {
       readyContainer.innerHTML = `
         <div class="kds-empty-box">
-          <div class="kds-empty-icon">🟢</div>
+          <div class="kds-empty-icon" style="font-size:12px;font-weight:700;color:#94A3B8;">NO PENDING PICKUPS</div>
           <h3>Counter 2 Clear</h3>
           <p style="font-size:13px;margin-top:4px;">Ready meals appear here for student collection.</p>
         </div>
@@ -179,16 +179,16 @@ const KdsApp = {
     const itemsListHtml = (order.items || []).map(item => `
       <div class="kds-item-row">
         <span><span class="kds-item-qty">${item.quantity}x</span> ${item.name}</span>
-        <span style="font-size:18px;">${item.image_emoji || '🍲'}</span>
+        <span class="avatar-monogram sm" style="width:20px;height:20px;font-size:9px;">${(item.name || 'CB').substring(0, 2).toUpperCase()}</span>
       </div>
     `).join('');
 
     const actionButton = isReady 
       ? `<button class="kds-bump-btn btn-complete" onclick="KdsApp.markComplete('${order.id}')">
-           ✅ Hand Over Tray (Complete)
+           Hand Over Tray (Complete)
          </button>`
       : `<button class="kds-bump-btn btn-ready" onclick="KdsApp.markReady('${order.id}')">
-           🛎️ Mark Ready for Pickup
+           Mark Ready for Pickup
          </button>`;
 
     return `
@@ -197,7 +197,7 @@ const KdsApp = {
           <div>
             <div class="kds-token-num">${tokenDisplay}</div>
             <div style="font-size:13px;font-weight:700;color:#CBD5E1;margin-top:2px;">
-              👤 ${order.customer_name || 'Student'} • Counter ${order.pickup_counter || 2}
+              ${order.customer_name || 'Student'} • Counter ${order.pickup_counter || 2}
             </div>
           </div>
           <span class="kds-ticket-timer">⏱️ ${order.pickup_slot || 'ASAP'}</span>

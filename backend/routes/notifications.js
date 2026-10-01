@@ -44,11 +44,11 @@ router.post('/read/:id', (req, res) => {
 router.post('/test', (req, res) => {
   const { title, message, type, target, icon, data } = req.body;
   const notif = eventBus.broadcast({
-    title: title || "🔔 Live Canteen Announcement",
+    title: title || "Live Canteen Announcement",
     message: message || "Fresh hot Samosas just arrived at Counter 2!",
     type: type || "INFO",
     target: target || "all",
-    icon: icon || "📢",
+    icon: icon || "",
     data: data || {}
   });
 

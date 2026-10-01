@@ -5,14 +5,14 @@
 
 const CampusWheel = {
   prizes: [
-    { label: "₹20 OFF", color: "#4F46E5", coupon: "SPIN20", desc: "₹20 Flat Voucher applied!" },
-    { label: "🧀 Free Cheese", color: "#F59E0B", coupon: "CHEESE", desc: "Free Extra Cheese Added!" },
-    { label: "⭐ +100 Points", color: "#10B981", points: 100, desc: "100 Loyalty Points Credited!" },
-    { label: "☕ Free Chai", color: "#EC4899", coupon: "FREECHAI", desc: "Complimentary Kadak Masala Chai!" },
-    { label: "🍱 Mystery Bento", color: "#8B5CF6", coupon: "BENTO30", desc: "₹30 Mystery Bento Discount!" },
-    { label: "⚡ 2X Green Pts", color: "#06B6D4", points: 50, desc: "Double Eco Points Multiplier!" },
-    { label: "🥪 15% OFF", color: "#F97316", coupon: "SNACK15", desc: "15% OFF on Sandwiches & Snacks!" },
-    { label: "🍀 Better Luck", color: "#64748B", empty: true, desc: "Almost! Spin again tomorrow." }
+    { label: "₹20 OFF", color: "#4F46E5", coupon: "SPIN20", desc: "₹20 Flat Voucher applied to your cart." },
+    { label: "Free Cheese", color: "#D97706", coupon: "CHEESE", desc: "Free Extra Cheese Upgrade applied." },
+    { label: "+100 Points", color: "#059669", points: 100, desc: "100 Loyalty Points credited to your account." },
+    { label: "Free Chai", color: "#DB2777", coupon: "FREECHAI", desc: "Complimentary Masala Chai applied." },
+    { label: "Mystery Bento", color: "#7C3AED", coupon: "BENTO30", desc: "₹30 Bento discount voucher applied." },
+    { label: "2X Points", color: "#0891B2", points: 50, desc: "Double Eco Points credited." },
+    { label: "15% OFF", color: "#EA580C", coupon: "SNACK15", desc: "15% discount on Sandwiches & Snacks applied." },
+    { label: "Next Time", color: "#475569", empty: true, desc: "Spin again tomorrow for daily perks." }
   ],
 
   startAngle: 0,
@@ -68,9 +68,11 @@ const CampusWheel = {
     ctx.strokeStyle = "#FFFFFF";
     ctx.stroke();
 
-    ctx.fillStyle = "#F59E0B";
-    ctx.font = "bold 16px sans-serif";
-    ctx.fillText("🎁", width / 2 - 9, height / 2 + 6);
+    ctx.fillStyle = "#38BDF8";
+    ctx.font = "bold 13px 'Segoe UI', sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("SPIN", width / 2, height / 2);
   },
 
   spin() {
@@ -113,8 +115,8 @@ const CampusWheel = {
     const resultBox = document.getElementById('wheel-result-display');
     if (resultBox) {
       resultBox.innerHTML = `
-        <div style="background:linear-gradient(135deg,#10B981,#059669);color:white;padding:12px;border-radius:12px;text-align:center;">
-          <div style="font-size:18px;font-weight:900;">🎉 You Won: ${winner.label}!</div>
+        <div style="background:linear-gradient(135deg,#0F766E,#047857);color:white;padding:12px;border-radius:12px;text-align:center;">
+          <div style="font-size:16px;font-weight:800;">Winner: ${winner.label}</div>
           <div style="font-size:12px;opacity:0.9;margin-top:2px;">${winner.desc}</div>
         </div>
       `;
@@ -127,7 +129,7 @@ const CampusWheel = {
       window.StudentApp.updateUserInterfaceDetails();
     }
 
-    App.showToast(`🎉 Congratulations! You won ${winner.label}!`, 'success');
+    App.showToast(`Reward Unlocked: ${winner.label}`, 'success');
   },
 
   easeOut(t, b, c, d) {

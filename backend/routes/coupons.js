@@ -80,7 +80,7 @@ router.post('/', (req, res) => {
     max_discount: Number(max_discount) || 50,
     expiry_date: expiry_date || '2026-12-31',
     is_active: true,
-    badge: badge || '⚡ Flash Deal'
+    badge: badge || 'Flash Deal'
   };
 
   db.data.coupons.unshift(newCoupon);
@@ -89,8 +89,8 @@ router.post('/', (req, res) => {
   eventBus.broadcast({
     type: 'NEW_OFFER',
     target: 'student',
-    icon: '🏷️',
-    title: `🔥 New Deal Drop: ${newCoupon.code}`,
+    icon: '',
+    title: `New Deal Drop: ${newCoupon.code}`,
     message: `${newCoupon.description} Use code ${newCoupon.code} to get ${newCoupon.discount_value}% OFF!`,
     data: { coupon: newCoupon }
   });

@@ -181,7 +181,7 @@ router.post('/', (req, res) => {
   eventBus.broadcast({
     type: 'NEW_ORDER',
     target: 'admin',
-    icon: '🔔',
+    icon: '',
     title: `New Order #${newOrder.id} Placed!`,
     message: `${newOrder.customer_name} placed an order for ₹${newOrder.total_amount} (${newOrder.items.length} items). Routed to Counter ${newOrder.pickup_counter}.`,
     data: { orderId: newOrder.id, order: newOrder, counter: newOrder.pickup_counter }
@@ -192,7 +192,7 @@ router.post('/', (req, res) => {
     type: 'ORDER_PLACED',
     target: 'student',
     userId: newOrder.user_id,
-    icon: '✅',
+    icon: '',
     title: `Order Confirmed: Token #${newOrder.id}`,
     message: `Payment successful! Your order has reached Counter ${newOrder.pickup_counter}. Slot: ${newOrder.pickup_slot}.`,
     data: { orderId: newOrder.id, token: newOrder.id, counter: newOrder.pickup_counter }
@@ -205,7 +205,7 @@ router.post('/', (req, res) => {
       eventBus.broadcast({
         type: 'LOW_STOCK',
         target: 'admin',
-        icon: '⚠️',
+        icon: '',
         title: `Low Stock Alert: ${p.name}`,
         message: `Only ${p.stock} units remaining in stock. Consider restocking soon.`,
         data: { productId: p.id, stock: p.stock }
@@ -247,20 +247,20 @@ router.put('/:id/status', (req, res) => {
   db.saveData();
 
   // Determine user friendly icon & message for status transition
-  let statusIcon = '📋';
+  let statusIcon = 'PLACED';
   let statusMsg = `Order #${order.id} status is now ${status}.`;
 
   if (status === 'Preparing') {
-    statusIcon = '👨‍🍳';
+    statusIcon = 'PREPARING';
     statusMsg = `Kitchen is actively preparing Order #${order.id} at Counter ${order.pickup_counter}.`;
   } else if (status === 'Ready') {
-    statusIcon = '🎉';
+    statusIcon = 'READY';
     statusMsg = `Order #${order.id} is READY FOR PICKUP at Counter ${order.pickup_counter}! Show your token #${order.id}.`;
   } else if (status === 'Completed') {
-    statusIcon = '✨';
+    statusIcon = 'COMPLETED';
     statusMsg = `Order #${order.id} has been picked up. Thank you for dining with CampusBite!`;
   } else if (status === 'Cancelled') {
-    statusIcon = '❌';
+    statusIcon = 'CANCELLED';
     statusMsg = `Order #${order.id} was cancelled. Refund credited to CampusPay wallet.`;
   }
 

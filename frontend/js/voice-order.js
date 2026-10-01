@@ -148,10 +148,10 @@ const CampusVoice = {
     if (items.length === 0) {
       feedbackBox.innerHTML = `
         <div style="color:#EF4444;font-weight:700;font-size:13px;">
-          ❌ Could not match any menu dish in "${originalTranscript}".
+          Item not found in: "${originalTranscript}".
         </div>
         <p style="font-size:11.5px;color:var(--text-muted);margin-top:4px;">
-          Try saying: "Oru classic burger and cold coffee" or "2 samosa/sandwich".
+          Try saying: "Oru classic burger and cold coffee" or "2 veg grilled sandwich".
         </p>
       `;
       this.speakBack("Sorry, could not find that dish on today's canteen menu. Please try again.");
@@ -170,10 +170,10 @@ const CampusVoice = {
     const itemsSummary = items.map(i => `${i.qty}x ${i.name}`).join(', ');
     feedbackBox.innerHTML = `
       <div style="color:#10B981;font-weight:800;font-size:14px;margin-bottom:6px;">
-        🎉 Successfully Added to Your Tray!
+        Successfully Added to Tray
       </div>
       <div style="font-size:13px;color:var(--text-primary);background:var(--bg-card);padding:8px 12px;border-radius:10px;border:1px solid var(--border-subtle);">
-        🍽️ <strong>${itemsSummary}</strong>
+        <strong>${itemsSummary}</strong>
       </div>
       <div style="margin-top:10px;">
         <button class="btn-primary" onclick="App.closeModal('voice-order-modal'); StudentApp.navigateTo('cart');" style="padding:8px 18px;font-size:12px;">
@@ -191,7 +191,7 @@ const CampusVoice = {
     }
 
     this.speakBack(replySpeech);
-    App.showToast(`🎙️ Voice Order Added: ${itemsSummary}`, 'success');
+    App.showToast(`Voice Order Added: ${itemsSummary}`, 'success');
   },
 
   speakBack(text) {
@@ -220,7 +220,7 @@ const CampusVoice = {
     if (pulseEl) pulseEl.classList.toggle('active', isListening);
     if (statusEl) statusEl.textContent = statusText;
     if (startBtn) {
-      startBtn.innerHTML = isListening ? '⏹️ Stop Listening' : '🎙️ Start Speaking';
+      startBtn.innerHTML = isListening ? 'Stop Listening' : 'Start Speaking';
       startBtn.onclick = () => isListening ? this.stopListening() : this.startListening();
     }
   }

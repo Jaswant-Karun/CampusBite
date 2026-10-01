@@ -89,7 +89,7 @@ const HeroSlider = {
       window.StudentApp.applyCouponCode('CAMPUS20');
     }
 
-    App.showToast('🎉 Grand Canteen Feast added to your tray with 20% discount!', 'success');
+    App.showToast('Grand Canteen Feast combo added to tray (20% discount applied)', 'success');
   }
 };
 

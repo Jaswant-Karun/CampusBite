@@ -22,9 +22,9 @@ const BiteBot = {
         : 'there';
       
       this.addBotMessage(
-        `👋 Hi **${userName}**! I'm **BiteBot**, your Campus Dining Assistant.\n\nI can help you:\n- 🍔 Recommend hot meals & snacks\n- 🟢 Filter pure veg & express items\n- 📦 Track live order prep & counter pickup\n- ⭐ Check & redeem your loyalty points\n- 🎟️ Reveal active canteen discount coupons\n\nWhat are you craving today?`,
+        `Welcome **${userName}**. I am your **CampusBite Dining Assistant**.\n\nI can assist you with:\n- Recommending popular hot meals and combos\n- Filtering vegetarian and express items\n- Live order preparation and pickup tracking\n- Checking and redeeming loyalty points\n- Applying active campus promotional coupons\n\nHow can I help you today?`,
         [],
-        ["🍔 Popular Today", "🟢 Pure Veg Under ₹80", "⚡ Quick Bites (<10m)", "📍 Track My Order", "⭐ My Loyalty Points"]
+        ["Popular Today", "Pure Veg Under ₹80", "Quick Bites (<10m)", "Track My Order", "Loyalty Points"]
       );
     }
   },
@@ -37,8 +37,8 @@ const BiteBot = {
     container.innerHTML = `
       <!-- Launcher FAB -->
       <div class="bitebot-launcher" id="bitebot-launcher" onclick="BiteBot.toggle()" title="Chat with BiteBot AI Assistant">
-        <div class="bitebot-launcher-avatar">
-          🤖
+        <div class="bitebot-launcher-avatar" style="font-weight:900;font-size:12px;background:white;color:var(--primary);display:flex;align-items:center;justify-content:center;">
+          AI
           <span class="bitebot-online-badge"></span>
         </div>
         <div class="bitebot-launcher-text">
@@ -52,7 +52,7 @@ const BiteBot = {
         <!-- Header -->
         <div class="bitebot-header">
           <div class="bitebot-header-left">
-            <div class="bitebot-header-avatar">🤖</div>
+            <div class="bitebot-header-avatar"><span style="font-weight:800;font-size:12px;letter-spacing:0.5px;">AI</span></div>
             <div class="bitebot-header-info">
               <div class="bitebot-header-name">
                 BiteBot <span class="bitebot-ai-pill">AI Assistant</span>
@@ -63,14 +63,14 @@ const BiteBot = {
             </div>
           </div>
           <div class="bitebot-header-actions">
-            <button class="bitebot-icon-btn" id="bitebot-sound-btn" onclick="BiteBot.toggleSound()" title="Toggle Sound Feedback">
-              🔊
+            <button class="bitebot-icon-btn" id="bitebot-sound-btn" onclick="BiteBot.toggleSound()" title="Toggle Audio Feedback">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
             </button>
-            <button class="bitebot-icon-btn" onclick="BiteBot.clearChat()" title="Clear Conversation">
-              🔄
+            <button class="bitebot-icon-btn" onclick="BiteBot.clearChat()" title="Reset Conversation">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
             </button>
             <button class="bitebot-icon-btn" onclick="BiteBot.close()" title="Minimize Chat">
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
           </div>
         </div>
@@ -86,11 +86,11 @@ const BiteBot = {
           <div class="bitebot-input-box">
             <input type="text" id="bitebot-input" placeholder="Ask: 'Recommend lunch under ₹100'..." autocomplete="off">
             <button class="bitebot-mic-btn" id="bitebot-mic-btn" onclick="BiteBot.toggleSpeech()" title="Speak with Voice">
-              🎤
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
             </button>
           </div>
           <button class="bitebot-send-btn" id="bitebot-send-btn" onclick="BiteBot.handleSend()" title="Send Message">
-            ➤
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
         </div>
       </div>
@@ -146,7 +146,7 @@ const BiteBot = {
     this.soundEnabled = !this.soundEnabled;
     const btn = document.getElementById('bitebot-sound-btn');
     if (btn) {
-      btn.innerText = this.soundEnabled ? '🔊' : '🔇';
+      btn.innerText = this.soundEnabled ? 'Audio' : 'Muted';
       btn.title = this.soundEnabled ? 'Sound On' : 'Sound Off';
     }
     if (this.soundEnabled) {
@@ -289,23 +289,23 @@ const BiteBot = {
     const products = (typeof StudentApp !== 'undefined' && StudentApp.products && StudentApp.products.length)
       ? StudentApp.products
       : [
-          { id: 'p-1', name: 'Classic Burger', price: 80, rating: 4.8, is_veg: false, image_emoji: '🍔', prep_time: '8 mins' },
-          { id: 'p-3', name: 'Veg Grilled Sandwich', price: 60, rating: 4.6, is_veg: true, image_emoji: '🥪', prep_time: '6 mins' },
-          { id: 'p-4', name: 'Cold Brew Coffee', price: 70, rating: 4.7, is_veg: true, image_emoji: '🥤', prep_time: '3 mins' }
+          { id: 'p-1', name: 'Classic Burger', price: 80, rating: 4.8, is_veg: false, image_emoji: 'CB', prep_time: '8 mins' },
+          { id: 'p-3', name: 'Veg Grilled Sandwich', price: 60, rating: 4.6, is_veg: true, image_emoji: 'VS', prep_time: '6 mins' },
+          { id: 'p-4', name: 'Cold Brew Coffee', price: 70, rating: 4.7, is_veg: true, image_emoji: 'CC', prep_time: '3 mins' }
         ];
 
     let reply = "";
     let items = [];
-    let quickReplies = ["🍔 Popular Today", "🟢 Pure Veg", "⚡ Quick Bites", "📍 Track Order"];
+    let quickReplies = ["Popular Today", "Pure Veg", "Quick Bites", "Track Order"];
 
     if (q.includes('veg')) {
       items = products.filter(p => p.is_veg).slice(0, 3);
-      reply = "🌱 Here are our most ordered **100% Pure Veg** items from the campus kitchen:";
+      reply = "Here are our most ordered **100% Pure Vegetarian** items from the campus kitchen:";
     } else if (q.includes('fast') || q.includes('quick')) {
       items = products.filter(p => (parseInt(p.prep_time) || 8) <= 8).slice(0, 3);
-      reply = "⚡ Here are rapid prep meals ready in **under 8 minutes**:";
+      reply = "Here are rapid prep meals ready in **under 8 minutes**:";
     } else if (q.includes('track') || q.includes('order')) {
-      reply = "📦 **Order Tracking (#CB1024)** is currently **Ready for Pickup** at Counter 2!";
+      reply = "**Order Tracking (#CB1024)** is currently **Ready for Pickup** at Counter 2.";
       quickReplies = ["View Live Radar", "Order More"];
     } else {
       items = products.slice(0, 3);
@@ -349,13 +349,13 @@ const BiteBot = {
           ${items.map(item => `
             <div class="bitebot-food-card">
               <div class="bitebot-food-left">
-                <div class="bitebot-food-emoji">${item.image_emoji || '🍽️'}</div>
+                <div class="avatar-monogram sm" style="width:28px;height:28px;font-size:11px;">${(item.name || "CB").substring(0,2).toUpperCase()}</div>
                 <div>
                   <span class="bitebot-food-title">${item.name}</span>
                   <div class="bitebot-food-meta">
                     <span class="bitebot-food-price">₹${item.price}</span> • 
-                    <span>${item.is_veg ? '🟢 Veg' : '🔴 Non-Veg'}</span> • 
-                    <span>★ ${item.rating || 4.7}</span>
+                    <span class="fssai-${item.is_veg ? 'veg' : 'nonveg'}-mark" style="margin-right:4px;"><span class="fssai-dot"></span></span><span>${item.is_veg ? 'Veg' : 'Non-Veg'}</span> • 
+                    <span>Rating: ${item.rating || 4.7} / 5</span>
                   </div>
                 </div>
               </div>
@@ -372,11 +372,11 @@ const BiteBot = {
     let actionBtnHtml = '';
     if (action) {
       if (action.type === 'navigate' && action.target === 'tracking') {
-        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.openTracking()">📍 View Live Order Tracking →</button>`;
+        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.openTracking()">View Live Order Tracking →</button>`;
       } else if (action.type === 'openModal' && action.modal === 'rewardsStore') {
-        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.openRewardsStore()">🏆 Open Loyalty Voucher Store →</button>`;
+        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.openRewardsStore()">Open Loyalty Voucher Store →</button>`;
       } else if (action.type === 'applyCoupon') {
-        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.applyCoupon('${action.code}')">🎟️ Apply Coupon ${action.code} →</button>`;
+        actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.applyCoupon('${action.code}')">Apply Coupon ${action.code} →</button>`;
       } else if (action.type === 'openModal' && action.modal === 'feedback') {
         actionBtnHtml = `<button class="bitebot-action-trigger" onclick="BiteBot.openFeedback()">⭐ Open Feedback Portal →</button>`;
       }
@@ -385,7 +385,7 @@ const BiteBot = {
     const div = document.createElement('div');
     div.className = 'bitebot-msg bot';
     div.innerHTML = `
-      <div class="bitebot-msg-avatar">🤖</div>
+      <div class="bitebot-msg-avatar" style="font-size:10px;font-weight:800;color:var(--primary);background:var(--bg-elevated);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;">AI</div>
       <div class="bitebot-msg-content">
         ${formattedHtml}
         ${itemsHtml}
@@ -435,7 +435,7 @@ const BiteBot = {
     typingDiv.id = 'bitebot-typing-indicator';
     typingDiv.className = 'bitebot-msg bot';
     typingDiv.innerHTML = `
-      <div class="bitebot-msg-avatar">🤖</div>
+      <div class="bitebot-msg-avatar" style="font-size:10px;font-weight:800;color:var(--primary);background:var(--bg-elevated);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;">AI</div>
       <div class="bitebot-typing">
         <span class="bitebot-typing-dot"></span>
         <span class="bitebot-typing-dot"></span>
@@ -463,7 +463,7 @@ const BiteBot = {
     this.addBotMessage(
       `Conversation cleared! How can I assist your campus dining experience now, **${userName}**?`,
       [],
-      ["🍔 Today's Bestsellers", "⚡ Quick Bites (<10m)", "📍 Track My Order", "⭐ My Loyalty Points"]
+      ["Today's Bestsellers", "Quick Bites (<10m)", "Track My Order", "Loyalty Points"]
     );
   },
 
@@ -476,7 +476,7 @@ const BiteBot = {
       const name = product ? product.name : 'Item';
       
       if (StudentApp.showToast) {
-        StudentApp.showToast(`🛒 ${name} added to your tray!`);
+        StudentApp.showToast(`${name} added to your meal tray.`);
       }
     } else {
       alert(`Item added to cart!`);
@@ -508,7 +508,7 @@ const BiteBot = {
     if (typeof StudentApp !== 'undefined' && StudentApp.applyCoupon) {
       StudentApp.applyCoupon(code);
       if (StudentApp.showToast) {
-        StudentApp.showToast(`🎉 Coupon ${code} applied successfully!`);
+        StudentApp.showToast(`Coupon ${code} applied successfully.`);
       }
     }
   },

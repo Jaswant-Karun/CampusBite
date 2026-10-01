@@ -68,7 +68,7 @@ router.post('/', async (req, res) => {
     description: description || 'Freshly prepared at Campus Canteen',
     price: numPrice,
     category: category.trim(),
-    image_emoji: image_emoji || '🍲',
+    image_emoji: image_emoji || 'CB',
     stock: stock !== undefined ? Number(stock) : 25,
     is_available: true,
     rating: 5.0,
@@ -97,7 +97,7 @@ router.post('/', async (req, res) => {
     eventBus.broadcast({
       type: 'product_added',
       targetRole: 'all',
-      title: 'New Dish on Menu! 🍽️',
+      title: 'New Dish on Menu: ' + (name || 'Special'),
       message: `${newProduct.name} is now available at ₹${newProduct.price}`,
       data: { productId: newProduct.id, price: newProduct.price }
     });
@@ -158,7 +158,7 @@ router.put('/:id', async (req, res) => {
     eventBus.broadcast({
       type: priceChanged ? 'price_updated' : 'product_updated',
       targetRole: 'all',
-      title: priceChanged ? 'Food Price Updated 🏷️' : 'Menu Updated',
+      title: priceChanged ? 'Food Price Updated' : 'Menu Updated',
       message: priceChanged 
         ? `${updated.name} price updated to ₹${updated.price}` 
         : `${updated.name} details were updated`,

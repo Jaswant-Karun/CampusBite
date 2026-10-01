@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/mobile-shell.css">
   <link rel="stylesheet" href="css/chatbot.css">
   <link rel="stylesheet" href="css/notifications.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍔</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23FF5A1F%22 stroke-width=%222%22><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>">
   <style>
     /* Dedicated Mobile View Wrapper */
     body {
@@ -92,8 +92,8 @@
       <span>9:41</span>
       <div class="status-bar-icons">
         <span>5G</span>
-        <span>📶</span>
-        <span>100% 🔋</span>
+        <span style="font-size:10px;font-weight:700;">5G</span>
+        <span style="font-size:10px;font-weight:700;">100%</span>
       </div>
     </div>
 
@@ -106,16 +106,16 @@
       <div id="screen-motion-splash" class="mob-screen active">
         <!-- Floating Background Food Particles -->
         <div class="particle-cluster">
-          <span class="particle p1">🍕</span>
-          <span class="particle p2">🥤</span>
-          <span class="particle p3">🍛</span>
-          <span class="particle p4">🥪</span>
-          <span class="particle p5">🍰</span>
+          
+          
+          
+          
+          
         </div>
 
         <div class="motion-title-hero">
           <div class="motion-brand-symbol">
-            <span class="motion-logo-emoji">🍔</span>
+            <span class="avatar-monogram lg" style="width:52px;height:52px;font-size:18px;">CB</span>
             <div class="motion-pulse-ring"></div>
             <div class="motion-pulse-ring delay"></div>
           </div>
@@ -129,14 +129,14 @@
         <!-- Features Summary Banner -->
         <div style="width:100%;margin-bottom:20px;display:flex;flex-direction:column;gap:8px;">
           <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:9px 14px;border-radius:14px;font-size:12px;display:flex;align-items:center;gap:10px;text-align:left;">
-            <span style="font-size:18px;">⚡</span>
+            <span style="font-size:18px;"></span>
             <div>
               <strong>Pre-Order & Skip Queues</strong>
               <div style="font-size:10.5px;color:#94A3B8;">Collect in under 2 minutes at Counter 2</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:9px 14px;border-radius:14px;font-size:12px;display:flex;align-items:center;gap:10px;text-align:left;">
-            <span style="font-size:18px;">🍃</span>
+            <span style="font-size:18px;"></span>
             <div>
               <strong>Powered by MongoDB & AI</strong>
               <div style="font-size:10.5px;color:#94A3B8;">Predictive demand engine prevents food waste</div>
@@ -160,9 +160,9 @@
           <!-- Header -->
           <div class="auth-header-card">
             <div class="auth-brand-pill">
-              <span>🍔</span> CAMPUSBITE AUTH
+              <span style="font-weight:900;letter-spacing:1px;color:var(--primary);">CAMPUSBITE AUTH</span>
             </div>
-            <h2 class="auth-title-text">Welcome Back! 👋</h2>
+            <h2 class="auth-title-text">Welcome Back</h2>
             <p class="auth-subtitle-text">Sign in to your campus canteen account</p>
           </div>
 
@@ -181,19 +181,19 @@
             <span class="role-selector-label">Select Your Role:</span>
             <div class="role-pills-row">
               <button class="role-pill-btn active" data-role="student" onclick="StudentApp.selectAuthRole('student')">
-                <span class="role-pill-icon">👨🎓</span>
+                <span class="role-pill-icon">ST</span>
                 <span>Student</span>
               </button>
               <button class="role-pill-btn" data-role="faculty" onclick="StudentApp.selectAuthRole('faculty')">
-                <span class="role-pill-icon">👩🏫</span>
+                <span class="role-pill-icon">FC</span>
                 <span>Faculty</span>
               </button>
               <button class="role-pill-btn" data-role="staff" onclick="StudentApp.selectAuthRole('staff')">
-                <span class="role-pill-icon">🧑💼</span>
+                <span class="role-pill-icon">SF</span>
                 <span>Staff</span>
               </button>
               <button class="role-pill-btn" data-role="admin" onclick="StudentApp.selectAuthRole('admin')">
-                <span class="role-pill-icon">🛡️</span>
+                <span class="role-pill-icon">SC</span>
                 <span>Admin</span>
               </button>
             </div>
@@ -203,31 +203,31 @@
           <form class="auth-input-form" onsubmit="StudentApp.handleAuthSubmit(event)">
             <!-- Full Name (Only on Sign Up) -->
             <div class="input-floating-group" id="auth-name-group" style="display:none;">
-              <span class="input-lead-icon">👤</span>
+              
               <input type="text" id="auth-name" class="auth-text-field" placeholder="Full Name (e.g. Jaswant Karun)">
             </div>
 
             <!-- Email, Phone, or University Student ID -->
             <div class="input-floating-group">
-              <span class="input-lead-icon">✉️</span>
+              
               <input type="text" id="auth-email" class="auth-text-field" placeholder="Email, Phone, or Student ID" value="jaswant@campus.edu" required>
             </div>
 
             <!-- Password -->
             <div class="input-floating-group">
-              <span class="input-lead-icon">🔒</span>
+              
               <input type="password" id="auth-password" class="auth-text-field" placeholder="Password" value="student123" required>
-              <button type="button" class="password-toggle-btn" onclick="StudentApp.togglePasswordVisibility()">👁️</button>
+              <button type="button" class="password-toggle-btn" onclick="StudentApp.togglePasswordVisibility()">️</button>
             </div>
 
             <!-- Dynamic Additional Fields for University Verification -->
             <div id="auth-extra-student-fields">
               <div class="input-floating-group">
-                <span class="input-lead-icon">🎓</span>
+                
                 <input type="text" id="auth-student-id" class="auth-text-field" placeholder="Student ID (CB-2024-2028)" value="CB-2024-2028">
               </div>
               <div class="input-floating-group">
-                <span class="input-lead-icon">🏛️</span>
+                
                 <input type="text" id="auth-dept" class="auth-text-field" placeholder="Department" value="Computer Science & Business Systems">
               </div>
             </div>
@@ -261,7 +261,7 @@
           <!-- 1-Tap Quick Demo Account Logins -->
           <div class="quick-demo-accounts-wrap">
             <div class="quick-demo-heading">
-              <span>⚡</span> 1-Tap Quick Demo Credentials:
+              Quick Demo Credentials:
             </div>
             <button class="quick-chip-btn" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
               <div>
@@ -284,11 +284,11 @@
           <div class="sso-divider-row">OR SIGN IN VIA CAMPUS SSO</div>
 
           <button class="sso-button" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
-            <span>🌐</span> Sign In with University Google SSO
+            Sign In with University Google SSO
           </button>
 
           <button class="sso-button" onclick="App.showToast('Barcode NFC scanner active. Simulating ID tap...', 'info'); setTimeout(() => StudentApp.quickLogin('student', 'jaswant@campus.edu'), 600);">
-            <span>🪪</span> Scan Student Physical ID Barcode
+            Scan Student Physical ID Barcode
           </button>
         </div>
       </div>
@@ -299,14 +299,14 @@
       <div id="screen-home" class="mob-screen">
         <div class="home-top-bar">
           <div class="user-greeting">
-            <h3>Hi, Jaswant 👋</h3>
+            <h3>Welcome, Jaswant</h3>
             <p>Campus Main Canteen • Open</p>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <!-- Live Notification Bell & Dropdown -->
             <div style="position:relative;display:inline-block;">
               <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications" style="width:34px;height:34px;font-size:15px;background:rgba(255,255,255,0.08);">
-                <span>🔔</span>
+                <span></span>
                 <span class="notif-unread-badge" id="notif-unread-badge">0</span>
               </button>
 
@@ -319,10 +319,10 @@
                   </div>
                   <div class="notif-panel-controls">
                     <button class="notif-tool-btn" id="notif-sound-btn" onclick="CampusNotifications.toggleSound()" title="Toggle Sound">
-                      🔔 Sound On
+                       Sound On
                     </button>
                     <button class="notif-tool-btn" onclick="CampusNotifications.markAllRead()" title="Mark all as read">
-                      ✓ Read
+                       Read
                     </button>
                   </div>
                 </div>
@@ -332,7 +332,7 @@
                 <div class="notif-panel-footer">
                   <span style="color:#94A3B8;">SSE Stream Active</span>
                   <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
-                    <span>⚡</span> Test
+                    <span></span> Test
                   </button>
                 </div>
               </div>
@@ -348,7 +348,7 @@
         <!-- Search Bar -->
         <div class="search-bar-wrap">
           <div class="search-input-box">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon"></span>
             <input type="text" id="student-search-input" class="mob-search-input" placeholder="Search burgers, juices, meals...">
           </div>
         </div>
@@ -356,14 +356,14 @@
         <!-- Quick Action Feature Banners -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 12px;">
           <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('crowd-meter')">
-            <span style="font-size:22px;">🟢</span>
+            <span style="font-size:22px;"></span>
             <div>
               <strong style="font-size:11.5px;color:#0F172A;">Crowding Radar</strong>
               <div style="font-size:10px;color:#10B981;">3 min wait • Low</div>
             </div>
           </div>
           <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('wallet')">
-            <span style="font-size:22px;">💳</span>
+            <span style="font-size:22px;"></span>
             <div>
               <strong style="font-size:11.5px;color:#0F172A;">CampusPay Wallet</strong>
               <div style="font-size:10px;color:var(--primary);" id="home-wallet-pill">₹850 Balance</div>
@@ -373,7 +373,7 @@
 
         <!-- Promo Banner Carousel -->
         <div class="promo-banner" onclick="StudentApp.navigateTo('menu'); StudentApp.applyCouponCode('CAMPUS20');">
-          <span class="promo-tag">🔥 Today's Offer</span>
+          <span class="promo-tag"> Today's Offer</span>
           <div class="promo-title">20% OFF on Combo Meals</div>
           <div class="promo-code-badge">
             <span>CAMPUS20</span>
@@ -404,7 +404,7 @@
           <span class="section-title">Recommended for You</span>
           <label style="font-size:11.5px;display:flex;align-items:center;gap:4px;cursor:pointer;">
             <input type="checkbox" id="veg-only-filter">
-            <span>Veg Only 🟢</span>
+            <span>Veg Only </span>
           </label>
         </div>
 
@@ -420,17 +420,17 @@
       <div id="screen-menu" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Canteen Menu 🍽️</div>
+          <div class="screen-title">Canteen Menu ️</div>
           <div style="width:24px;"></div>
         </div>
 
         <div class="menu-filter-bar">
           <div class="category-chips-row" style="padding:0;margin-bottom:8px;">
             <button class="cat-chip active" data-category="All">All Items</button>
-            <button class="cat-chip" data-category="Snacks">🥪 Snacks</button>
-            <button class="cat-chip" data-category="Meals">🍛 Meals</button>
-            <button class="cat-chip" data-category="Drinks">🥤 Drinks</button>
-            <button class="cat-chip" data-category="Desserts">🍰 Desserts</button>
+            <button class="cat-chip" data-category="Snacks"> Snacks</button>
+            <button class="cat-chip" data-category="Meals"> Meals</button>
+            <button class="cat-chip" data-category="Drinks"> Drinks</button>
+            <button class="cat-chip" data-category="Desserts"> Desserts</button>
           </div>
         </div>
 
@@ -445,7 +445,7 @@
       <div id="screen-crowd-meter" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Crowding Radar 📡</div>
+          <div class="screen-title">Crowding Radar </div>
           <div style="width:24px;"></div>
         </div>
 
@@ -462,9 +462,9 @@
             </div>
 
             <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748B;font-weight:600;">
-              <span>🟢 Low (0-5m)</span>
-              <span>🟡 Moderate (5-12m)</span>
-              <span>🔴 Peak Rush (15m+)</span>
+              <span> Low (0-5m)</span>
+              <span> Moderate (5-12m)</span>
+              <span> Peak Rush (15m+)</span>
             </div>
           </div>
 
@@ -482,7 +482,7 @@
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F1F5F9;">
               <div>
                 <strong style="font-size:13px;display:block;">Counter 2: Digital Express Pickup</strong>
-                <span style="font-size:11px;color:#64748B;">CampusBite Pre-Orders Only ⚡</span>
+                <span style="font-size:11px;color:#64748B;">CampusBite Pre-Orders Only </span>
               </div>
               <span style="font-size:12px;font-weight:700;color:#10B981;background:#ECFDF5;padding:4px 8px;border-radius:8px;">~1.5 mins</span>
             </div>
@@ -498,7 +498,7 @@
 
           <div style="margin-top:16px;background:linear-gradient(135deg,#EFF6FF 0%,#DBEAFE 100%);border-radius:18px;padding:14px;border:1px solid #BFDBFE;">
             <div style="display:flex;gap:10px;align-items:flex-start;">
-              <span style="font-size:22px;">💡</span>
+              <span style="font-size:22px;"></span>
               <div>
                 <strong style="font-size:12.5px;color:#1E3A8A;display:block;">Pro-Tip for Break Time:</strong>
                 <p style="font-size:11.5px;color:#1E40AF;margin:2px 0 0;line-height:1.4;">
@@ -516,7 +516,7 @@
       <div id="screen-wallet" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">CampusPay Wallet 💳</div>
+          <div class="screen-title">CampusPay Wallet </div>
           <div style="width:24px;"></div>
         </div>
 
@@ -528,7 +528,7 @@
                 <span style="font-size:11px;letter-spacing:1px;opacity:0.8;text-transform:uppercase;">Student Dining Pass</span>
                 <div style="font-size:16px;font-weight:800;margin-top:2px;">CAMPUSPAY DIGITAL</div>
               </div>
-              <span style="font-size:24px;">⚡</span>
+              <span style="font-size:24px;"></span>
             </div>
 
             <div style="margin:20px 0 10px;">
@@ -541,7 +541,7 @@
                 <span>Cardholder: <strong>Jaswant Karun</strong></span><br>
                 <span>ID: CB-2024-2028 • CSBS</span>
               </div>
-              <div style="font-size:18px;">🍃 RFID Active</div>
+              <div style="font-size:18px;"> RFID Active</div>
             </div>
           </div>
 
@@ -577,7 +577,7 @@
       <div id="screen-cart" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Your Cart 🛒</div>
+          <div class="screen-title">Your Cart </div>
           <div style="width:24px;"></div>
         </div>
 
@@ -644,7 +644,7 @@
       <div id="screen-checkout" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('cart')">←</button>
-          <div class="screen-title">Checkout & Pickup 📍</div>
+          <div class="screen-title">Checkout & Pickup </div>
           <div style="width:24px;"></div>
         </div>
 
@@ -659,7 +659,7 @@
                 <input type="radio" name="pickup-slot" value="12:30 PM – 12:40 PM" checked onchange="StudentApp.selectedPickupSlot = this.value">
                 <div>
                   <strong>Next Break: 12:30 PM – 12:40 PM</strong>
-                  <span style="display:block;font-size:11px;color:#10B981;">🟢 Fast Track Pickup (Recommended)</span>
+                  <span style="display:block;font-size:11px;color:#10B981;"> Fast Track Pickup (Recommended)</span>
                 </div>
               </label>
 
@@ -675,7 +675,7 @@
                 <input type="radio" name="pickup-slot" value="01:00 PM – 01:15 PM" onchange="StudentApp.selectedPickupSlot = this.value">
                 <div>
                   <strong>01:00 PM – 01:15 PM (Lunch Window)</strong>
-                  <span style="display:block;font-size:11px;color:#F59E0B;">🟡 Moderate crowd expected</span>
+                  <span style="display:block;font-size:11px;color:#F59E0B;"> Moderate crowd expected</span>
                 </div>
               </label>
             </div>
@@ -683,7 +683,7 @@
 
           <!-- Payment Options -->
           <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:16px;">
-            <strong style="font-size:13.5px;display:block;margin-bottom:12px;">Select Payment Method 💳</strong>
+            <strong style="font-size:13.5px;display:block;margin-bottom:12px;">Select Payment Method </strong>
 
             <div style="display:flex;flex-direction:column;gap:10px;">
               <label class="payment-method-card active" onclick="StudentApp.selectPaymentMethod('CampusPay')">
@@ -692,7 +692,7 @@
                   <strong style="font-size:13px;display:block;">CampusPay Digital Wallet (1-Tap)</strong>
                   <span style="font-size:11px;color:#64748B;">Instant debit from your ₹850 balance</span>
                 </div>
-                <span style="font-size:22px;">💳</span>
+                <span style="font-size:22px;"></span>
               </label>
 
               <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('UPI')">
@@ -701,7 +701,7 @@
                   <strong style="font-size:13px;display:block;">Simulated UPI QR (GPay / PhonePe)</strong>
                   <span style="font-size:11px;color:#64748B;">Interactive QR code simulation</span>
                 </div>
-                <span style="font-size:22px;">📱</span>
+                <span style="font-size:22px;"></span>
               </label>
 
               <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('Cash')">
@@ -710,7 +710,7 @@
                   <strong style="font-size:13px;display:block;">Cash on Pickup</strong>
                   <span style="font-size:11px;color:#64748B;">Pay physical cash at Counter 2</span>
                 </div>
-                <span style="font-size:22px;">💵</span>
+                <span style="font-size:22px;"></span>
               </label>
             </div>
           </div>
@@ -728,7 +728,7 @@
            ==================================================================== -->
       <div id="screen-confirmation" class="mob-screen">
         <div style="padding:28px 18px;text-align:center;">
-          <div class="confirm-icon-pulse">✅</div>
+          <div class="confirm-icon-pulse"></div>
           <h2 style="font-size:22px;color:#0F172A;margin:12px 0 4px;">Order Confirmed!</h2>
           <p style="font-size:12.5px;color:#64748B;margin-bottom:20px;">Sent to Canteen Kitchen & MongoDB</p>
 
@@ -737,12 +737,12 @@
             <span style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;">YOUR PICKUP TOKEN</span>
             <div class="token-number-hero" id="confirm-token-number">CB-402</div>
             <div style="font-size:12px;color:#64748B;" id="confirm-slot-time">Slot: 12:30 PM – 12:40 PM</div>
-            <div style="font-size:11px;color:#10B981;font-weight:700;margin-top:6px;">📍 Express Counter 2</div>
+            <div style="font-size:11px;color:#10B981;font-weight:700;margin-top:6px;"> Express Counter 2</div>
           </div>
 
           <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
             <button class="splash-btn" onclick="StudentApp.navigateTo('tracking')">
-              <span>Track Live Preparation Status 📡</span>
+              <span>Track Live Preparation Status </span>
             </button>
             <button class="outline-btn" onclick="StudentApp.navigateTo('home')">
               Back to Home Menu
@@ -757,7 +757,7 @@
       <div id="screen-tracking" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Live Order Tracking 📡</div>
+          <div class="screen-title">Live Order Tracking </div>
           <div style="width:24px;"></div>
         </div>
 
@@ -782,7 +782,7 @@
           <!-- Step-by-Step Progress Pipeline -->
           <div class="tracking-pipeline-wrap">
             <div class="track-step done">
-              <div class="track-step-icon">✓</div>
+              <div class="track-step-icon"></div>
               <div class="track-step-text">
                 <strong>Order Placed</strong>
                 <span>Persisted in MongoDB & payment verified</span>
@@ -790,7 +790,7 @@
             </div>
 
             <div class="track-step done">
-              <div class="track-step-icon">✓</div>
+              <div class="track-step-icon"></div>
               <div class="track-step-text">
                 <strong>Accepted by Canteen</strong>
                 <span>Kitchen assigned prep slot</span>
@@ -798,7 +798,7 @@
             </div>
 
             <div class="track-step active">
-              <div class="track-step-icon">🍳</div>
+              <div class="track-step-icon"></div>
               <div class="track-step-text">
                 <strong>Cooking & Packaging</strong>
                 <span>Chef preparing fresh batch</span>
@@ -806,7 +806,7 @@
             </div>
 
             <div class="track-step">
-              <div class="track-step-icon">🔔</div>
+              <div class="track-step-icon"></div>
               <div class="track-step-text">
                 <strong>Ready for Pickup</strong>
                 <span>Notification sent to phone</span>
@@ -830,17 +830,17 @@
       <div id="screen-profile" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">My Campus Profile 👤</div>
+          <div class="screen-title">My Campus Profile </div>
           <div style="width:24px;"></div>
         </div>
 
         <div style="padding:16px;">
           <!-- Profile Card -->
           <div class="profile-card-hero">
-            <div class="profile-avatar-big" id="profile-avatar-display">👨🎓</div>
+            <div class="profile-avatar-big" id="profile-avatar-display">ST</div>
             <h3 style="font-size:18px;margin:10px 0 2px;color:#0F172A;" id="profile-name-display">Jaswant Karun</h3>
             <span style="font-size:12px;color:#64748B;" id="profile-id-display">CB-2024-2028 • CSBS</span>
-            <div style="font-size:11.5px;color:#10B981;font-weight:700;margin-top:4px;" id="profile-phone-display">📱 87541 59344</div>
+            <div style="font-size:11.5px;color:#10B981;font-weight:700;margin-top:4px;" id="profile-phone-display"> 87541 59344</div>
           </div>
 
           <!-- Loyalty Points Box -->
@@ -851,7 +851,7 @@
                 <div style="font-size:26px;font-weight:900;color:#92400E;" id="profile-loyalty-pts">420 Pts</div>
                 <span style="font-size:11.5px;color:#B45309;">Earn 10 pts per ₹100 spent • Silver Tier</span>
               </div>
-              <span style="font-size:36px;">🏆</span>
+              <span style="font-size:36px;"></span>
             </div>
           </div>
 
@@ -863,7 +863,7 @@
             </div>
             <div style="padding:12px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.logout()">
               <span style="font-size:13px;font-weight:600;color:#EF4444;">Sign Out from Device</span>
-              <span style="color:#EF4444;">🚪</span>
+              <span style="color:#EF4444;"></span>
             </div>
           </div>
         </div>
@@ -874,32 +874,32 @@
     <!-- Mobile Bottom Navigation Bar -->
     <nav class="mobile-bottom-nav">
       <button class="nav-item active" data-screen="home" onclick="StudentApp.navigateTo('home')">
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon"></span>
         <span>Home</span>
       </button>
       <button class="nav-item" data-screen="menu" onclick="StudentApp.navigateTo('menu')">
-        <span class="nav-icon">🍔</span>
+        <span class="nav-icon"></span>
         <span>Menu</span>
       </button>
       <button class="nav-item" data-screen="crowd-meter" onclick="StudentApp.navigateTo('crowd-meter')">
-        <span class="nav-icon">🟢</span>
+        <span class="nav-icon"></span>
         <span>Radar</span>
       </button>
       <button class="nav-item" data-screen="wallet" onclick="StudentApp.navigateTo('wallet')">
-        <span class="nav-icon">💳</span>
+        <span class="nav-icon"></span>
         <span>Wallet</span>
       </button>
       <button class="nav-item" data-screen="cart" onclick="StudentApp.navigateTo('cart')">
-        <span class="nav-icon">🛒</span>
+        <span class="nav-icon"></span>
         <span>Cart</span>
         <span class="cart-badge-pill" id="mob-cart-badge" style="display:none;">0</span>
       </button>
       <button class="nav-item" data-screen="tracking" onclick="StudentApp.navigateTo('tracking')">
-        <span class="nav-icon">📍</span>
+        <span class="nav-icon"></span>
         <span>Track</span>
       </button>
       <button class="nav-item" data-screen="profile" onclick="StudentApp.navigateTo('profile')">
-        <span class="nav-icon">👤</span>
+        <span class="nav-icon"></span>
         <span>Profile</span>
       </button>
     </nav>
@@ -916,9 +916,9 @@
       <div class="form-group">
         <label class="form-label">Spice Level</label>
         <select class="form-input" id="cust-spice-select">
-          <option value="Mild">🌶️ Mild (Less spicy)</option>
-          <option value="Medium" selected>🌶️🌶️ Medium (Recommended)</option>
-          <option value="Extra Spicy">🌶️🌶️🌶️ Extra Spicy</option>
+          <option value="Mild">️ Mild (Less spicy)</option>
+          <option value="Medium" selected>️️ Medium (Recommended)</option>
+          <option value="Extra Spicy">️️️ Extra Spicy</option>
         </select>
       </div>
 
@@ -948,7 +948,7 @@
       <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">Scan with any campus UPI App</p>
 
       <div style="background:#F8FAFC;border:2px dashed #CBD5E1;border-radius:18px;padding:20px;display:inline-block;margin:0 auto 16px;">
-        <div style="font-size:64px;margin-bottom:8px;">📱</div>
+        <div style="font-size:64px;margin-bottom:8px;"></div>
         <div style="font-family:monospace;font-size:14px;font-weight:700;color:#0F172A;">UPI ID: campusbite@icici</div>
         <div style="font-size:18px;font-weight:900;color:var(--primary);margin-top:4px;" id="modal-upi-amount">₹0.00</div>
       </div>
@@ -964,7 +964,7 @@
     <div class="modal-window" style="max-width:440px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <span style="font-size:22px;">👤</span>
+        <span style="font-size:22px;"></span>
         <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Switch User Profile</h3>
       </div>
       <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
@@ -974,7 +974,7 @@
       <div class="profile-cards-grid" style="display:flex;flex-direction:column;gap:8px;">
         <div class="profile-select-card active" onclick="StudentApp.switchProfileById('u-101')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👨🎓</span>
+            <span class="profile-avatar-emoji">ST</span>
             <div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <strong style="font-size:13.5px;color:var(--text-primary);">Jaswant Karun</strong>
@@ -991,7 +991,7 @@
 
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-102')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👩🏫</span>
+            <span class="profile-avatar-emoji">FC</span>
             <div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <strong style="font-size:13.5px;color:var(--text-primary);">Dr. Priya Sundaram</strong>
@@ -1008,7 +1008,7 @@
 
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-103')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">🧑💼</span>
+            <span class="profile-avatar-emoji">SF</span>
             <div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <strong style="font-size:13.5px;color:var(--text-primary);">Karthik Raman</strong>
@@ -1025,7 +1025,7 @@
 
         <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-admin')">
           <div class="profile-card-left">
-            <span class="profile-avatar-emoji">👨💼</span>
+            <span class="profile-avatar-emoji">AD</span>
             <div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <strong style="font-size:13.5px;color:var(--text-primary);">Ramesh (Manager)</strong>
@@ -1047,7 +1047,7 @@
     <div class="modal-window" style="max-width:440px;">
       <button class="modal-close-btn">&times;</button>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <span style="font-size:22px;">🎁</span>
+        <span style="font-size:22px;"></span>
         <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Rewards Store</h3>
       </div>
       <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">
@@ -1059,7 +1059,7 @@
           <span style="font-size:10px;font-weight:800;color:#92400E;text-transform:uppercase;">Active Points:</span>
           <div style="font-size:18px;font-weight:900;color:#B45309;" id="store-active-points">429 Points</div>
         </div>
-        <span style="font-size:26px;">🏆</span>
+        <span style="font-size:26px;"></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:8px;">
@@ -1075,7 +1075,7 @@
 
         <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
           <div>
-            <strong style="font-size:12.5px;color:var(--text-primary);display:block;">Free Cold Coffee 🥤</strong>
+            <strong style="font-size:12.5px;color:var(--text-primary);display:block;">Free Cold Coffee </strong>
             <span style="font-size:11px;color:var(--text-muted);">Express Counter 3</span>
           </div>
           <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(200, 'FREECOFFEE', 40)" style="padding:4px 10px;font-size:11px;">

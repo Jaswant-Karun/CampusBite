@@ -89,7 +89,7 @@ const AdminApp = {
         document.getElementById('kpi-orders').textContent = data.kpis.today_orders;
         document.getElementById('kpi-customers').textContent = data.kpis.total_customers;
         document.getElementById('kpi-pending').textContent = data.kpis.pending_orders;
-        document.getElementById('kpi-rating').textContent = `${data.kpis.avg_rating} ★`;
+        document.getElementById('kpi-rating').textContent = `${data.kpis.avg_rating} / 5.0`;
         document.getElementById('kpi-low-stock').textContent = data.kpis.low_stock_count;
 
         // Update sidebar badges
@@ -137,7 +137,7 @@ const AdminApp = {
     if (!filtered.length) {
       container.innerHTML = `
         <div style="grid-column: 1/-1; text-align:center; padding:50px; background:var(--bg-card); border-radius:16px; border:1px solid var(--border-subtle); color:var(--text-muted);">
-          <div style="font-size:36px; margin-bottom:10px;">📋</div>
+          <div style="margin-bottom:10px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
           <h4>No orders in "${this.activeOrderFilter}" status</h4>
         </div>
       `;
@@ -166,8 +166,8 @@ const AdminApp = {
           </div>
 
           <div class="order-meta-info">
-            <div>👤 <strong>${order.customer_name}</strong> (${order.customer_phone || 'Student'})</div>
-            <div>📍 Pickup: <strong>Counter ${order.pickup_counter}</strong> • Slot: <strong>${order.pickup_slot}</strong></div>
+            <div><strong>${order.customer_name}</strong> (${order.customer_phone || 'Student'})</div>
+            <div>Pickup: <strong>Counter ${order.pickup_counter}</strong> • Slot: <strong>${order.pickup_slot}</strong></div>
           </div>
 
           <div class="order-items-box">
@@ -195,25 +195,25 @@ const AdminApp = {
       case 'Placed':
         return `
           <button class="stage-advance-btn btn-confirm" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Confirmed')">
-            ✓ Confirm
+            Confirm
           </button>
         `;
       case 'Confirmed':
         return `
           <button class="stage-advance-btn btn-preparing" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Preparing')">
-            🍳 Start Preparing
+            Start Preparing
           </button>
         `;
       case 'Preparing':
         return `
           <button class="stage-advance-btn btn-ready" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Ready')">
-            🔔 Mark Ready
+            Mark Ready
           </button>
         `;
       case 'Ready':
         return `
           <button class="stage-advance-btn btn-complete" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Completed')">
-            🏁 Complete Pickup
+            Complete Pickup
           </button>
         `;
       default:
@@ -257,23 +257,23 @@ const AdminApp = {
 
     tbody.innerHTML = this.products.map(p => {
       let badgeClass = 'available';
-      let badgeText = '🟢 Available';
+      let badgeText = 'Available';
       if (p.stock <= 2) {
         badgeClass = 'critical';
-        badgeText = '🔴 Critical';
+        badgeText = 'Critical';
       } else if (p.stock <= 10) {
         badgeClass = 'low';
-        badgeText = '🟡 Low Stock';
+        badgeText = 'Low Stock';
       }
 
       return `
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:24px;">${p.image_emoji || '🍲'}</span>
+              <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">${p.name.substring(0, 2).toUpperCase()}</span>
               <div>
                 <strong style="color:var(--text-primary);font-size:13.5px;">${p.name}</strong>
-                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ${p.prep_time || '5-8 mins'} ${p.is_veg ? '• 🟢 Veg' : '• 🔴 Non-Veg'}</div>
+                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ${p.prep_time || '5-8 mins'} ${p.is_veg ? '• Vegetarian' : '• Non-Vegetarian'}</div>
               </div>
             </div>
           </td>
@@ -320,10 +320,10 @@ const AdminApp = {
           <td style="text-align:right;">
             <div style="display:inline-flex;gap:6px;">
               <button class="btn-outline" onclick="AdminApp.openEditProductModal('${p.id}')" style="padding:4px 10px;font-size:11.5px;border-radius:6px;font-weight:600;" title="Full Dish & Price Details">
-                ✏️ Edit
+                Edit
               </button>
               <button class="btn-outline" onclick="AdminApp.deleteProduct('${p.id}')" style="padding:4px 8px;font-size:11.5px;border-radius:6px;color:#DC2626;border-color:rgba(220,38,38,0.3);" title="Remove Dish">
-                🗑️
+                Delete
               </button>
             </div>
           </td>
@@ -350,7 +350,7 @@ const AdminApp = {
       const res = await window.api.updateProduct(productId, { price: newPrice });
       if (res.success) {
         if (product) product.price = newPrice;
-        App.showToast(`✅ Price for ${product ? product.name : 'dish'} updated: ₹${oldPrice} ➔ ₹${newPrice}!`, 'success');
+        App.showToast(`Price for ${product ? product.name : 'dish'} updated: ₹${oldPrice} to ₹${newPrice}.`, 'success');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
         if (window.StudentApp) window.StudentApp.loadProducts();
@@ -372,7 +372,7 @@ const AdminApp = {
 
     document.getElementById('edit-prod-id').value = p.id;
     document.getElementById('edit-prod-name').value = p.name;
-    document.getElementById('edit-prod-emoji').value = p.image_emoji || '🍲';
+    document.getElementById('edit-prod-emoji').value = p.category || 'Meal';
     document.getElementById('edit-prod-category').value = p.category;
     document.getElementById('edit-prod-price').value = p.price;
     document.getElementById('edit-prod-stock').value = p.stock;
@@ -390,7 +390,7 @@ const AdminApp = {
 
     const productId = document.getElementById('edit-prod-id').value;
     const name = document.getElementById('edit-prod-name').value.trim();
-    const emoji = document.getElementById('edit-prod-emoji').value.trim() || '🍲';
+    const emoji = document.getElementById('edit-prod-emoji').value.trim() || 'Meal';
     const category = document.getElementById('edit-prod-category').value;
     const price = Number(document.getElementById('edit-prod-price').value);
     const stock = Number(document.getElementById('edit-prod-stock').value);
@@ -419,7 +419,7 @@ const AdminApp = {
 
       if (res.success) {
         App.closeModal('edit-product-modal');
-        App.showToast(`💾 Successfully saved changes for ${name} (₹${price})!`, 'success');
+        App.showToast(`Successfully saved changes for ${name} (₹${price}).`, 'success');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
         if (window.StudentApp) window.StudentApp.loadProducts();
@@ -468,7 +468,7 @@ const AdminApp = {
     const price = Number(document.getElementById('prod-price').value);
     const category = document.getElementById('prod-category').value;
     const stock = Number(document.getElementById('prod-stock').value) || 20;
-    const emoji = document.getElementById('prod-emoji')?.value?.trim() || '🍲';
+    const emoji = document.getElementById('prod-emoji')?.value?.trim() || 'Meal';
     const isVeg = document.getElementById('prod-is-veg').value === 'true';
     const prep = document.getElementById('prod-prep')?.value?.trim() || '5-8 mins';
     const desc = document.getElementById('prod-desc')?.value?.trim() || 'Freshly prepared at Campus Canteen';
@@ -493,7 +493,7 @@ const AdminApp = {
       if (res.success) {
         App.closeModal('add-product-modal');
         document.getElementById('add-product-form')?.reset();
-        App.showToast(`🎉 Added ${res.product.name} (₹${res.product.price}) to live menu!`, 'success');
+        App.showToast(`Added ${res.product.name} (₹${res.product.price}) to live menu.`, 'success');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
         if (window.StudentApp) window.StudentApp.loadProducts();
@@ -596,22 +596,22 @@ const AdminApp = {
             </div>
 
             <div class="prep-recommendation-box">
-              <span>⚠️</span>
+              
               <span><strong>Recommendation:</strong> ${pred.actionText}</span>
             </div>
 
             <p style="font-size:11.5px;color:var(--text-secondary);margin-top:8px;line-height:1.4;">
-              💡 <em>${pred.keyDriver}</em>
+              Key Driver: <em>${pred.keyDriver}</em>
             </p>
           </div>
 
           ${isDeficit ? `
             <button class="apply-prep-btn" onclick="AdminApp.applyDemandPrepPlan('${pred.productId}', ${pred.recommendedPrep})">
-              🍳 Accept Recommendation (+${pred.recommendedPrep} to Kitchen Sheet)
+              Accept Recommendation (+${pred.recommendedPrep} to Kitchen Sheet)
             </button>
           ` : `
             <div style="text-align:center;font-size:12px;color:var(--accent-emerald);font-weight:700;padding:6px;">
-              ✓ Stock Optimized
+              Stock Optimized
             </div>
           `}
         </div>
@@ -714,7 +714,7 @@ const AdminApp = {
                 <strong>${r.user_name}</strong>
                 <span style="font-size:11px;color:var(--text-muted);margin-left:6px;">Order #${r.order_id}</span>
               </div>
-              <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+              <div class="review-stars" style="font-weight:700;font-size:12px;color:#F59E0B;">${r.rating} / 5</div>
             </div>
             <p style="font-size:13px;color:var(--text-secondary);line-height:1.4;">"${r.comment}"</p>
             <div style="font-size:11px;color:var(--text-muted);display:flex;gap:12px;">
@@ -789,16 +789,16 @@ const AdminApp = {
       document.getElementById('scanned-order-status').textContent = (order.order_status || 'PLACED').toUpperCase();
       
       const itemsText = (order.items || []).map(i => `${i.name} × ${i.quantity}`).join(', ');
-      document.getElementById('scanned-order-items').textContent = `🍽️ ${itemsText} (Total: ₹${order.total_amount})`;
+      document.getElementById('scanned-order-items').textContent = `${itemsText} (Total: ₹${order.total_amount})`;
       
       const btn = document.getElementById('scanned-handover-btn');
       if (btn) {
         if (order.order_status === 'Completed') {
-          btn.textContent = '✓ Already Picked Up / Completed';
+          btn.textContent = 'Already Picked Up / Completed';
           btn.disabled = true;
           btn.style.opacity = '0.6';
         } else {
-          btn.textContent = '✅ Hand Over Tray & Complete Order';
+          btn.textContent = 'Hand Over Tray & Complete Order';
           btn.disabled = false;
           btn.style.opacity = '1';
         }
@@ -815,7 +815,7 @@ const AdminApp = {
       const res = await window.api.updateOrderStatus(orderId, 'Completed');
       if (res.success) {
         App.closeModal('admin-qr-scanner-modal');
-        App.showToast(`🎉 Order #${orderId} handed over and marked Completed!`, 'success');
+        App.showToast(`Order #${orderId} handed over and marked Completed.`, 'success');
         await this.loadOrders();
         await this.loadKPIsAndAnalytics();
       }
