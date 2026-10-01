@@ -31,14 +31,33 @@ const StudentApp = {
   currentStall: 'all',
   currentCategory: 'All',
   kineticWords: [
-    "Hot Fresh Meals 🍔",
-    "2-Min Break Bites ⚡",
-    "Group Bench Pooling 👥",
-    "Zero-Wait Pickup ⏱️",
-    "Study Brain Fuel 🧠"
+    "Hot Fresh Meals",
+    "2-Minute Break Bites",
+    "Group Bench Pooling",
+    "Zero-Wait Pickup",
+    "Chef-Crafted Campus Fuel"
   ],
   kineticIndex: 0,
   kineticTimer: null,
+
+  productPhotos: {
+    'p-1': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=320&q=80',
+    'p-2': 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=320&q=80',
+    'p-3': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=320&q=80',
+    'p-4': 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=320&q=80',
+    'p-5': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=320&q=80',
+    'p-6': 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=320&q=80',
+    'p-7': 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=320&q=80',
+    'p-8': 'https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=320&q=80',
+    'p-9': 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=320&q=80',
+    'p-10': 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=320&q=80',
+    'p-11': 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=320&q=80',
+    'p-12': 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=320&q=80',
+    'p-13': 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=320&q=80',
+    'p-14': 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=320&q=80',
+    'p-15': 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=320&q=80',
+    'p-16': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=320&q=80'
+  },
   groupPoolMembers: [
     { name: "Jaswant Karun (You • Host)", avatar: "👨‍🎓", item: "Classic Veg Burger", price: 80 },
     { name: "Priya Sundaram (Desk 2)", avatar: "👩‍🎓", item: "Cold Coffee with Ice Cream", price: 70 },
@@ -675,12 +694,18 @@ const StudentApp = {
     container.innerHTML = itemsToRender.map(item => {
       const inCart = this.cart.find(c => c.productId === item.id);
       const qty = inCart ? inCart.quantity : 0;
+      const photoUrl = this.productPhotos[item.id] || item.image_url;
 
       return `
         <div class="food-card-row" onclick="StudentApp.openCustomizationModal('${item.id}')">
-          <div class="food-emoji-wrap">
+          <div class="food-photo-wrap">
+            ${photoUrl ? `
+              <img src="${photoUrl}" alt="${item.name}" class="food-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="food-emoji-fallback" style="display:none;">${item.image_emoji}</div>
+            ` : `
+              <div class="food-emoji-fallback">${item.image_emoji}</div>
+            `}
             <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" title="${item.is_veg ? 'Pure Vegetarian' : 'Non-Vegetarian'}"></span>
-            ${item.image_emoji}
           </div>
           <div class="food-info-col" style="flex:1;">
             <div class="food-title">

@@ -166,85 +166,204 @@
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
               <div class="desktop-hero-badge" style="margin-bottom:0;">
                 <span class="live-sync-pulse-dot" style="background:#14B8A6;"></span>
-                <span>⚡ 10-MIN CLASS BREAK SYNC</span>
+                <span>AI BELL SYNCHRONIZATION</span>
               </div>
               <div class="hero-feature-pill-badge">
-                <span>🎓</span>
-                <span>UNIQUE: Study-Group Food Pooling</span>
+                <span>⚡</span>
+                <span>2-Minute Break Pre-Order</span>
               </div>
             </div>
 
             <h1 class="desktop-hero-title">
-              Skip The Long Queues.<br>
+              Skip Campus Queues.<br>
               Enjoy <span class="video-motion-text kinetic-word-flip" id="hero-kinetic-text">Hot Fresh Meals</span> On Time.
             </h1>
             <p class="desktop-hero-desc">
-              Pre-order during lecture, synchronized with the campus bell. Pool snacks with your lab bench, split with 1-tap UPI, and grab your tray at Counter 2 in under 2 minutes.
+              Synchronize food prep with your class bell schedule. Pool dishes with lab benchmates, split bills via dynamic UPI, and pick up your hot tray at Counter 2 in under 120 seconds.
             </p>
 
-            <!-- Unique Feature Quick Actions -->
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-              <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:10px 20px;font-size:13.5px;">
-                <span>🍔</span> Order For Next Break
+            <!-- Primary Action Buttons -->
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+              <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:11px 22px;font-size:13.5px;font-weight:800;">
+                Explore Today's Menu →
               </button>
-              <button class="btn-glass" onclick="CampusVoice.openVoiceModal()" style="padding:10px 16px;font-size:13px;border-color:rgba(45,212,191,0.55);background:rgba(20,184,166,0.18);color:#2DD4BF;font-weight:700;">
-                <span>🎙️</span> Voice AI (தமிழ் / Eng / हिंदी)
-                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">TRY</span>
+              <button class="btn-glass" onclick="CampusVoice.openVoiceModal()" style="padding:10px 18px;font-size:13px;border-color:rgba(45,212,191,0.55);background:rgba(20,184,166,0.14);color:#2DD4BF;font-weight:700;">
+                <span>🎙️</span> Voice AI Assistant
+                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">தமிழ் • Eng • हिंदी</span>
               </button>
-              <button class="btn-glass" onclick="CampusTimetable.openTimetableModal()" style="padding:10px 15px;font-size:12.5px;color:#FCD34D;border-color:rgba(252,211,77,0.45);background:rgba(245,158,11,0.12);">
-                <span>🔔</span> Bell Sync
-              </button>
-              <button class="btn-glass" onclick="CampusWheel.openWheelModal()" style="padding:10px 15px;font-size:12.5px;color:#F472B6;border-color:rgba(244,114,182,0.45);background:rgba(236,72,153,0.12);">
-                <span>🎡</span> Daily Spin 🎁
-              </button>
-              <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 16px;font-size:12.5px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.18);">
-                <span>👥</span> Bench Pool
-              </button>
-              <button class="btn-glass" onclick="StudentApp.openVsComparisonModal()" style="padding:10px 14px;font-size:12px;color:#CBD5E1;">
-                <span>⚡</span> vs Amazon
+              <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 16px;font-size:12.5px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.15);">
+                <span>👥</span> Study-Bench Pool
               </button>
             </div>
 
+            <!-- Sleek Feature Quick-Action Pills -->
             <div class="desktop-hero-metrics">
               <div class="desktop-metric-item" onclick="StudentApp.navigateTo('menu')" style="cursor:pointer;" title="Click to browse rapid break pickup menu">
                 <span class="icon">⏱️</span>
                 <span>2-Min Break Pickup</span>
               </div>
-              <div class="desktop-metric-item" onclick="StudentApp.openGroupPoolModal()" style="cursor:pointer;" title="Click to start study-bench pooling">
-                <span class="icon">👥</span>
-                <span>Bench Tray Pooling</span>
-              </div>
               <div class="desktop-metric-item" onclick="CampusTimetable.openTimetableModal()" style="cursor:pointer;" title="Click to view lecture bell sync">
                 <span class="icon">🔔</span>
-                <span>Bell-Ring AI Sync</span>
+                <span>Lecture Bell Sync</span>
+              </div>
+              <div class="desktop-metric-item" onclick="CampusUPI.openUpiModal(180, 'CB1024')" style="cursor:pointer;" title="Click to test dynamic UPI QR">
+                <span class="icon">💳</span>
+                <span>1-Tap Dynamic UPI</span>
               </div>
               <div class="desktop-metric-item" onclick="CampusWheel.openWheelModal()" style="cursor:pointer;" title="Click to spin and win mystery bento">
-                <span class="icon">🎡</span>
-                <span>Spin & Win Bento</span>
+                <span class="icon">🎁</span>
+                <span>Daily Wheel Drops</span>
+              </div>
+              <div class="desktop-metric-item" onclick="StudentApp.openVsComparisonModal()" style="cursor:pointer;" title="Click to view CampusBite vs Traditional Delivery">
+                <span class="icon">⚡</span>
+                <span>vs Amazon</span>
               </div>
             </div>
           </div>
 
-          <div class="desktop-hero-promo-card">
-            <span style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.5px;">🔥 Today's Campus Special</span>
-            <div style="font-size:18px;font-weight:800;color:white;margin:4px 0 6px;">20% OFF on All Combo Meals</div>
-            <p style="font-size:12px;color:#94A3B8;margin-bottom:12px;">Valid on orders above ₹100 for all university students & staff.</p>
-            <div class="combo-coupon-interactive-wrap" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1.5px dashed rgba(165,180,252,0.6);border-radius:12px;padding:6px 8px;transition:border-color 0.2s ease;">
+          <!-- Professional Hero Showcase Carousel -->
+          <div class="hero-slider-container">
+            <div class="hero-slider-showcase" id="hero-slider-showcase">
+              <div class="hero-slides-wrapper" id="hero-slides-wrapper">
+                
+                <!-- Slide 1: Chef's Special Feast Combo -->
+                <div class="hero-slide active" data-slide="0">
+                  <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80');"></div>
+                  <div class="hero-slide-overlay"></div>
+                  <div class="hero-slide-content">
+                    <div class="hero-slide-top-tags">
+                      <span class="slide-tag-pill teal">CHEF'S SPECIAL COMBO</span>
+                      <span class="slide-rating-pill">★ 4.9 (420+ reviews)</span>
+                    </div>
+                    <h3 class="hero-slide-title">Grand Canteen Feast</h3>
+                    <p class="hero-slide-subtitle">Cheese Burger Deluxe + Iced Cold Coffee + Warm Choco Lava Cake</p>
+                    <div class="hero-slide-meta">
+                      <span class="slide-meta-badge">⏱️ 8 mins prep</span>
+                      <span class="slide-meta-badge">🔥 520 kcal</span>
+                      <span class="slide-meta-badge save">Save ₹40</span>
+                    </div>
+                    <div class="hero-slide-footer">
+                      <div class="hero-slide-pricing">
+                        <span class="current-price">₹160</span>
+                        <span class="original-price">₹200</span>
+                      </div>
+                      <button class="slide-cta-btn" onclick="HeroSlider.addComboToTray(['p-2', 'p-6', 'p-11'])">
+                        <span>+</span> Add Feast to Tray
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2: Lecture-to-Break Hot Biryani -->
+                <div class="hero-slide" data-slide="1">
+                  <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80');"></div>
+                  <div class="hero-slide-overlay"></div>
+                  <div class="hero-slide-content">
+                    <div class="hero-slide-top-tags">
+                      <span class="slide-tag-pill amber">BELL-SYNC EXPRESS</span>
+                      <span class="slide-rating-pill">🔔 Counter 2 Pickup</span>
+                    </div>
+                    <h3 class="hero-slide-title">Lecture-to-Break Hot Biryani</h3>
+                    <p class="hero-slide-subtitle">Pre-warmed on grills 2 mins before class bell rings</p>
+                    <div class="hero-slide-meta">
+                      <span class="slide-meta-badge">⏱️ 2-Min Break Slot</span>
+                      <span class="slide-meta-badge">🔥 Fresh & Steaming</span>
+                      <span class="slide-meta-badge save">Save ₹20</span>
+                    </div>
+                    <div class="hero-slide-footer">
+                      <div class="hero-slide-pricing">
+                        <span class="current-price">₹120</span>
+                        <span class="original-price">₹140</span>
+                      </div>
+                      <button class="slide-cta-btn" onclick="CampusTimetable.openTimetableModal()">
+                        Sync With Bell →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 3: Study-Bench Pooling Tray -->
+                <div class="hero-slide" data-slide="2">
+                  <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=80');"></div>
+                  <div class="hero-slide-overlay"></div>
+                  <div class="hero-slide-content">
+                    <div class="hero-slide-top-tags">
+                      <span class="slide-tag-pill indigo">BENCH POOLING TRAY</span>
+                      <span class="slide-rating-pill">👥 Up to 4 Friends</span>
+                    </div>
+                    <h3 class="hero-slide-title">Lab Bench Snacks & Chai</h3>
+                    <p class="hero-slide-subtitle">Pool food with benchmates & split bill seamlessly via UPI</p>
+                    <div class="hero-slide-meta">
+                      <span class="slide-meta-badge">☕ 3x Kadak Chai</span>
+                      <span class="slide-meta-badge">🥪 2x Veg Sandwich</span>
+                      <span class="slide-meta-badge save">15% Split Saver</span>
+                    </div>
+                    <div class="hero-slide-footer">
+                      <div class="hero-slide-pricing">
+                        <span class="current-price">₹70</span>
+                        <span class="original-price" style="font-size:12px;">/ person</span>
+                      </div>
+                      <button class="slide-cta-btn" onclick="StudentApp.openGroupPoolModal()">
+                        Start Bench Pool →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 4: Midnight Study Canteen & Mystery Bento -->
+                <div class="hero-slide" data-slide="3">
+                  <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80');"></div>
+                  <div class="hero-slide-overlay"></div>
+                  <div class="hero-slide-content">
+                    <div class="hero-slide-top-tags">
+                      <span class="slide-tag-pill pink">DAILY WHEEL DROPS</span>
+                      <span class="slide-rating-pill">🎁 100% Free Daily Spin</span>
+                    </div>
+                    <h3 class="hero-slide-title">Midnight Maggi & Mystery Bento</h3>
+                    <p class="hero-slide-subtitle">Spin today's campus wheel to unlock free cheese & mystery perks</p>
+                    <div class="hero-slide-meta">
+                      <span class="slide-meta-badge">🧀 Free Cheese</span>
+                      <span class="slide-meta-badge">⭐ +100 Points</span>
+                      <span class="slide-meta-badge save">₹20 OFF Voucher</span>
+                    </div>
+                    <div class="hero-slide-footer">
+                      <div class="hero-slide-pricing">
+                        <span class="current-price">Free Spin</span>
+                      </div>
+                      <button class="slide-cta-btn" onclick="CampusWheel.openWheelModal()">
+                        Spin Wheel Now →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Navigation Controls -->
+              <button class="hero-slider-nav-btn prev" onclick="HeroSlider.prevSlide()" aria-label="Previous Slide">‹</button>
+              <button class="hero-slider-nav-btn next" onclick="HeroSlider.nextSlide()" aria-label="Next Slide">›</button>
+
+              <!-- Progress Dots -->
+              <div class="hero-slider-dots" id="hero-slider-dots">
+                <div class="hero-slider-dot active" onclick="HeroSlider.goToSlide(0)"><span class="dot-progress"></span></div>
+                <div class="hero-slider-dot" onclick="HeroSlider.goToSlide(1)"><span class="dot-progress"></span></div>
+                <div class="hero-slider-dot" onclick="HeroSlider.goToSlide(2)"><span class="dot-progress"></span></div>
+                <div class="hero-slider-dot" onclick="HeroSlider.goToSlide(3)"><span class="dot-progress"></span></div>
+              </div>
+            </div>
+
+            <!-- Discreet Professional Coupon Strip -->
+            <div class="hero-promo-apply-strip">
+              <span style="font-size:12px;color:#94A3B8;">Promo Code:</span>
               <input 
                 type="text" 
                 id="hero-combo-coupon-input" 
                 value="CAMPUS20" 
-                placeholder="Enter coupon code..." 
-                title="Type or edit coupon code here"
-                style="flex:1;background:transparent;border:none;outline:none;color:#FFFFFF;font-family:var(--font-heading);font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;"
+                placeholder="Enter Code..." 
+                title="Enter coupon code"
                 onkeydown="if(event.key==='Enter') StudentApp.applyHeroCoupon()"
               >
-              <button 
-                id="hero-combo-apply-btn" 
-                onclick="StudentApp.applyHeroCoupon()" 
-                class="combo-apply-btn"
-                style="background:linear-gradient(135deg, var(--primary), #6366F1);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s ease;box-shadow:0 2px 8px rgba(79,70,229,0.35);white-space:nowrap;"
-              >
+              <button id="hero-combo-apply-btn" onclick="StudentApp.applyHeroCoupon()">
                 Apply Code
               </button>
             </div>
@@ -1878,6 +1997,7 @@
   <script src="js/timetable-sync.js"></script>
   <script src="js/upi-payment.js"></script>
   <script src="js/spin-wheel.js"></script>
+  <script src="js/hero-slider.js"></script>
   <script src="js/student.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/chatbot.js"></script>
