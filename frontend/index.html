@@ -32,13 +32,10 @@
       </div>
     </div>
 
-    <!-- View Mode Switcher: Desktop Web vs Mobile App vs Admin Hub -->
+    <!-- View Mode Switcher: Student Website vs Admin Operations Hub -->
     <div class="mode-switch-container">
-      <button class="mode-btn active" data-mode="desktop" id="btn-mode-desktop">
-        <span>🖥️</span> Desktop Portal
-      </button>
-      <button class="mode-btn" data-mode="mobile" id="btn-mode-mobile">
-        <span>📱</span> Mobile App View
+      <button class="mode-btn active" data-mode="student" id="btn-mode-student">
+        <span>🌐</span> Student Food Portal
       </button>
       <button class="mode-btn" data-mode="admin" id="btn-mode-admin">
         <span>👨💼</span> Admin Operations Hub
@@ -71,29 +68,11 @@
   <!-- ========================================================================
        VIEWPORT 1: STUDENT MOBILE & DESKTOP APPLICATION
        ======================================================================== -->
-  <main id="student-viewport-section" class="student-viewport-wrapper desktop-mode">
-    <div class="smartphone-frame">
-      
-      <!-- Device Speaker & Dynamic Notch -->
-      <div class="smartphone-notch">
-        <div class="notch-camera"></div>
-      </div>
+  <main id="student-viewport-section" class="student-viewport-wrapper">
+    <div class="website-content-wrapper">
 
-      <!-- Smartphone Internal Screen -->
-      <div class="smartphone-screen">
-
-        <!-- Mobile Status Bar (Visible in Mobile View Only) -->
-        <div class="mobile-status-bar">
-          <span>9:41</span>
-          <div class="status-bar-icons">
-            <span>5G</span>
-            <span>📶</span>
-            <span>100% 🔋</span>
-          </div>
-        </div>
-
-        <!-- Desktop Web App Navigation Header (Visible in Desktop Mode) -->
-        <header class="desktop-nav-header">
+      <!-- Web App Navigation Header -->
+      <header class="desktop-nav-header">
           <div style="display:flex;align-items:center;gap:16px;">
             <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="StudentApp.navigateTo('home')">
               <span style="font-size:24px;">🍔</span>
@@ -189,7 +168,7 @@
           <!-- ----------------------------------------------------------------
                SCREEN 1: MOTION TITLE INTRO SCREEN (FIRST PAGE AS REQUESTED)
                ---------------------------------------------------------------- -->
-          <div id="screen-motion-splash" class="mob-screen active">
+          <div id="screen-motion-splash" class="mob-screen">
             
             <!-- Floating Background Food Particles -->
             <div class="particle-cluster">
@@ -374,7 +353,7 @@
           <!-- ----------------------------------------------------------------
                SCREEN 3: HOME SCREEN
                ---------------------------------------------------------------- -->
-          <div id="screen-home" class="mob-screen">
+          <div id="screen-home" class="mob-screen active">
             <div class="home-top-bar">
               <div class="user-greeting">
                 <h3>Hi, Jaswant 👋</h3>
@@ -1057,8 +1036,7 @@
           </button>
         </nav>
 
-      </div> <!-- End .smartphone-screen -->
-    </div> <!-- End .smartphone-frame -->
+      </div> <!-- End .website-content-wrapper -->
   </main>
 
   <!-- ========================================================================

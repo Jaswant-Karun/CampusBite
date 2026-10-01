@@ -53,10 +53,8 @@ const App = {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#admin') {
       this.switchViewMode('admin');
-    } else if (hash === '#mobile') {
-      this.switchViewMode('mobile');
     } else {
-      this.switchViewMode('desktop');
+      this.switchViewMode('student');
     }
   },
 
@@ -64,7 +62,9 @@ const App = {
     this.currentView = mode;
 
     document.querySelectorAll('.mode-switch-container .mode-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.mode === mode);
+      const btnMode = btn.dataset.mode;
+      const isTarget = btnMode === mode || (mode === 'student' && btnMode === 'desktop');
+      btn.classList.toggle('active', isTarget);
     });
 
     const studentContainer = document.getElementById('student-viewport-section');
@@ -77,26 +77,16 @@ const App = {
       if (window.AdminApp) {
         window.AdminApp.loadAllData();
       }
-    } else if (mode === 'mobile') {
-      if (studentContainer) {
-        studentContainer.style.display = 'flex';
-        studentContainer.classList.remove('desktop-mode');
-        studentContainer.classList.add('mobile-mode');
-      }
-      if (adminContainer) adminContainer.style.display = 'none';
-      window.location.hash = 'mobile';
-      if (window.StudentApp) {
-        window.StudentApp.syncActiveView();
-      }
     } else {
-      // desktop mode
+      // Student Food Portal Website
       if (studentContainer) {
         studentContainer.style.display = 'flex';
         studentContainer.classList.add('desktop-mode');
-        studentContainer.classList.remove('mobile-mode');
       }
       if (adminContainer) adminContainer.style.display = 'none';
-      window.location.hash = 'desktop';
+      if (window.location.hash === '#admin') {
+        window.location.hash = '';
+      }
       if (window.StudentApp) {
         window.StudentApp.syncActiveView();
       }
