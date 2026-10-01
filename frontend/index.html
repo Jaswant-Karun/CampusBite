@@ -180,18 +180,18 @@
               <!-- Input Fields -->
               <div class="modern-input-wrap">
                 <span class="modern-input-icon">✉️</span>
-                <input type="text" id="auth-email-input" class="modern-input-field" placeholder="Campus Email or Student ID" value="jeswanth@campus.edu">
+                <input type="text" id="auth-email-input" class="modern-input-field" placeholder="Campus Email or Student ID" value="jaswant@campus.edu">
               </div>
 
               <!-- Registration Extra Fields (Hidden by default) -->
               <div id="auth-register-extra-fields" style="display:none;">
                 <div class="modern-input-wrap">
                   <span class="modern-input-icon">👤</span>
-                  <input type="text" id="auth-name-input" class="modern-input-field" placeholder="Full Student Name">
+                  <input type="text" id="auth-name-input" class="modern-input-field" placeholder="Full Student Name" value="Jaswant Karun">
                 </div>
                 <div class="modern-input-wrap">
                   <span class="modern-input-icon">🏫</span>
-                  <input type="text" id="auth-dept-input" class="modern-input-field" placeholder="Department / Branch">
+                  <input type="text" id="auth-dept-input" class="modern-input-field" placeholder="Department / Branch" value="Computer Science & Business Systems">
                 </div>
               </div>
 
@@ -222,10 +222,10 @@
                 <div class="quick-demo-heading">
                   <span>⚡</span> 1-Tap Quick Demo Credentials:
                 </div>
-                <button class="quick-chip-btn" onclick="StudentApp.quickLogin('student', 'jeswanth@campus.edu')">
+                <button class="quick-chip-btn" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
                   <div>
-                    <strong>Jeshwanth Karun</strong>
-                    <div style="font-size:10.5px;color:#64748B;">Student • CS Dept</div>
+                    <strong>Jaswant Karun</strong>
+                    <div style="font-size:10.5px;color:#64748B;">Student • CB-2024-2028 • CS & Business Systems</div>
                   </div>
                   <span class="quick-chip-badge">⭐ 420 Pts</span>
                 </button>
@@ -242,11 +242,11 @@
               <!-- Campus SSO Options -->
               <div class="sso-divider-row">OR SIGN IN VIA CAMPUS SSO</div>
 
-              <button class="sso-button" onclick="StudentApp.quickLogin('student', 'jeswanth@campus.edu')">
+              <button class="sso-button" onclick="StudentApp.quickLogin('student', 'jaswant@campus.edu')">
                 <span>🌐</span> Sign In with University Google SSO
               </button>
 
-              <button class="sso-button" onclick="App.showToast('Barcode NFC scanner active. Simulating ID tap...', 'info'); setTimeout(() => StudentApp.quickLogin('student', 'jeswanth@campus.edu'), 600);">
+              <button class="sso-button" onclick="App.showToast('Barcode NFC scanner active. Simulating ID tap...', 'info'); setTimeout(() => StudentApp.quickLogin('student', 'jaswant@campus.edu'), 600);">
                 <span>🪪</span> Scan Student Physical ID Barcode
               </button>
             </div>
@@ -258,7 +258,7 @@
           <div id="screen-home" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Hi, Jeshwanth 👋</h3>
+                <h3>Hi, Jaswant 👋</h3>
                 <p>Campus Main Canteen • Open</p>
               </div>
               <div class="loyalty-chip" onclick="StudentApp.navigateTo('profile')">
@@ -443,8 +443,8 @@
               <div style="font-size:11px;opacity:0.8;">Available Dining Balance</div>
               <div class="wallet-balance-num" id="wallet-balance-display">₹850</div>
               <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:11px;opacity:0.9;">
-                <span>JESHWANTH KARUN</span>
-                <span>CB-2024-8841</span>
+                <span id="wallet-student-name">JASWANT KARUN</span>
+                <span id="wallet-student-id">CB-2024-2028</span>
               </div>
             </div>
 
@@ -793,8 +793,9 @@
             <div class="profile-card">
               <div class="profile-avatar-box">👨🎓</div>
               <div class="profile-info">
-                <h3 id="profile-user-name">Jeshwanth Karun</h3>
-                <p id="profile-user-id">CB-2024-8841 • Computer Science & Engg</p>
+                <h3 id="profile-user-name">Jaswant Karun</h3>
+                <p id="profile-user-id">CB-2024-2028 • Computer Science & Business Systems</p>
+                <p id="profile-user-phone" style="font-size:12px;color:#64748B;margin-top:2px;">📱 87541 59344</p>
                 <div style="display:inline-block;font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:999px;margin-top:4px;">
                   🥇 Gold Campus Diner
                 </div>

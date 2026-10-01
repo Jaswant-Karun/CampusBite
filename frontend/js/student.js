@@ -6,12 +6,12 @@
 const StudentApp = {
   currentUser: {
     id: "u-101",
-    name: "Jeshwanth Karun",
-    email: "jeswanth@campus.edu",
-    phone: "+91 98765 43210",
+    name: "Jaswant Karun",
+    email: "jaswant@campus.edu",
+    phone: "87541 59344",
     role: "student",
-    studentId: "CB-2024-8841",
-    department: "Computer Science & Engineering",
+    studentId: "CB-2024-2028",
+    department: "Computer Science & Business Systems",
     loyalty_points: 420,
     wallet_balance: 850,
     avatar: "👨🎓"
@@ -158,7 +158,7 @@ const StudentApp = {
 
     const emailInput = document.getElementById('auth-email-input');
     if (role === 'student' && emailInput) {
-      emailInput.value = 'jeswanth@campus.edu';
+      emailInput.value = 'jaswant@campus.edu';
     } else if (role === 'staff' && emailInput) {
       emailInput.value = 'kitchen@campusbite.com';
     } else if (role === 'admin' && emailInput) {
@@ -222,7 +222,7 @@ const StudentApp = {
       App.showToast('Logged in as Ramesh (Canteen Manager)', 'success');
       App.switchViewMode('admin');
     } else {
-      App.showToast(`Logged in as ${role === 'staff' ? 'Chef Raju (Kitchen)' : 'Jeshwanth (Student)'}`, 'success');
+      App.showToast(`Logged in as ${role === 'staff' ? 'Chef Raju (Kitchen)' : 'Jaswant (Student)'}`, 'success');
       this.navigateTo('home');
     }
   },
@@ -719,6 +719,10 @@ const StudentApp = {
     if (balanceElem) {
       balanceElem.textContent = `₹${this.currentUser.wallet_balance}`;
     }
+    const nameEl = document.getElementById('wallet-student-name');
+    if (nameEl) nameEl.textContent = this.currentUser.name.toUpperCase();
+    const idEl = document.getElementById('wallet-student-id');
+    if (idEl) idEl.textContent = this.currentUser.studentId;
   },
 
   topUpWallet(amount) {
@@ -734,6 +738,10 @@ const StudentApp = {
 
     document.getElementById('profile-user-name').textContent = this.currentUser.name;
     document.getElementById('profile-user-id').textContent = `${this.currentUser.studentId} • ${this.currentUser.department}`;
+    const phoneEl = document.getElementById('profile-user-phone');
+    if (phoneEl) {
+      phoneEl.textContent = `📱 ${this.currentUser.phone}`;
+    }
     document.getElementById('profile-loyalty-pts').textContent = this.currentUser.loyalty_points;
 
     try {

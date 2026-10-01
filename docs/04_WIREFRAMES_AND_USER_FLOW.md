@@ -98,15 +98,15 @@ This document specifies the wireframe specifications, interaction states, and us
 │  [ Sign In ]      [ Register ]       │
 │                                      │
 │  Campus Email / Phone                │
-│  [ jeswanth@campus.edu             ] │
+│  [ jaswant@campus.edu              ] │
 │                                      │
 │  Password                            │
 │  [ •••••••••                       ] │
 │                                      │
 │  [      LOGIN TO CAMPUSBITE       ]  │
 │                                      │
-│  💡 Demo Account: Jeshwanth (420 pts)│
-│  [ Continue as Jeshwanth ]           │
+│  💡 Demo Account: Jaswant (420 pts)  │
+│  [ Continue as Jaswant ]             │
 └──────────────────────────────────────┘
 ```
 
@@ -115,7 +115,7 @@ This document specifies the wireframe specifications, interaction states, and us
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
-│  Hi, Jeshwanth 👋      ⭐ 420 pts    │
+│  Hi, Jaswant 👋        ⭐ 420 pts    │
 │  Campus Main Canteen • Open          │
 │                                      │
 │  🔍 [ Search food, meals, drinks... ]│
@@ -285,7 +285,8 @@ This document specifies the wireframe specifications, interaction states, and us
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
 │  My Campus Profile 👤                │
-│  Jeshwanth Karun • CS Dept           │
+│  Jaswant Karun • CB-2024-2028        │
+│  CS & Business Systems • 87541 59344 │
 │  🥇 Gold Campus Diner                │
 │                                      │
 │  ┌────────────────────────────────┐  │

@@ -5,7 +5,10 @@
 **Course:** E-Business Management  
 **Project Type:** B2C Mobile M-Commerce & Canteen Operations Platform  
 **Target Organization:** Campus Main Canteen  
-**Student Lead:** Jeshwanth Karun  
+**Student Name:** Jaswant Karun  
+**Student ID:** CB-2024-2028  
+**Department:** Computer Science & Business Systems  
+**Phone:** 87541 59344  
 
 ---
 
@@ -105,7 +108,7 @@ Unlike conventional food delivery systems, CampusBite provides **Predictive Busi
 
 ## 9. User Testing & Design Iterations
 The prototype was evaluated with 3 distinct campus users, producing measurable design evolutions:
-1. **User 1 (Student - Jeshwanth):** Requested advance pickup timing control $\rightarrow$ Added the 10-minute interval **Pickup Slot Selector**.
+1. **User 1 (Student - Jaswant):** Requested advance pickup timing control $\rightarrow$ Added the 10-minute interval **Pickup Slot Selector**.
 2. **User 2 (Student - Ananya):** Requested faster item discovery and dietary clarity $\rightarrow$ Implemented **Category Chips**, **Veg Only toggle**, and FSSAI dietary badges.
 3. **User 3 (Manager - Mr. Ramesh):** Requested reduced administrative friction during peak rush $\rightarrow$ Added **1-Click Order Advancement Buttons** and the **AI Kitchen Prep Advisor**.
 

@@ -10,11 +10,20 @@ router.post('/login', (req, res) => {
     return res.status(400).json({ success: false, message: 'Email or phone is required' });
   }
 
-  // Find user by email or phone
-  let user = db.data.users.find(u => 
-    u.email.toLowerCase() === email.toLowerCase() || 
-    (u.phone && u.phone.includes(email))
-  );
+  // Find user by email, studentId, or phone
+  const cleanInput = (email || '').trim().toLowerCase();
+  const digitsOnly = cleanInput.replace(/\D/g, '');
+
+  let user = db.data.users.find(u => {
+    if (u.email && u.email.toLowerCase() === cleanInput) return true;
+    if (u.alternate_email && u.alternate_email.toLowerCase() === cleanInput) return true;
+    if (u.studentId && u.studentId.toLowerCase() === cleanInput) return true;
+    if (u.phone) {
+      const uDigits = u.phone.replace(/\D/g, '');
+      if (digitsOnly && (uDigits.endsWith(digitsOnly) || digitsOnly.endsWith(uDigits))) return true;
+    }
+    return false;
+  });
 
   // If user not found, create a demo session for the selected role
   if (!user) {

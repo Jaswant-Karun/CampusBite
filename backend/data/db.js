@@ -13,12 +13,14 @@ const INITIAL_DATA = {
     {
       id: "u-101",
       name: "Jaswant Karun",
-      email: "24cb023@kpriet.ac.in",
-      phone: "+91 87541 59344",
+      email: "jaswant@campus.edu",
+      alternate_email: "24cb023@kpriet.ac.in",
+      phone: "87541 59344",
       role: "student",
       studentId: "CB-2024-2028",
       department: "Computer Science & Business Systems",
       loyalty_points: 420,
+      wallet_balance: 850,
       avatar: "👨🎓"
     },
     {
@@ -273,8 +275,8 @@ const INITIAL_DATA = {
     {
       id: "CB1024",
       user_id: "u-101",
-      customer_name: "Jeshwanth Karun",
-      customer_phone: "+91 98765 43210",
+      customer_name: "Jaswant Karun",
+      customer_phone: "87541 59344",
       items: [
         { product_id: "p-1", name: "Classic Burger", price: 80, quantity: 2 },
         { product_id: "p-5", name: "Fresh Lemon Juice", price: 40, quantity: 1 }
@@ -317,8 +319,8 @@ const INITIAL_DATA = {
     {
       id: "CB1026",
       user_id: "u-101",
-      customer_name: "Jeshwanth Karun",
-      customer_phone: "+91 98765 43210",
+      customer_name: "Jaswant Karun",
+      customer_phone: "87541 59344",
       items: [
         { product_id: "p-8", name: "South Indian Special Thali", price: 110, quantity: 2 }
       ],
@@ -338,8 +340,8 @@ const INITIAL_DATA = {
     {
       id: "CB1020",
       user_id: "u-101",
-      customer_name: "Jeshwanth Karun",
-      customer_phone: "+91 98765 43210",
+      customer_name: "Jaswant Karun",
+      customer_phone: "87541 59344",
       items: [
         { product_id: "p-2", name: "Cheese Burger Deluxe", price: 100, quantity: 1 },
         { product_id: "p-6", name: "Cold Coffee with Ice Cream", price: 70, quantity: 1 }
@@ -362,7 +364,7 @@ const INITIAL_DATA = {
     {
       id: "r-1",
       order_id: "CB1020",
-      user_name: "Jeshwanth Karun",
+      user_name: "Jaswant Karun",
       rating: 5,
       food_quality: 5,
       service_speed: 5,

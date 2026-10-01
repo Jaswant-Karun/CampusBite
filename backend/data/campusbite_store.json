@@ -4,11 +4,13 @@
       "id": "u-101",
       "name": "Jaswant Karun",
       "email": "jaswant@campus.edu",
-      "phone": "+91 87541 59344",
+      "alternate_email": "24cb023@kpriet.ac.in",
+      "phone": "87541 59344",
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Business Systems",
-      "loyalty_points": 436,
+      "loyalty_points": 420,
+      "wallet_balance": 850,
       "avatar": "👨🎓"
     },
     {
@@ -47,7 +49,7 @@
       "price": 80,
       "category": "Snacks",
       "image_emoji": "🍔",
-      "stock": 42,
+      "stock": 24,
       "is_available": true,
       "rating": 4.8,
       "prep_time": "8 mins",
@@ -107,7 +109,7 @@
       "price": 40,
       "category": "Drinks",
       "image_emoji": "🍋",
-      "stock": 1,
+      "stock": 2,
       "is_available": true,
       "rating": 4.5,
       "prep_time": "3 mins",
@@ -261,44 +263,10 @@
   ],
   "orders": [
     {
-      "id": "CB1031",
-      "user_id": "u-101",
-      "customer_name": "Jeshwanth Karun",
-      "customer_phone": "+91 98765 43210",
-      "items": [
-        {
-          "product_id": "p-1",
-          "name": "Classic Burger",
-          "price": 80,
-          "quantity": 2,
-          "image_emoji": "🍔"
-        },
-        {
-          "product_id": "p-5",
-          "name": "Fresh Lemon Juice",
-          "price": 40,
-          "quantity": 1,
-          "image_emoji": "🍋"
-        }
-      ],
-      "subtotal": 200,
-      "discount": 40,
-      "coupon_code": "CAMPUS20",
-      "total_amount": 160,
-      "payment_method": "UPI",
-      "payment_status": "Paid (Simulated)",
-      "order_status": "Ready",
-      "pickup_slot": "12:30 PM – 12:40 PM",
-      "pickup_counter": 2,
-      "created_at": "2026-10-01T04:20:53.329Z",
-      "updated_at": "2026-10-01T04:20:53.358Z",
-      "loyalty_points_earned": 16
-    },
-    {
       "id": "CB1024",
       "user_id": "u-101",
-      "customer_name": "Jeshwanth Karun",
-      "customer_phone": "+91 98765 43210",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
       "items": [
         {
           "product_id": "p-1",
@@ -322,8 +290,8 @@
       "order_status": "Ready",
       "pickup_slot": "12:30 PM - 12:40 PM",
       "pickup_counter": 2,
-      "created_at": "2026-10-01T04:01:17.497Z",
-      "updated_at": "2026-10-01T04:14:17.499Z",
+      "created_at": "2026-10-01T04:22:10.031Z",
+      "updated_at": "2026-10-01T04:35:10.032Z",
       "loyalty_points_earned": 18
     },
     {
@@ -354,15 +322,15 @@
       "order_status": "Preparing",
       "pickup_slot": "12:40 PM - 12:50 PM",
       "pickup_counter": 1,
-      "created_at": "2026-10-01T03:51:17.499Z",
-      "updated_at": "2026-10-01T04:06:17.499Z",
+      "created_at": "2026-10-01T04:12:10.032Z",
+      "updated_at": "2026-10-01T04:27:10.032Z",
       "loyalty_points_earned": 14
     },
     {
       "id": "CB1026",
       "user_id": "u-101",
-      "customer_name": "Jeshwanth Karun",
-      "customer_phone": "+91 98765 43210",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
       "items": [
         {
           "product_id": "p-8",
@@ -380,15 +348,15 @@
       "order_status": "Confirmed",
       "pickup_slot": "01:00 PM - 01:15 PM",
       "pickup_counter": 3,
-      "created_at": "2026-10-01T03:41:17.499Z",
-      "updated_at": "2026-10-01T03:56:17.499Z",
+      "created_at": "2026-10-01T04:02:10.032Z",
+      "updated_at": "2026-10-01T04:17:10.032Z",
       "loyalty_points_earned": 22
     },
     {
       "id": "CB1020",
       "user_id": "u-101",
-      "customer_name": "Jeshwanth Karun",
-      "customer_phone": "+91 98765 43210",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
       "items": [
         {
           "product_id": "p-2",
@@ -412,8 +380,8 @@
       "order_status": "Completed",
       "pickup_slot": "11:15 AM - 11:25 AM",
       "pickup_counter": 2,
-      "created_at": "2026-10-01T02:16:17.499Z",
-      "updated_at": "2026-10-01T02:41:17.499Z",
+      "created_at": "2026-10-01T02:37:10.032Z",
+      "updated_at": "2026-10-01T03:02:10.032Z",
       "loyalty_points_earned": 15
     }
   ],
@@ -421,13 +389,13 @@
     {
       "id": "r-1",
       "order_id": "CB1020",
-      "user_name": "Jeshwanth Karun",
+      "user_name": "Jaswant Karun",
       "rating": 5,
       "food_quality": 5,
       "service_speed": 5,
       "app_experience": 5,
       "comment": "Saved me 20 minutes before my Operating Systems lecture! The burger was hot and ready at Counter 2.",
-      "created_at": "2026-10-01T02:46:17.499Z"
+      "created_at": "2026-10-01T03:07:10.032Z"
     },
     {
       "id": "r-2",
@@ -438,7 +406,7 @@
       "service_speed": 5,
       "app_experience": 4,
       "comment": "Super convenient pickup slots. Cold coffee was fantastic!",
-      "created_at": "2026-10-01T01:16:17.499Z"
+      "created_at": "2026-10-01T01:37:10.032Z"
     },
     {
       "id": "r-3",
@@ -449,25 +417,17 @@
       "service_speed": 4,
       "app_experience": 5,
       "comment": "The UPI simulation and loyalty points make this feel like Zomato built for our college.",
-      "created_at": "2026-10-01T00:16:17.499Z"
+      "created_at": "2026-10-01T00:37:10.032Z"
     }
   ],
   "loyalty_transactions": [
-    {
-      "id": "lt-1790828453330",
-      "user_id": "u-101",
-      "points": 16,
-      "type": "earned",
-      "description": "Order #CB1031 purchase reward",
-      "date": "2026-10-01T04:20:53.329Z"
-    },
     {
       "id": "lt-1",
       "user_id": "u-101",
       "points": 15,
       "type": "earned",
       "description": "Order #CB1020 reward (10% back)",
-      "date": "2026-10-01T02:16:17.499Z"
+      "date": "2026-10-01T02:37:10.032Z"
     },
     {
       "id": "lt-2",
@@ -475,7 +435,7 @@
       "points": 18,
       "type": "earned",
       "description": "Order #CB1024 reward",
-      "date": "2026-10-01T04:01:17.499Z"
+      "date": "2026-10-01T04:22:10.032Z"
     },
     {
       "id": "lt-3",
@@ -483,14 +443,14 @@
       "points": -50,
       "type": "redeemed",
       "description": "Redeemed for ₹10 off coupon on last week's order",
-      "date": "2026-09-30T04:16:17.499Z"
+      "date": "2026-09-30T04:37:10.032Z"
     }
   ],
   "analytics": {
-    "today_revenue": 12610,
-    "today_orders": 187,
+    "today_revenue": 12450,
+    "today_orders": 186,
     "total_customers": 142,
-    "pending_orders": 24,
+    "pending_orders": 23,
     "avg_rating": 4.5,
     "ratings_breakdown": {
       "food_quality": 4.6,

@@ -4,7 +4,7 @@ As required by the assignment rubric, the prototype was subjected to user evalua
 
 ---
 
-## User 1: Jeshwanth Karun (3rd Year B.Tech CSE Student)
+## User 1: Jaswant Karun (Student ID: CB-2024-2028 | Computer Science & Business Systems | Ph: 87541 59344)
 - **Role:** High-frequency student patron.
 - **Task Tested:** Sign in, select lunch items, apply promo discount, and complete checkout.
 - **Direct User Feedback:**

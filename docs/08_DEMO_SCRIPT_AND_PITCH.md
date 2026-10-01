@@ -18,7 +18,7 @@ This timed presentation script is structured specifically for the 5-minute live 
 > **Presenter:**
 > *(Pointing to the Student Mobile Screen on `http://localhost:3000`)*
 > 
-> *"Here is our student interface. We log in as Jeshwanth Karun, a Computer Science student with 420 earned loyalty points.
+> *"Here is our student interface. We log in as Jaswant Karun (Student ID: CB-2024-2028, Phone: 87541 59344), a Computer Science & Business Systems student with 420 earned loyalty points.
 > 
 > 1. On the home screen, notice the real-time canteen status, search bar, and today's featured flash promotion: **CAMPUS20: 20% OFF**.
 > 2. With one click on categories, we browse our menu. We add a **Classic Burger (₹80)** and a **Fresh Lemon Juice (₹40)** to our cart.
