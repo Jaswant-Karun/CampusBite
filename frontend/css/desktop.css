@@ -110,6 +110,26 @@
   display: block;
 }
 
+/* Massive Laptop Website: Hide redundant mobile inline greeting and search bar */
+.student-viewport-wrapper .home-top-bar,
+.student-viewport-wrapper .search-bar-wrap,
+.student-viewport-wrapper #screen-home > div[style*="grid-template-columns:1fr 1fr"],
+.student-viewport-wrapper .promo-banner {
+  display: none !important;
+}
+
+/* Centered Auth Screen in Laptop Mode */
+#screen-login {
+  min-height: 70vh;
+  padding: 40px 20px;
+}
+
+#screen-login.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
 @keyframes fadeInScreen {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }

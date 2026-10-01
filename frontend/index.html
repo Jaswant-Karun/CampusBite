@@ -32,12 +32,15 @@
       </div>
     </div>
 
-    <!-- View Mode Switcher: Student Website vs Admin Operations Hub -->
+    <!-- View Mode Switcher: Laptop Website vs Mobile App vs Admin Operations Hub -->
     <div class="mode-switch-container">
-      <button class="mode-btn active" data-mode="student" id="btn-mode-student">
-        <span>🌐</span> Student Food Portal
+      <button class="mode-btn active" data-mode="student" id="btn-mode-student" title="Massive Laptop Web Experience">
+        <span>🖥️</span> Laptop Website
       </button>
-      <button class="mode-btn" data-mode="admin" id="btn-mode-admin">
+      <a href="/mobile" class="mode-btn" id="btn-mode-mobile" title="Open Mobile App View (Android Studio Ready)" style="text-decoration:none;">
+        <span>📱</span> Mobile App View
+      </a>
+      <button class="mode-btn" data-mode="admin" id="btn-mode-admin" title="Canteen Operations, Kitchen Kanban & BI">
         <span>👨💼</span> Admin Operations Hub
       </button>
     </div>
@@ -164,58 +167,6 @@
 
         <!-- Scrollable Screens Container -->
         <div class="mobile-screens-container">
-
-          <!-- ----------------------------------------------------------------
-               SCREEN 1: MOTION TITLE INTRO SCREEN (FIRST PAGE AS REQUESTED)
-               ---------------------------------------------------------------- -->
-          <div id="screen-motion-splash" class="mob-screen">
-            
-            <!-- Floating Background Food Particles -->
-            <div class="particle-cluster">
-              <span class="particle p1">🍕</span>
-              <span class="particle p2">🥤</span>
-              <span class="particle p3">🍛</span>
-              <span class="particle p4">🥪</span>
-              <span class="particle p5">🍰</span>
-            </div>
-
-            <div class="motion-title-hero">
-              <div class="motion-brand-symbol">
-                <span class="motion-logo-emoji">🍔</span>
-                <div class="motion-pulse-ring"></div>
-                <div class="motion-pulse-ring delay"></div>
-              </div>
-
-              <!-- Animated Kinetic Title in Stylish Font -->
-              <h1 class="motion-hero-title">CampusBite</h1>
-              <div class="motion-sub-tag">NEXT-GEN CAMPUS CANTEEN PLATFORM</div>
-              <p class="motion-caption">Order smart. Skip the queue. Enjoy hot food on time.</p>
-            </div>
-
-            <!-- Features Summary Banner -->
-            <div style="width:100%;margin-bottom:20px;display:flex;flex-direction:column;gap:8px;">
-              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:9px 14px;border-radius:14px;font-size:12px;display:flex;align-items:center;gap:10px;text-align:left;">
-                <span style="font-size:18px;">⚡</span>
-                <div>
-                  <strong>Pre-Order & Skip Queues</strong>
-                  <div style="font-size:10.5px;color:#94A3B8;">Collect in under 2 minutes at Counter 2</div>
-                </div>
-              </div>
-              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:9px 14px;border-radius:14px;font-size:12px;display:flex;align-items:center;gap:10px;text-align:left;">
-                <span style="font-size:18px;">🍃</span>
-                <div>
-                  <strong>Powered by MongoDB & AI</strong>
-                  <div style="font-size:10.5px;color:#94A3B8;">Predictive demand engine prevents food waste</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Action Button that transitions directly to the Login Page -->
-            <button class="motion-proceed-btn" onclick="StudentApp.navigateTo('login')">
-              <span>PROCEED TO SIGN IN</span>
-              <span class="arrow-motion">→</span>
-            </button>
-          </div>
 
           <!-- ----------------------------------------------------------------
                SCREEN 2: ATTRACTIVE DEDICATED SIGN IN & SIGN UP PAGE UI

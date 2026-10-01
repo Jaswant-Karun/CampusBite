@@ -1150,12 +1150,11 @@
    NEW: KINETIC MOTION TITLE INTRO SCREEN (#screen-motion-splash)
    ========================================================================== */
 #screen-motion-splash {
+  display: none;
   background: radial-gradient(circle at 50% 30%, #1E1B4B 0%, #0F172A 70%, #070A12 100%);
   color: white;
-  position: absolute;
-  inset: 0;
-  z-index: 100;
-  display: flex;
+  width: 100%;
+  min-height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
@@ -1163,6 +1162,10 @@
   text-align: center;
   border-radius: 36px;
   overflow: hidden;
+}
+
+#screen-motion-splash.active {
+  display: flex !important;
 }
 
 .motion-title-hero {

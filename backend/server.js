@@ -81,6 +81,19 @@ app.post('/api/reset-demo', async (req, res) => {
 const frontendPath = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
+// Dedicated View Routes
+app.get('/mobile', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'mobile.html'));
+});
+
+app.get('/desktop', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/admin', (req, res) => {
+  res.redirect('/#admin');
+});
+
 // Fallback to index.html for SPA routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
