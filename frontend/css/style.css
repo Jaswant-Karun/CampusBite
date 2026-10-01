@@ -176,38 +176,41 @@ h2 { font-weight: 600; }
   top: 0;
   z-index: 1000;
   background: var(--navy);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 10px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.15);
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .brand-logo-icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
   background: linear-gradient(135deg, var(--primary), #6366F1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+  font-size: 18px;
+  box-shadow: 0 2px 10px rgba(79, 70, 229, 0.4);
 }
 
 .brand-title {
   font-family: var(--font-heading);
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -215,155 +218,410 @@ h2 { font-weight: 600; }
 }
 
 .brand-tagline-badge {
-  font-size: 11px;
+  font-size: 10.5px;
   font-family: var(--font-body);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   color: #CBD5E1;
   border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .master-nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 
 .master-nav-links .desktop-nav-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: #CBD5E1;
-  border-radius: 8px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #E2E8F0;
+  border-radius: 999px;
   font-family: var(--font-body);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .master-nav-links .desktop-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
   color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.master-nav-links .desktop-nav-btn:active {
+  transform: scale(0.97);
 }
 
 .master-nav-links .desktop-nav-btn.active {
-  background: var(--primary, #4F46E5);
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%);
+  border: 1px solid rgba(165, 180, 252, 0.55);
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 7px;
+  flex-shrink: 0;
 }
 
+/* Transparent Glass Theme for Topbar Quick Actions */
 .theme-toggle-btn {
   background: rgba(255, 255, 255, 0.08);
-  color: #E2E8F0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 6px 12px;
-  border-radius: var(--radius-btn);
+  color: #F1F5F9;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 7px 13px;
+  border-radius: 999px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .theme-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
   color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
-/* ==========================================================================
-   BUTTON SPECIFICATION
-   ========================================================================== */
-/* Primary CTA button: Background #4F46E5, Text #FFFFFF, Radius 10px */
-.btn-primary,
-.cta-btn,
-.primary-btn {
-  background: var(--primary);
+.desktop-cart-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.9) 0%, rgba(99, 102, 241, 0.92) 100%);
+  border: 1px solid rgba(165, 180, 252, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-btn);
-  padding: 10px 20px;
-  font-family: var(--font-body);
-  font-size: 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.desktop-cart-quick-btn:hover {
+  background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+}
+
+.demo-trigger-btn {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #FDE68A;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.1);
+}
+
+.demo-trigger-btn:hover {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: rgba(251, 191, 36, 0.7);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+}
+
+.reset-btn {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.32);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #FECDD3;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.08);
+}
+
+.reset-btn:hover {
+  background: rgba(244, 63, 94, 0.25);
+  border-color: rgba(251, 113, 133, 0.6);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.28);
+}
+
+.user-account-top-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.user-account-top-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Transparent Glass Button System & Utilities */
+.btn-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #FFFFFF;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.btn-glass:active {
+  transform: scale(0.97);
+}
+
+.btn-glass-primary {
+  background: rgba(79, 70, 229, 0.12);
+  border: 1px solid rgba(79, 70, 229, 0.35);
+  color: #4F46E5;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glass-primary:hover {
+  background: #4F46E5;
+  border-color: #4F46E5;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+}
+
+.btn-glass-teal {
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  color: #0D9488;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glass-teal:hover {
+  background: #14B8A6;
+  border-color: #14B8A6;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.35);
+}
+
+/* ==========================================================================
+   BUTTON SPECIFICATION (Attractive Transparent & Translucent Glass Theme)
+   ========================================================================== */
+/* Primary CTA button: Translucent Glass Gradient CTA */
+.btn-primary,
+.cta-btn,
+.primary-btn {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary:hover,
 .cta-btn:hover,
 .primary-btn:hover {
-  background: var(--primary-hover);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
 }
 
-/* Secondary button: Background #EEF2FF, Text #4F46E5, Border none, Radius 10px */
+.btn-primary:active,
+.cta-btn:active,
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+/* Secondary button: Transparent Frosted Glass Button */
 .btn-secondary,
 .secondary-btn {
-  background: var(--primary-light);
+  background: rgba(79, 70, 229, 0.08);
   color: var(--primary);
-  border: none;
-  border-radius: var(--radius-btn);
-  padding: 10px 18px;
+  border: 1px solid rgba(79, 70, 229, 0.22);
+  border-radius: 12px;
+  padding: 10px 20px;
   font-family: var(--font-body);
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: var(--transition-fast);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-secondary:hover,
 .secondary-btn:hover {
-  background: #E0E7FF;
+  background: rgba(79, 70, 229, 0.16);
+  border-color: rgba(79, 70, 229, 0.45);
   color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
 }
 
-/* Success button: Background #14B8A6, Text #FFFFFF, Radius 10px */
+/* Success button: Translucent Emerald Glass */
 .btn-success,
 .success-btn {
-  background: var(--accent);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.95), rgba(13, 148, 136, 0.95));
   color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-btn);
-  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 10px 20px;
   font-family: var(--font-body);
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: var(--transition-fast);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-success:hover,
 .success-btn:hover {
   background: #0D9488;
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 8px 22px rgba(20, 184, 166, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Ghost / Outline Transparent Glass Button */
+.btn-outline,
+.outline-btn,
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-outline:hover,
+.outline-btn:hover,
+.btn-ghost:hover {
+  background: rgba(79, 70, 229, 0.1);
+  border-color: rgba(79, 70, 229, 0.4);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Toast Notifications */
@@ -449,21 +707,27 @@ h2 { font-weight: 600; }
   position: absolute;
   top: 18px;
   right: 18px;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-secondary);
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .modal-close-btn:hover {
-  background: #E2E8F0;
-  color: var(--text-primary);
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #DC2626;
+  transform: rotate(90deg) scale(1.08);
 }

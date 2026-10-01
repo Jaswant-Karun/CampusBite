@@ -44,28 +44,30 @@
   gap: 12px;
   padding: 10px 14px;
   border-radius: var(--radius-btn);
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
   color: #CBD5E1;
   font-family: var(--font-body);
   font-size: 13.5px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   text-align: left;
 }
 
 .sidebar-item-btn:hover {
   background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
   color: #FFFFFF;
+  transform: translateX(3px);
 }
 
 .sidebar-item-btn.active {
-  background: #4F46E5;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(99, 102, 241, 0.95));
+  border: 1px solid rgba(165, 180, 252, 0.5);
   color: #FFFFFF;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
-  border: none;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .sidebar-item-btn .sidebar-icon {
@@ -269,21 +271,34 @@
 }
 
 .order-filter-btn {
-  background: var(--bg-card);
+  background: rgba(255, 255, 255, 0.7);
   color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
-  padding: 6px 14px;
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
   border-radius: var(--radius-full);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.order-filter-btn:hover {
+  background: rgba(238, 242, 255, 0.9);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #4F46E5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
 }
 
 .order-filter-btn.active {
-  background: var(--primary);
+  background: linear-gradient(135deg, #172554, #1E1B4B);
   color: white;
-  border-color: var(--primary);
+  border-color: #172554;
+  box-shadow: 0 4px 14px rgba(23, 37, 84, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
 }
 
 .orders-grid-cards {
@@ -394,22 +409,30 @@
 }
 
 .stage-advance-btn {
-  padding: 7px 14px;
-  border: none;
-  border-radius: var(--radius-sm);
+  padding: 7px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: var(--transition-fast);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.btn-confirm { background: #6366F1; color: white; }
-.btn-preparing { background: #D97706; color: white; }
-.btn-ready { background: #059669; color: white; }
-.btn-complete { background: #475569; color: white; }
+.stage-advance-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+
+.btn-confirm { background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(79, 70, 229, 0.95)); border-color: rgba(165, 180, 252, 0.5); color: white; }
+.btn-preparing { background: linear-gradient(135deg, rgba(217, 119, 6, 0.95), rgba(180, 83, 9, 0.95)); border-color: rgba(251, 191, 36, 0.55); color: white; }
+.btn-ready { background: linear-gradient(135deg, rgba(5, 150, 105, 0.95), rgba(4, 120, 87, 0.95)); border-color: rgba(110, 231, 183, 0.55); color: white; }
+.btn-complete { background: linear-gradient(135deg, rgba(71, 85, 105, 0.95), rgba(51, 65, 85, 0.95)); border-color: rgba(148, 163, 184, 0.45); color: white; }
 
 /* ==========================================================================
    Tab 2: Inventory Management
@@ -737,16 +760,26 @@
 }
 
 .publish-offer-btn {
-  background: linear-gradient(135deg, var(--primary), #FF7A45);
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(99, 102, 241, 0.95));
   color: white;
-  border: none;
-  padding: 11px 18px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
   width: 100%;
   margin-top: 10px;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.publish-offer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+  background: linear-gradient(135deg, #4338CA, #4F46E5);
 }
 
 /* ==========================================================================
