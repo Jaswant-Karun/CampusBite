@@ -6,7 +6,7 @@ This document specifies the wireframe specifications, interaction states, and us
 
 ## 1. End-to-End System Navigation Flow
 
-```
+```text
 [ Motion Title Splash ] ───(Kinetic "CampusBite" Animated Display)
        │
        ▼
@@ -64,7 +64,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ## 2. Customer Wireframe Specifications
 
 ### Screen 1: Splash Screen
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -88,7 +89,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 2: Login / Authentication
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -111,7 +113,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 3: Home Screen
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -141,7 +144,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 4: Menu Screen
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -167,7 +171,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 5: Cart Screen
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -194,7 +199,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 6: Checkout Screen
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -216,7 +222,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 7: UPI Payment Gateway Modal
-```
+
+```text
 ┌──────────────────────────────────────┐
 │       Simulated UPI Gateway          │
 │                                      │
@@ -233,7 +240,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 8: Order Confirmation
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -253,7 +261,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 9: Live Order Tracking
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -280,7 +289,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ```
 
 ### Screen 10: Profile & Rewards CRM
-```
+
+```text
 ┌──────────────────────────────────────┐
 │  9:41                   5G 📶 100% 🔋│
 ├──────────────────────────────────────┤
@@ -304,7 +314,8 @@ This document specifies the wireframe specifications, interaction states, and us
 ---
 
 ## 3. Executive Admin Wireframe Layout
-```
+
+```text
 ┌────────────────────────────────────────────────────────────────────────┐
 │ CAMPUSBITE ADMIN       [● Canteen Active]     [+ Add Item] [🔄 Reset]  │
 ├──────────────┬─────────────────────────────────────────────────────────┤
