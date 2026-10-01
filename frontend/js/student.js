@@ -29,17 +29,36 @@ const StudentApp = {
   customizingProduct: null,
 
   init() {
+    try {
+      const savedUser = localStorage.getItem('campusbite_user');
+      if (savedUser) {
+        this.currentUser = { ...this.currentUser, ...JSON.parse(savedUser) };
+      }
+    } catch (e) {}
+
     this.bindEvents();
     this.loadProducts();
     this.updateCartBadge();
     this.refreshUserLoyalty();
     this.updateWalletUI();
+    this.updateUserInterfaceDetails();
+    this.renderDesktopCart();
   },
 
   bindEvents() {
-    // Bottom nav tabs
+    // Bottom nav tabs (mobile)
     document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
+        const targetScreen = btn.dataset.screen;
+        if (targetScreen) {
+          this.navigateTo(targetScreen);
+        }
+      });
+    });
+
+    // Desktop nav buttons
+    document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const targetScreen = btn.dataset.screen;
         if (targetScreen) {
           this.navigateTo(targetScreen);
@@ -101,11 +120,12 @@ const StudentApp = {
 
     // Update bottom nav highlighting
     document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
-      if (btn.dataset.screen === screenId) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.classList.toggle('active', btn.dataset.screen === screenId);
+    });
+
+    // Update desktop nav buttons
+    document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.screen === screenId);
     });
 
     // Bottom nav visibility: hide on motion-splash and login
@@ -118,6 +138,22 @@ const StudentApp = {
       }
     }
 
+    // Toggle Desktop Hero & Desktop 2-column Main Grid visibility
+    const desktopHero = document.querySelector('.desktop-hero-banner');
+    const desktopGrid = document.querySelector('.desktop-main-grid');
+    if (desktopHero && desktopGrid) {
+      if (['motion-splash', 'login'].includes(screenId)) {
+        desktopHero.style.display = 'none';
+        desktopGrid.style.display = 'none';
+      } else if (['home', 'menu'].includes(screenId)) {
+        desktopHero.style.display = 'flex';
+        desktopGrid.style.display = 'grid';
+      } else {
+        desktopHero.style.display = 'none';
+        desktopGrid.style.display = 'none';
+      }
+    }
+
     if (screenId === 'cart') {
       this.renderCart();
     } else if (screenId === 'profile') {
@@ -127,6 +163,8 @@ const StudentApp = {
     } else if (screenId === 'wallet') {
       this.updateWalletUI();
     }
+
+    this.renderDesktopCart();
   },
 
   // ==========================================
@@ -142,10 +180,10 @@ const StudentApp = {
     const registerFields = document.getElementById('auth-register-extra-fields');
 
     if (tab === 'signup') {
-      if (submitBtn) submitBtn.textContent = 'Create Student Account →';
+      if (submitBtn) submitBtn.innerHTML = '<span>Create Student Account</span> <span class="arrow-motion">→</span>';
       if (registerFields) registerFields.style.display = 'block';
     } else {
-      if (submitBtn) submitBtn.textContent = 'Sign In to CampusBite →';
+      if (submitBtn) submitBtn.innerHTML = '<span>Sign In to CampusBite</span> <span class="arrow-motion">→</span>';
       if (registerFields) registerFields.style.display = 'none';
     }
   },
@@ -181,50 +219,223 @@ const StudentApp = {
   },
 
   async handleAuthSubmit() {
-    const email = document.getElementById('auth-email-input').value;
+    const email = (document.getElementById('auth-email-input')?.value || '').trim();
+    const submitBtn = document.getElementById('auth-submit-btn');
     if (!email) {
       App.showToast('Please enter your campus email or phone', 'warning');
       return;
     }
 
-    try {
-      const res = await window.api.login({
-        email,
-        role: this.selectedAuthRole
-      });
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Authenticating...</span>';
+    }
 
-      if (res.success && res.user) {
+    try {
+      let res;
+      if (this.currentAuthTab === 'signup') {
+        const name = (document.getElementById('auth-name-input')?.value || 'Campus Student').trim();
+        const dept = (document.getElementById('auth-dept-input')?.value || 'Computer Science & Business Systems').trim();
+        res = await window.api.register({
+          name,
+          email,
+          phone: "87541 59344",
+          role: this.selectedAuthRole,
+          department: dept,
+          studentId: "CB-2024-" + Math.floor(1000 + Math.random() * 9000)
+        });
+      } else {
+        res = await window.api.login({
+          email,
+          role: this.selectedAuthRole
+        });
+      }
+
+      if (res && res.success && res.user) {
         this.currentUser = {
           ...this.currentUser,
           ...res.user
         };
 
-        App.showToast(`Welcome ${res.user.name}! Authenticated with MongoDB.`, 'success');
+        try {
+          localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+        } catch (e) {}
+
+        this.updateUserInterfaceDetails();
+        App.showToast(`Welcome, ${res.user.name}! Authenticated with MongoDB.`, 'success');
 
         if (this.selectedAuthRole === 'admin') {
           App.switchViewMode('admin');
         } else {
           this.navigateTo('home');
         }
+      } else {
+        App.showToast((res && res.message) || 'Authentication failed. Please check credentials.', 'error');
       }
     } catch (e) {
-      App.showToast('Sign in processed', 'info');
+      console.warn("Auth fallback", e);
+      // Fallback resilience
+      if (email.includes('admin')) {
+        this.currentUser.name = "Ramesh Canteen Manager";
+        this.currentUser.role = "admin";
+      } else {
+        this.currentUser.name = "Jaswant Karun";
+        this.currentUser.phone = "87541 59344";
+        this.currentUser.studentId = "CB-2024-2028";
+        this.currentUser.department = "Computer Science & Business Systems";
+      }
+      this.updateUserInterfaceDetails();
+      App.showToast(`Signed in as ${this.currentUser.name}`, 'success');
       this.navigateTo('home');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = this.currentAuthTab === 'signup' 
+          ? '<span>Create Student Account</span> <span class="arrow-motion">→</span>'
+          : '<span>Sign In to CampusBite</span> <span class="arrow-motion">→</span>';
+      }
     }
   },
 
-  quickLogin(role, email) {
+  async quickLogin(role, email) {
     this.selectAuthRole(role);
     const emailInput = document.getElementById('auth-email-input');
     if (emailInput) emailInput.value = email;
+
+    try {
+      const res = await window.api.login({ email, role });
+      if (res && res.success && res.user) {
+        this.currentUser = { ...this.currentUser, ...res.user };
+        try { localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser)); } catch (e) {}
+      }
+    } catch (e) {
+      if (email.includes('jaswant')) {
+        this.currentUser.name = "Jaswant Karun";
+        this.currentUser.phone = "87541 59344";
+        this.currentUser.studentId = "CB-2024-2028";
+        this.currentUser.department = "Computer Science & Business Systems";
+      }
+    }
+
+    this.updateUserInterfaceDetails();
 
     if (role === 'admin') {
       App.showToast('Logged in as Ramesh (Canteen Manager)', 'success');
       App.switchViewMode('admin');
     } else {
-      App.showToast(`Logged in as ${role === 'staff' ? 'Chef Raju (Kitchen)' : 'Jaswant (Student)'}`, 'success');
+      App.showToast(`Logged in as ${role === 'staff' ? 'Chef Raju (Kitchen Staff)' : 'Jaswant Karun (Student)'}`, 'success');
       this.navigateTo('home');
     }
+  },
+
+  updateUserInterfaceDetails() {
+    // 1. Home screen greeting
+    const greetingEl = document.querySelector('.user-greeting h3');
+    if (greetingEl) {
+      const firstName = (this.currentUser.name || 'Jaswant').split(' ')[0];
+      greetingEl.textContent = `Hi, ${firstName} 👋`;
+    }
+
+    // 2. Topbar user pill
+    const topPillName = document.getElementById('topbar-user-name');
+    if (topPillName) {
+      topPillName.textContent = this.currentUser.name;
+    }
+    const topPillId = document.getElementById('topbar-user-id');
+    if (topPillId && this.currentUser.studentId) {
+      topPillId.textContent = `${this.currentUser.studentId} • ${this.currentUser.department ? this.currentUser.department.split(' ')[0] : 'CSBS'}`;
+    }
+
+    // 3. Profile screen
+    const profName = document.getElementById('profile-user-name');
+    if (profName) profName.textContent = this.currentUser.name;
+    const profId = document.getElementById('profile-user-id');
+    if (profId) profId.textContent = `${this.currentUser.studentId || 'CB-2024-2028'} • ${this.currentUser.department || 'Computer Science & Business Systems'}`;
+    const profPhone = document.getElementById('profile-user-phone');
+    if (profPhone) profPhone.textContent = `📱 ${this.currentUser.phone || '87541 59344'}`;
+
+    // 4. Wallet Card
+    this.updateWalletUI();
+  },
+
+  // Desktop cart synchronization
+  renderDesktopCart() {
+    const container = document.getElementById('desktop-sidebar-cart-items');
+    const badge = document.getElementById('desktop-sidebar-cart-count');
+    const quickBtn = document.getElementById('desktop-nav-cart-btn-text');
+    const subtotalEl = document.getElementById('desktop-sidebar-subtotal');
+    const discountEl = document.getElementById('desktop-sidebar-discount');
+    const discountRow = document.getElementById('desktop-sidebar-discount-row');
+    const totalEl = document.getElementById('desktop-sidebar-total');
+    const checkoutBtn = document.getElementById('desktop-sidebar-checkout-btn');
+
+    const totalQty = this.cart.reduce((s, i) => s + i.quantity, 0);
+    if (badge) badge.textContent = `${totalQty} Item${totalQty === 1 ? '' : 's'}`;
+    if (quickBtn) quickBtn.textContent = `Cart (${totalQty})`;
+
+    const { subtotal, couponDiscount, loyaltyDiscount, total } = this.calculateCartBill();
+
+    if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+    if (discountEl && discountRow) {
+      const totalDisc = couponDiscount + loyaltyDiscount;
+      if (totalDisc > 0) {
+        discountRow.style.display = 'flex';
+        discountEl.textContent = `-₹${totalDisc}`;
+      } else {
+        discountRow.style.display = 'none';
+      }
+    }
+    if (totalEl) totalEl.textContent = `₹${total}`;
+    if (checkoutBtn) {
+      checkoutBtn.textContent = totalQty > 0 ? `Checkout (₹${total}) →` : 'Cart is Empty';
+      checkoutBtn.disabled = totalQty === 0;
+    }
+
+    if (!container) return;
+    if (!this.cart.length) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:24px 10px;color:#94A3B8;">
+          <span style="font-size:28px;display:block;margin-bottom:6px;">🍔</span>
+          <div style="font-size:12.5px;font-weight:600;">Your tray is empty</div>
+          <div style="font-size:11px;color:#64748B;margin-top:2px;">Add delicious campus meals from the menu</div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = this.cart.map(item => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">${item.image_emoji || '🍲'}</span>
+          <div>
+            <div style="font-size:12.5px;font-weight:700;color:#F8FAFC;">${item.name}</div>
+            <div style="font-size:11px;color:#94A3B8;">₹${item.price} × ${item.quantity}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;">-</button>
+          <span style="font-size:12px;font-weight:700;color:white;">${item.quantity}</span>
+          <button class="stepper-btn" onclick="StudentApp.addToCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;">+</button>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  applyDesktopCoupon() {
+    const input = document.getElementById('desktop-sidebar-coupon-input');
+    const code = input ? input.value.trim() : '';
+    if (!code) {
+      App.showToast('Please enter coupon code', 'warning');
+      return;
+    }
+    this.applyCouponCode(code);
+    this.renderDesktopCart();
+  },
+
+  syncActiveView() {
+    this.updateUserInterfaceDetails();
+    this.renderDesktopCart();
+    this.updateCartBadge();
   },
 
   // ==========================================
@@ -425,6 +636,7 @@ const StudentApp = {
 
     this.updateCartBadge();
     this.renderMenuList(this.products);
+    this.renderDesktopCart();
     App.closeModal('customization-modal');
     App.showToast(`Added ${this.customizingProduct.name} to cart!`, 'success');
   },
@@ -448,6 +660,7 @@ const StudentApp = {
 
     this.updateCartBadge();
     this.renderMenuList(this.products);
+    this.renderDesktopCart();
     App.showToast(`Added ${product.name} to cart!`, 'success');
   },
 
@@ -462,6 +675,7 @@ const StudentApp = {
 
     this.updateCartBadge();
     this.renderMenuList(this.products);
+    this.renderDesktopCart();
     if (document.getElementById('screen-cart').classList.contains('active')) {
       this.renderCart();
     }

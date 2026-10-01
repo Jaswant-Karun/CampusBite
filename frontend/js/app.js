@@ -53,8 +53,10 @@ const App = {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#admin') {
       this.switchViewMode('admin');
+    } else if (hash === '#mobile') {
+      this.switchViewMode('mobile');
     } else {
-      this.switchViewMode('student');
+      this.switchViewMode('desktop');
     }
   },
 
@@ -62,11 +64,7 @@ const App = {
     this.currentView = mode;
 
     document.querySelectorAll('.mode-switch-container .mode-btn').forEach(btn => {
-      if (btn.dataset.mode === mode) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.classList.toggle('active', btn.dataset.mode === mode);
     });
 
     const studentContainer = document.getElementById('student-viewport-section');
@@ -79,10 +77,29 @@ const App = {
       if (window.AdminApp) {
         window.AdminApp.loadAllData();
       }
-    } else {
-      if (studentContainer) studentContainer.style.display = 'flex';
+    } else if (mode === 'mobile') {
+      if (studentContainer) {
+        studentContainer.style.display = 'flex';
+        studentContainer.classList.remove('desktop-mode');
+        studentContainer.classList.add('mobile-mode');
+      }
       if (adminContainer) adminContainer.style.display = 'none';
-      window.location.hash = 'student';
+      window.location.hash = 'mobile';
+      if (window.StudentApp) {
+        window.StudentApp.syncActiveView();
+      }
+    } else {
+      // desktop mode
+      if (studentContainer) {
+        studentContainer.style.display = 'flex';
+        studentContainer.classList.add('desktop-mode');
+        studentContainer.classList.remove('mobile-mode');
+      }
+      if (adminContainer) adminContainer.style.display = 'none';
+      window.location.hash = 'desktop';
+      if (window.StudentApp) {
+        window.StudentApp.syncActiveView();
+      }
     }
   },
 
