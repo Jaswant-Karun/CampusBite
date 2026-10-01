@@ -28,6 +28,20 @@ const StudentApp = {
   products: [],
   customizingProduct: null,
   currentDietFilter: 'all',
+  kineticWords: [
+    "Hot Fresh Meals 🍔",
+    "2-Min Break Bites ⚡",
+    "Group Bench Pooling 👥",
+    "Zero-Wait Pickup ⏱️",
+    "Study Brain Fuel 🧠"
+  ],
+  kineticIndex: 0,
+  kineticTimer: null,
+  groupPoolMembers: [
+    { name: "Jaswant Karun (You • Host)", avatar: "👨‍🎓", item: "Classic Veg Burger", price: 80 },
+    { name: "Priya Sundaram (Desk 2)", avatar: "👩‍🎓", item: "Cold Coffee with Ice Cream", price: 70 },
+    { name: "Rahul Verma (Desk 3)", avatar: "👨‍💻", item: "Veg Grilled Sandwich", price: 60 }
+  ],
 
   profiles: [
     {
@@ -97,6 +111,7 @@ const StudentApp = {
     this.updateWalletUI();
     this.updateUserInterfaceDetails();
     this.renderDesktopCart();
+    this.initKineticTypography();
   },
 
   initTheme() {
@@ -1285,6 +1300,104 @@ const StudentApp = {
       }
     } catch (e) {
       App.showToast('Review submission failed', 'error');
+    }
+  },
+
+  /* Kinetic Video-Motion Typography Cycler */
+  initKineticTypography() {
+    const el = document.getElementById('hero-kinetic-text');
+    if (!el) return;
+    if (this.kineticTimer) clearInterval(this.kineticTimer);
+
+    this.kineticTimer = setInterval(() => {
+      this.kineticIndex = (this.kineticIndex + 1) % this.kineticWords.length;
+      el.classList.add('transitioning');
+      setTimeout(() => {
+        el.textContent = this.kineticWords[this.kineticIndex];
+        el.classList.remove('transitioning');
+      }, 250);
+    }, 2800);
+  },
+
+  /* Unique Feature 1: Study-Group Bench Food Pooling */
+  openGroupPoolModal() {
+    this.renderGroupPoolMembers();
+    App.openModal('group-pool-modal');
+  },
+
+  openVsComparisonModal() {
+    App.openModal('vs-comparison-modal');
+  },
+
+  copyBenchCode() {
+    const code = document.getElementById('group-pool-code')?.textContent || '#LAB-CSBS-B4';
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code).catch(() => {});
+    }
+    App.showToast(`Bench Code ${code} copied! Share with your lab table.`, 'success');
+  },
+
+  addItemToGroupPool() {
+    const sel = document.getElementById('group-pool-quick-select');
+    if (!sel) return;
+    const selectedText = sel.options[sel.selectedIndex]?.text || '';
+    const match = selectedText.match(/₹(\d+)/);
+    const price = match ? parseInt(match[1]) : 70;
+    const cleanName = selectedText.replace(/\(₹\d+\)/, '').trim();
+
+    this.groupPoolMembers.push({
+      name: `${this.currentUser.name} (Added item)`,
+      avatar: this.currentUser.avatar || '👨‍🎓',
+      item: cleanName,
+      price: price
+    });
+
+    this.renderGroupPoolMembers();
+    App.showToast(`Added ${cleanName} to Bench Pool Tray!`, 'success');
+  },
+
+  renderGroupPoolMembers() {
+    const container = document.getElementById('group-pool-members-list');
+    const totalEl = document.getElementById('group-pool-total-val');
+    const splitEl = document.getElementById('group-pool-split-val');
+    if (!container) return;
+
+    let total = 0;
+    container.innerHTML = this.groupPoolMembers.map(m => {
+      total += m.price;
+      return `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>${m.avatar}</span>
+            <div>
+              <strong style="font-size:12.5px;color:var(--text-primary);">${m.name}</strong>
+              <div style="font-size:11px;color:var(--text-muted);">Added: ${m.item} (₹${m.price})</div>
+            </div>
+          </div>
+          <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);">₹${m.price}</span>
+        </div>
+      `;
+    }).join('');
+
+    const count = Math.max(1, this.groupPoolMembers.length);
+    const split = Math.round(total / count);
+
+    if (totalEl) totalEl.textContent = `₹${total}`;
+    if (splitEl) splitEl.textContent = `₹${split} / person (${count} friends)`;
+  },
+
+  confirmGroupPoolOrder() {
+    const total = this.groupPoolMembers.reduce((sum, m) => sum + m.price, 0);
+    const split = Math.round(total / Math.max(1, this.groupPoolMembers.length));
+
+    App.closeModal('group-pool-modal');
+    App.showToast(`🎉 Group Bench Order Placed! Token #T-BENCH-402 ready at Counter 2. Your share ₹${split} paid!`, 'success');
+
+    if (window.NotificationHandler) {
+      window.NotificationHandler.showLocalNotification(
+        '👥 Bench Pool Order Confirmed!',
+        `Token #T-BENCH-402 ready for lab group at Counter 2. 1 person picks up for all.`
+      );
     }
   }
 };

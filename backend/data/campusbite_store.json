@@ -45,7 +45,7 @@
       "role": "admin",
       "studentId": "ADM-001",
       "department": "Campus Hospitality & Dining",
-      "loyalty_points": 2507,
+      "loyalty_points": 2519,
       "wallet_balance": 5000,
       "avatar": "👨💼"
     },
@@ -70,7 +70,7 @@
       "price": 80,
       "category": "Snacks",
       "image_emoji": "🍔",
-      "stock": 22,
+      "stock": 21,
       "is_available": true,
       "rating": 4.8,
       "prep_time": "8 mins",
@@ -145,7 +145,7 @@
       "price": 70,
       "category": "Drinks",
       "image_emoji": "🥤",
-      "stock": 39,
+      "stock": 38,
       "is_available": true,
       "rating": 4.9,
       "prep_time": "4 mins",
@@ -283,6 +283,40 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1034",
+      "user_id": "u-admin",
+      "customer_name": "Ramesh Canteen Manager",
+      "customer_phone": "+91 98765 00000",
+      "items": [
+        {
+          "product_id": "p-6",
+          "name": "Cold Coffee with Ice Cream",
+          "price": 70,
+          "quantity": 1,
+          "image_emoji": "🥤"
+        },
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 1,
+          "image_emoji": "🍔"
+        }
+      ],
+      "subtotal": 150,
+      "discount": 30,
+      "coupon_code": "CAMPUS20",
+      "total_amount": 120,
+      "payment_method": "UPI",
+      "payment_status": "Paid (Simulated)",
+      "order_status": "Completed",
+      "pickup_slot": "12:30 PM – 12:40 PM",
+      "pickup_counter": 2,
+      "created_at": "2026-10-01T15:41:30.499Z",
+      "updated_at": "2026-10-01T15:41:43.401Z",
+      "loyalty_points_earned": 12
+    },
     {
       "id": "CB1033",
       "user_id": "u-admin",
@@ -549,6 +583,14 @@
   ],
   "loyalty_transactions": [
     {
+      "id": "lt-1790869290500",
+      "user_id": "u-admin",
+      "points": 12,
+      "type": "earned",
+      "description": "Order #CB1034 purchase reward",
+      "date": "2026-10-01T15:41:30.499Z"
+    },
+    {
       "id": "lt-1790862265719",
       "user_id": "u-admin",
       "points": 7,
@@ -598,8 +640,8 @@
     }
   ],
   "analytics": {
-    "today_revenue": 12712,
-    "today_orders": 189,
+    "today_revenue": 12832,
+    "today_orders": 190,
     "total_customers": 142,
     "pending_orders": 20,
     "avg_rating": 4.8,

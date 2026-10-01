@@ -138,28 +138,55 @@
         <!-- Desktop Hero Banner (Visible in Desktop Mode on Home/Menu) -->
         <section class="desktop-hero-banner">
           <div class="desktop-hero-content">
-            <div class="desktop-hero-badge">
-              <span>⚡</span> INSTANT DIGITAL CANTEEN ORDERING
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+              <div class="desktop-hero-badge" style="margin-bottom:0;">
+                <span class="live-sync-pulse-dot" style="background:#14B8A6;"></span>
+                <span>⚡ 10-MIN CLASS BREAK SYNC</span>
+              </div>
+              <div class="hero-feature-pill-badge">
+                <span>🎓</span>
+                <span>UNIQUE: Study-Group Food Pooling</span>
+              </div>
             </div>
+
             <h1 class="desktop-hero-title">
               Skip The Long Queues.<br>
-              Enjoy <span>Hot Fresh Meals</span> On Time.
+              Enjoy <span class="video-motion-text kinetic-word-flip" id="hero-kinetic-text">Hot Fresh Meals</span> On Time.
             </h1>
             <p class="desktop-hero-desc">
-              Pre-order during class break, choose your pickup slot, pay securely via simulated UPI, and pick up your meal at Counter 2 in under 2 minutes.
+              Pre-order during lecture, synchronized with the campus bell. Pool snacks with your lab bench, split with 1-tap UPI, and grab your tray at Counter 2 in under 2 minutes.
             </p>
+
+            <!-- Unique Feature Quick Actions -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+              <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:10px 22px;font-size:13.5px;">
+                <span>🍔</span> Order For Next Break
+              </button>
+              <button class="btn-glass" onclick="StudentApp.openGroupPoolModal()" style="padding:10px 18px;font-size:13px;border-color:rgba(165,180,252,0.45);background:rgba(79,70,229,0.18);">
+                <span>👥</span> Start Bench Pool (Split Tray)
+                <span style="font-size:9.5px;background:#14B8A6;color:white;padding:2px 7px;border-radius:999px;font-weight:800;margin-left:4px;">NEW</span>
+              </button>
+              <button class="btn-glass" onclick="StudentApp.openVsComparisonModal()" style="padding:10px 16px;font-size:12.5px;color:#CBD5E1;">
+                <span>⚡</span> CampusBite vs Amazon
+              </button>
+            </div>
+
             <div class="desktop-hero-metrics">
               <div class="desktop-metric-item">
                 <span class="icon">⏱️</span>
-                <span>2-Min Average Pickup</span>
+                <span>2-Min Break Pickup</span>
               </div>
               <div class="desktop-metric-item">
-                <span class="icon">🥗</span>
-                <span>100% Fresh Daily Quality</span>
+                <span class="icon">👥</span>
+                <span>Bench Tray Pooling</span>
+              </div>
+              <div class="desktop-metric-item">
+                <span class="icon">🔔</span>
+                <span>Bell-Ring AI Sync</span>
               </div>
               <div class="desktop-metric-item">
                 <span class="icon">🍃</span>
-                <span>Zero Food Waste with AI</span>
+                <span>Zero Food Waste</span>
               </div>
             </div>
           </div>
@@ -364,6 +391,19 @@
                   <strong style="font-size:11.5px;color:#0F172A;">CampusPay Wallet</strong>
                   <div style="font-size:10px;color:var(--primary);" id="home-wallet-pill">₹850 Balance</div>
                 </div>
+              </div>
+              <div style="grid-column: span 2; background: linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(20,184,166,0.1) 100%); border: 1px solid rgba(79,70,229,0.25); border-radius: 14px; padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;" onclick="StudentApp.openGroupPoolModal()">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="font-size:22px;">👥</span>
+                  <div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <strong style="font-size:12px;color:var(--text-primary);">Group Bench Pool</strong>
+                      <span style="font-size:9.5px;background:#4F46E5;color:white;padding:1px 6px;border-radius:999px;font-weight:800;">EXCLUSIVE</span>
+                    </div>
+                    <div style="font-size:10.5px;color:var(--text-secondary);">Pool food with benchmates & split bill via UPI</div>
+                  </div>
+                </div>
+                <span style="font-size:14px;color:var(--primary);font-weight:800;">→</span>
               </div>
             </div>
 
@@ -1246,6 +1286,177 @@
           </button>
         </div>
       </div>
+    </div>
+
+  <!-- ========================================================================
+       UNIQUE FEATURE 1: GROUP BENCH POOLING (SPLIT TRAY & 1-TOKEN PICKUP)
+       ======================================================================== -->
+  <div class="modal-overlay" id="group-pool-modal">
+    <div class="modal-window" style="max-width:540px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <span style="font-size:26px;">👥</span>
+        <div>
+          <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Group Bench Food Pool</h3>
+          <span style="font-size:11px;font-weight:700;color:#14B8A6;text-transform:uppercase;">⭐ Unique Campus Feature • Not on Amazon / Flipkart</span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Sitting at a lecture bench or lab table? Pool your meals into <strong>1 collective tray</strong>, split the bill via UPI, and <strong>1 friend picks up for everyone</strong> at Counter 2!
+      </p>
+
+      <!-- Active Room Code Box -->
+      <div style="background:linear-gradient(135deg,rgba(79,70,229,0.08) 0%,rgba(99,102,241,0.12) 100%);border:1.5px dashed rgba(79,70,229,0.35);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div>
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Classroom Bench Pool Code:</span>
+          <div style="font-family:var(--font-heading);font-size:22px;font-weight:900;color:var(--primary);letter-spacing:1px;" id="group-pool-code">#LAB-CSBS-B4</div>
+        </div>
+        <button class="btn-glass" onclick="StudentApp.copyBenchCode()" style="padding:6px 14px;font-size:12px;background:rgba(79,70,229,0.12);color:var(--primary);border-color:rgba(79,70,229,0.3);">
+          📋 Copy Code
+        </button>
+      </div>
+
+      <!-- Connected Classmates List -->
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:8px;display:flex;justify-content:space-between;">
+          <span>Classmates at Your Bench (3 Active):</span>
+          <span style="color:#10B981;font-weight:800;">● Live Connected</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="group-pool-members-list">
+          <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span>👨‍🎓</span>
+              <div>
+                <strong style="font-size:12.5px;color:var(--text-primary);">Jaswant Karun (You • Host)</strong>
+                <div style="font-size:11px;color:var(--text-muted);">Added: Classic Veg Burger (₹80)</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);">₹80</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span>👩‍🎓</span>
+              <div>
+                <strong style="font-size:12.5px;color:var(--text-primary);">Priya Sundaram (Desk 2)</strong>
+                <div style="font-size:11px;color:var(--text-muted);">Added: Cold Coffee with Ice Cream (₹70)</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);">₹70</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span>👨‍💻</span>
+              <div>
+                <strong style="font-size:12.5px;color:var(--text-primary);">Rahul Verma (Desk 3)</strong>
+                <div style="font-size:11px;color:var(--text-muted);">Added: Veg Grilled Sandwich (₹60)</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);">₹60</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Add Item to Pooled Tray -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <select id="group-pool-quick-select" style="flex:1;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text-primary);">
+          <option value="p-1">🍔 Classic Burger Deluxe (₹80)</option>
+          <option value="p-3">🥪 Veg Grilled Sandwich (₹60)</option>
+          <option value="p-5">🥤 Cold Coffee (₹70)</option>
+          <option value="p-6">🍰 Chocolate Brownie (₹90)</option>
+        </select>
+        <button class="add-mini-btn" onclick="StudentApp.addItemToGroupPool()" style="padding:8px 16px;">
+          + Add to Bench Tray
+        </button>
+      </div>
+
+      <!-- Pooled Bill & 1-Tap Split -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 16px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+          <span style="color:var(--text-secondary);">Total Pooled Tray Bill (3 Items):</span>
+          <strong style="color:var(--text-primary);" id="group-pool-total-val">₹210</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#10B981;font-weight:700;">
+          <span>Equal Split (3 Friends):</span>
+          <span id="group-pool-split-val">₹70 / person</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+          ⚡ Token <strong>#T-BENCH-402</strong> prepared together at Counter 2. 1 person picks up for all 3!
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn-primary" onclick="StudentApp.confirmGroupPoolOrder()" style="flex:1;padding:12px;">
+          Pay My Share (₹70) & Place Bench Order →
+        </button>
+        <button class="btn-outline" onclick="App.closeModal('group-pool-modal')" style="padding:12px 18px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       UNIQUE FEATURE 2: CAMPUSBITE VS AMAZON & FLIPKART COMPARISON MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="vs-comparison-modal">
+    <div class="modal-window" style="max-width:560px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:26px;">⚡</span>
+        <div>
+          <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Why CampusBite is Unique</h3>
+          <span style="font-size:11.5px;color:var(--primary);font-weight:700;">CampusBite vs Generic E-Commerce (Amazon & Flipkart)</span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:16px;">
+        Generic e-commerce platforms are built for days-long shipping. CampusBite is engineered natively for high-speed university life:
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="font-size:13px;color:var(--text-primary);">⏱️ 2-Minute Break Pickup vs 2-3 Day Courier</strong>
+            <span style="font-size:10px;background:#CCFBF1;color:#0F766E;padding:2px 8px;border-radius:999px;font-weight:800;">100x Faster</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
+            Amazon/Flipkart ship in 2-3 days via vans. CampusBite pre-warms your meal at Counter 2 so you pick up in under 120 seconds between lectures.
+          </p>
+        </div>
+
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="font-size:13px;color:var(--text-primary);">👥 Study-Group Bench Food Pooling</strong>
+            <span style="font-size:10px;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:999px;font-weight:800;">Exclusive</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
+            Amazon only does 1-person checkout. CampusBite allows students sitting at the same lab bench to combine orders, auto-split via UPI, and pick up with 1 group token.
+          </p>
+        </div>
+
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="font-size:13px;color:var(--text-primary);">🔔 Timetable Bell Synchronization AI</strong>
+            <span style="font-size:10px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:999px;font-weight:800;">Smart Campus</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
+            Syncs with university class bell schedules. Alerts kitchen when your 50-minute lecture is ending so fries are hot and crisp upon arrival.
+          </p>
+        </div>
+
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="font-size:13px;color:var(--text-primary);">🍃 Zero-Waste Reusable Bento Trays</strong>
+            <span style="font-size:10px;background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:999px;font-weight:800;">Eco-First</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-muted);margin:0;">
+            Zero plastic wrap and zero cardboard boxes. Food is served in reusable campus bento boxes, earning you Green Loyalty Points!
+          </p>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="App.closeModal('vs-comparison-modal'); StudentApp.openGroupPoolModal();" style="width:100%;padding:12px;">
+        Try Group Bench Pooling Now →
+      </button>
     </div>
   </div>
 

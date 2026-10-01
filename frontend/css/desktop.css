@@ -259,12 +259,71 @@
 
 .desktop-hero-title {
   font-family: var(--font-heading);
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 800;
   color: #FFFFFF;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
-  margin-bottom: 10px;
+  line-height: 1.25;
+  letter-spacing: -0.6px;
+  margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   VIDEO MOTION KINETIC TYPOGRAPHY EFFECT
+   High-end chromatic motion gradient flowing through text letters
+   ========================================================================== */
+.video-motion-text {
+  background: linear-gradient(
+    90deg,
+    #60A5FA 0%,
+    #818CF8 20%,
+    #C084FC 40%,
+    #F472B6 60%,
+    #38BDF8 80%,
+    #60A5FA 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  animation: textVideoFlow 4s linear infinite;
+  filter: drop-shadow(0 0 18px rgba(129, 140, 248, 0.5));
+}
+
+@keyframes textVideoFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.kinetic-word-flip {
+  display: inline-block;
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), filter 0.32s ease;
+  will-change: transform, opacity, filter;
+}
+
+.kinetic-word-flip.transitioning {
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  filter: blur(4px);
+}
+
+.hero-feature-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(79, 70, 229, 0.16);
+  border: 1px solid rgba(165, 180, 252, 0.35);
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: #C7D2FE;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
 }
 
 .desktop-hero-title span {
@@ -274,7 +333,7 @@
 .desktop-hero-desc {
   font-size: 14.5px;
   color: #CBD5E1;
-  max-width: 620px;
+  max-width: 640px;
   line-height: 1.6;
   margin-bottom: 18px;
 }
@@ -283,6 +342,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .desktop-metric-item {
