@@ -25,14 +25,27 @@ const INITIAL_DATA = {
     },
     {
       id: "u-102",
-      name: "Ananya Sharma",
-      email: "ananya@campus.edu",
-      phone: "+91 98765 12345",
-      role: "student",
-      studentId: "CB-2024-5512",
-      department: "Business Management",
-      loyalty_points: 150,
-      avatar: "👩🎓"
+      name: "Dr. Priya Sundaram",
+      email: "priya.sundaram@campus.edu",
+      phone: "98401 22334",
+      role: "faculty",
+      studentId: "FAC-8821",
+      department: "School of Management & Business",
+      loyalty_points: 890,
+      wallet_balance: 1450,
+      avatar: "👩🏫"
+    },
+    {
+      id: "u-103",
+      name: "Karthik Raman",
+      email: "karthik.raman@campus.edu",
+      phone: "97911 55667",
+      role: "staff",
+      studentId: "STF-4402",
+      department: "Central Library & Lab Administration",
+      loyalty_points: 180,
+      wallet_balance: 320,
+      avatar: "🧑💼"
     },
     {
       id: "u-admin",
@@ -40,6 +53,10 @@ const INITIAL_DATA = {
       email: "admin@campusbite.com",
       phone: "+91 98765 00000",
       role: "admin",
+      studentId: "ADM-001",
+      department: "Campus Hospitality & Dining",
+      loyalty_points: 2500,
+      wallet_balance: 5000,
       avatar: "👨💼"
     },
     {

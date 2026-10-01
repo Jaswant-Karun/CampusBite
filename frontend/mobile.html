@@ -86,12 +86,15 @@
       <strong style="color:white;font-weight:800;letter-spacing:0.5px;">CAMPUSBITE MOBILE APP</strong>
       <span style="background:rgba(16,185,129,0.15);color:#10B981;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;">Android Studio Ready</span>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" style="padding:4px 12px;font-size:11.5px;" title="Toggle Dark / Light Mode">
+        <span>🌙</span> Dark
+      </button>
       <a href="/desktop">
-        <span>🖥️</span> Open Laptop Website
+        <span>🖥️</span> Laptop Web
       </a>
       <a href="/admin" style="background:rgba(255,255,255,0.08);color:#CBD5E1;box-shadow:none;">
-        <span>👨💼</span> Admin Hub
+        <span>👨💼</span> Admin
       </a>
     </div>
   </div>
@@ -934,6 +937,133 @@
       <button class="splash-btn" onclick="StudentApp.confirmUpiPaymentSimulation()">
         Simulate Successful UPI Payment
       </button>
+    </div>
+  </div>
+
+  <!-- User Profile Switcher Modal -->
+  <div class="modal-overlay" id="profile-switcher-modal">
+    <div class="modal-window" style="max-width:440px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:22px;">👤</span>
+        <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Switch User Profile</h3>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+        Select an active campus profile to experience different roles:
+      </p>
+
+      <div class="profile-cards-grid" style="display:flex;flex-direction:column;gap:8px;">
+        <div class="profile-select-card active" onclick="StudentApp.switchProfileById('u-101')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👨🎓</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <strong style="font-size:13.5px;color:var(--text-primary);">Jaswant Karun</strong>
+                <span class="role-tag-badge student">Student</span>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);display:block;">CB-2024-2028 • CSBS</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px;font-weight:800;color:var(--accent-emerald);">₹850</div>
+            <span style="font-size:10.5px;color:var(--accent-amber);font-weight:700;">⭐ 429 Pts</span>
+          </div>
+        </div>
+
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-102')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👩🏫</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <strong style="font-size:13.5px;color:var(--text-primary);">Dr. Priya Sundaram</strong>
+                <span class="role-tag-badge faculty">Faculty</span>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);display:block;">FAC-8821 • 10% Subsidy</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px;font-weight:800;color:var(--accent-emerald);">₹1,450</div>
+            <span style="font-size:10.5px;color:var(--accent-amber);font-weight:700;">⭐ 890 Pts</span>
+          </div>
+        </div>
+
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-103')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">🧑💼</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <strong style="font-size:13.5px;color:var(--text-primary);">Karthik Raman</strong>
+                <span class="role-tag-badge staff">Staff</span>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);display:block;">STF-4402 • Library</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px;font-weight:800;color:var(--accent-emerald);">₹320</div>
+            <span style="font-size:10.5px;color:var(--accent-amber);font-weight:700;">⭐ 180 Pts</span>
+          </div>
+        </div>
+
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-admin')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👨💼</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <strong style="font-size:13.5px;color:var(--text-primary);">Ramesh (Manager)</strong>
+                <span class="role-tag-badge admin">Admin</span>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);display:block;">ADM-001 • Kitchen Hub</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11px;font-weight:700;color:#3B82F6;">Admin Hub →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loyalty Rewards Store Modal -->
+  <div class="modal-overlay" id="rewards-store-modal">
+    <div class="modal-window" style="max-width:440px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:22px;">🎁</span>
+        <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Rewards Store</h3>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">
+        Redeem points for instant canteen discounts:
+      </p>
+
+      <div style="background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border:1px solid #FDE68A;border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:10px;font-weight:800;color:#92400E;text-transform:uppercase;">Active Points:</span>
+          <div style="font-size:18px;font-weight:900;color:#B45309;" id="store-active-points">429 Points</div>
+        </div>
+        <span style="font-size:26px;">🏆</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="font-size:12.5px;color:var(--text-primary);display:block;">₹10 Meal Discount</strong>
+            <span style="font-size:11px;color:var(--text-muted);">Orders above ₹50</span>
+          </div>
+          <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(100, 'SAVE10', 10)" style="padding:4px 10px;font-size:11px;">
+            100 Pts
+          </button>
+        </div>
+
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="font-size:12.5px;color:var(--text-primary);display:block;">Free Cold Coffee 🥤</strong>
+            <span style="font-size:11px;color:var(--text-muted);">Express Counter 3</span>
+          </div>
+          <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(200, 'FREECOFFEE', 40)" style="padding:4px 10px;font-size:11px;">
+            200 Pts
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -47,7 +47,13 @@
 
     <!-- Active User & Quick Actions -->
     <div class="header-actions">
-      <div class="user-account-top-pill" onclick="StudentApp.navigateTo('login')" title="Click to view profile or switch account">
+      <!-- Dark / Light Mode Toggle -->
+      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="StudentApp.toggleTheme()" title="Toggle Dark / Light Mode">
+        <span>🌙</span> Dark
+      </button>
+
+      <!-- Active User Quick Profile Pill (1-Tap Switcher) -->
+      <div class="user-account-top-pill" onclick="StudentApp.openProfileSwitcherModal()" title="Click to view or switch profile (Student, Faculty, Staff, Admin)">
         <span class="user-avatar-mini" id="topbar-avatar">👨🎓</span>
         <div style="text-align:left;line-height:1.2;">
           <strong id="topbar-user-name" style="font-size:12px;display:block;">Jaswant Karun</strong>
@@ -101,6 +107,12 @@
               </button>
               <button class="desktop-nav-btn" data-screen="profile" onclick="StudentApp.navigateTo('profile')">
                 <span>👤</span> My Profile & Rewards
+              </button>
+              <button class="desktop-nav-btn" data-screen="rewards-store" onclick="StudentApp.openLoyaltyStoreModal()">
+                <span>🎁</span> Rewards Store
+              </button>
+              <button class="desktop-nav-btn" data-screen="feedback" onclick="StudentApp.openCustomerReviewModal()">
+                <span>⭐</span> Canteen Feedback
               </button>
               <button class="desktop-nav-btn" data-screen="sustainability" onclick="StudentApp.navigateTo('sustainability')">
                 <span>🌱</span> Eco Tracker
@@ -359,11 +371,30 @@
               <div class="desktop-main-content">
                 <!-- Categories Filter -->
                 <div class="category-chips-row" id="home-category-chips">
-                  <button class="cat-chip active" data-category="All">🍔 All</button>
+                  <button class="cat-chip active" data-category="All">🍔 All Categories</button>
                   <button class="cat-chip" data-category="Snacks">🥪 Snacks</button>
                   <button class="cat-chip" data-category="Meals">🍛 Meals</button>
                   <button class="cat-chip" data-category="Drinks">🥤 Drinks</button>
                   <button class="cat-chip" data-category="Desserts">🍰 Desserts</button>
+                </div>
+
+                <!-- Smart Diet & Speed Quick Filters -->
+                <div class="smart-diet-filters-row">
+                  <button class="diet-chip active" data-diet="all" onclick="StudentApp.filterByDiet('all', this)">
+                    <span>🍽️</span> All Items
+                  </button>
+                  <button class="diet-chip" data-diet="veg" onclick="StudentApp.filterByDiet('veg', this)">
+                    <span style="color:#10B981;">🟢</span> Pure Veg Only
+                  </button>
+                  <button class="diet-chip" data-diet="popular" onclick="StudentApp.filterByDiet('popular', this)">
+                    <span>🔥</span> Campus Bestsellers
+                  </button>
+                  <button class="diet-chip" data-diet="under50" onclick="StudentApp.filterByDiet('under50', this)">
+                    <span>⚡</span> Pocket Bites (≤₹50)
+                  </button>
+                  <button class="diet-chip" data-diet="fast" onclick="StudentApp.filterByDiet('fast', this)">
+                    <span>⏱️</span> Fast Prep (&lt;10m)
+                  </button>
                 </div>
 
                 <!-- Popular Today Row -->
@@ -1414,6 +1445,163 @@
       <button class="splash-btn" onclick="StudentApp.submitCustomerReview()">
         Submit Feedback to MongoDB
       </button>
+    </div>
+  </div>
+
+  <!-- User Profile Switcher Modal (Switch between Student, Faculty, Staff, Admin) -->
+  <div class="modal-overlay" id="profile-switcher-modal">
+    <div class="modal-window" style="max-width:540px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <span style="font-size:24px;">👤</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Switch User Profile</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:18px;">
+        Select an active university dining profile to view personalized canteen subsidies, wallet balance, and order history:
+      </p>
+
+      <div class="profile-cards-grid" style="display:flex;flex-direction:column;gap:10px;">
+        <!-- Jaswant Karun (Student) -->
+        <div class="profile-select-card active" onclick="StudentApp.switchProfileById('u-101')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👨🎓</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <strong style="font-size:14.5px;color:var(--text-primary);">Jaswant Karun</strong>
+                <span class="role-tag-badge student">Student</span>
+              </div>
+              <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
+                CB-2024-2028 • Computer Science & Business Systems
+              </span>
+              <span style="font-size:11px;color:var(--text-muted);">📱 87541 59344</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:14px;font-weight:800;color:var(--accent-emerald);">₹850</div>
+            <span style="font-size:11px;color:var(--accent-amber);font-weight:700;">⭐ 429 Pts</span>
+          </div>
+        </div>
+
+        <!-- Dr. Priya Sundaram (Faculty) -->
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-102')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👩🏫</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <strong style="font-size:14.5px;color:var(--text-primary);">Dr. Priya Sundaram</strong>
+                <span class="role-tag-badge faculty">Faculty</span>
+              </div>
+              <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
+                FAC-8821 • School of Management & Business
+              </span>
+              <span style="font-size:11px;color:var(--text-muted);">📱 98401 22334 • 10% Campus Subsidy</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:14px;font-weight:800;color:var(--accent-emerald);">₹1,450</div>
+            <span style="font-size:11px;color:var(--accent-amber);font-weight:700;">⭐ 890 Pts</span>
+          </div>
+        </div>
+
+        <!-- Karthik Raman (Staff) -->
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-103')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">🧑💼</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <strong style="font-size:14.5px;color:var(--text-primary);">Karthik Raman</strong>
+                <span class="role-tag-badge staff">Staff</span>
+              </div>
+              <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
+                STF-4402 • Central Library & Lab Administration
+              </span>
+              <span style="font-size:11px;color:var(--text-muted);">📱 97911 55667</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:14px;font-weight:800;color:var(--accent-emerald);">₹320</div>
+            <span style="font-size:11px;color:var(--accent-amber);font-weight:700;">⭐ 180 Pts</span>
+          </div>
+        </div>
+
+        <!-- Ramesh Canteen Manager (Admin) -->
+        <div class="profile-select-card" onclick="StudentApp.switchProfileById('u-admin')">
+          <div class="profile-card-left">
+            <span class="profile-avatar-emoji">👨💼</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <strong style="font-size:14.5px;color:var(--text-primary);">Ramesh Canteen Manager</strong>
+                <span class="role-tag-badge admin">Admin</span>
+              </div>
+              <span style="font-size:11.5px;color:var(--text-muted);display:block;margin-top:2px;">
+                ADM-001 • Executive Kitchen & Inventory Hub
+              </span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:12px;font-weight:700;color:#3B82F6;background:rgba(59,130,246,0.12);padding:4px 10px;border-radius:8px;">
+              Admin Hub →
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loyalty Rewards Store Modal -->
+  <div class="modal-overlay" id="rewards-store-modal">
+    <div class="modal-window" style="max-width:520px;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <span style="font-size:24px;">🎁</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Campus Loyalty Voucher Store</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Redeem your earned loyalty points for instant dining discounts and free canteen treats:
+      </p>
+
+      <div style="background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border:1px solid #FDE68A;border-radius:14px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:11px;font-weight:800;color:#92400E;text-transform:uppercase;">Your Active Loyalty Points:</span>
+          <div style="font-size:22px;font-weight:900;color:#B45309;" id="store-active-points">429 Points</div>
+        </div>
+        <span style="font-size:32px;">🏆</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <!-- Voucher 1 -->
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">₹10 Off Instant Meal Discount</strong>
+            <span style="font-size:11.5px;color:var(--text-muted);">Valid on any order above ₹50</span>
+          </div>
+          <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(100, 'SAVE10', 10)" style="padding:6px 14px;font-size:12px;">
+            100 Pts • Claim
+          </button>
+        </div>
+
+        <!-- Voucher 2 -->
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">Free Cold Coffee / Lemon Iced Tea 🥤</strong>
+            <span style="font-size:11.5px;color:var(--text-muted);">Redeemable at Express Counter 3</span>
+          </div>
+          <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(200, 'FREECOFFEE', 40)" style="padding:6px 14px;font-size:12px;">
+            200 Pts • Claim
+          </button>
+        </div>
+
+        <!-- Voucher 3 -->
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="font-size:13.5px;color:var(--text-primary);display:block;">₹50 Super Combo Voucher 🍛</strong>
+            <span style="font-size:11.5px;color:var(--text-muted);">Valid on meals above ₹150</span>
+          </div>
+          <button class="add-mini-btn" onclick="StudentApp.claimRewardVoucher(350, 'MEGA50', 50)" style="padding:6px 14px;font-size:12px;">
+            350 Pts • Claim
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

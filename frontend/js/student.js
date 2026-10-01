@@ -27,8 +27,62 @@ const StudentApp = {
   currentTrackOrderId: "CB1024",
   products: [],
   customizingProduct: null,
+  currentDietFilter: 'all',
+
+  profiles: [
+    {
+      id: "u-101",
+      name: "Jaswant Karun",
+      email: "jaswant@campus.edu",
+      alternate_email: "24cb023@kpriet.ac.in",
+      phone: "87541 59344",
+      role: "student",
+      studentId: "CB-2024-2028",
+      department: "Computer Science & Business Systems",
+      loyalty_points: 429,
+      wallet_balance: 850,
+      avatar: "👨🎓"
+    },
+    {
+      id: "u-102",
+      name: "Dr. Priya Sundaram",
+      email: "priya.sundaram@campus.edu",
+      phone: "98401 22334",
+      role: "faculty",
+      studentId: "FAC-8821",
+      department: "School of Management & Business",
+      loyalty_points: 890,
+      wallet_balance: 1450,
+      avatar: "👩🏫"
+    },
+    {
+      id: "u-103",
+      name: "Karthik Raman",
+      email: "karthik.raman@campus.edu",
+      phone: "97911 55667",
+      role: "staff",
+      studentId: "STF-4402",
+      department: "Central Library & Lab Administration",
+      loyalty_points: 180,
+      wallet_balance: 320,
+      avatar: "🧑💼"
+    },
+    {
+      id: "u-admin",
+      name: "Ramesh Canteen Manager",
+      email: "admin@campusbite.com",
+      phone: "+91 98765 00000",
+      role: "admin",
+      studentId: "ADM-001",
+      department: "Campus Hospitality & Dining",
+      loyalty_points: 2500,
+      wallet_balance: 5000,
+      avatar: "👨💼"
+    }
+  ],
 
   init() {
+    this.initTheme();
     try {
       const savedUser = localStorage.getItem('campusbite_user');
       if (savedUser) {
@@ -43,6 +97,102 @@ const StudentApp = {
     this.updateWalletUI();
     this.updateUserInterfaceDetails();
     this.renderDesktopCart();
+  },
+
+  initTheme() {
+    const savedTheme = localStorage.getItem('campusbite_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+      themeBtn.innerHTML = savedTheme === 'dark' ? '<span>🌙</span> Dark' : '<span>☀️</span> Light';
+    }
+  },
+
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('campusbite_theme', next);
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+      themeBtn.innerHTML = next === 'dark' ? '<span>🌙</span> Dark' : '<span>☀️</span> Light';
+    }
+    App.showToast(`Switched to ${next.toUpperCase()} theme`, 'info');
+  },
+
+  openProfileSwitcherModal() {
+    App.openModal('profile-switcher-modal');
+  },
+
+  switchProfileById(profileId) {
+    const target = this.profiles.find(p => p.id === profileId);
+    if (!target) return;
+    this.currentUser = { ...target };
+    localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+    this.updateUserInterfaceDetails();
+    this.updateWalletUI();
+    this.refreshUserLoyalty();
+    this.renderDesktopCart();
+    App.closeModal('profile-switcher-modal');
+
+    if (target.role === 'admin') {
+      App.showToast(`Switched to ${target.name} (Admin Mode)`, 'success');
+      App.switchViewMode('admin');
+    } else {
+      App.showToast(`Switched active profile to ${target.name} (${target.role.toUpperCase()})`, 'success');
+      this.navigateTo('home');
+    }
+  },
+
+  openLoyaltyStoreModal() {
+    const ptsEl = document.getElementById('store-active-points');
+    if (ptsEl) ptsEl.textContent = `${this.currentUser.loyalty_points || 429} Points`;
+    App.openModal('rewards-store-modal');
+  },
+
+  claimRewardVoucher(pointsCost, couponCode, discountAmount) {
+    const currentPts = this.currentUser.loyalty_points || 0;
+    if (currentPts < pointsCost) {
+      App.showToast(`Insufficient loyalty points! You need ${pointsCost} pts (Current: ${currentPts} pts).`, 'warning');
+      return;
+    }
+    this.currentUser.loyalty_points -= pointsCost;
+    localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+    this.refreshUserLoyalty();
+    this.updateUserInterfaceDetails();
+
+    // Auto-apply this claimed coupon
+    this.applyCouponCode(couponCode);
+    const couponInput = document.getElementById('desktop-sidebar-coupon-input');
+    if (couponInput) couponInput.value = couponCode;
+
+    App.closeModal('rewards-store-modal');
+    App.showToast(`🎉 Reward Claimed! ₹${discountAmount} voucher applied to your meal tray.`, 'success');
+  },
+
+  openCustomerReviewModal() {
+    App.openModal('customer-review-modal');
+  },
+
+  filterByDiet(dietType, btn) {
+    this.currentDietFilter = dietType;
+    if (btn) {
+      document.querySelectorAll('.diet-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    let items = [...this.products];
+    if (dietType === 'veg') {
+      items = items.filter(p => p.is_veg);
+    } else if (dietType === 'popular') {
+      items = items.filter(p => p.popular);
+    } else if (dietType === 'under50') {
+      items = items.filter(p => p.price <= 50);
+    } else if (dietType === 'fast') {
+      items = items.filter(p => parseInt(p.prep_time) <= 8);
+    }
+
+    this.renderMenuList(items);
   },
 
   bindEvents() {
@@ -373,14 +523,14 @@ const StudentApp = {
     if (badge) badge.textContent = `${totalQty} Item${totalQty === 1 ? '' : 's'}`;
     if (quickBtn) quickBtn.textContent = `Cart (${totalQty})`;
 
-    const { subtotal, couponDiscount, loyaltyDiscount, total } = this.calculateCartBill();
+    const { subtotal, couponDiscount, loyaltyDiscount, facultyDiscount, total } = this.calculateCartBill();
 
     if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
     if (discountEl && discountRow) {
-      const totalDisc = couponDiscount + loyaltyDiscount;
+      const totalDisc = couponDiscount + loyaltyDiscount + (facultyDiscount || 0);
       if (totalDisc > 0) {
         discountRow.style.display = 'flex';
-        discountEl.textContent = `-₹${totalDisc}`;
+        discountEl.textContent = `-₹${totalDisc}${facultyDiscount > 0 ? ' (10% Faculty Subsidy)' : ''}`;
       } else {
         discountRow.style.display = 'none';
       }
@@ -492,15 +642,20 @@ const StudentApp = {
       return `
         <div class="food-card-row" onclick="StudentApp.openCustomizationModal('${item.id}')">
           <div class="food-emoji-wrap">
-            <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}"></span>
+            <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" title="${item.is_veg ? 'Pure Vegetarian' : 'Non-Vegetarian'}"></span>
             ${item.image_emoji}
           </div>
-          <div class="food-info-col">
+          <div class="food-info-col" style="flex:1;">
             <div class="food-title">
               <span>${item.name}</span>
-              <span style="font-size:11px;color:#F59E0B;font-weight:700;">★ ${item.rating}</span>
+              <span style="font-size:11.5px;color:#F59E0B;font-weight:700;">★ ${item.rating || 4.8}</span>
             </div>
             <div class="food-desc">${item.description}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap;">
+              <span class="food-meta-pill">⏱️ ${item.prep_time || '8 mins'}</span>
+              <span class="food-meta-pill">🔥 ${item.calories || '380 kcal'}</span>
+              ${item.is_veg ? '<span class="food-meta-pill" style="color:#10B981;font-weight:700;">🟢 Veg</span>' : '<span class="food-meta-pill" style="color:#EF4444;font-weight:700;">🔴 Non-Veg</span>'}
+            </div>
             <div class="food-bottom-row">
               <span class="food-price">₹${item.price}</span>
               <div class="food-action-stepper" onclick="event.stopPropagation();">
@@ -509,8 +664,8 @@ const StudentApp = {
                   <span class="stepper-qty">${qty}</span>
                   <button class="stepper-btn" onclick="StudentApp.addToCart('${item.id}')">+</button>
                 ` : `
-                  <button class="add-mini-btn" style="padding:4px 12px;font-size:11.5px;" onclick="StudentApp.openCustomizationModal('${item.id}')">
-                    + Add
+                  <button class="add-mini-btn" style="padding:6px 14px;font-size:12px;font-weight:800;" onclick="StudentApp.openCustomizationModal('${item.id}')">
+                    + Add to Tray
                   </button>
                 `}
               </div>
@@ -743,30 +898,45 @@ const StudentApp = {
       loyaltyDiscount = Math.min(Math.floor(this.currentUser.loyalty_points / 100) * 10, subtotal - couponDiscount);
     }
 
-    const total = Math.max(0, subtotal - couponDiscount - loyaltyDiscount);
+    // Faculty campus dining subsidy (10% on all orders)
+    let facultyDiscount = 0;
+    if (this.currentUser && this.currentUser.role === 'faculty') {
+      facultyDiscount = Math.round(subtotal * 0.10);
+    }
 
-    document.getElementById('cart-subtotal-val').textContent = `₹${subtotal}`;
+    const total = Math.max(0, subtotal - couponDiscount - loyaltyDiscount - facultyDiscount);
+
+    const subtotalEl = document.getElementById('cart-subtotal-val');
+    if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
     
     const couponRow = document.getElementById('cart-coupon-row');
-    if (couponDiscount > 0) {
-      couponRow.style.display = 'flex';
-      document.getElementById('cart-coupon-val').textContent = `-₹${couponDiscount}`;
-    } else {
-      couponRow.style.display = 'none';
+    if (couponRow) {
+      if (couponDiscount > 0) {
+        couponRow.style.display = 'flex';
+        const valEl = document.getElementById('cart-coupon-val');
+        if (valEl) valEl.textContent = `-₹${couponDiscount}`;
+      } else {
+        couponRow.style.display = 'none';
+      }
     }
 
     const loyaltyRow = document.getElementById('cart-loyalty-row');
-    if (loyaltyDiscount > 0) {
-      loyaltyRow.style.display = 'flex';
-      document.getElementById('cart-loyalty-val').textContent = `-₹${loyaltyDiscount}`;
-    } else {
-      loyaltyRow.style.display = 'none';
+    if (loyaltyRow) {
+      if (loyaltyDiscount > 0) {
+        loyaltyRow.style.display = 'flex';
+        const valEl = document.getElementById('cart-loyalty-val');
+        if (valEl) valEl.textContent = `-₹${loyaltyDiscount}`;
+      } else {
+        loyaltyRow.style.display = 'none';
+      }
     }
 
-    document.getElementById('cart-total-val').textContent = `₹${total}`;
-    document.getElementById('checkout-action-btn-text').textContent = `Pay ₹${total} & Place Order`;
+    const totalEl = document.getElementById('cart-total-val');
+    if (totalEl) totalEl.textContent = `₹${total}`;
+    const checkoutBtnText = document.getElementById('checkout-action-btn-text');
+    if (checkoutBtnText) checkoutBtnText.textContent = `Pay ₹${total} & Place Order`;
 
-    return { subtotal, couponDiscount, loyaltyDiscount, total };
+    return { subtotal, couponDiscount, loyaltyDiscount, facultyDiscount, total };
   },
 
   async applyCouponCode(code) {

@@ -30,27 +30,52 @@
   --accent-indigo: #6366F1;
   --accent-indigo-light: #EEF2FF;
   
-  /* Neutral Palette */
+  /* Theme-Aware Color Variables (Dark Mode Default) */
   --bg-main: #0B0F19;
   --bg-surface: #111827;
-  --bg-card: #1A2234;
-  --bg-elevated: #242E42;
-  
+  --bg-card: #151F32;
+  --bg-elevated: #1E293B;
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
   --text-inverse: #0F172A;
-  
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
-  
-  /* Mobile Emulator Neutral Palette */
+  --header-glass: rgba(11, 15, 25, 0.92);
+  --card-glass: rgba(21, 31, 50, 0.85);
+  --tray-bg: #111A2E;
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --chip-bg: rgba(255, 255, 255, 0.06);
+  --chip-border: rgba(255, 255, 255, 0.12);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4);
   --mob-bg: #F8FAFC;
   --mob-surface: #FFFFFF;
   --mob-card: #FFFFFF;
   --mob-border: #E2E8F0;
   --mob-text: #0F172A;
   --mob-text-muted: #64748B;
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg-main: #F4F6FB;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #F8FAFC;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-inverse: #FFFFFF;
+  --border-subtle: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --header-glass: rgba(255, 255, 255, 0.94);
+  --card-glass: rgba(255, 255, 255, 0.95);
+  --tray-bg: #FFFFFF;
+  --input-bg: #F1F5F9;
+  --chip-bg: #F1F5F9;
+  --chip-border: #E2E8F0;
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.07);
+}
   
   /* Typography */
   --font-heading: 'Outfit', sans-serif;
