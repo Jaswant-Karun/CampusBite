@@ -40,6 +40,11 @@
 
     <!-- Actions -->
     <div class="header-actions">
+      <!-- Counter KDS TV Link -->
+      <button class="reset-btn" onclick="window.open('/counter', '_blank')" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(20,184,166,0.25));border-color:#14B8A6;color:#2DD4BF;font-weight:700;" title="Open Kitchen Display System on Counter TV">
+        <span>📺</span> Counter 2 KDS
+      </button>
+
       <!-- Reset Demo Scenario -->
       <button class="reset-btn" onclick="AdminApp.resetDemoDatabase()" title="Reset DB to Default Demo State">
         <span>🔄</span> Reset Demo
@@ -253,7 +258,12 @@
             <button class="order-filter-btn" data-status="Ready">Ready for Pickup</button>
             <button class="order-filter-btn" data-status="Completed">Completed</button>
           </div>
-          <button class="reset-btn" onclick="AdminApp.loadOrders()">🔄 Refresh Orders</button>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="btn-primary" onclick="AdminApp.openQrScannerModal()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
+              <span>📷</span> Scan Token QR
+            </button>
+            <button class="reset-btn" onclick="AdminApp.loadOrders()">🔄 Refresh</button>
+          </div>
         </div>
 
         <div class="orders-grid-cards" id="admin-orders-grid">
@@ -564,8 +574,77 @@
     </div>
   </div>
 
+  <!-- QR Code Token Scanner Modal -->
+  <div class="modal-overlay" id="admin-qr-scanner-modal">
+    <div class="modal-window" style="max-width:500px;">
+      <button class="modal-close-btn">&times;</button>
+      <div class="modal-header">
+        <h3 class="modal-title">📷 Counter 2 Token QR Scanner</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Scan student pickup QR code with your camera or enter token number for 2-second contactless verification.
+      </p>
+
+      <!-- Simulated Laser Camera Viewfinder -->
+      <div style="position:relative;background:#0F172A;border-radius:14px;height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #334155;margin-bottom:14px;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#10B981;box-shadow:0 0 12px #10B981;animation:scannerSweep 2s infinite alternate ease-in-out;"></div>
+        <div style="text-align:center;color:#94A3B8;">
+          <span style="font-size:42px;display:block;margin-bottom:6px;">📷</span>
+          <span style="font-size:12px;font-weight:600;">Position Student QR Code Within Frame</span>
+        </div>
+        <style>
+          @keyframes scannerSweep {
+            0% { top: 10%; }
+            100% { top: 90%; }
+          }
+        </style>
+      </div>
+
+      <!-- Quick Token Input & Scanner Simulation -->
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input 
+          type="text" 
+          id="admin-qr-token-input" 
+          class="form-input" 
+          placeholder="Scan barcode or type #CB1024..." 
+          style="flex:1;font-weight:700;letter-spacing:1px;"
+          onkeydown="if(event.key==='Enter') AdminApp.processScannedToken()"
+        />
+        <button class="btn-primary" onclick="AdminApp.processScannedToken()" style="padding:8px 16px;">
+          Verify
+        </button>
+      </div>
+
+      <!-- Fast Sample Chips -->
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--text-muted);font-weight:700;">Fast Demo Tokens:</span>
+        <button class="order-filter-btn" onclick="AdminApp.simulateScan('CB1024')" style="padding:2px 8px;font-size:11px;">#CB1024</button>
+        <button class="order-filter-btn" onclick="AdminApp.simulateScan('CB1023')" style="padding:2px 8px;font-size:11px;">#CB1023</button>
+        <button class="order-filter-btn" onclick="AdminApp.simulateScan('T-BENCH-402')" style="padding:2px 8px;font-size:11px;">#T-BENCH-402</button>
+      </div>
+
+      <!-- Verified Order Result Card -->
+      <div id="admin-scanned-result-card" style="display:none;background:var(--bg-elevated);border:1.5px solid #10B981;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
+            <strong style="font-size:15px;color:var(--text-primary);" id="scanned-order-title">#CB1024</strong>
+            <div style="font-size:12px;color:var(--text-muted);" id="scanned-order-customer">Jaswant Karun • Student</div>
+          </div>
+          <span style="background:#DCFCE7;color:#166534;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;" id="scanned-order-status">READY</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.03);border-radius:8px;" id="scanned-order-items">
+          Classic Veg Burger × 2, Cold Coffee × 1
+        </div>
+        <button class="btn-primary" id="scanned-handover-btn" onclick="AdminApp.completeScannedOrder()" style="width:100%;padding:10px;background:linear-gradient(135deg, #10B981, #059669);">
+          ✅ Hand Over Tray & Complete Order
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/api.js"></script>
+  <script src="js/qr-code.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/notifications.js"></script>
   <script src="js/admin.js"></script>

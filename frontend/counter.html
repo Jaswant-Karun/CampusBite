@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusBite - Counter 2 TV & Kitchen Display System (KDS)</title>
+  <link rel="stylesheet" href="css/counter.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>">
+</head>
+<body class="kds-body">
+
+  <!-- Header Strip -->
+  <header class="kds-header">
+    <div class="kds-brand">
+      <span class="kds-logo">🍔</span>
+      <div>
+        <div class="kds-title">
+          <span>CAMPUSBITE KDS</span>
+          <span class="kds-badge-counter">COUNTER 2 TV</span>
+        </div>
+        <div style="font-size:12px;color:var(--kds-text-muted);" id="kds-break-countdown">
+          10-Min Break Bell Sync Active
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Metrics -->
+    <div class="kds-stats-strip">
+      <div class="kds-stat-box">
+        <span class="kds-stat-label">In Kitchen</span>
+        <span class="kds-stat-value" id="kds-stat-preparing" style="color:var(--kds-amber);">0</span>
+      </div>
+      <div class="kds-stat-box">
+        <span class="kds-stat-label">Ready on Warmers</span>
+        <span class="kds-stat-value" id="kds-stat-ready" style="color:var(--kds-emerald);">0</span>
+      </div>
+      <div class="kds-stat-box">
+        <span class="kds-stat-label">Served Today</span>
+        <span class="kds-stat-value" id="kds-stat-completed" style="color:#38BDF8;">0</span>
+      </div>
+    </div>
+
+    <!-- Actions & Clock -->
+    <div class="kds-header-actions">
+      <button class="kds-btn active" id="kds-audio-btn" onclick="KdsApp.toggleAudio()" title="Toggle Campus Bell Sound">
+        🔔 Chime: ON
+      </button>
+      <button class="kds-btn" onclick="KdsApp.toggleFullscreen()" title="Fullscreen for Wall TV">
+        ⛶ TV Fullscreen
+      </button>
+      <button class="kds-btn" onclick="window.location.href='/admin'" title="Back to Admin Hub">
+        ⚙️ Admin
+      </button>
+      <div class="kds-clock" id="kds-live-clock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- High-Contrast Split Board -->
+  <main class="kds-board">
+    <!-- Preparing Column -->
+    <section class="kds-column preparing">
+      <div class="kds-column-header">
+        <div class="kds-col-title">
+          <span>🍳</span>
+          <span>Now Preparing</span>
+        </div>
+        <span class="kds-col-count" id="kds-prep-col-count">0 Orders</span>
+      </div>
+      <div class="kds-cards-scroll" id="kds-prep-cards">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Ready for Pickup Column -->
+    <section class="kds-column ready">
+      <div class="kds-column-header">
+        <div class="kds-col-title">
+          <span>🟢</span>
+          <span>Ready for Pickup (Counter 2)</span>
+        </div>
+        <span class="kds-col-count" id="kds-ready-col-count">0 Ready</span>
+      </div>
+      <div class="kds-cards-scroll" id="kds-ready-cards">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+  </main>
+
+  <script src="js/counter.js"></script>
+</body>
+</html>

@@ -14,6 +14,11 @@
   <link rel="stylesheet" href="css/chatbot.css">
   <link rel="stylesheet" href="css/notifications.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍔</text></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#172554">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CampusBite">
 </head>
 <body>
 
@@ -49,6 +54,12 @@
       <button class="desktop-nav-btn" data-screen="sustainability" onclick="StudentApp.navigateTo('sustainability')">
         <span>🌱</span> Eco Tracker
       </button>
+      <button class="desktop-nav-btn" data-screen="nutrition" onclick="StudentApp.navigateTo('nutrition')">
+        <span>🥗</span> Nutrition
+      </button>
+      <button class="desktop-nav-btn" onclick="window.open('/counter', '_blank')" style="color:#2DD4BF;">
+        <span>📺</span> Counter TV
+      </button>
     </nav>
 
     <!-- Header Quick Search -->
@@ -59,6 +70,11 @@
 
     <!-- Active User & Quick Actions -->
     <div class="header-actions">
+      <!-- Install PWA App Button -->
+      <button class="desktop-action-btn" id="pwa-install-app-btn" onclick="window.installCampusBitePWA()" style="display:inline-flex;align-items:center;gap:6px;background:rgba(20,184,166,0.15);border:1px solid #14B8A6;color:#2DD4BF;font-weight:700;font-size:12px;padding:6px 12px;border-radius:10px;cursor:pointer;" title="Install CampusBite on your phone or PC">
+        <span>📲</span> Install App
+      </button>
+
       <!-- Live Notifications Bell & Dropdown -->
       <div style="position:relative;display:inline-block;">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="CampusNotifications.togglePanel()" title="Live Canteen Notifications">
@@ -422,6 +438,35 @@
               
               <!-- Main Content: Filters & Product Grid -->
               <div class="desktop-main-content">
+
+                <!-- Multi-Canteen Campus Food Court Hub -->
+                <div class="campus-stalls-hub-wrap" style="margin-bottom:14px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 14px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <span style="font-size:16px;">🏪</span>
+                      <strong style="font-size:13px;color:var(--text-primary);letter-spacing:0.3px;">Campus Food Stalls & Canteens:</strong>
+                    </div>
+                    <span style="font-size:11px;color:#10B981;font-weight:700;">● 4 Spots Open Live</span>
+                  </div>
+                  <div class="campus-stalls-pills-row" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;" id="campus-stalls-selector">
+                    <button class="stall-pill-btn active" data-stall="all" onclick="StudentApp.selectStall('all', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid rgba(79,70,229,0.3);background:var(--primary);color:white;cursor:pointer;white-space:nowrap;">
+                      All Spots (16)
+                    </button>
+                    <button class="stall-pill-btn" data-stall="stall_main" onclick="StudentApp.selectStall('stall_main', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
+                      🍔 Main Food Court (Counters 1 & 2)
+                    </button>
+                    <button class="stall-pill-btn" data-stall="stall_library" onclick="StudentApp.selectStall('stall_library', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
+                      ☕ Library Brews & Cafe
+                    </button>
+                    <button class="stall-pill-btn" data-stall="stall_sports" onclick="StudentApp.selectStall('stall_sports', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
+                      🥤 Sports Juice Bar
+                    </button>
+                    <button class="stall-pill-btn" data-stall="stall_night" onclick="StudentApp.selectStall('stall_night', this)" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
+                      🌙 Hostel Night Canteen
+                    </button>
+                  </div>
+                </div>
+
                 <!-- Categories Filter -->
                 <div class="category-chips-row" id="home-category-chips">
                   <button class="cat-chip active" data-category="All">🍔 All Categories</button>
@@ -696,6 +741,124 @@
           </div>
 
           <!-- ----------------------------------------------------------------
+               SCREEN 7.5: CAMPUS NUTRITION & STUDENT FITNESS TRACKER
+               ---------------------------------------------------------------- -->
+          <div id="screen-nutrition" class="mob-screen">
+            <div class="home-top-bar">
+              <div class="user-greeting">
+                <h3>Campus Nutrition & Fitness 🥗</h3>
+                <p>Track macros & eat healthy between classes</p>
+              </div>
+            </div>
+
+            <!-- Daily Macro Meter Card -->
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:18px;margin:0 18px 16px;box-shadow:0 4px 18px rgba(0,0,0,0.04);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div>
+                  <span style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;">Daily Energy Budget</span>
+                  <div style="font-family:var(--font-heading);font-size:24px;font-weight:900;color:var(--text-primary);margin-top:2px;">
+                    1,280 <span style="font-size:14px;font-weight:600;color:var(--text-muted);">/ 2,100 kcal</span>
+                  </div>
+                </div>
+                <div style="background:linear-gradient(135deg,#10B981,#059669);color:white;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;">
+                  61% Met
+                </div>
+              </div>
+
+              <!-- 3 Macro Progress Bars -->
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
+                    <span style="color:#4F46E5;">💪 Protein: 48g / 75g Target</span>
+                    <span style="color:var(--text-muted);">64%</span>
+                  </div>
+                  <div style="height:8px;background:rgba(79,70,229,0.12);border-radius:999px;overflow:hidden;">
+                    <div style="width:64%;height:100%;background:#4F46E5;border-radius:999px;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
+                    <span style="color:#0284C7;">🍞 Carbohydrates: 145g / 250g Target</span>
+                    <span style="color:var(--text-muted);">58%</span>
+                  </div>
+                  <div style="height:8px;background:rgba(2,132,199,0.12);border-radius:999px;overflow:hidden;">
+                    <div style="width:58%;height:100%;background:#0284C7;border-radius:999px;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
+                    <span style="color:#D97706;">🥑 Healthy Fats: 32g / 65g Target</span>
+                    <span style="color:var(--text-muted);">49%</span>
+                  </div>
+                  <div style="height:8px;background:rgba(217,119,6,0.12);border-radius:999px;overflow:hidden;">
+                    <div style="width:49%;height:100%;background:#D97706;border-radius:999px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Campus Nutritionist Coach Tip -->
+            <div style="background:linear-gradient(135deg,rgba(20,184,166,0.1) 0%,rgba(79,70,229,0.08) 100%);border:1px solid rgba(20,184,166,0.3);border-radius:16px;padding:14px 18px;margin:0 18px 16px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">💡</span>
+                <strong style="font-size:13px;color:var(--text-primary);">Campus Nutritionist Coach:</strong>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin:0;">
+                "Jaswant, you have a 3-hour afternoon lab scheduled. Boost your brain stamina without sugar crash by grabbing a <strong>Whey Protein Shake (30g protein)</strong> or cold <strong>Fresh Lemonade</strong>!"
+              </p>
+            </div>
+
+            <!-- Curated Goals & 1-Tap Add Recommendations -->
+            <div style="padding:0 18px 20px;">
+              <h4 style="font-size:14px;font-weight:800;color:var(--text-primary);margin-bottom:10px;">
+                🎯 Canteen Picks for Your Fitness Goal:
+              </h4>
+
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:28px;">🥤</span>
+                    <div>
+                      <strong style="font-size:13px;color:var(--text-primary);">Whey Protein Peanut Shake</strong>
+                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">💪 30g Protein • 340 kcal</div>
+                    </div>
+                  </div>
+                  <button class="add-mini-btn" onclick="StudentApp.addToCart('p-13'); App.showToast('Added Whey Protein Shake to Cart!', 'success');" style="padding:6px 14px;">
+                    + Add ₹85
+                  </button>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:28px;">🥒</span>
+                    <div>
+                      <strong style="font-size:13px;color:var(--text-primary);">Detox Green Vitality Juice</strong>
+                      <div style="font-size:11px;color:#10B981;font-weight:700;">🌿 Low Calorie • 110 kcal • Cleanse</div>
+                    </div>
+                  </div>
+                  <button class="add-mini-btn" onclick="StudentApp.addToCart('p-14'); App.showToast('Added Detox Green Juice to Cart!', 'success');" style="padding:6px 14px;">
+                    + Add ₹50
+                  </button>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:28px;">🌯</span>
+                    <div>
+                      <strong style="font-size:13px;color:var(--text-primary);">Paneer Tikka Roll</strong>
+                      <div style="font-size:11px;color:#4F46E5;font-weight:700;">💪 18g Protein • 340 kcal</div>
+                    </div>
+                  </div>
+                  <button class="add-mini-btn" onclick="StudentApp.addToCart('p-4'); App.showToast('Added Paneer Tikka Roll to Cart!', 'success');" style="padding:6px 14px;">
+                    + Add ₹90
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          <!-- ----------------------------------------------------------------
                SCREEN 8: CART SCREEN
                ---------------------------------------------------------------- -->
           <div id="screen-cart" class="mob-screen">
@@ -903,6 +1066,19 @@
               <div class="pickup-counter-badge" id="track-counter-num">Counter 2</div>
               <div style="font-size:11.5px;color:#64748B;margin-top:6px;">Scheduled: <strong id="track-slot-text">12:30 PM - 12:40 PM</strong></div>
               <div style="font-size:11px;color:#64748B;margin-top:2px;" id="track-total-paid">₹180 (UPI)</div>
+            </div>
+
+            <!-- Digital QR Code Token Card for Contactless Pickup -->
+            <div style="background:var(--bg-card);border:2px dashed rgba(79,70,229,0.3);border-radius:16px;padding:16px;margin:0 18px 16px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.03);">
+              <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                📷 Contactless Pickup QR Code
+              </div>
+              <div id="tracking-qr-container" style="display:inline-block;padding:8px;background:#FFFFFF;border-radius:12px;border:1px solid var(--border-subtle);margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <!-- Dynamic SVG QR Code -->
+              </div>
+              <div style="font-size:11.5px;color:var(--text-secondary);font-weight:600;">
+                Show this code at <strong style="color:var(--text-primary);">Counter 2</strong> for 2-second tray handover
+              </div>
             </div>
 
             <!-- 5-Stage Stepper -->
@@ -1462,6 +1638,7 @@
 
   <!-- Scripts -->
   <script src="js/api.js"></script>
+  <script src="js/qr-code.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/notifications.js"></script>
   <script src="js/student.js"></script>
@@ -1474,6 +1651,34 @@
         window.CampusNotifications.init('student', 'u-101');
       }
     });
+
+    // PWA Service Worker Registration & Install Flow
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+      });
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwa-install-app-btn');
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+
+    window.installCampusBitePWA = async function() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        if (choice.outcome === 'accepted') {
+          App.showToast('🎉 CampusBite App Installed successfully!', 'success');
+        }
+        deferredPrompt = null;
+      } else {
+        App.showToast('📱 To install on iOS/Safari: tap Share ➔ "Add to Home Screen"', 'info');
+      }
+    };
   </script>
 </body>
 </html>

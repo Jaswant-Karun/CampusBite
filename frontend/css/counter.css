@@ -1,0 +1,418 @@
+/* ==========================================================================
+   CampusBite - Kitchen Display System (KDS) & Counter TV Display Stylesheet
+   Designed for high-contrast viewing on 1080p/4K TVs and Kitchen Touch Tablets
+   ========================================================================== */
+
+:root {
+  --kds-bg: #070D1E;
+  --kds-surface: #0F172A;
+  --kds-card: #1E293B;
+  --kds-card-border: #334155;
+  --kds-text-main: #F8FAFC;
+  --kds-text-muted: #94A3B8;
+  --kds-amber: #F59E0B;
+  --kds-amber-glow: rgba(245, 158, 11, 0.25);
+  --kds-emerald: #10B981;
+  --kds-emerald-glow: rgba(16, 185, 129, 0.3);
+  --kds-teal: #14B8A6;
+  --kds-indigo: #6366F1;
+  --kds-danger: #EF4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+}
+
+body.kds-body {
+  background-color: var(--kds-bg);
+  color: var(--kds-text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Master Header */
+.kds-header {
+  background: var(--kds-surface);
+  border-bottom: 2px solid #1E293B;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.kds-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kds-logo {
+  font-size: 32px;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.4));
+}
+
+.kds-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kds-badge-counter {
+  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.kds-stats-strip {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.kds-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 6px 14px;
+}
+
+.kds-stat-label {
+  font-size: 11px;
+  color: var(--kds-text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.kds-stat-value {
+  font-size: 18px;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.kds-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kds-clock {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  font-weight: 900;
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 6px 14px;
+  border-radius: 10px;
+  letter-spacing: 2px;
+}
+
+.kds-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.kds-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.kds-btn.active {
+  background: #10B981;
+  border-color: #10B981;
+  color: #064E3B;
+  font-weight: 800;
+}
+
+/* Two-Column Display Layout */
+.kds-board {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.kds-column {
+  background: var(--kds-surface);
+  border-radius: 18px;
+  border: 2px solid var(--kds-card-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.kds-column-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--kds-card-border);
+}
+
+.kds-column.preparing .kds-column-header {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+  border-bottom-color: rgba(245, 158, 11, 0.3);
+}
+
+.kds-column.ready .kds-column-header {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(20, 184, 166, 0.06) 100%);
+  border-bottom-color: rgba(16, 185, 129, 0.4);
+}
+
+.kds-col-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.kds-column.preparing .kds-col-title {
+  color: var(--kds-amber);
+}
+
+.kds-column.ready .kds-col-title {
+  color: var(--kds-emerald);
+}
+
+.kds-col-count {
+  font-size: 15px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.kds-column.preparing .kds-col-count {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--kds-amber);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.kds-column.ready .kds-col-count {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--kds-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+.kds-cards-scroll {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+/* Custom Scrollbar for Kitchen */
+.kds-cards-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.kds-cards-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.kds-cards-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Order Ticket Card */
+.kds-ticket-card {
+  background: var(--kds-card);
+  border: 2px solid var(--kds-card-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kds-ticket-card:hover {
+  transform: translateY(-2px);
+}
+
+.kds-ticket-card.preparing {
+  border-left: 6px solid var(--kds-amber);
+}
+
+.kds-ticket-card.ready {
+  border-left: 6px solid var(--kds-emerald);
+  background: linear-gradient(135deg, #1E293B 0%, rgba(16, 185, 129, 0.08) 100%);
+  animation: pulseReadyCard 3s infinite ease-in-out;
+}
+
+@keyframes pulseReadyCard {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+  }
+}
+
+.kds-ticket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.kds-token-num {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.kds-ticket-card.preparing .kds-token-num {
+  color: var(--kds-amber);
+}
+
+.kds-ticket-card.ready .kds-token-num {
+  color: var(--kds-emerald);
+  font-size: 32px;
+}
+
+.kds-ticket-timer {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--kds-text-muted);
+}
+
+.kds-ticket-meta {
+  font-size: 13px;
+  color: var(--kds-text-main);
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.kds-ticket-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.kds-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kds-item-qty {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+/* Touch Action Bump Buttons */
+.kds-bump-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kds-bump-btn.btn-ready {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.kds-bump-btn.btn-ready:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+}
+
+.kds-bump-btn.btn-complete {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.kds-bump-btn.btn-complete:hover {
+  background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.kds-empty-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--kds-text-muted);
+}
+
+.kds-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .kds-board {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: auto;
+  }
+}

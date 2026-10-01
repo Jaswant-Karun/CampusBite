@@ -728,6 +728,100 @@ const AdminApp = {
     } catch (e) {
       console.warn("Reviews load error:", e);
     }
+  },
+
+  /* QR Code Scanner & Token Verification */
+  scannedOrder: null,
+
+  openQrScannerModal() {
+    this.scannedOrder = null;
+    const resultCard = document.getElementById('admin-scanned-result-card');
+    if (resultCard) resultCard.style.display = 'none';
+    const input = document.getElementById('admin-qr-token-input');
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 150);
+    }
+    App.openModal('admin-qr-scanner-modal');
+  },
+
+  simulateScan(tokenCode) {
+    const input = document.getElementById('admin-qr-token-input');
+    if (input) {
+      input.value = tokenCode;
+      this.processScannedToken();
+    }
+  },
+
+  async processScannedToken() {
+    const input = document.getElementById('admin-qr-token-input');
+    if (!input) return;
+    let raw = input.value.trim().toUpperCase().replace('#', '');
+    if (raw.startsWith('CAMPUSBITE:')) {
+      const parts = raw.split(':');
+      raw = parts[1] || raw;
+    }
+
+    if (!raw) {
+      App.showToast('Please enter or scan a token code', 'warning');
+      return;
+    }
+
+    let order = this.orders.find(o => o.id.toUpperCase() === raw);
+    if (!order) {
+      try {
+        const res = await window.api.getOrder(raw);
+        if (res.success && res.order) order = res.order;
+      } catch (e) {}
+    }
+
+    if (!order) {
+      App.showToast(`No order found for token #${raw}`, 'error');
+      return;
+    }
+
+    this.scannedOrder = order;
+    const resultCard = document.getElementById('admin-scanned-result-card');
+    if (resultCard) {
+      resultCard.style.display = 'block';
+      document.getElementById('scanned-order-title').textContent = `ORDER #${order.id}`;
+      document.getElementById('scanned-order-customer').textContent = `${order.customer_name} • Counter ${order.pickup_counter || 2}`;
+      document.getElementById('scanned-order-status').textContent = (order.order_status || 'PLACED').toUpperCase();
+      
+      const itemsText = (order.items || []).map(i => `${i.name} × ${i.quantity}`).join(', ');
+      document.getElementById('scanned-order-items').textContent = `🍽️ ${itemsText} (Total: ₹${order.total_amount})`;
+      
+      const btn = document.getElementById('scanned-handover-btn');
+      if (btn) {
+        if (order.order_status === 'Completed') {
+          btn.textContent = '✓ Already Picked Up / Completed';
+          btn.disabled = true;
+          btn.style.opacity = '0.6';
+        } else {
+          btn.textContent = '✅ Hand Over Tray & Complete Order';
+          btn.disabled = false;
+          btn.style.opacity = '1';
+        }
+      }
+    }
+    App.showToast(`Verified Order #${order.id} for ${order.customer_name}!`, 'success');
+  },
+
+  async completeScannedOrder() {
+    if (!this.scannedOrder) return;
+    const orderId = this.scannedOrder.id;
+
+    try {
+      const res = await window.api.updateOrderStatus(orderId, 'Completed');
+      if (res.success) {
+        App.closeModal('admin-qr-scanner-modal');
+        App.showToast(`🎉 Order #${orderId} handed over and marked Completed!`, 'success');
+        await this.loadOrders();
+        await this.loadKPIsAndAnalytics();
+      }
+    } catch (e) {
+      App.showToast('Failed to complete order', 'error');
+    }
   }
 };
 

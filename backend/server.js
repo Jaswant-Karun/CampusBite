@@ -98,6 +98,14 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(frontendPath, 'admin.html'));
 });
 
+app.get('/counter', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'counter.html'));
+});
+
+app.get('/kds', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'counter.html'));
+});
+
 // Fallback to index.html for SPA routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
@@ -111,5 +119,6 @@ app.listen(PORT, () => {
   console.log(`📍 Customer Website:   http://localhost:${PORT}`);
   console.log(`📊 Admin Operations:   http://localhost:${PORT}/admin`);
   console.log(`📱 Standalone Mobile:  http://localhost:${PORT}/mobile`);
+  console.log(`📺 Kitchen KDS TV:     http://localhost:${PORT}/counter`);
   console.log(`====================================================`);
 });

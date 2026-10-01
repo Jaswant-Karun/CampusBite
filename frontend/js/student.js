@@ -28,6 +28,8 @@ const StudentApp = {
   products: [],
   customizingProduct: null,
   currentDietFilter: 'all',
+  currentStall: 'all',
+  currentCategory: 'All',
   kineticWords: [
     "Hot Fresh Meals 🍔",
     "2-Min Break Bites ⚡",
@@ -195,19 +197,7 @@ const StudentApp = {
       document.querySelectorAll('.diet-chip').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
     }
-
-    let items = [...this.products];
-    if (dietType === 'veg') {
-      items = items.filter(p => p.is_veg);
-    } else if (dietType === 'popular') {
-      items = items.filter(p => p.popular);
-    } else if (dietType === 'under50') {
-      items = items.filter(p => p.price <= 50);
-    } else if (dietType === 'fast') {
-      items = items.filter(p => parseInt(p.prep_time) <= 8);
-    }
-
-    this.renderMenuList(items);
+    this.applyCombinedFilters();
   },
 
   bindEvents() {
@@ -701,6 +691,8 @@ const StudentApp = {
             <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap;">
               <span class="food-meta-pill">⏱️ ${item.prep_time || '8 mins'}</span>
               <span class="food-meta-pill">🔥 ${item.calories || '380 kcal'}</span>
+              ${item.protein_g ? `<span class="food-meta-pill" style="color:#4F46E5;font-weight:700;">💪 ${item.protein_g}g Pro</span>` : ''}
+              ${item.stall_name ? `<span class="food-meta-pill" style="color:#0F766E;">🏪 ${item.stall_name}</span>` : ''}
               ${item.is_veg ? '<span class="food-meta-pill" style="color:#10B981;font-weight:700;">🟢 Veg</span>' : '<span class="food-meta-pill" style="color:#EF4444;font-weight:700;">🔴 Non-Veg</span>'}
             </div>
             <div class="food-bottom-row">
@@ -723,13 +715,44 @@ const StudentApp = {
     }).join('');
   },
 
-  filterProducts(category) {
-    if (!category || category === 'All') {
-      this.renderMenuList(this.products);
-    } else {
-      const filtered = this.products.filter(p => p.category.toLowerCase() === category.toLowerCase());
-      this.renderMenuList(filtered);
+  selectStall(stallId, btn) {
+    this.currentStall = stallId;
+    document.querySelectorAll('.stall-pill-btn').forEach(b => {
+      b.style.background = 'var(--bg-elevated)';
+      b.style.color = 'var(--text-secondary)';
+      b.classList.remove('active');
+    });
+    if (btn) {
+      btn.style.background = 'var(--primary)';
+      btn.style.color = 'white';
+      btn.classList.add('active');
     }
+    this.applyCombinedFilters();
+  },
+
+  applyCombinedFilters() {
+    let list = [...this.products];
+    if (this.currentStall && this.currentStall !== 'all') {
+      list = list.filter(p => p.stall_id === this.currentStall);
+    }
+    if (this.currentCategory && this.currentCategory !== 'All') {
+      list = list.filter(p => p.category.toLowerCase() === this.currentCategory.toLowerCase());
+    }
+    if (this.currentDietFilter === 'veg') {
+      list = list.filter(p => p.is_veg);
+    } else if (this.currentDietFilter === 'popular') {
+      list = list.filter(p => p.popular);
+    } else if (this.currentDietFilter === 'under50') {
+      list = list.filter(p => p.price <= 50);
+    } else if (this.currentDietFilter === 'fast') {
+      list = list.filter(p => parseInt(p.prep_time) <= 8);
+    }
+    this.renderMenuList(list);
+  },
+
+  filterProducts(category) {
+    this.currentCategory = category || 'All';
+    this.applyCombinedFilters();
   },
 
   searchProducts(query) {
@@ -1175,6 +1198,11 @@ const StudentApp = {
         const readyAlert = document.getElementById('order-ready-banner-alert');
         if (readyAlert) {
           readyAlert.style.display = o.order_status === 'Ready' ? 'block' : 'none';
+        }
+
+        // Render Contactless Pickup QR Code
+        if (window.CampusQR) {
+          window.CampusQR.renderTo('tracking-qr-container', `CAMPUSBITE:${o.id}:${o.customer_name}:${o.total_amount}`, 150);
         }
       }
     } catch (e) {

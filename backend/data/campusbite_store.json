@@ -76,7 +76,13 @@
       "prep_time": "8 mins",
       "is_veg": false,
       "popular": true,
-      "calories": "380 kcal"
+      "calories": "380 kcal",
+      "protein_g": 16,
+      "carbs_g": 44,
+      "fat_g": 14,
+      "health_tag": "⚡ Quick Energy",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-2",
@@ -91,7 +97,13 @@
       "prep_time": "10 mins",
       "is_veg": false,
       "popular": true,
-      "calories": "450 kcal"
+      "calories": "450 kcal",
+      "protein_g": 22,
+      "carbs_g": 48,
+      "fat_g": 20,
+      "health_tag": "💪 High Protein",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-3",
@@ -106,7 +118,13 @@
       "prep_time": "6 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "280 kcal"
+      "calories": "280 kcal",
+      "protein_g": 10,
+      "carbs_g": 36,
+      "fat_g": 9,
+      "health_tag": "🌿 Low Calorie",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-4",
@@ -121,7 +139,13 @@
       "prep_time": "9 mins",
       "is_veg": true,
       "popular": false,
-      "calories": "340 kcal"
+      "calories": "340 kcal",
+      "protein_g": 18,
+      "carbs_g": 38,
+      "fat_g": 12,
+      "health_tag": "💪 High Protein",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-5",
@@ -131,12 +155,18 @@
       "category": "Drinks",
       "image_emoji": "🍋",
       "stock": 14,
-      "is_available": false,
+      "is_available": true,
       "rating": 4.5,
       "prep_time": "3 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "90 kcal"
+      "calories": "90 kcal",
+      "protein_g": 1,
+      "carbs_g": 22,
+      "fat_g": 0,
+      "health_tag": "🌿 Low Calorie & Hydration",
+      "stall_id": "stall_sports",
+      "stall_name": "Sports Juice Bar"
     },
     {
       "id": "p-6",
@@ -151,7 +181,13 @@
       "prep_time": "4 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "260 kcal"
+      "calories": "260 kcal",
+      "protein_g": 6,
+      "carbs_g": 34,
+      "fat_g": 8,
+      "health_tag": "⚡ Energy Boost",
+      "stall_id": "stall_library",
+      "stall_name": "Library Brews"
     },
     {
       "id": "p-7",
@@ -166,7 +202,13 @@
       "prep_time": "2 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "75 kcal"
+      "calories": "75 kcal",
+      "protein_g": 3,
+      "carbs_g": 12,
+      "fat_g": 2,
+      "health_tag": "🧠 Study Alertness",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-8",
@@ -181,7 +223,13 @@
       "prep_time": "5 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "620 kcal"
+      "calories": "620 kcal",
+      "protein_g": 18,
+      "carbs_g": 95,
+      "fat_g": 14,
+      "health_tag": "🥗 Balanced Meal",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-9",
@@ -196,7 +244,13 @@
       "prep_time": "5 mins",
       "is_veg": false,
       "popular": true,
-      "calories": "680 kcal"
+      "calories": "680 kcal",
+      "protein_g": 36,
+      "carbs_g": 72,
+      "fat_g": 24,
+      "health_tag": "💪 High Protein Meal",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-10",
@@ -211,7 +265,13 @@
       "prep_time": "8 mins",
       "is_veg": true,
       "popular": false,
-      "calories": "510 kcal"
+      "calories": "510 kcal",
+      "protein_g": 12,
+      "carbs_g": 78,
+      "fat_g": 16,
+      "health_tag": "⚡ High Carb Fuel",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
     },
     {
       "id": "p-11",
@@ -226,7 +286,13 @@
       "prep_time": "4 mins",
       "is_veg": true,
       "popular": true,
-      "calories": "320 kcal"
+      "calories": "320 kcal",
+      "protein_g": 5,
+      "carbs_g": 42,
+      "fat_g": 15,
+      "health_tag": "🧠 Mood Booster",
+      "stall_id": "stall_library",
+      "stall_name": "Library Brews"
     },
     {
       "id": "p-12",
@@ -241,7 +307,97 @@
       "prep_time": "2 mins",
       "is_veg": true,
       "popular": false,
-      "calories": "290 kcal"
+      "calories": "290 kcal",
+      "protein_g": 4,
+      "carbs_g": 50,
+      "fat_g": 10,
+      "health_tag": "✨ Sweet Treat",
+      "stall_id": "stall_main",
+      "stall_name": "Main Food Court"
+    },
+    {
+      "id": "p-13",
+      "name": "Whey Protein Peanut Shake",
+      "description": "30g premium whey, creamy peanut butter, banana and chilled skim milk. Gym post-workout power!",
+      "price": 85,
+      "category": "Drinks",
+      "image_emoji": "🥤",
+      "stock": 25,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "3 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "340 kcal",
+      "protein_g": 30,
+      "carbs_g": 32,
+      "fat_g": 8,
+      "health_tag": "💪 Gym Muscle Fuel",
+      "stall_id": "stall_sports",
+      "stall_name": "Sports Juice Bar"
+    },
+    {
+      "id": "p-14",
+      "name": "Detox Green Vitality Juice",
+      "description": "Cold-pressed cucumber, green apple, spinach, celery, and ginger with chia seeds.",
+      "price": 50,
+      "category": "Drinks",
+      "image_emoji": "🥒",
+      "stock": 30,
+      "is_available": true,
+      "rating": 4.7,
+      "prep_time": "3 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "110 kcal",
+      "protein_g": 4,
+      "carbs_g": 24,
+      "fat_g": 1,
+      "health_tag": "🌿 Low Calorie & Clean Detox",
+      "stall_id": "stall_sports",
+      "stall_name": "Sports Juice Bar"
+    },
+    {
+      "id": "p-15",
+      "name": "Artisan Caramel Cappuccino & Croissant",
+      "description": "Double espresso shot with caramel foam paired with a flaky butter croissant for long study sessions.",
+      "price": 95,
+      "category": "Snacks",
+      "image_emoji": "☕",
+      "stock": 20,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "5 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "310 kcal",
+      "protein_g": 8,
+      "carbs_g": 38,
+      "fat_g": 14,
+      "health_tag": "🧠 Exam Focus Fuel",
+      "stall_id": "stall_library",
+      "stall_name": "Library Brews"
+    },
+    {
+      "id": "p-16",
+      "name": "Hostel Midnight Cheese Maggi",
+      "description": "2-minute hot Maggi noodles infused with secret spices and loaded with melted mozzarella cheese.",
+      "price": 55,
+      "category": "Snacks",
+      "image_emoji": "🍜",
+      "stock": 40,
+      "is_available": true,
+      "rating": 4.9,
+      "prep_time": "4 mins",
+      "is_veg": true,
+      "popular": true,
+      "calories": "390 kcal",
+      "protein_g": 9,
+      "carbs_g": 48,
+      "fat_g": 18,
+      "health_tag": "🌙 Late Night Craving",
+      "stall_id": "stall_night",
+      "stall_name": "Hostel Night Canteen"
     }
   ],
   "coupons": [

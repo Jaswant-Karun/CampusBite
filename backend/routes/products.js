@@ -5,7 +5,11 @@ const db = require('../data/db');
 // GET all products with filtering & search
 router.get('/', (req, res) => {
   let products = [...db.data.products];
-  const { category, search, veg, popular } = req.query;
+  const { category, search, veg, popular, stall_id } = req.query;
+
+  if (stall_id && stall_id !== 'all') {
+    products = products.filter(p => p.stall_id === stall_id);
+  }
 
   if (category && category !== 'All') {
     products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
