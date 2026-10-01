@@ -270,14 +270,37 @@ const AdminApp = {
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:22px;">${p.image_emoji}</span>
+              <span style="font-size:24px;">${p.image_emoji || '🍲'}</span>
               <div>
-                <strong style="color:var(--text-primary);">${p.name}</strong>
-                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ${p.prep_time}</div>
+                <strong style="color:var(--text-primary);font-size:13.5px;">${p.name}</strong>
+                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ${p.prep_time || '5-8 mins'} ${p.is_veg ? '• 🟢 Veg' : '• 🔴 Non-Veg'}</div>
               </div>
             </div>
           </td>
-          <td><strong>₹${p.price}</strong></td>
+          <td>
+            <!-- Interactive Quick Price Edit -->
+            <div style="display:inline-flex;align-items:center;gap:4px;background:var(--bg-elevated, #F8FAFC);padding:3px 6px;border-radius:8px;border:1px solid #CBD5E1;">
+              <span style="font-weight:700;color:var(--text-secondary);font-size:13px;">₹</span>
+              <input 
+                type="number" 
+                min="1" 
+                max="9999" 
+                value="${p.price}" 
+                id="price-input-${p.id}"
+                style="width:58px;padding:3px 5px;border:1px solid #CBD5E1;border-radius:6px;font-weight:800;font-size:13px;color:#0F172A;background:#FFFFFF;outline:none;"
+                title="Enter new price and click Save or press Enter"
+                onkeydown="if(event.key==='Enter') AdminApp.saveInlinePrice('${p.id}')"
+              />
+              <button 
+                class="btn-primary" 
+                onclick="AdminApp.saveInlinePrice('${p.id}')" 
+                title="Save new price immediately"
+                style="padding:3px 8px;font-size:11px;font-weight:700;border-radius:6px;min-width:auto;height:auto;"
+              >
+                Save
+              </button>
+            </div>
+          </td>
           <td>
             <div class="stock-adjust-controls">
               <button class="stock-ctrl-btn" onclick="AdminApp.adjustStock('${p.id}', -1)">-</button>
@@ -291,12 +314,121 @@ const AdminApp = {
           <td>
             <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;">
               <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)">
-              <span>${p.is_available ? 'Active' : 'Disabled'}</span>
+              <span style="font-weight:600;">${p.is_available ? 'Active' : 'Disabled'}</span>
             </label>
+          </td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex;gap:6px;">
+              <button class="btn-outline" onclick="AdminApp.openEditProductModal('${p.id}')" style="padding:4px 10px;font-size:11.5px;border-radius:6px;font-weight:600;" title="Full Dish & Price Details">
+                ✏️ Edit
+              </button>
+              <button class="btn-outline" onclick="AdminApp.deleteProduct('${p.id}')" style="padding:4px 8px;font-size:11.5px;border-radius:6px;color:#DC2626;border-color:rgba(220,38,38,0.3);" title="Remove Dish">
+                🗑️
+              </button>
+            </div>
           </td>
         </tr>
       `;
     }).join('');
+  },
+
+  /* 1-Click Inline Price Save */
+  async saveInlinePrice(productId) {
+    const input = document.getElementById(`price-input-${productId}`);
+    if (!input) return;
+    const newPrice = Number(input.value);
+
+    if (isNaN(newPrice) || newPrice <= 0) {
+      App.showToast('Please enter a valid price greater than 0', 'warning');
+      return;
+    }
+
+    const product = this.products.find(p => p.id === productId);
+    const oldPrice = product ? product.price : 0;
+
+    try {
+      const res = await window.api.updateProduct(productId, { price: newPrice });
+      if (res.success) {
+        if (product) product.price = newPrice;
+        App.showToast(`✅ Price for ${product ? product.name : 'dish'} updated: ₹${oldPrice} ➔ ₹${newPrice}!`, 'success');
+        await this.loadProducts();
+        await this.loadKPIsAndAnalytics();
+        if (window.StudentApp) window.StudentApp.loadProducts();
+      } else {
+        App.showToast(res.message || 'Price update failed', 'error');
+      }
+    } catch (e) {
+      App.showToast('Failed to save price to server', 'error');
+    }
+  },
+
+  /* Open Full Edit Modal */
+  openEditProductModal(productId) {
+    const p = this.products.find(item => item.id === productId);
+    if (!p) {
+      App.showToast('Product not found', 'error');
+      return;
+    }
+
+    document.getElementById('edit-prod-id').value = p.id;
+    document.getElementById('edit-prod-name').value = p.name;
+    document.getElementById('edit-prod-emoji').value = p.image_emoji || '🍲';
+    document.getElementById('edit-prod-category').value = p.category;
+    document.getElementById('edit-prod-price').value = p.price;
+    document.getElementById('edit-prod-stock').value = p.stock;
+    document.getElementById('edit-prod-prep').value = p.prep_time || '5-8 mins';
+    document.getElementById('edit-prod-is-veg').value = String(p.is_veg);
+    document.getElementById('edit-prod-desc').value = p.description || '';
+    document.getElementById('edit-prod-available').checked = Boolean(p.is_available);
+
+    App.openModal('edit-product-modal');
+  },
+
+  /* Submit Full Edit Modal */
+  async handleEditProductSubmit(event) {
+    if (event) event.preventDefault();
+
+    const productId = document.getElementById('edit-prod-id').value;
+    const name = document.getElementById('edit-prod-name').value.trim();
+    const emoji = document.getElementById('edit-prod-emoji').value.trim() || '🍲';
+    const category = document.getElementById('edit-prod-category').value;
+    const price = Number(document.getElementById('edit-prod-price').value);
+    const stock = Number(document.getElementById('edit-prod-stock').value);
+    const prep_time = document.getElementById('edit-prod-prep').value.trim() || '5-8 mins';
+    const is_veg = document.getElementById('edit-prod-is-veg').value === 'true';
+    const description = document.getElementById('edit-prod-desc').value.trim();
+    const is_available = document.getElementById('edit-prod-available').checked;
+
+    if (!name || isNaN(price) || price <= 0) {
+      App.showToast('Please provide a valid dish name and price', 'warning');
+      return;
+    }
+
+    try {
+      const res = await window.api.updateProduct(productId, {
+        name,
+        image_emoji: emoji,
+        category,
+        price,
+        stock,
+        prep_time,
+        is_veg,
+        description,
+        is_available
+      });
+
+      if (res.success) {
+        App.closeModal('edit-product-modal');
+        App.showToast(`💾 Successfully saved changes for ${name} (₹${price})!`, 'success');
+        await this.loadProducts();
+        await this.loadKPIsAndAnalytics();
+        if (window.StudentApp) window.StudentApp.loadProducts();
+      } else {
+        App.showToast(res.message || 'Update failed', 'error');
+      }
+    } catch (e) {
+      App.showToast('Failed to update product details', 'error');
+    }
   },
 
   async adjustStock(productId, delta) {
@@ -329,37 +461,65 @@ const AdminApp = {
     App.openModal('add-product-modal');
   },
 
-  async submitNewProduct() {
-    const name = document.getElementById('new-prod-name').value;
-    const price = document.getElementById('new-prod-price').value;
-    const category = document.getElementById('new-prod-category').value;
-    const stock = document.getElementById('new-prod-stock').value;
-    const emoji = document.getElementById('new-prod-emoji').value || '🍲';
-    const isVeg = document.getElementById('new-prod-isveg').checked;
+  async handleProductSubmit(event) {
+    if (event) event.preventDefault();
 
-    if (!name || !price) {
-      App.showToast('Name and price are required', 'warning');
+    const name = document.getElementById('prod-name').value.trim();
+    const price = Number(document.getElementById('prod-price').value);
+    const category = document.getElementById('prod-category').value;
+    const stock = Number(document.getElementById('prod-stock').value) || 20;
+    const emoji = document.getElementById('prod-emoji')?.value?.trim() || '🍲';
+    const isVeg = document.getElementById('prod-is-veg').value === 'true';
+    const prep = document.getElementById('prod-prep')?.value?.trim() || '5-8 mins';
+    const desc = document.getElementById('prod-desc')?.value?.trim() || 'Freshly prepared at Campus Canteen';
+
+    if (!name || isNaN(price) || price <= 0) {
+      App.showToast('Valid name and price are required', 'warning');
       return;
     }
 
     try {
       const res = await window.api.createProduct({
         name,
-        price: Number(price),
+        price,
         category,
-        stock: Number(stock) || 20,
+        stock,
         image_emoji: emoji,
-        is_veg: isVeg
+        is_veg: isVeg,
+        prep_time: prep,
+        description: desc
       });
 
       if (res.success) {
         App.closeModal('add-product-modal');
-        App.showToast(`Added ${res.product.name} to menu!`, 'success');
+        document.getElementById('add-product-form')?.reset();
+        App.showToast(`🎉 Added ${res.product.name} (₹${res.product.price}) to live menu!`, 'success');
         await this.loadProducts();
+        await this.loadKPIsAndAnalytics();
         if (window.StudentApp) window.StudentApp.loadProducts();
       }
     } catch (e) {
       App.showToast('Error adding product', 'error');
+    }
+  },
+
+  async deleteProduct(productId) {
+    const product = this.products.find(p => p.id === productId);
+    const name = product ? product.name : 'this item';
+    if (!confirm(`Are you sure you want to remove "${name}" from the canteen menu?`)) {
+      return;
+    }
+
+    try {
+      const res = await window.api.deleteProduct(productId);
+      if (res.success) {
+        App.showToast(`Removed "${name}" from menu`, 'info');
+        await this.loadProducts();
+        await this.loadKPIsAndAnalytics();
+        if (window.StudentApp) window.StudentApp.loadProducts();
+      }
+    } catch (e) {
+      App.showToast('Failed to delete product', 'error');
     }
   },
 

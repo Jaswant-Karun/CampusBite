@@ -147,12 +147,16 @@ class CampusNotificationManager {
     // If Student Website or Mobile App:
     if (this.role !== 'admin' && window.StudentApp) {
       if (notif.type === 'ORDER_STATUS_CHANGED' || notif.type === 'ORDER_PLACED') {
-        // Automatically sync tracking data in real time
         if (typeof window.StudentApp.loadActiveOrders === 'function') {
           window.StudentApp.loadActiveOrders();
         }
         if (typeof window.StudentApp.renderTrackingView === 'function') {
           window.StudentApp.renderTrackingView();
+        }
+      }
+      if (notif.type === 'price_updated' || notif.type === 'product_updated' || notif.type === 'product_added') {
+        if (typeof window.StudentApp.loadProducts === 'function') {
+          window.StudentApp.loadProducts();
         }
       }
     }
@@ -167,9 +171,9 @@ class CampusNotificationManager {
           window.AdminApp.loadKPIs();
         }
       }
-      if (notif.type === 'LOW_STOCK') {
-        if (typeof window.AdminApp.loadInventory === 'function') {
-          window.AdminApp.loadInventory();
+      if (notif.type === 'LOW_STOCK' || notif.type === 'price_updated' || notif.type === 'product_updated' || notif.type === 'product_added') {
+        if (typeof window.AdminApp.loadProducts === 'function') {
+          window.AdminApp.loadProducts();
         }
       }
     }
