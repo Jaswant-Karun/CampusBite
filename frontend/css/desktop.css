@@ -550,28 +550,6 @@
     margin: 10px 10px 20px;
     border-radius: 16px;
   }
-
-  .mobile-bottom-nav {
-    display: flex !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: #FFFFFF;
-    border-top: 1px solid #E2E8F0;
-    border-radius: 0;
-    padding: 6px 12px 10px;
-    box-shadow: 0 -2px 10px rgba(15, 23, 42, 0.05);
-  }
-
-  .mobile-bottom-nav .nav-item {
-    color: #64748B;
-  }
-
-  .mobile-bottom-nav .nav-item.active {
-    color: #4F46E5;
-  }
 }
 
 /* ==========================================================================

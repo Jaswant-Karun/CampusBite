@@ -261,27 +261,44 @@ const StudentApp = {
     });
   },
 
+  filterDiet(dietType) {
+    this.navigateTo('home');
+    const chip = document.querySelector(`.diet-chip[data-diet="${dietType}"]`);
+    this.filterByDiet(dietType, chip);
+    const catRow = document.getElementById('home-category-chips');
+    if (catRow) catRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  },
+
   navigateTo(screenId) {
+    if (screenId === 'menu') {
+      screenId = 'home';
+      setTimeout(() => {
+        const catRow = document.getElementById('home-category-chips');
+        if (catRow) catRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+
     document.querySelectorAll('.mob-screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(`screen-${screenId}`);
     if (target) {
       target.classList.add('active');
     }
 
-    // Update bottom nav highlighting
+    // Update bottom nav highlighting (mobile)
     document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.screen === screenId);
+      btn.classList.toggle('active', btn.dataset.screen === screenId || (screenId === 'home' && btn.dataset.screen === 'menu'));
     });
 
     // Update desktop nav buttons
     document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.screen === screenId);
+      btn.classList.toggle('active', btn.dataset.screen === screenId || (screenId === 'home' && btn.dataset.screen === 'menu'));
     });
 
-    // Bottom nav visibility: hide on motion-splash and login
+    // Bottom nav visibility: ONLY on mobile shell, NEVER on desktop website
     const bottomNav = document.querySelector('.mobile-bottom-nav');
+    const isDesktopWebsite = window.innerWidth > 768 || !!document.querySelector('.website-content-wrapper');
     if (bottomNav) {
-      if (['motion-splash', 'login'].includes(screenId)) {
+      if (isDesktopWebsite || ['motion-splash', 'login'].includes(screenId)) {
         bottomNav.style.display = 'none';
       } else {
         bottomNav.style.display = 'flex';

@@ -21,29 +21,41 @@
        MASTER TOP NAVIGATION BAR
        ======================================================================== -->
   <header class="master-header">
-    <div class="brand-section">
+    <div class="brand-section" onclick="StudentApp.navigateTo('home')" style="cursor:pointer;">
       <div class="brand-logo-icon">🍔</div>
       <div class="brand-title">CAMPUSBITE</div>
     </div>
 
-    <!-- Website Quick Nav Links -->
-    <nav class="master-nav-links" style="display:flex;align-items:center;gap:6px;">
-      <button class="mode-btn active" onclick="StudentApp.navigateTo('menu')" style="background:transparent;color:#CBD5E1;font-weight:500;">
-        <span>🍽️</span> Menu
+    <!-- Website Master Navigation Tabs -->
+    <nav class="master-nav-links" style="display:flex;align-items:center;gap:4px;">
+      <button class="desktop-nav-btn active" data-screen="home" onclick="StudentApp.navigateTo('home')">
+        <span>🍔</span> Menu & Order
       </button>
-      <button class="mode-btn" onclick="StudentApp.filterDiet('fast')" style="background:transparent;color:#CBD5E1;font-weight:500;">
-        <span>⚡</span> Express
+      <button class="desktop-nav-btn" data-screen="crowd-meter" onclick="StudentApp.navigateTo('crowd-meter')">
+        <span>⚡</span> Rush Radar
       </button>
-      <button class="mode-btn" onclick="StudentApp.filterDiet('veg')" style="background:transparent;color:#CBD5E1;font-weight:500;">
-        <span>🌱</span> Pure Veg
+      <button class="desktop-nav-btn" data-screen="wallet" onclick="StudentApp.navigateTo('wallet')">
+        <span>💳</span> CampusPay
       </button>
-      <button class="mode-btn" onclick="StudentApp.navigateTo('tracking')" style="background:transparent;color:#CBD5E1;font-weight:500;">
+      <button class="desktop-nav-btn" data-screen="tracking" onclick="StudentApp.navigateTo('tracking')">
         <span>📍</span> Track Order
       </button>
-      <button class="mode-btn" onclick="StudentApp.openRewardsStoreModal()" style="background:transparent;color:#CBD5E1;font-weight:500;">
-        <span>🏆</span> Rewards
+      <button class="desktop-nav-btn" data-screen="rewards-store" onclick="StudentApp.openLoyaltyStoreModal()">
+        <span>🎁</span> Rewards
+      </button>
+      <button class="desktop-nav-btn" data-screen="feedback" onclick="StudentApp.openCustomerReviewModal()">
+        <span>⭐</span> Feedback
+      </button>
+      <button class="desktop-nav-btn" data-screen="sustainability" onclick="StudentApp.navigateTo('sustainability')">
+        <span>🌱</span> Eco Tracker
       </button>
     </nav>
+
+    <!-- Header Quick Search -->
+    <div style="position:relative;width:200px;min-width:160px;">
+      <span style="position:absolute;left:10px;top:7px;font-size:12px;opacity:0.7;">🔍</span>
+      <input type="text" id="desktop-search-input" oninput="StudentApp.searchProducts(this.value)" placeholder="Search meals, drinks..." style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 12px 6px 30px;color:white;font-size:12px;outline:none;">
+    </div>
 
     <!-- Active User & Quick Actions -->
     <div class="header-actions">
@@ -121,60 +133,7 @@
   <main id="student-viewport-section" class="student-viewport-wrapper">
     <div class="website-content-wrapper">
 
-      <!-- Web App Navigation Header -->
-      <header class="desktop-nav-header">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="StudentApp.navigateTo('home')">
-              <span style="font-size:24px;">🍔</span>
-              <div>
-                <strong style="font-family:var(--font-display);font-size:16px;color:#FFFFFF;letter-spacing:0.5px;">CAMPUSBITE</strong>
-                <span style="display:block;font-size:10px;color:#10B981;font-weight:700;">🟢 Canteen Open • Counter 1 & 2 Active</span>
-              </div>
-            </div>
 
-            <!-- Navigation Links -->
-            <nav class="desktop-nav-links">
-              <button class="desktop-nav-btn active" data-screen="home" onclick="StudentApp.navigateTo('home')">
-                <span>🍔</span> Menu & Order
-              </button>
-              <button class="desktop-nav-btn" data-screen="crowd-meter" onclick="StudentApp.navigateTo('crowd-meter')">
-                <span>⚡</span> Live Rush Radar
-              </button>
-              <button class="desktop-nav-btn" data-screen="wallet" onclick="StudentApp.navigateTo('wallet')">
-                <span>💳</span> CampusPay Wallet
-              </button>
-              <button class="desktop-nav-btn" data-screen="tracking" onclick="StudentApp.navigateTo('tracking')">
-                <span>📍</span> Track Order
-              </button>
-              <button class="desktop-nav-btn" data-screen="profile" onclick="StudentApp.navigateTo('profile')">
-                <span>👤</span> My Profile & Rewards
-              </button>
-              <button class="desktop-nav-btn" data-screen="rewards-store" onclick="StudentApp.openLoyaltyStoreModal()">
-                <span>🎁</span> Rewards Store
-              </button>
-              <button class="desktop-nav-btn" data-screen="feedback" onclick="StudentApp.openCustomerReviewModal()">
-                <span>⭐</span> Canteen Feedback
-              </button>
-              <button class="desktop-nav-btn" data-screen="sustainability" onclick="StudentApp.navigateTo('sustainability')">
-                <span>🌱</span> Eco Tracker
-              </button>
-            </nav>
-          </div>
-
-          <div class="desktop-nav-actions">
-            <!-- Search Input -->
-            <div style="position:relative;width:220px;">
-              <span style="position:absolute;left:10px;top:8px;font-size:13px;">🔍</span>
-              <input type="text" id="desktop-search-input" oninput="StudentApp.searchProducts(this.value)" placeholder="Search meals, drinks..." style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:7px 12px 7px 32px;color:white;font-size:12px;">
-            </div>
-
-            <!-- Cart Quick Trigger -->
-            <button class="desktop-cart-quick-btn" onclick="StudentApp.proceedToCheckout()">
-              <span>🛒</span>
-              <span id="desktop-nav-cart-btn-text">Cart (0)</span>
-            </button>
-          </div>
-        </header>
 
         <!-- Desktop Hero Banner (Visible in Desktop Mode on Home/Menu) -->
         <section class="desktop-hero-banner">
@@ -521,30 +480,6 @@
                   Proceed to Checkout →
                 </button>
               </aside>
-            </div>
-          </div>
-
-          <!-- ----------------------------------------------------------------
-               SCREEN 4: FULL MENU CATALOG SCREEN
-               ---------------------------------------------------------------- -->
-          <div id="screen-menu" class="mob-screen">
-            <div class="home-top-bar">
-              <div class="user-greeting">
-                <h3>Canteen Menu 🍽️</h3>
-                <p>Freshly prepared daily specials</p>
-              </div>
-            </div>
-
-            <div class="category-chips-row" style="margin-bottom:12px;">
-              <button class="cat-chip active" onclick="StudentApp.filterProducts('All')">All Items</button>
-              <button class="cat-chip" onclick="StudentApp.filterProducts('Snacks')">Snacks</button>
-              <button class="cat-chip" onclick="StudentApp.filterProducts('Meals')">Meals</button>
-              <button class="cat-chip" onclick="StudentApp.filterProducts('Drinks')">Drinks</button>
-              <button class="cat-chip" onclick="StudentApp.filterProducts('Desserts')">Desserts</button>
-            </div>
-
-            <div class="menu-food-list" id="full-menu-items-container">
-              <!-- Shares menu items container or rendered dynamically -->
             </div>
           </div>
 
@@ -1025,39 +960,6 @@
           </div>
 
         </div> <!-- End .mobile-screens-container -->
-
-        <!-- Mobile Bottom Navigation Bar -->
-        <nav class="mobile-bottom-nav">
-          <button class="nav-item active" data-screen="home">
-            <span class="nav-icon">🏠</span>
-            <span>Home</span>
-          </button>
-          <button class="nav-item" data-screen="menu">
-            <span class="nav-icon">🍔</span>
-            <span>Menu</span>
-          </button>
-          <button class="nav-item" data-screen="crowd-meter">
-            <span class="nav-icon">🟢</span>
-            <span>Radar</span>
-          </button>
-          <button class="nav-item" data-screen="wallet">
-            <span class="nav-icon">💳</span>
-            <span>Wallet</span>
-          </button>
-          <button class="nav-item" data-screen="cart">
-            <span class="nav-icon">🛒</span>
-            <span>Cart</span>
-            <span class="cart-badge-pill" id="mob-cart-badge" style="display:none;">0</span>
-          </button>
-          <button class="nav-item" data-screen="tracking">
-            <span class="nav-icon">📍</span>
-            <span>Track</span>
-          </button>
-          <button class="nav-item" data-screen="profile">
-            <span class="nav-icon">👤</span>
-            <span>Profile</span>
-          </button>
-        </nav>
 
       </div> <!-- End .website-content-wrapper -->
   </main>
