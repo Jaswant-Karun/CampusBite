@@ -498,6 +498,45 @@ const INITIAL_DATA = {
       date: new Date(Date.now() - 86400000).toISOString()
     }
   ],
+  categories: [
+    { id: "cat-1", name: "Snacks", slug: "snacks", icon: "🥪", description: "Quick bites, burgers, sandwiches & rolls", sort_order: 1 },
+    { id: "cat-2", name: "Drinks", slug: "drinks", icon: "🥤", description: "Hot filter coffee, chai & fresh juices", sort_order: 2 },
+    { id: "cat-3", name: "Meals", slug: "meals", icon: "🍛", description: "Nutritious lunch platters & South Indian thalis", sort_order: 3 },
+    { id: "cat-4", name: "Healthy", slug: "healthy", icon: "🥗", description: "High-protein salads & low-cal snacks", sort_order: 4 },
+    { id: "cat-5", name: "Desserts", slug: "desserts", icon: "🍨", description: "Gulab jamun & dessert treats", sort_order: 5 }
+  ],
+  notifications: [
+    {
+      id: "notif-init-1",
+      title: "Welcome to CampusBite",
+      message: "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
+      type: "SYSTEM",
+      target: "all",
+      icon: "CB",
+      read: false,
+      created_at: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      id: "notif-init-2",
+      title: "Flash Offer Active",
+      message: "Use code CAMPUS20 for 20% discount on your student meal tray!",
+      type: "PROMO",
+      target: "student",
+      icon: "OFFER",
+      read: false,
+      created_at: new Date(Date.now() - 1800000).toISOString()
+    },
+    {
+      id: "notif-init-3",
+      title: "Kitchen System Online",
+      message: "Live POS sync with MongoDB active. Real-time token dispatch enabled.",
+      type: "ADMIN",
+      target: "admin",
+      icon: "ADMIN",
+      read: false,
+      created_at: new Date(Date.now() - 2400000).toISOString()
+    }
+  ],
   analytics: {
     today_revenue: 12450,
     today_orders: 186,
