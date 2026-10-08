@@ -698,15 +698,133 @@ const StudentApp = {
   // ==========================================
   async loadProducts() {
     try {
+      // 1. Load Categories from Real DB
+      try {
+        const catRes = await window.api.getCategories();
+        if (catRes && catRes.categories) {
+          this.categories = catRes.categories;
+        }
+      } catch (e) {
+        console.warn("Categories fetch fallback:", e);
+      }
+
+      // 2. Load Coupons from Real DB
+      try {
+        const coupRes = await window.api.getCoupons();
+        if (coupRes && coupRes.coupons) {
+          this.coupons = coupRes.coupons;
+        }
+      } catch (e) {
+        console.warn("Coupons fetch fallback:", e);
+      }
+
+      // 3. Load Products from Real DB
       const data = await window.api.getProducts();
       if (data && data.products) {
         this.products = data.products;
-        this.renderPopularItems();
-        this.renderMenuList(this.products);
       }
     } catch (e) {
       console.warn("Using cached products", e);
     }
+
+    // Render all elements
+    this.renderCategoryChips();
+    this.renderFeaturedItems();
+    this.renderPopularItems();
+    this.renderOffersSection();
+    this.renderMenuList(this.products);
+    this.checkActiveOrder();
+    this.updateCartShortcutBanner();
+  },
+
+  renderCategoryChips() {
+    const homeCats = document.getElementById('home-category-chips');
+    const menuCats = document.getElementById('menu-category-chips');
+    
+    const categories = this.categories && this.categories.length ? this.categories : [
+      { id: 'cat-1', name: 'Snacks', icon: '🥪' },
+      { id: 'cat-2', name: 'Drinks', icon: '🥤' },
+      { id: 'cat-3', name: 'Meals', icon: '🍛' },
+      { id: 'cat-4', name: 'Healthy', icon: '🥗' },
+      { id: 'cat-5', name: 'Desserts', icon: '🍨' }
+    ];
+
+    const generateChipsHtml = () => `
+      <button class="cat-chip ${this.currentCategory === 'All' ? 'active' : ''}" data-category="All" onclick="StudentApp.filterProducts('All', this)">
+        <span>✨</span> All Categories (${this.products.length})
+      </button>
+      ${categories.map(c => {
+        const count = this.products.filter(p => p.category && p.category.toLowerCase() === c.name.toLowerCase()).length;
+        const active = this.currentCategory.toLowerCase() === c.name.toLowerCase() ? 'active' : '';
+        return `
+          <button class="cat-chip ${active}" data-category="${c.name}" onclick="StudentApp.filterProducts('${c.name}', this)">
+            <span>${c.icon || '🍽️'}</span> ${c.name} (${count})
+          </button>
+        `;
+      }).join('')}
+    `;
+
+    if (homeCats) homeCats.innerHTML = generateChipsHtml();
+    if (menuCats) menuCats.innerHTML = generateChipsHtml();
+  },
+
+  renderFeaturedItems() {
+    const container = document.getElementById('home-featured-container');
+    if (!container) return;
+
+    let featured = this.products.filter(p => p.featured);
+    if (!featured.length) {
+      const highlightIds = ['p-2', 'p-9', 'p-6', 'p-15', 'p-11'];
+      featured = this.products.filter(p => highlightIds.includes(p.id));
+      if (!featured.length) featured = this.products.slice(0, 4);
+    }
+
+    container.innerHTML = featured.map(item => {
+      const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
+      const photoUrl = this.productPhotos[item.id] || item.image_url;
+      const inCart = this.cart.find(c => c.productId === item.id);
+      const qty = inCart ? inCart.quantity : 0;
+
+      return `
+        <div class="featured-food-card" onclick="StudentApp.openCustomizationModal('${item.id}')">
+          <div class="featured-card-img-wrap">
+            ${photoUrl ? `
+              <img src="${photoUrl}" alt="${item.name}" class="featured-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="food-emoji-fallback" style="display:none;font-size:24px;align-items:center;justify-content:center;height:100%;">${item.image_emoji || '🍱'}</div>
+            ` : `
+              <div class="food-emoji-fallback" style="display:flex;font-size:24px;align-items:center;justify-content:center;height:100%;">${item.image_emoji || '🍱'}</div>
+            `}
+            <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" style="position:absolute;top:8px;left:8px;" title="${item.is_veg ? 'Pure Veg' : 'Non-Veg'}"></span>
+            <div style="position:absolute;top:8px;right:8px;">
+              ${isOutOfStock ? `
+                <span class="stock-badge out-of-stock">✕ Sold Out</span>
+              ` : `
+                <span class="stock-badge in-stock">● In Stock</span>
+              `}
+            </div>
+          </div>
+          <div class="featured-card-content">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+              <strong style="font-size:13.5px;color:var(--text-primary);line-height:1.3;">${item.name}</strong>
+              <span style="font-size:11px;color:#D97706;font-weight:700;white-space:nowrap;margin-left:6px;">⭐ ${item.rating || 4.8}</span>
+            </div>
+            <p style="font-size:11px;color:var(--text-secondary);margin:0 0 8px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+              ${item.description}
+            </p>
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #F1F5F9;">
+              <span style="font-size:14px;font-weight:800;color:var(--text-primary);">₹${item.price}</span>
+              ${isOutOfStock ? `
+                <button class="add-mini-btn sold-out" disabled style="padding:4px 10px;font-size:11px;">Sold Out</button>
+              ` : (qty > 0 ? `
+                <span style="font-size:11.5px;font-weight:700;color:var(--primary);">${qty} in Tray</span>
+              ` : `
+                <button class="add-mini-btn" style="padding:5px 12px;font-size:11.5px;" onclick="event.stopPropagation(); StudentApp.addToCart('${item.id}')">+ Add</button>
+              `)}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
   },
 
   renderPopularItems() {
@@ -714,79 +832,200 @@ const StudentApp = {
     if (!container) return;
 
     const popular = this.products.filter(p => p.popular).slice(0, 5);
-    container.innerHTML = popular.map(item => `
-      <div class="popular-food-card" onclick="StudentApp.openCustomizationModal('${item.id}')">
-        <div class="popular-card-emoji">${item.image_emoji}</div>
-        <div class="popular-card-name">${item.name}</div>
-        <div class="popular-card-price">₹${item.price}</div>
-        <button class="add-mini-btn" onclick="event.stopPropagation(); StudentApp.openCustomizationModal('${item.id}')">
-          + Add
-        </button>
+    container.innerHTML = popular.map(item => {
+      const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
+      return `
+        <div class="popular-food-card" onclick="StudentApp.openCustomizationModal('${item.id}')">
+          <div class="popular-card-emoji">${item.image_emoji || '🍱'}</div>
+          <div class="popular-card-name">${item.name}</div>
+          <div class="popular-card-price">₹${item.price}</div>
+          ${isOutOfStock ? `
+            <button class="add-mini-btn sold-out" disabled style="padding:3px 8px;font-size:10.5px;cursor:not-allowed;">Sold Out</button>
+          ` : `
+            <button class="add-mini-btn" onclick="event.stopPropagation(); StudentApp.addToCart('${item.id}')">
+              + Add
+            </button>
+          `}
+        </div>
+      `;
+    }).join('');
+  },
+
+  renderOffersSection() {
+    const container = document.getElementById('home-offers-container');
+    if (!container) return;
+
+    const coupons = this.coupons && this.coupons.length ? this.coupons : [
+      { code: 'CAMPUS20', description: '20% OFF on Canteen Combo & Meals', minimum_order: 100, badge: '🔥 Today\'s Best Offer' },
+      { code: 'STUDENT10', description: '10% Student special discount on any order', minimum_order: 50, badge: '⭐ Everyday Saver' },
+      { code: 'EXAMSNACK', description: 'Flat ₹25 OFF during study break hours', minimum_order: 150, badge: '📚 Study Hours' },
+      { code: 'SNACK15', description: '15% OFF on Sandwiches & Rolls', minimum_order: 40, badge: '🥪 Wheel Perk' }
+    ];
+
+    container.innerHTML = coupons.map(c => `
+      <div class="offer-coupon-card">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span class="offer-coupon-badge">${c.code}</span>
+            <span style="font-size:10px;color:#10B981;font-weight:700;">${c.badge || 'Active Offer'}</span>
+          </div>
+          <div style="font-size:12.5px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">
+            ${c.description}
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);">
+            Min order: ₹${c.minimum_order || 50}
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed #E2E8F0;">
+          <span style="font-size:10.5px;color:#94A3B8;">1-Tap Apply</span>
+          <button class="btn-primary" style="padding:5px 12px;font-size:11px;font-weight:700;border-radius:999px;" onclick="StudentApp.applyCouponCode('${c.code}')">
+            Apply Code
+          </button>
+        </div>
       </div>
     `).join('');
   },
 
-  renderMenuList(itemsToRender) {
-    const container = document.getElementById('menu-items-container');
-    if (!container) return;
+  async checkActiveOrder() {
+    const banner = document.getElementById('home-active-order-banner');
+    if (!banner) return;
 
-    if (!itemsToRender.length) {
-      container.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;color:#94A3B8;">
-          <div style="margin-bottom:8px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-          <p style="font-weight:600;">No delicious items match your search</p>
-        </div>
-      `;
-      return;
+    try {
+      const ordersRes = await window.api.getOrders();
+      if (ordersRes && ordersRes.orders && ordersRes.orders.length) {
+        const activeStatuses = ['PLACED', 'CONFIRMED', 'PREPARING', 'READY', 'Placed', 'Confirmed', 'Preparing', 'Ready'];
+        const activeOrder = ordersRes.orders.find(o => 
+          activeStatuses.includes(o.order_status || o.status)
+        );
+
+        if (activeOrder) {
+          this.currentTrackOrderId = activeOrder.id;
+          const orderIdEl = document.getElementById('home-active-order-id');
+          const statusEl = document.getElementById('home-active-order-status');
+          const slotEl = document.getElementById('home-active-order-slot');
+
+          if (orderIdEl) orderIdEl.textContent = `Order #${activeOrder.id}`;
+          if (statusEl) {
+            statusEl.textContent = activeOrder.order_status || activeOrder.status || 'Preparing';
+            statusEl.className = 'stock-badge in-stock';
+          }
+          if (slotEl) {
+            slotEl.textContent = `Pickup Window: ${activeOrder.pickup_slot || '12:30 PM – 12:40 PM'} (Counter 2)`;
+          }
+          banner.style.display = 'flex';
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn("Check active order notice:", e);
     }
 
-    container.innerHTML = itemsToRender.map(item => {
-      const inCart = this.cart.find(c => c.productId === item.id);
-      const qty = inCart ? inCart.quantity : 0;
-      const photoUrl = this.productPhotos[item.id] || item.image_url;
+    if (this.currentTrackOrderId === 'CB1024') {
+      banner.style.display = 'flex';
+    } else {
+      banner.style.display = 'none';
+    }
+  },
 
-      return `
-        <div class="food-card-row" onclick="StudentApp.openCustomizationModal('${item.id}')">
-          <div class="food-photo-wrap">
-            ${photoUrl ? `
-              <img src="${photoUrl}" alt="${item.name}" class="food-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div class="food-emoji-fallback" style="display:none;font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
-            ` : `
-              <div class="food-emoji-fallback" style="font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
-            `}
-            <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" title="${item.is_veg ? 'Pure Vegetarian' : 'Non-Vegetarian'}"></span>
+  updateCartShortcutBanner() {
+    const banner = document.getElementById('home-cart-shortcut-banner');
+    if (!banner) return;
+
+    const totalCount = this.cart.reduce((s, i) => s + i.quantity, 0);
+    const { total } = this.calculateCartBill();
+
+    if (totalCount > 0) {
+      banner.style.display = 'flex';
+      const countEl = document.getElementById('home-cart-shortcut-count');
+      const totalEl = document.getElementById('home-cart-shortcut-total');
+      if (countEl) countEl.textContent = `Tray: ${totalCount} Item${totalCount === 1 ? '' : 's'}`;
+      if (totalEl) totalEl.textContent = `Total: ₹${total}`;
+    } else {
+      banner.style.display = 'none';
+    }
+  },
+
+  renderMenuList(itemsToRender) {
+    const homeContainer = document.getElementById('menu-items-container');
+    const fullContainer = document.getElementById('full-menu-items-container');
+    const countBadge = document.getElementById('menu-items-count-badge');
+    if (countBadge) {
+      countBadge.textContent = `${itemsToRender.length} Dishes Available`;
+    }
+
+    const renderHtml = (items) => {
+      if (!items.length) {
+        return `
+          <div style="grid-column: 1 / -1; text-align:center;padding:40px 20px;color:#94A3B8;">
+            <div style="margin-bottom:8px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            <p style="font-weight:600;font-size:14px;color:var(--text-primary);">No dishes found</p>
+            <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Try searching with different keywords or reset category filters.</p>
           </div>
-          <div class="food-info-col" style="flex:1;">
-            <div class="food-title">
-              <span>${item.name}</span>
-              <span style="font-size:11px;background:rgba(217,119,6,0.12);color:#D97706;padding:2px 7px;border-radius:4px;font-weight:700;">${item.rating || 4.8} / 5</span>
+        `;
+      }
+
+      return items.map(item => {
+        const inCart = this.cart.find(c => c.productId === item.id);
+        const qty = inCart ? inCart.quantity : 0;
+        const photoUrl = this.productPhotos[item.id] || item.image_url;
+        const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
+
+        return `
+          <div class="food-card-row" onclick="StudentApp.openCustomizationModal('${item.id}')" data-product-id="${item.id}">
+            <div class="food-photo-wrap">
+              ${photoUrl ? `
+                <img src="${photoUrl}" alt="${item.name}" class="food-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="food-emoji-fallback" style="display:none;font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
+              ` : `
+                <div class="food-emoji-fallback" style="font-size:14px;font-weight:800;color:var(--text-muted);">${item.name.substring(0, 2).toUpperCase()}</div>
+              `}
+              <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" title="${item.is_veg ? 'Pure Vegetarian' : 'Non-Vegetarian'}"></span>
             </div>
-            <div class="food-desc">${item.description}</div>
-            <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap;">
-              <span class="food-meta-pill">${item.prep_time || '8 mins'}</span>
-              <span class="food-meta-pill">${item.calories || '380 kcal'}</span>
-              ${item.protein_g ? `<span class="food-meta-pill" style="color:#4F46E5;font-weight:700;">${item.protein_g}g Protein</span>` : ''}
-              ${item.stall_name ? `<span class="food-meta-pill" style="color:#0F766E;">${item.stall_name}</span>` : ''}
-              <span class="food-meta-pill" style="color:${item.is_veg ? '#059669' : '#DC2626'};font-weight:700;">${item.is_veg ? 'Vegetarian' : 'Non-Vegetarian'}</span>
-            </div>
-            <div class="food-bottom-row">
-              <span class="food-price">₹${item.price}</span>
-              <div class="food-action-stepper" onclick="event.stopPropagation();">
-                ${qty > 0 ? `
-                  <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.id}')">-</button>
-                  <span class="stepper-qty">${qty}</span>
-                  <button class="stepper-btn" onclick="StudentApp.addToCart('${item.id}')">+</button>
+            <div class="food-info-col" style="flex:1;">
+              <div class="food-title">
+                <span>${item.name}</span>
+                <span style="font-size:11px;background:rgba(217,119,6,0.12);color:#D97706;padding:2px 7px;border-radius:4px;font-weight:700;">⭐ ${item.rating || 4.8}</span>
+              </div>
+              <div class="food-desc">${item.description}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap;">
+                <span class="food-meta-pill">${item.prep_time || '8 mins'}</span>
+                <span class="food-meta-pill">${item.calories || '380 kcal'}</span>
+                ${item.protein_g ? `<span class="food-meta-pill" style="color:#4F46E5;font-weight:700;">${item.protein_g}g Protein</span>` : ''}
+                ${item.category ? `<span class="food-meta-pill" style="color:#0F766E;">${item.category}</span>` : ''}
+                <span class="food-meta-pill" style="color:${item.is_veg ? '#059669' : '#DC2626'};font-weight:700;">${item.is_veg ? 'Vegetarian' : 'Non-Vegetarian'}</span>
+                ${isOutOfStock ? `
+                  <span class="stock-badge out-of-stock">✕ Sold Out</span>
                 ` : `
-                  <button class="add-mini-btn" style="padding:6px 14px;font-size:12px;font-weight:800;" onclick="StudentApp.openCustomizationModal('${item.id}')">
-                    Add to Tray
-                  </button>
+                  <span class="stock-badge in-stock">● In Stock (${item.stock !== undefined ? item.stock : 'Available'})</span>
                 `}
+              </div>
+              <div class="food-bottom-row">
+                <span class="food-price">₹${item.price}</span>
+                <div class="food-action-stepper" onclick="event.stopPropagation();">
+                  ${isOutOfStock ? `
+                    <button class="add-mini-btn sold-out" disabled style="padding:6px 14px;font-size:12px;font-weight:800;background:#F1F5F9;color:#94A3B8;border:1px solid #CBD5E1;cursor:not-allowed;">
+                      Sold Out
+                    </button>
+                  ` : (qty > 0 ? `
+                    <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.id}')">-</button>
+                    <span class="stepper-qty">${qty}</span>
+                    <button class="stepper-btn" onclick="StudentApp.addToCart('${item.id}')">+</button>
+                  ` : `
+                    <button class="add-mini-btn" style="padding:6px 14px;font-size:12px;font-weight:800;" onclick="StudentApp.addToCart('${item.id}')">
+                      + Add
+                    </button>
+                  `)}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    };
+
+    const htmlContent = renderHtml(itemsToRender);
+    if (homeContainer) homeContainer.innerHTML = htmlContent;
+    if (fullContainer) fullContainer.innerHTML = htmlContent;
   },
 
   selectStall(stallId, btn) {
@@ -810,7 +1049,7 @@ const StudentApp = {
       list = list.filter(p => p.stall_id === this.currentStall);
     }
     if (this.currentCategory && this.currentCategory !== 'All') {
-      list = list.filter(p => p.category.toLowerCase() === this.currentCategory.toLowerCase());
+      list = list.filter(p => p.category && p.category.toLowerCase() === this.currentCategory.toLowerCase());
     }
     if (this.currentDietFilter === 'veg') {
       list = list.filter(p => p.is_veg);
@@ -821,41 +1060,52 @@ const StudentApp = {
     } else if (this.currentDietFilter === 'fast') {
       list = list.filter(p => parseInt(p.prep_time) <= 8);
     }
+    if (this.currentSearchQuery) {
+      const q = this.currentSearchQuery;
+      list = list.filter(p =>
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.category && p.category.toLowerCase().includes(q)) ||
+        (p.description && p.description.toLowerCase().includes(q))
+      );
+    }
     this.renderMenuList(list);
   },
 
-  filterProducts(category) {
+  filterProducts(category, btn) {
     this.currentCategory = category || 'All';
+    document.querySelectorAll('.cat-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.category.toLowerCase() === this.currentCategory.toLowerCase());
+    });
     this.applyCombinedFilters();
   },
 
   searchProducts(query) {
-    if (!query) {
-      this.renderMenuList(this.products);
-      return;
-    }
-    const q = query.toLowerCase();
-    const filtered = this.products.filter(p => 
-      p.name.toLowerCase().includes(q) || 
-      p.category.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q)
-    );
-    this.renderMenuList(filtered);
+    const studentInput = document.getElementById('student-search-input');
+    const menuInput = document.getElementById('menu-search-input');
+    const desktopInput = document.getElementById('desktop-search-input');
+
+    if (studentInput && studentInput.value !== query) studentInput.value = query || '';
+    if (menuInput && menuInput.value !== query) menuInput.value = query || '';
+    if (desktopInput && desktopInput.value !== query) desktopInput.value = query || '';
+
+    this.currentSearchQuery = query ? query.trim().toLowerCase() : '';
+    this.applyCombinedFilters();
   },
 
   toggleVegFilter(isVegOnly) {
-    if (!isVegOnly) {
-      this.renderMenuList(this.products);
-    } else {
-      const filtered = this.products.filter(p => p.is_veg);
-      this.renderMenuList(filtered);
-    }
+    this.currentDietFilter = isVegOnly ? 'veg' : 'all';
+    this.applyCombinedFilters();
   },
 
   // Customization Modal
   openCustomizationModal(productId) {
     const item = this.products.find(p => p.id === productId);
     if (!item) return;
+
+    if (item.is_available === false || (item.stock !== undefined && item.stock <= 0)) {
+      App.showToast(`Sorry, ${item.name} is currently out of stock!`, 'warning');
+      return;
+    }
 
     this.customizingProduct = item;
     const body = document.getElementById('customization-modal-body');
