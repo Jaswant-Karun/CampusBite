@@ -179,9 +179,36 @@ router.post('/', async (req, res) => {
 
   // Sync to MongoDB if available
   try {
-    const { Order: MongoOrder } = require('../data/mongo');
+    const { Order: MongoOrder, OrderItem: MongoOrderItem, LoyaltyTransaction: MongoLT, User: MongoUser } = require('../data/mongo');
     if (MongoOrder) {
       await MongoOrder.create(newOrder);
+    }
+    if (MongoOrderItem && processedItems.length) {
+      const itemsToInsert = processedItems.map(item => ({
+        id: 'oi-' + Math.random().toString(36).substring(2, 9),
+        order_id: newOrder.id,
+        product_id: item.product_id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        customization: item.customization,
+        image_emoji: item.image_emoji,
+        total_price: item.price * item.quantity
+      }));
+      await MongoOrderItem.insertMany(itemsToInsert);
+    }
+    if (MongoLT && pointsEarned > 0 && user) {
+      await MongoLT.create({
+        id: 'lt-' + (Date.now() + 1),
+        user_id: user.id,
+        points: pointsEarned,
+        type: 'earned',
+        description: `Order #${newOrder.id} purchase reward`,
+        date: new Date().toISOString()
+      });
+    }
+    if (MongoUser && user) {
+      await MongoUser.updateOne({ id: user.id }, { $set: { loyalty_points: user.loyalty_points } });
     }
   } catch (err) {}
 

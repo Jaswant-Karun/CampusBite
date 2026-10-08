@@ -21,7 +21,7 @@ router.get('/:user_id', (req, res) => {
 });
 
 // POST redeem points
-router.post('/redeem', (req, res) => {
+router.post('/redeem', async (req, res) => {
   const { user_id, points } = req.body;
   const user = db.data.users.find(u => u.id === user_id);
 
