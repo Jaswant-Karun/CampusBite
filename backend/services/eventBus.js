@@ -116,6 +116,14 @@ class NotificationEventBus {
       this.notifications.pop();
     }
 
+    // Sync to MongoDB if available
+    try {
+      const { Notification: MongoNotification } = require('../data/mongo');
+      if (MongoNotification) {
+        MongoNotification.create(record).catch(() => {});
+      }
+    } catch (e) {}
+
     // Push to matching connected clients
     for (const client of this.clients) {
       let isRecipient = false;
