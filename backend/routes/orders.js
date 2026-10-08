@@ -36,7 +36,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST create new order (Student Checkout with Simulated Payment)
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { 
     user_id, 
     customer_name, 
@@ -177,6 +177,14 @@ router.post('/', (req, res) => {
 
   db.saveData();
 
+  // Sync to MongoDB if available
+  try {
+    const { Order: MongoOrder } = require('../data/mongo');
+    if (MongoOrder) {
+      await MongoOrder.create(newOrder);
+    }
+  } catch (err) {}
+
   // 1. Broadcast live notification to Admin Kitchen Kanban
   eventBus.broadcast({
     type: 'NEW_ORDER',
@@ -222,7 +230,7 @@ router.post('/', (req, res) => {
 });
 
 // PUT update order status (Admin workflow)
-router.put('/:id/status', (req, res) => {
+router.put('/:id/status', async (req, res) => {
   const { status } = req.body;
   const order = db.data.orders.find(o => o.id === req.params.id);
 
@@ -245,6 +253,14 @@ router.put('/:id/status', (req, res) => {
   }
 
   db.saveData();
+
+  // Sync to MongoDB if available
+  try {
+    const { Order: MongoOrder } = require('../data/mongo');
+    if (MongoOrder) {
+      await MongoOrder.findOneAndUpdate({ id: order.id }, { order_status: status, updated_at: order.updated_at });
+    }
+  } catch (err) {}
 
   // Determine user friendly icon & message for status transition
   let statusIcon = 'PLACED';
