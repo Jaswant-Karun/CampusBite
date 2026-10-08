@@ -1079,9 +1079,9 @@
 
 .tracking-step-item.current .step-circle {
   border-color: var(--primary);
-  background: #FFF7ED;
+  background: var(--primary-light);
   color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.2);
+  box-shadow: 0 0 0 4px var(--primary-glow);
   animation: pulseStep 1.8s infinite;
 }
 
