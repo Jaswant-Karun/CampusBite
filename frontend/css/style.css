@@ -497,110 +497,18 @@ h2 { font-weight: 600; }
    BUTTON SPECIFICATION (Attractive Transparent & Translucent Glass Theme)
    ========================================================================== */
 /* Primary CTA button: Translucent Glass Gradient CTA */
+/* ==========================================================================
+   BUTTON SPECIFICATION (Clean, Professional SaaS & Fintech Standard)
+   ========================================================================== */
+/* Primary CTA button: Clean Indigo Solid */
 .btn-primary,
 .cta-btn,
 .primary-btn {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%);
+  background: var(--primary);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 12px;
-  padding: 10px 22px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-primary:hover,
-.cta-btn:hover,
-.primary-btn:hover {
-  background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%);
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  transform: translateY(-2px);
-}
-
-.btn-primary:active,
-.cta-btn:active,
-.primary-btn:active {
-  transform: scale(0.98);
-}
-
-/* Secondary button: Transparent Frosted Glass Button */
-.btn-secondary,
-.secondary-btn {
-  background: rgba(79, 70, 229, 0.08);
-  color: var(--primary);
-  border: 1px solid rgba(79, 70, 229, 0.22);
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-secondary:hover,
-.secondary-btn:hover {
-  background: rgba(79, 70, 229, 0.16);
-  border-color: rgba(79, 70, 229, 0.45);
-  color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
-}
-
-/* Success button: Translucent Emerald Glass */
-.btn-success,
-.success-btn {
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.95), rgba(13, 148, 136, 0.95));
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-success:hover,
-.success-btn:hover {
-  background: #0D9488;
-  box-shadow: 0 8px 22px rgba(20, 184, 166, 0.45);
-  transform: translateY(-2px);
-}
-
-/* Ghost / Outline Transparent Glass Button */
-.btn-outline,
-.outline-btn,
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.05);
-  color: inherit;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 12px;
-  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  padding: 9px 18px;
   font-family: var(--font-body);
   font-size: 13.5px;
   font-weight: 600;
@@ -609,19 +517,104 @@ h2 { font-weight: 600; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover,
+.cta-btn:hover,
+.primary-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:active,
+.cta-btn:active,
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+/* Secondary button: Subtle Slate Tint */
+.btn-secondary,
+.secondary-btn {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: var(--radius-btn);
+  padding: 9px 18px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover,
+.secondary-btn:hover {
+  background: rgba(79, 70, 229, 0.15);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+
+/* Success button: Clean Teal */
+.btn-success,
+.success-btn {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  padding: 9px 18px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  transition: all 0.15s ease;
+}
+
+.btn-success:hover,
+.success-btn:hover {
+  background: #0D9488;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+}
+
+/* Outline / Ghost Button */
+.btn-outline,
+.outline-btn,
+.btn-ghost {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-btn);
+  padding: 9px 18px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: all 0.15s ease;
 }
 
 .btn-outline:hover,
 .outline-btn:hover,
 .btn-ghost:hover {
-  background: rgba(79, 70, 229, 0.1);
-  border-color: rgba(79, 70, 229, 0.4);
+  background: var(--bg-main);
+  border-color: var(--border-strong);
   color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Toast Notifications */
