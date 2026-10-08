@@ -111,12 +111,17 @@
   display: block;
 }
 
-/* Massive Laptop Website: Hide redundant mobile inline greeting and search bar */
-.student-viewport-wrapper .home-top-bar,
-.student-viewport-wrapper .search-bar-wrap,
-.student-viewport-wrapper #screen-home > div[style*="grid-template-columns:1fr 1fr"],
-.student-viewport-wrapper .promo-banner {
-  display: none !important;
+/* Student Home Screen Header & Search Styling */
+.student-viewport-wrapper .home-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px;
+}
+
+.student-viewport-wrapper .search-bar-wrap {
+  display: block;
+  padding: 0 20px 12px;
 }
 
 /* Centered Auth Screen in Laptop Mode */
