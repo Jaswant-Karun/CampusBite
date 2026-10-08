@@ -775,6 +775,70 @@
           </div>
 
           <!-- ----------------------------------------------------------------
+               SCREEN 4: CANTEEN CATALOGUE & FULL MENU PAGE
+               ---------------------------------------------------------------- -->
+          <div id="screen-menu" class="mob-screen">
+            <div class="home-top-bar">
+              <div class="user-greeting">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <h3>Canteen Menu & Catalogue</h3>
+                  <span class="stock-badge in-stock" id="menu-items-count-badge">17 Dishes Available</span>
+                </div>
+                <p id="menu-subtitle-text">Browse freshly prepared campus items, filter categories & diet types, and order ahead</p>
+              </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;">
+                ← Back to Home
+              </button>
+            </div>
+
+            <!-- Search Catalogue Bar -->
+            <div class="search-bar-wrap" style="padding:0 20px 12px;">
+              <div class="search-input-box">
+                <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+                <input type="text" id="menu-search-input" class="mob-search-input" placeholder="Search dishes by name, description, ingredients..." oninput="StudentApp.searchProducts(this.value)">
+              </div>
+            </div>
+
+            <!-- Filter by Category -->
+            <div style="padding:0 20px 10px;">
+              <div style="font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">
+                Filter by Category:
+              </div>
+              <div class="category-chips-row" id="menu-category-chips">
+                <!-- Dynamically rendered from /api/categories -->
+              </div>
+            </div>
+
+            <!-- Smart Diet & Bestseller Filters -->
+            <div style="padding:0 20px 14px;">
+              <div class="smart-diet-filters-row">
+                <button class="diet-chip active" data-diet="all" onclick="StudentApp.filterByDiet('all', this)">
+                  <span>All</span> All Items
+                </button>
+                <button class="diet-chip" data-diet="veg" onclick="StudentApp.filterByDiet('veg', this)">
+                  <span class="fssai-veg-mark"><span class="fssai-dot"></span></span> Pure Veg Only
+                </button>
+                <button class="diet-chip" data-diet="popular" onclick="StudentApp.filterByDiet('popular', this)">
+                  <span>Top</span> Bestsellers
+                </button>
+                <button class="diet-chip" data-diet="under50" onclick="StudentApp.filterByDiet('under50', this)">
+                  <span>≤₹50</span> Value Bites
+                </button>
+                <button class="diet-chip" data-diet="fast" onclick="StudentApp.filterByDiet('fast', this)">
+                  <span>Fast</span> Express (&lt;8m)
+                </button>
+              </div>
+            </div>
+
+            <!-- Full Catalogue Product Grid Container -->
+            <div style="padding:0 20px 24px;">
+              <div class="menu-food-list menu-catalog-grid" id="full-menu-items-container">
+                <!-- Rendered dynamically via JS with product image, description, price, availability badge & add to cart -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------------------------
                SCREEN 5: LIVE CANTEEN CROWDING METER & WAIT RADAR SCREEN
                ---------------------------------------------------------------- -->
           <div id="screen-crowd-meter" class="mob-screen">
