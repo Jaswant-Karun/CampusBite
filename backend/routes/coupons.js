@@ -58,6 +58,7 @@ router.post('/apply', (req, res) => {
     success: true,
     message: `Promo code ${coupon.code} applied! Saved ₹${discount}`,
     discount: discount,
+    final_total: Math.max(0, orderAmount - discount),
     coupon: coupon
   });
 });
