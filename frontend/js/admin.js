@@ -10,9 +10,63 @@ const AdminApp = {
   demandData: null,
   activeOrderFilter: 'All',
 
-  init() {
+  async init() {
+    const hasAccess = await this.checkAccess();
+    if (!hasAccess) return;
     this.bindEvents();
     this.loadAllData();
+  },
+
+  async checkAccess() {
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem('campusbite_user') || 'null');
+    } catch (e) {}
+    const token = localStorage.getItem('campusbite_token');
+
+    // 1. Client-side role check
+    if (!user || (user.role !== 'admin' && user.role !== 'staff') || !token) {
+      alert('Access Denied: You must be logged in as an Admin or Kitchen Staff to view the Admin Operations Hub.');
+      window.location.href = '/#login';
+      return false;
+    }
+
+    // 2. Server-side token and role verification
+    try {
+      const res = await window.api.checkAdmin();
+      if (!res || !res.success) {
+        alert('Access Denied: Admin session invalid or expired.');
+        window.location.href = '/#login';
+        return false;
+      }
+      this.updateAdminHeaderUI(res.user);
+      return true;
+    } catch (err) {
+      console.warn("Admin backend verification failed:", err);
+      alert('Access Denied: Admin privileges required.');
+      window.location.href = '/#login';
+      return false;
+    }
+  },
+
+  updateAdminHeaderUI(user) {
+    if (!user) return;
+    const nameEl = document.querySelector('.header-actions strong');
+    if (nameEl) nameEl.textContent = user.name;
+    const roleEl = document.querySelector('.header-actions span[style*="font-size:10.5px"]');
+    if (roleEl) roleEl.textContent = user.role === 'admin' ? 'Canteen Manager' : 'Kitchen Staff';
+  },
+
+  async logout() {
+    try {
+      if (window.api && window.api.logout) {
+        await window.api.logout();
+      }
+    } catch (e) {}
+    localStorage.removeItem('campusbite_token');
+    localStorage.removeItem('campusbite_user');
+    alert('Logged out of Admin Operations.');
+    window.location.href = '/#login';
   },
 
   bindEvents() {
