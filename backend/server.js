@@ -7,6 +7,17 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
+
+// Safe Environment Variable Handling
+const envPath = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envPath) && typeof process.loadEnvFile === 'function') {
+  try {
+    process.loadEnvFile(envPath);
+  } catch (e) {
+    console.warn('Notice: .env file present but could not be parsed:', e.message);
+  }
+}
 
 const authRoutes = require('./routes/auth');
 const productsRoutes = require('./routes/products');
@@ -19,7 +30,8 @@ const demandPredictionRoutes = require('./routes/demandPrediction');
 const chatbotRoutes = require('./routes/chatbot');
 const notificationsRoutes = require('./routes/notifications');
 const db = require('./data/db');
-const { mongoManager, User, Product, Order } = require('./data/mongo');
+const { mongoManager, User, Product, Order, Coupon, Review } = require('./data/mongo');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
