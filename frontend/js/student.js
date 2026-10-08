@@ -127,6 +127,7 @@ const StudentApp = {
       }
     } catch (e) {}
 
+    this.loadCartFromSession();
     this.bindEvents();
     this.loadProducts();
     this.updateCartBadge();
@@ -661,9 +662,10 @@ const StudentApp = {
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;">
-          <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;">-</button>
+          <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;" title="Decrease quantity">-</button>
           <span style="font-size:12px;font-weight:700;color:white;">${item.quantity}</span>
-          <button class="stepper-btn" onclick="StudentApp.addToCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;">+</button>
+          <button class="stepper-btn" onclick="StudentApp.addToCart('${item.productId}')" style="width:24px;height:24px;border-radius:6px;font-size:12px;" title="Increase quantity">+</button>
+          <button onclick="StudentApp.removeFromCart('${item.productId}')" style="background:transparent;border:none;color:#94A3B8;cursor:pointer;padding:2px 4px;font-size:12px;margin-left:2px;" title="Remove item">✕</button>
         </div>
       </div>
     `).join('');
@@ -1539,10 +1541,12 @@ const StudentApp = {
       });
     }
 
+    this.saveCartToSession();
     this.updateCartBadge();
     this.updateCartShortcutBanner();
     this.renderMenuList(this.products);
     this.renderDesktopCart();
+    this.renderCart();
     App.showToast(`✓ Added ${qtyToAdd} × ${product.name} to tray!`, 'success');
     return true;
   },
@@ -1553,15 +1557,80 @@ const StudentApp = {
 
     this.cart[index].quantity -= 1;
     if (this.cart[index].quantity <= 0) {
+      const removedItem = this.cart[index];
       this.cart.splice(index, 1);
+      App.showToast(`Removed ${removedItem.name} from tray`, 'info');
     }
 
+    this.saveCartToSession();
     this.updateCartBadge();
     this.updateCartShortcutBanner();
     this.renderMenuList(this.products);
     this.renderDesktopCart();
-    if (document.getElementById('screen-cart').classList.contains('active')) {
-      this.renderCart();
+    this.renderCart();
+  },
+
+  removeFromCart(productId) {
+    const index = this.cart.findIndex(c => c.productId === productId);
+    if (index === -1) return;
+
+    const removedItem = this.cart[index];
+    this.cart.splice(index, 1);
+    this.saveCartToSession();
+    this.updateCartBadge();
+    this.updateCartShortcutBanner();
+    this.renderMenuList(this.products);
+    this.renderDesktopCart();
+    this.renderCart();
+    App.showToast(`Removed ${removedItem.name} from cart`, 'info');
+  },
+
+  clearCart() {
+    if (!this.cart || !this.cart.length) return;
+    this.cart = [];
+    this.saveCartToSession();
+    this.updateCartBadge();
+    this.updateCartShortcutBanner();
+    this.renderMenuList(this.products);
+    this.renderDesktopCart();
+    this.renderCart();
+    App.showToast('Your cart has been cleared', 'info');
+  },
+
+  // Session Storage Persistence (Step 8 Requirement)
+  saveCartToSession() {
+    try {
+      sessionStorage.setItem('campusbite_cart', JSON.stringify(this.cart));
+      if (this.appliedCoupon) {
+        sessionStorage.setItem('campusbite_coupon', JSON.stringify(this.appliedCoupon));
+      } else {
+        sessionStorage.removeItem('campusbite_coupon');
+      }
+      sessionStorage.setItem('campusbite_loyalty', JSON.stringify(this.redeemLoyalty));
+    } catch (e) {
+      console.warn('Session storage save error:', e);
+    }
+  },
+
+  loadCartFromSession() {
+    try {
+      const savedCart = sessionStorage.getItem('campusbite_cart');
+      if (savedCart) {
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          this.cart = parsed;
+        }
+      }
+      const savedCoupon = sessionStorage.getItem('campusbite_coupon');
+      if (savedCoupon) {
+        this.appliedCoupon = JSON.parse(savedCoupon) || null;
+      }
+      const savedLoyalty = sessionStorage.getItem('campusbite_loyalty');
+      if (savedLoyalty !== null) {
+        this.redeemLoyalty = JSON.parse(savedLoyalty) === true;
+      }
+    } catch (e) {
+      console.warn('Session storage load error:', e);
     }
   },
 
@@ -1578,32 +1647,80 @@ const StudentApp = {
     const itemsContainer = document.getElementById('cart-items-container');
     const emptyState = document.getElementById('cart-empty-state');
     const fullState = document.getElementById('cart-full-state');
+    const countBadge = document.getElementById('cart-items-count-badge');
+    const clearBtn = document.getElementById('cart-clear-btn');
+    const checkoutBtn = document.getElementById('cart-checkout-btn');
+
+    const totalQty = this.cart.reduce((s, i) => s + i.quantity, 0);
+
+    if (countBadge) {
+      countBadge.textContent = `${totalQty} Item${totalQty === 1 ? '' : 's'}`;
+    }
+    if (clearBtn) {
+      clearBtn.style.display = this.cart.length ? 'inline-block' : 'none';
+    }
 
     if (!this.cart.length) {
-      if (emptyState) emptyState.style.display = 'block';
+      if (emptyState) emptyState.style.display = 'flex';
       if (fullState) fullState.style.display = 'none';
+      if (checkoutBtn) checkoutBtn.disabled = true;
+      this.calculateCartBill();
       return;
     }
 
     if (emptyState) emptyState.style.display = 'none';
-    if (fullState) fullState.style.display = 'block';
+    if (fullState) fullState.style.display = 'grid';
+    if (checkoutBtn) checkoutBtn.disabled = false;
 
-    itemsContainer.innerHTML = this.cart.map(item => `
-      <div class="cart-item-card">
-        <div class="cart-item-left">
-          <div style="font-size:24px;">${item.image_emoji}</div>
-          <div>
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}</div>
+    if (itemsContainer) {
+      itemsContainer.innerHTML = this.cart.map(item => {
+        const product = this.products.find(p => p.id === item.productId) || {};
+        const photoUrl = this.productPhotos[item.productId] || product.image_url || item.image_url;
+        const itemCategory = product.category || 'Canteen Item';
+
+        return `
+          <div class="cart-item-row" data-product-id="${item.productId}">
+            <div class="cart-item-thumb-wrap">
+              ${photoUrl ? `
+                <img src="${photoUrl}" alt="${item.name}" class="cart-item-thumb-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="food-emoji-fallback" style="display:none;font-size:24px;">${item.image_emoji || product.image_emoji || '🍱'}</div>
+              ` : `
+                <div class="food-emoji-fallback" style="display:flex;font-size:24px;align-items:center;justify-content:center;">${item.image_emoji || product.image_emoji || '🍱'}</div>
+              `}
+            </div>
+
+            <div class="cart-item-info-col">
+              <div class="cart-item-title-row">
+                <span class="cart-item-title">${item.name}</span>
+                <button class="cart-item-remove-btn" onclick="StudentApp.removeFromCart('${item.productId}')" title="Remove ${item.name} from cart">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  <span>Remove</span>
+                </button>
+              </div>
+
+              <div class="cart-item-meta-row">
+                <span class="cart-unit-price-label">Unit Price: <strong>₹${item.price}</strong></span>
+                <span class="cart-meta-dot">•</span>
+                <span class="cart-item-cat-badge">${itemCategory}</span>
+              </div>
+
+              <div class="cart-item-bottom-row">
+                <div class="cart-stepper-control">
+                  <button class="cart-stepper-btn" onclick="StudentApp.decrementCart('${item.productId}')" title="Decrease quantity">−</button>
+                  <span class="cart-stepper-qty">${item.quantity}</span>
+                  <button class="cart-stepper-btn" onclick="StudentApp.addToCart('${item.productId}')" title="Increase quantity">+</button>
+                </div>
+
+                <div class="cart-item-subtotal-block">
+                  <span class="cart-subtotal-label">Subtotal:</span>
+                  <span class="cart-item-subtotal-val">₹${item.price * item.quantity}</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="food-action-stepper">
-          <button class="stepper-btn" onclick="StudentApp.decrementCart('${item.productId}')">-</button>
-          <span class="stepper-qty">${item.quantity}</span>
-          <button class="stepper-btn" onclick="StudentApp.addToCart('${item.productId}')">+</button>
-        </div>
-      </div>
-    `).join('');
+        `;
+      }).join('');
+    }
 
     this.calculateCartBill();
   },
@@ -1636,39 +1753,87 @@ const StudentApp = {
       facultyDiscount = Math.round(subtotal * 0.10);
     }
 
-    const total = Math.max(0, subtotal - couponDiscount - loyaltyDiscount - facultyDiscount);
+    const totalDiscount = couponDiscount + loyaltyDiscount + facultyDiscount;
+    const total = Math.max(0, subtotal - totalDiscount);
 
+    // Update Subtotal elements
     const subtotalEl = document.getElementById('cart-subtotal-val');
+    const billSubtotal = document.getElementById('bill-subtotal');
     if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
-    
+    if (billSubtotal) billSubtotal.textContent = `₹${subtotal}`;
+
+    // Update Discount elements (Step 8 Requirement)
+    const discountRow = document.getElementById('cart-discount-row');
+    const discountVal = document.getElementById('cart-discount-val');
+    const billDiscountRow = document.getElementById('bill-discount-row');
+    const billDiscount = document.getElementById('bill-discount');
+
+    if (totalDiscount > 0) {
+      if (discountRow) discountRow.style.display = 'flex';
+      if (discountVal) discountVal.textContent = `-₹${totalDiscount}`;
+      if (billDiscountRow) billDiscountRow.style.display = 'flex';
+      if (billDiscount) billDiscount.textContent = `-₹${totalDiscount}`;
+    } else {
+      if (discountRow) discountRow.style.display = 'none';
+      if (billDiscountRow) billDiscountRow.style.display = 'none';
+    }
+
+    // Detailed breakdown rows
     const couponRow = document.getElementById('cart-coupon-row');
+    const couponCodeLabel = document.getElementById('cart-coupon-code-label');
     if (couponRow) {
       if (couponDiscount > 0) {
         couponRow.style.display = 'flex';
         const valEl = document.getElementById('cart-coupon-val');
         if (valEl) valEl.textContent = `-₹${couponDiscount}`;
+        if (couponCodeLabel && this.appliedCoupon) couponCodeLabel.textContent = this.appliedCoupon.code;
       } else {
         couponRow.style.display = 'none';
       }
     }
 
     const loyaltyRow = document.getElementById('cart-loyalty-row');
-    if (loyaltyRow) {
-      if (loyaltyDiscount > 0) {
+    const billLoyaltyRow = document.getElementById('bill-loyalty-row');
+    if (loyaltyDiscount > 0) {
+      if (loyaltyRow) {
         loyaltyRow.style.display = 'flex';
         const valEl = document.getElementById('cart-loyalty-val');
         if (valEl) valEl.textContent = `-₹${loyaltyDiscount}`;
+      }
+      if (billLoyaltyRow) billLoyaltyRow.style.display = 'flex';
+    } else {
+      if (loyaltyRow) loyaltyRow.style.display = 'none';
+      if (billLoyaltyRow) billLoyaltyRow.style.display = 'none';
+    }
+
+    const facultyRow = document.getElementById('cart-faculty-row');
+    if (facultyRow) {
+      if (facultyDiscount > 0) {
+        facultyRow.style.display = 'flex';
+        const valEl = document.getElementById('cart-faculty-val');
+        if (valEl) valEl.textContent = `-₹${facultyDiscount}`;
       } else {
-        loyaltyRow.style.display = 'none';
+        facultyRow.style.display = 'none';
       }
     }
 
+    // Update Total elements (Step 8 Requirement)
     const totalEl = document.getElementById('cart-total-val');
+    const billTotal = document.getElementById('bill-total');
     if (totalEl) totalEl.textContent = `₹${total}`;
-    const checkoutBtnText = document.getElementById('checkout-action-btn-text');
-    if (checkoutBtnText) checkoutBtnText.textContent = `Pay ₹${total} & Place Order`;
+    if (billTotal) billTotal.textContent = `₹${total}`;
 
-    return { subtotal, couponDiscount, loyaltyDiscount, facultyDiscount, total };
+    const checkoutBtnText = document.getElementById('checkout-action-btn-text');
+    if (checkoutBtnText) {
+      checkoutBtnText.textContent = total > 0 ? `Proceed to Checkout (₹${total})` : 'Proceed to Checkout';
+    }
+
+    const cartCheckoutBtn = document.getElementById('cart-checkout-btn');
+    if (cartCheckoutBtn) {
+      cartCheckoutBtn.disabled = this.cart.length === 0;
+    }
+
+    return { subtotal, couponDiscount, loyaltyDiscount, facultyDiscount, totalDiscount, total };
   },
 
   async applyCouponCode(code) {
@@ -1699,6 +1864,7 @@ const StudentApp = {
       const res = await window.api.applyCoupon(couponCode, subtotal);
       if (res && res.success) {
         this.appliedCoupon = res.coupon;
+        this.saveCartToSession();
         this.calculateCartBill();
         this.renderDesktopCart();
 
@@ -1719,6 +1885,7 @@ const StudentApp = {
       } else {
         if (res && res.coupon) {
           this.appliedCoupon = res.coupon;
+          this.saveCartToSession();
           this.calculateCartBill();
           this.renderDesktopCart();
           App.showToast(res.message || `Minimum order of ₹${res.coupon.minimum_order} required for ${couponCode}`, 'info');
@@ -1733,15 +1900,18 @@ const StudentApp = {
 
   toggleLoyaltyRedeem(checked) {
     this.redeemLoyalty = checked;
+    this.saveCartToSession();
     this.calculateCartBill();
   },
 
   proceedToCheckout() {
-    if (!this.cart.length) {
-      App.showToast('Your cart is empty', 'warning');
-      return;
+    // Step 8 Requirement: Do not allow checkout with an empty cart
+    if (!this.cart || !this.cart.length) {
+      App.showToast('Your cart is empty! Please add items before proceeding to checkout.', 'warning');
+      return false;
     }
     this.navigateTo('checkout');
+    return true;
   },
 
   async executePaymentAndPlaceOrder() {
@@ -1802,6 +1972,7 @@ const StudentApp = {
         this.cart = [];
         this.appliedCoupon = null;
         this.redeemLoyalty = false;
+        this.saveCartToSession();
         this.updateCartBadge();
 
         await this.refreshUserLoyalty();
