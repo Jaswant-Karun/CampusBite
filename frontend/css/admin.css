@@ -63,11 +63,11 @@
 }
 
 .sidebar-item-btn.active {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(99, 102, 241, 0.95));
-  border: 1px solid rgba(165, 180, 252, 0.5);
+  background: var(--primary);
+  border: 1px solid transparent;
   color: #FFFFFF;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
 }
 
 .sidebar-item-btn .sidebar-icon {
