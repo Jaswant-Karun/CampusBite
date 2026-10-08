@@ -1205,74 +1205,45 @@
 }
 
 .motion-brand-symbol {
-  width: 90px;
-  height: 90px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #FF5A1F, #FFA000);
+  width: 80px;
+  height: 80px;
+  border-radius: 22px;
+  background: var(--navy);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(255, 90, 31, 0.45);
-  margin-bottom: 22px;
+  box-shadow: 0 10px 25px rgba(23, 37, 84, 0.35);
+  margin-bottom: 20px;
   position: relative;
-  animation: floatBrand 3.2s ease-in-out infinite;
-}
-
-@keyframes floatBrand {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-8px) scale(1.04); }
 }
 
 .motion-logo-emoji {
-  font-size: 48px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+  font-size: 42px;
 }
 
 .motion-pulse-ring {
-  position: absolute;
-  inset: -10px;
-  border-radius: 36px;
-  border: 2px solid rgba(255, 90, 31, 0.5);
-  animation: pulseRing 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-.motion-pulse-ring.delay {
-  animation-delay: 1.2s;
-}
-
-@keyframes pulseRing {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  100% { transform: scale(1.4); opacity: 0; }
+  display: none;
 }
 
 .motion-hero-title {
-  font-family: var(--font-display);
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: -1.5px;
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFB088 50%, #FF5A1F 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 6px;
-  line-height: 1.1;
-  text-shadow: 0 0 40px rgba(255, 90, 31, 0.3);
-  animation: titleGlow 4s ease-in-out infinite alternate;
-}
-
-@keyframes titleGlow {
-  from { filter: drop-shadow(0 0 10px rgba(255, 90, 31, 0.2)); }
-  to { filter: drop-shadow(0 0 25px rgba(255, 160, 0, 0.5)); }
+  font-family: var(--font-heading);
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+  line-height: 1.15;
 }
 
 .motion-sub-tag {
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #FDBA74;
-  background: rgba(255, 90, 31, 0.15);
-  border: 1px solid rgba(255, 90, 31, 0.35);
+  color: #A5B4FC;
+  background: rgba(79, 70, 229, 0.15);
+  border: 1px solid rgba(165, 180, 252, 0.3);
   padding: 4px 14px;
   border-radius: var(--radius-full);
   margin-bottom: 12px;
