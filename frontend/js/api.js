@@ -5,6 +5,17 @@
 const API_BASE = '/api';
 
 const api = {
+  getHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    try {
+      const token = localStorage.getItem('campusbite_token');
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+    } catch (e) {}
+    return headers;
+  },
+
   async get(endpoint, params = {}) {
     try {
       const url = new URL(API_BASE + endpoint, window.location.origin);
@@ -13,7 +24,9 @@ const api = {
           url.searchParams.append(key, params[key]);
         }
       });
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: this.getHeaders()
+      });
       return await res.json();
     } catch (err) {
       console.error(`GET ${endpoint} failed:`, err);
@@ -25,7 +38,7 @@ const api = {
     try {
       const res = await fetch(API_BASE + endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getHeaders(),
         body: JSON.stringify(data)
       });
       return await res.json();
@@ -39,7 +52,7 @@ const api = {
     try {
       const res = await fetch(API_BASE + endpoint, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getHeaders(),
         body: JSON.stringify(data)
       });
       return await res.json();
@@ -52,7 +65,8 @@ const api = {
   async delete(endpoint) {
     try {
       const res = await fetch(API_BASE + endpoint, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: this.getHeaders()
       });
       return await res.json();
     } catch (err) {
@@ -64,6 +78,9 @@ const api = {
   // Auth
   login: (data) => api.post('/auth/login', data),
   register: (data) => api.post('/auth/register', data),
+  logout: () => api.post('/auth/logout'),
+  getMe: () => api.get('/auth/me'),
+  checkAdmin: () => api.get('/auth/admin-check'),
   getProfile: (id) => api.get(`/auth/profile/${id}`),
 
   // Categories
