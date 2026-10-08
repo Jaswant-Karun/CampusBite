@@ -60,6 +60,19 @@
       "loyalty_points": 650,
       "wallet_balance": 450,
       "avatar": "👨🍳"
+    },
+    {
+      "id": "u-1791468999980",
+      "name": "Aakash Varma",
+      "email": "test_student_1791468999879@campus.edu",
+      "phone": "91234 56789",
+      "role": "student",
+      "studentId": "CB-2024-9988",
+      "department": "Computer Science & Engineering",
+      "loyalty_points": 50,
+      "wallet_balance": 500,
+      "password": "password123",
+      "avatar": "AA"
     }
   ],
   "products": [
