@@ -49,6 +49,17 @@ router.post('/redeem', (req, res) => {
   db.data.loyalty_transactions.unshift(tx);
   db.saveData();
 
+  // Sync to MongoDB if available
+  try {
+    const { LoyaltyTransaction: MongoLT, User: MongoUser } = require('../data/mongo');
+    if (MongoLT) {
+      await MongoLT.create(tx);
+    }
+    if (MongoUser) {
+      await MongoUser.updateOne({ id: user.id }, { $set: { loyalty_points: user.loyalty_points } });
+    }
+  } catch (err) {}
+
   res.json({
     success: true,
     message: `Successfully redeemed ${ptsToRedeem} points for ₹${discountAmount} voucher!`,
