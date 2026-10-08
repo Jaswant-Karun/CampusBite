@@ -128,6 +128,7 @@ const StudentApp = {
     this.bindEvents();
     this.loadProducts();
     this.updateCartBadge();
+    this.updateCartShortcutBanner();
     this.refreshUserLoyalty();
     this.updateWalletUI();
     this.updateUserInterfaceDetails();
@@ -1194,20 +1195,30 @@ const StudentApp = {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
+    if (product.is_available === false || (product.stock !== undefined && product.stock <= 0)) {
+      App.showToast(`Sorry, ${product.name} is currently out of stock!`, 'warning');
+      return;
+    }
+
     const existing = this.cart.find(c => c.productId === productId);
     if (existing) {
+      if (product.stock !== undefined && existing.quantity >= product.stock) {
+        App.showToast(`Maximum available stock (${product.stock}) reached for ${product.name}!`, 'warning');
+        return;
+      }
       existing.quantity += 1;
     } else {
       this.cart.push({
         productId: product.id,
         name: product.name,
         price: product.price,
-        image_emoji: product.image_emoji,
+        image_emoji: product.image_emoji || '🍱',
         quantity: 1
       });
     }
 
     this.updateCartBadge();
+    this.updateCartShortcutBanner();
     this.renderMenuList(this.products);
     this.renderDesktopCart();
     App.showToast(`Added ${product.name} to cart!`, 'success');
@@ -1223,6 +1234,7 @@ const StudentApp = {
     }
 
     this.updateCartBadge();
+    this.updateCartShortcutBanner();
     this.renderMenuList(this.products);
     this.renderDesktopCart();
     if (document.getElementById('screen-cart').classList.contains('active')) {
