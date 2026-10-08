@@ -533,11 +533,54 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="search-bar-wrap">
+            <div class="search-bar-wrap" id="home-search-bar-wrap">
               <div class="search-input-box">
                 <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
-                <input type="text" id="student-search-input" class="mob-search-input" placeholder="Search burgers, juices, meals...">
+                <input type="text" id="student-search-input" class="mob-search-input" placeholder="Search burgers, juices, meals..." oninput="StudentApp.searchProducts(this.value)">
               </div>
+            </div>
+
+            <!-- Current Order Shortcut (Displayed dynamically if active order exists) -->
+            <div id="home-active-order-banner" class="active-order-shortcut-card" style="display:none;" onclick="StudentApp.navigateTo('tracking')">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="live-sync-pulse-dot" style="background:#14B8A6;width:12px;height:12px;"></span>
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <strong style="font-size:13px;color:#0F172A;" id="home-active-order-id">Order #CB1024</strong>
+                    <span class="stock-badge in-stock" id="home-active-order-status">Preparing</span>
+                  </div>
+                  <div style="font-size:11px;color:#64748B;" id="home-active-order-slot">Pickup Window: 12:30 PM – 12:40 PM (Counter 2)</div>
+                </div>
+              </div>
+              <button class="btn-primary" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:999px;">
+                Track Live →
+              </button>
+            </div>
+
+            <!-- Cart Shortcut (Active when items in tray) -->
+            <div id="home-cart-shortcut-banner" class="home-cart-shortcut-banner" style="display:none;" onclick="StudentApp.navigateTo('cart')">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:18px;">🛒</span>
+                <div>
+                  <strong style="font-size:13px;color:white;" id="home-cart-shortcut-count">Tray (0 Items)</strong>
+                  <div style="font-size:11px;color:#E0E7FF;" id="home-cart-shortcut-total">Total: ₹0</div>
+                </div>
+              </div>
+              <span style="font-size:12px;font-weight:800;color:white;background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:999px;">
+                View Meal Tray →
+              </span>
+            </div>
+
+            <!-- Offers & Active Coupons Section -->
+            <div class="section-header-row" style="padding:0 18px 4px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="section-title">Offers & Coupons</span>
+                <span style="font-size:10px;background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:999px;font-weight:800;">SAVE MORE</span>
+              </div>
+              <span class="view-all-link" onclick="StudentApp.openLoyaltyStoreModal()">Voucher Store →</span>
+            </div>
+            <div class="offers-scroll-row" id="home-offers-container">
+              <!-- Rendered dynamically from real DB /api/coupons -->
             </div>
 
             <!-- Quick Action Feature Banners -->
@@ -571,14 +614,16 @@
               </div>
             </div>
 
-            <!-- Promo Banner Carousel -->
-            <div class="promo-banner" onclick="StudentApp.navigateTo('menu'); StudentApp.applyCouponCode('CAMPUS20');">
-              <span class="promo-tag">Today's Offer</span>
-              <div class="promo-title">20% OFF on Combo Meals</div>
-              <div class="promo-code-badge">
-                <span>CAMPUS20</span>
-                <span>• Tap to apply</span>
+            <!-- Featured Products Carousel / Grid -->
+            <div class="section-header-row" style="padding:0 18px 4px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="section-title">Featured Products</span>
+                <span style="font-size:10px;background:#EEF2FF;color:#4F46E5;padding:2px 7px;border-radius:999px;font-weight:800;">CHEF'S PICKS</span>
               </div>
+              <span class="view-all-link" onclick="StudentApp.navigateTo('menu')">View All →</span>
+            </div>
+            <div class="featured-scroll-row" id="home-featured-container">
+              <!-- Rendered dynamically from real DB via JS -->
             </div>
 
             <!-- Desktop 2-Column Grid Layout (Active on Desktop Mode) -->
