@@ -83,8 +83,11 @@ app.post('/api/reset-demo', async (req, res) => {
   const fresh = db.reset();
   if (mongoManager.isConnected) {
     try {
+      await User.deleteMany({});
       await Product.deleteMany({});
       await Order.deleteMany({});
+      await Coupon.deleteMany({});
+      await Review.deleteMany({});
       await mongoManager.seedIfEmpty(fresh);
     } catch (e) {
       console.warn("MongoDB reset sync error", e);
@@ -122,6 +125,9 @@ app.get('/kds', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Start Server
 app.listen(PORT, () => {
