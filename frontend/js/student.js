@@ -1309,13 +1309,23 @@ const StudentApp = {
   async renderProfile() {
     await this.refreshUserLoyalty();
 
-    document.getElementById('profile-user-name').textContent = this.currentUser.name;
-    document.getElementById('profile-user-id').textContent = `${this.currentUser.studentId} • ${this.currentUser.department}`;
-    const phoneEl = document.getElementById('profile-user-phone');
-    if (phoneEl) {
-      phoneEl.textContent = `${this.currentUser.phone}`;
+    const nameEl = document.getElementById('profile-user-name') || document.getElementById('profile-name-display');
+    if (nameEl) nameEl.textContent = this.currentUser.name || 'Campus Student';
+
+    const idEl = document.getElementById('profile-user-id') || document.getElementById('profile-id-display');
+    if (idEl) idEl.textContent = `${this.currentUser.studentId || 'CB-2024-2028'} • ${this.currentUser.department || 'Computer Science'}`;
+
+    const phoneEl = document.getElementById('profile-user-phone') || document.getElementById('profile-phone-display');
+    if (phoneEl) phoneEl.textContent = `${this.currentUser.phone || '87541 59344'}`;
+
+    const ptsEl = document.getElementById('profile-loyalty-pts');
+    if (ptsEl) ptsEl.textContent = `${this.currentUser.loyalty_points || 0} Pts`;
+
+    const avatarEl = document.getElementById('profile-avatar-display');
+    if (avatarEl) {
+      const parts = (this.currentUser.name || 'ST').split(' ');
+      avatarEl.textContent = (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
     }
-    document.getElementById('profile-loyalty-pts').textContent = this.currentUser.loyalty_points;
 
     try {
       const data = await window.api.getOrders({ user_id: this.currentUser.id });
