@@ -38,9 +38,9 @@
 }
 
 .mode-btn.active {
-  background: linear-gradient(135deg, var(--primary) 0%, #E0480F 100%);
+  background: var(--primary);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(255, 90, 31, 0.35);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
 }
 
 /* User Account Quick Pill in Master Topbar */
@@ -1105,7 +1105,7 @@
 
 .profile-select-card.active {
   border-color: var(--primary);
-  background: rgba(255, 90, 31, 0.08);
+  background: var(--primary-light);
 }
 
 .profile-card-left {
