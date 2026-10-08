@@ -424,6 +424,27 @@
       "health_tag": "🌙 Late Night Craving",
       "stall_id": "stall_night",
       "stall_name": "Hostel Night Canteen"
+    },
+    {
+      "id": "p-17",
+      "name": "Seasonal Alphonso Mango Lassi",
+      "description": "Thick creamy chilled mango lassi infused with green cardamom and saffron. (Seasonal Special - Sold Out)",
+      "price": 60,
+      "category": "Drinks",
+      "image_emoji": "🥭",
+      "stock": 0,
+      "is_available": false,
+      "rating": 4.9,
+      "prep_time": "3 mins",
+      "is_veg": true,
+      "popular": false,
+      "calories": "220 kcal",
+      "protein_g": 6,
+      "carbs_g": 36,
+      "fat_g": 5,
+      "health_tag": "✨ Seasonal Special",
+      "stall_id": "stall_sports",
+      "stall_name": "Sports Juice Bar"
     }
   ],
   "coupons": [
