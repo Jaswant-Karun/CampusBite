@@ -27,7 +27,14 @@ const api = {
       const res = await fetch(url, {
         headers: this.getHeaders()
       });
-      return await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const error = new Error(data.message || `GET ${endpoint} failed (${res.status})`);
+        error.status = res.status;
+        error.data = data;
+        throw error;
+      }
+      return data;
     } catch (err) {
       console.error(`GET ${endpoint} failed:`, err);
       throw err;
@@ -41,7 +48,14 @@ const api = {
         headers: this.getHeaders(),
         body: JSON.stringify(data)
       });
-      return await res.json();
+      const resData = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const error = new Error(resData.message || `POST ${endpoint} failed (${res.status})`);
+        error.status = res.status;
+        error.data = resData;
+        throw error;
+      }
+      return resData;
     } catch (err) {
       console.error(`POST ${endpoint} failed:`, err);
       throw err;
@@ -55,7 +69,14 @@ const api = {
         headers: this.getHeaders(),
         body: JSON.stringify(data)
       });
-      return await res.json();
+      const resData = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const error = new Error(resData.message || `PUT ${endpoint} failed (${res.status})`);
+        error.status = res.status;
+        error.data = resData;
+        throw error;
+      }
+      return resData;
     } catch (err) {
       console.error(`PUT ${endpoint} failed:`, err);
       throw err;
@@ -68,7 +89,14 @@ const api = {
         method: 'DELETE',
         headers: this.getHeaders()
       });
-      return await res.json();
+      const resData = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const error = new Error(resData.message || `DELETE ${endpoint} failed (${res.status})`);
+        error.status = res.status;
+        error.data = resData;
+        throw error;
+      }
+      return resData;
     } catch (err) {
       console.error(`DELETE ${endpoint} failed:`, err);
       throw err;
