@@ -630,65 +630,85 @@
            ==================================================================== -->
       <div id="screen-cart" class="mob-screen">
         <div class="screen-header-bar">
-          <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Your Cart </div>
-          <div style="width:24px;"></div>
+          <button class="back-btn" onclick="StudentApp.navigateTo('menu')">←</button>
+          <div class="screen-title">Your Meal Cart 🛒</div>
+          <button class="add-mini-btn" onclick="StudentApp.clearCart()" style="padding:4px 8px;font-size:11px;background:#FEE2E2;color:#DC2626;border-color:#FECACA;">Clear</button>
         </div>
 
         <div style="padding:16px;">
-          <div id="cart-items-container">
-            <!-- Rendered via JS -->
+          <!-- Empty Cart State -->
+          <div id="cart-empty-state" class="cart-empty-card" style="display:none;padding:40px 16px;">
+            <div class="cart-empty-icon-wrap" style="width:72px;height:72px;margin-bottom:14px;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.6"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            </div>
+            <h4 style="font-size:16px;font-weight:800;color:var(--text-primary);margin:0 0 6px;">Your Cart is Empty</h4>
+            <p style="font-size:12px;color:var(--text-secondary);margin:0 0 16px;text-align:center;">Add tasty snacks and meals to skip the lunch rush!</p>
+            <button class="splash-btn" onclick="StudentApp.navigateTo('menu')" style="width:auto;padding:10px 24px;">
+              Continue Shopping →
+            </button>
           </div>
 
-          <!-- Coupon Code Input -->
-          <div style="margin-top:16px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;">
-            <strong style="font-size:12.5px;display:block;margin-bottom:8px;">Have a Promo Code?</strong>
-            <div style="display:flex;gap:8px;">
-              <input type="text" id="coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
-              <button onclick="StudentApp.applyCouponCode()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
-                Apply
+          <!-- Full Cart State -->
+          <div id="cart-full-state">
+            <div id="cart-items-container">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Coupon Code Input -->
+            <div style="margin-top:16px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;">
+              <strong style="font-size:12.5px;display:block;margin-bottom:8px;">Have a Promo Code?</strong>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
+                <button onclick="StudentApp.applyCouponCode()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
+                  Apply
+                </button>
+              </div>
+              <div id="coupon-status-msg" style="font-size:11px;margin-top:6px;"></div>
+            </div>
+
+            <!-- Loyalty Points Redemption -->
+            <div style="margin-top:12px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <strong style="font-size:12.5px;display:block;">Redeem 100 Loyalty Pts</strong>
+                <span style="font-size:11px;color:#64748B;">Save ₹10 instantly (Available: <span id="cart-loyalty-pts">420</span> pts)</span>
+              </div>
+              <input type="checkbox" id="loyalty-redeem-toggle" onchange="StudentApp.toggleLoyaltyRedeem(this.checked)" style="width:20px;height:20px;accent-color:var(--primary);cursor:pointer;">
+            </div>
+
+            <!-- Order Bill Breakdown -->
+            <div class="price-breakdown-card" style="margin-top:16px;">
+              <div class="bill-row">
+                <span>Subtotal</span>
+                <span id="bill-subtotal" style="font-weight:700;">₹0</span>
+              </div>
+              <div class="bill-row" id="bill-discount-row" style="display:none;color:#10B981;font-weight:700;">
+                <span>Discount</span>
+                <span id="bill-discount">-₹0</span>
+              </div>
+              <div class="bill-row" id="bill-loyalty-row" style="display:none;color:#D97706;font-size:12px;">
+                <span>• Loyalty Points</span>
+                <span>-₹10</span>
+              </div>
+              <div class="bill-row">
+                <span>Canteen Platform & Tax</span>
+                <span style="color:#10B981;font-weight:700;">FREE (Campus Subsidized)</span>
+              </div>
+              <div class="bill-row total">
+                <span>Total Amount</span>
+                <span id="bill-total" style="color:var(--primary);font-size:18px;font-weight:800;">₹0</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Proceed to Checkout & Continue Shopping -->
+            <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+              <button class="splash-btn" onclick="StudentApp.proceedToCheckout()">
+                <span>Proceed to Checkout →</span>
+              </button>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="padding:12px;border-radius:12px;font-weight:700;">
+                Continue Shopping
               </button>
             </div>
-            <div id="coupon-status-msg" style="font-size:11px;margin-top:6px;"></div>
           </div>
-
-          <!-- Loyalty Points Redemption -->
-          <div style="margin-top:12px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <strong style="font-size:12.5px;display:block;">Redeem 100 Loyalty Pts</strong>
-              <span style="font-size:11px;color:#64748B;">Save ₹10 instantly (Available: <span id="cart-loyalty-pts">420</span> pts)</span>
-            </div>
-            <input type="checkbox" id="loyalty-redeem-toggle" onchange="StudentApp.toggleLoyaltyRedeem(this.checked)" style="width:20px;height:20px;accent-color:var(--primary);cursor:pointer;">
-          </div>
-
-          <!-- Order Bill Breakdown -->
-          <div class="price-breakdown-card" style="margin-top:16px;">
-            <div class="bill-row">
-              <span>Item Subtotal</span>
-              <span id="bill-subtotal">₹0</span>
-            </div>
-            <div class="bill-row" id="bill-discount-row" style="display:none;color:#10B981;">
-              <span>Promo Code Discount</span>
-              <span id="bill-discount">-₹0</span>
-            </div>
-            <div class="bill-row" id="bill-loyalty-row" style="display:none;color:#10B981;">
-              <span>Loyalty Points Discount</span>
-              <span>-₹10</span>
-            </div>
-            <div class="bill-row">
-              <span>Canteen Platform & Tax</span>
-              <span style="color:#10B981;font-weight:700;">FREE (University Subsidized)</span>
-            </div>
-            <div class="bill-row total">
-              <span>Final Total</span>
-              <span id="bill-total" style="color:var(--primary);">₹0</span>
-            </div>
-          </div>
-
-          <!-- Proceed to Checkout -->
-          <button class="splash-btn" style="margin-top:20px;" onclick="StudentApp.proceedToCheckout()">
-            <span>Proceed to Pickup Slot & Pay →</span>
-          </button>
         </div>
       </div>
 
