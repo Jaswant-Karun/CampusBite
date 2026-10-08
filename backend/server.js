@@ -20,6 +20,7 @@ if (fs.existsSync(envPath) && typeof process.loadEnvFile === 'function') {
 }
 
 const authRoutes = require('./routes/auth');
+const categoriesRoutes = require('./routes/categories');
 const productsRoutes = require('./routes/products');
 const ordersRoutes = require('./routes/orders');
 const couponsRoutes = require('./routes/coupons');
@@ -30,7 +31,18 @@ const demandPredictionRoutes = require('./routes/demandPrediction');
 const chatbotRoutes = require('./routes/chatbot');
 const notificationsRoutes = require('./routes/notifications');
 const db = require('./data/db');
-const { mongoManager, User, Product, Order, Coupon, Review } = require('./data/mongo');
+const { 
+  mongoManager, 
+  User, 
+  Category, 
+  Product, 
+  OrderItem, 
+  Order, 
+  Coupon, 
+  Review, 
+  LoyaltyTransaction, 
+  Notification 
+} = require('./data/mongo');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -46,6 +58,7 @@ mongoManager.connect(db.data);
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoriesRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/coupons', couponsRoutes);
@@ -69,11 +82,14 @@ app.get('/api/health', (req, res) => {
     },
     timestamp: new Date().toISOString(),
     database_records: {
-      users: db.data.users.length,
-      products: db.data.products.length,
-      orders: db.data.orders.length,
-      coupons: db.data.coupons.length,
-      reviews: db.data.reviews.length
+      users: (db.data.users || []).length,
+      categories: (db.data.categories || []).length,
+      products: (db.data.products || []).length,
+      orders: (db.data.orders || []).length,
+      coupons: (db.data.coupons || []).length,
+      reviews: (db.data.reviews || []).length,
+      loyalty_transactions: (db.data.loyalty_transactions || []).length,
+      notifications: (db.data.notifications || []).length
     }
   });
 });
@@ -84,10 +100,14 @@ app.post('/api/reset-demo', async (req, res) => {
   if (mongoManager.isConnected) {
     try {
       await User.deleteMany({});
+      await Category.deleteMany({});
       await Product.deleteMany({});
+      await OrderItem.deleteMany({});
       await Order.deleteMany({});
       await Coupon.deleteMany({});
       await Review.deleteMany({});
+      await LoyaltyTransaction.deleteMany({});
+      await Notification.deleteMany({});
       await mongoManager.seedIfEmpty(fresh);
     } catch (e) {
       console.warn("MongoDB reset sync error", e);
