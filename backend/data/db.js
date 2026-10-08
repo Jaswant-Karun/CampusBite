@@ -248,6 +248,21 @@ const INITIAL_DATA = {
       is_veg: true,
       popular: false,
       calories: "290 kcal"
+    },
+    {
+      id: "p-17",
+      name: "Seasonal Alphonso Mango Lassi",
+      description: "Thick creamy chilled mango lassi infused with green cardamom and saffron. (Seasonal Special - Sold Out)",
+      price: 60,
+      category: "Drinks",
+      image_emoji: "🥭",
+      stock: 0,
+      is_available: false,
+      rating: 4.9,
+      prep_time: "3 mins",
+      is_veg: true,
+      popular: false,
+      calories: "220 kcal"
     }
   ],
   coupons: [
