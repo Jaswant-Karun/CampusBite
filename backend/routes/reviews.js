@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 });
 
 // POST submit review
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { order_id, user_name, rating, food_quality, service_speed, app_experience, comment } = req.body;
 
   if (!rating) {
@@ -46,6 +46,14 @@ router.post('/', (req, res) => {
   db.data.analytics.avg_rating = Number((allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1));
 
   db.saveData();
+
+  // Sync to MongoDB if available
+  try {
+    const { Review: MongoReview } = require('../data/mongo');
+    if (MongoReview) {
+      await MongoReview.create(newReview);
+    }
+  } catch (err) {}
 
   res.status(201).json({
     success: true,
