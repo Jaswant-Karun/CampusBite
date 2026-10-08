@@ -250,10 +250,17 @@ const StudentApp = {
       });
     });
 
-    // Search input
+    // Search input (Home & Menu Catalogue)
     const searchInput = document.getElementById('student-search-input');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
+        this.searchProducts(e.target.value);
+      });
+    }
+
+    const menuSearchInput = document.getElementById('menu-search-input');
+    if (menuSearchInput) {
+      menuSearchInput.addEventListener('input', (e) => {
         this.searchProducts(e.target.value);
       });
     }
@@ -294,38 +301,36 @@ const StudentApp = {
   },
 
   navigateTo(screenId) {
-    if (screenId === 'menu') {
-      screenId = 'home';
-      setTimeout(() => {
-        const catRow = document.getElementById('home-category-chips');
-        if (catRow) catRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    }
-
     document.querySelectorAll('.mob-screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(`screen-${screenId}`);
     if (target) {
       target.classList.add('active');
     }
 
+    if (screenId === 'menu') {
+      this.renderMenuList(this.products);
+      this.renderCategoryChips();
+    }
+
     // Update bottom nav highlighting (mobile)
     document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.screen === screenId || (screenId === 'home' && btn.dataset.screen === 'menu'));
+      btn.classList.toggle('active', btn.dataset.screen === screenId);
     });
 
     // Update desktop nav buttons
     document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.screen === screenId || (screenId === 'home' && btn.dataset.screen === 'menu'));
+      btn.classList.toggle('active', btn.dataset.screen === screenId);
     });
 
-    // Bottom nav visibility: ONLY on mobile shell, NEVER on desktop website
+    // Bottom nav visibility: ONLY on small/mobile screens, NEVER on desktop website
     const bottomNav = document.querySelector('.mobile-bottom-nav');
-    const isDesktopWebsite = window.innerWidth > 768 || !!document.querySelector('.website-content-wrapper');
     if (bottomNav) {
-      if (isDesktopWebsite || ['motion-splash', 'login'].includes(screenId)) {
+      if (['motion-splash', 'login'].includes(screenId)) {
         bottomNav.style.display = 'none';
-      } else {
+      } else if (window.innerWidth <= 768) {
         bottomNav.style.display = 'flex';
+      } else {
+        bottomNav.style.display = 'none';
       }
     }
 
@@ -336,7 +341,7 @@ const StudentApp = {
       if (['motion-splash', 'login'].includes(screenId)) {
         desktopHero.style.display = 'none';
         desktopGrid.style.display = 'none';
-      } else if (['home', 'menu'].includes(screenId)) {
+      } else if (screenId === 'home') {
         desktopHero.style.display = 'flex';
         desktopGrid.style.display = 'grid';
       } else {
@@ -356,6 +361,7 @@ const StudentApp = {
     }
 
     this.renderDesktopCart();
+    this.updateCartShortcutBanner();
   },
 
   // ==========================================
