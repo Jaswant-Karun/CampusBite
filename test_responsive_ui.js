@@ -85,7 +85,7 @@ async function runUiTests() {
   const mobileCss = fs.readFileSync(path.join(CSS_DIR, 'mobile-shell.css'), 'utf8');
 
   const mobileChecks = [
-    { name: 'Mobile-first Container (.smartphone-frame / .smartphone-screen)', pattern: /class="smartphone-screen"/i, source: mobileHtml },
+    { name: 'Mobile-first Container (.mobile-phone-container / .smartphone-screen)', pattern: /class="(?:smartphone-screen|mobile-phone-container)"/i, source: mobileHtml },
     { name: 'Bottom Navigation Bar (.mobile-bottom-nav)', pattern: /<nav class="mobile-bottom-nav">/i, source: mobileHtml },
     { name: '5 Bottom Navigation Items (Home, Menu, Tray, History, Account)', pattern: /data-screen="home"[^>]*>[\s\S]*data-screen="menu"[\s\S]*data-screen="cart"[\s\S]*data-screen="profile"/i, source: mobileHtml },
     { name: 'Clean Product Cards (.food-card-row with 12px radius)', pattern: /\.food-card-row/i, source: mobileCss },
