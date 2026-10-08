@@ -584,7 +584,18 @@ class Database {
     try {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf8');
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        let updated = false;
+        if (!parsed.categories) {
+          parsed.categories = INITIAL_DATA.categories;
+          updated = true;
+        }
+        if (!parsed.notifications) {
+          parsed.notifications = INITIAL_DATA.notifications;
+          updated = true;
+        }
+        if (updated) this.saveData(parsed);
+        return parsed;
       }
     } catch (e) {
       console.warn("Could not load from DB_FILE, fallback to initial data", e);
