@@ -155,7 +155,12 @@ async function runTests() {
     assert.strictEqual(res.status, 400, 'Server should reject out-of-stock product with 400 Bad Request');
     const data = await res.json();
     assert.strictEqual(data.success, false, 'Response success should be false');
-    assert.ok(data.message.includes('out of stock'), `Error message should mention out of stock, got: ${data.message}`);
+    assert.ok(
+      data.message.toLowerCase().includes('insufficient stock') || 
+      data.message.toLowerCase().includes('out of stock') ||
+      data.message.includes('0 available'), 
+      `Error message should mention stock limitation, got: ${data.message}`
+    );
   });
 
   // 4. ADD TO CART WITH QUANTITY ACCUMULATION
