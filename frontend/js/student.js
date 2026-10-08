@@ -410,10 +410,18 @@ const StudentApp = {
   },
 
   async handleAuthSubmit() {
-    const email = (document.getElementById('auth-email-input')?.value || '').trim();
+    const emailInput = document.getElementById('auth-email-input') || document.getElementById('auth-email');
+    const email = (emailInput?.value || '').trim();
+    const pwdInput = document.getElementById('auth-password-input') || document.getElementById('auth-password');
+    const password = (pwdInput?.value || '').trim();
     const submitBtn = document.getElementById('auth-submit-btn');
+
     if (!email) {
       App.showToast('Please enter your campus email or phone', 'warning');
+      return;
+    }
+    if (!password) {
+      App.showToast('Please enter your password', 'warning');
       return;
     }
 
@@ -425,19 +433,26 @@ const StudentApp = {
     try {
       let res;
       if (this.currentAuthTab === 'signup') {
-        const name = (document.getElementById('auth-name-input')?.value || 'Campus Student').trim();
-        const dept = (document.getElementById('auth-dept-input')?.value || 'Computer Science & Business Systems').trim();
+        const nameInput = document.getElementById('auth-name-input') || document.getElementById('auth-name');
+        const name = (nameInput?.value || 'Campus Student').trim();
+        const deptInput = document.getElementById('auth-dept-input') || document.getElementById('auth-dept');
+        const dept = (deptInput?.value || 'Computer Science & Business Systems').trim();
+        const studentIdInput = document.getElementById('auth-student-id');
+        const studentId = (studentIdInput?.value || ('CB-2024-' + Math.floor(1000 + Math.random() * 9000))).trim();
+
         res = await window.api.register({
           name,
           email,
+          password,
           phone: "87541 59344",
           role: this.selectedAuthRole,
           department: dept,
-          studentId: "CB-2024-" + Math.floor(1000 + Math.random() * 9000)
+          studentId
         });
       } else {
         res = await window.api.login({
           email,
+          password,
           role: this.selectedAuthRole
         });
       }
@@ -448,14 +463,17 @@ const StudentApp = {
           ...res.user
         };
 
+        if (res.token) {
+          localStorage.setItem('campusbite_token', res.token);
+        }
         try {
           localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
         } catch (e) {}
 
         this.updateUserInterfaceDetails();
-        App.showToast(`Welcome, ${res.user.name}! Authenticated with MongoDB.`, 'success');
+        App.showToast(`Welcome, ${res.user.name}! Signed in successfully.`, 'success');
 
-        if (this.selectedAuthRole === 'admin') {
+        if (res.user.role === 'admin' || this.selectedAuthRole === 'admin') {
           App.switchViewMode('admin');
         } else {
           this.navigateTo('home');
@@ -464,20 +482,9 @@ const StudentApp = {
         App.showToast((res && res.message) || 'Authentication failed. Please check credentials.', 'error');
       }
     } catch (e) {
-      console.warn("Auth fallback", e);
-      // Fallback resilience
-      if (email.includes('admin')) {
-        this.currentUser.name = "Ramesh Canteen Manager";
-        this.currentUser.role = "admin";
-      } else {
-        this.currentUser.name = "Jaswant Karun";
-        this.currentUser.phone = "87541 59344";
-        this.currentUser.studentId = "CB-2024-2028";
-        this.currentUser.department = "Computer Science & Business Systems";
-      }
-      this.updateUserInterfaceDetails();
-      App.showToast(`Signed in as ${this.currentUser.name}`, 'success');
-      this.navigateTo('home');
+      console.warn("Auth error:", e);
+      const errMsg = (e.data && e.data.message) || e.message || 'Invalid credentials or user not found.';
+      App.showToast(errMsg, 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -490,33 +497,69 @@ const StudentApp = {
 
   async quickLogin(role, email) {
     this.selectAuthRole(role);
-    const emailInput = document.getElementById('auth-email-input');
+    const emailInput = document.getElementById('auth-email-input') || document.getElementById('auth-email');
     if (emailInput) emailInput.value = email;
 
+    const pwd = role === 'admin' ? 'admin123' : (role === 'student' ? 'student123' : 'password123');
+    const pwdInput = document.getElementById('auth-password-input') || document.getElementById('auth-password');
+    if (pwdInput) pwdInput.value = pwd;
+
     try {
-      const res = await window.api.login({ email, role });
+      const res = await window.api.login({ email, password: pwd, role });
       if (res && res.success && res.user) {
         this.currentUser = { ...this.currentUser, ...res.user };
+        if (res.token) {
+          localStorage.setItem('campusbite_token', res.token);
+        }
         try { localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser)); } catch (e) {}
+        this.updateUserInterfaceDetails();
+
+        if (role === 'admin') {
+          App.showToast('Logged in as Ramesh (Canteen Manager)', 'success');
+          App.switchViewMode('admin');
+        } else {
+          App.showToast(`Logged in as ${res.user.name} (${role.toUpperCase()})`, 'success');
+          this.navigateTo('home');
+        }
+      } else {
+        App.showToast((res && res.message) || 'Quick login failed', 'error');
       }
     } catch (e) {
-      if (email.includes('jaswant')) {
-        this.currentUser.name = "Jaswant Karun";
-        this.currentUser.phone = "87541 59344";
-        this.currentUser.studentId = "CB-2024-2028";
-        this.currentUser.department = "Computer Science & Business Systems";
+      console.warn("Quick login failed:", e);
+      const errMsg = (e.data && e.data.message) || e.message || 'Quick login failed';
+      App.showToast(errMsg, 'error');
+    }
+  },
+
+  async logout() {
+    try {
+      if (window.api && window.api.logout) {
+        await window.api.logout();
       }
+    } catch (e) {
+      console.warn("Logout error:", e);
     }
-
+    localStorage.removeItem('campusbite_token');
+    localStorage.removeItem('campusbite_user');
+    this.currentUser = {
+      id: null,
+      name: "Guest Student",
+      email: "",
+      phone: "",
+      role: "student",
+      studentId: "",
+      department: "",
+      loyalty_points: 0,
+      wallet_balance: 0,
+      avatar: "GS"
+    };
+    this.cart = [];
+    this.renderDesktopCart();
     this.updateUserInterfaceDetails();
-
-    if (role === 'admin') {
-      App.showToast('Logged in as Ramesh (Canteen Manager)', 'success');
-      App.switchViewMode('admin');
-    } else {
-      App.showToast(`Logged in as ${role === 'staff' ? 'Chef Raju (Kitchen Staff)' : 'Jaswant Karun (Student)'}`, 'success');
-      this.navigateTo('home');
+    if (window.App) {
+      window.App.showToast('You have been logged out.', 'info');
     }
+    this.navigateTo('login');
   },
 
   updateUserInterfaceDetails() {
