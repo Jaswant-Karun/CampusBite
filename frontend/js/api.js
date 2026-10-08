@@ -66,6 +66,9 @@ const api = {
   register: (data) => api.post('/auth/register', data),
   getProfile: (id) => api.get(`/auth/profile/${id}`),
 
+  // Categories
+  getCategories: () => api.get('/categories'),
+
   // Products
   getProducts: (params) => api.get('/products', params),
   getProduct: (id) => api.get(`/products/${id}`),
