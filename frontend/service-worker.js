@@ -10,8 +10,11 @@ const STATIC_ASSETS = [
   '/mobile.html',
   '/counter.html',
   '/admin.html',
+  '/css/style.css',
   '/css/desktop.css',
   '/css/mobile-shell.css',
+  '/css/admin.css',
+  '/css/chatbot.css',
   '/css/notifications.css',
   '/css/counter.css',
   '/js/api.js',
@@ -21,6 +24,11 @@ const STATIC_ASSETS = [
   '/js/student.js',
   '/js/admin.js',
   '/js/chatbot.js',
+  '/js/voice-order.js',
+  '/js/timetable-sync.js',
+  '/js/upi-payment.js',
+  '/js/spin-wheel.js',
+  '/js/hero-slider.js',
   '/js/app.js',
   '/manifest.json'
 ];
