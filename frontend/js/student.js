@@ -27,6 +27,8 @@ const StudentApp = {
   currentTrackOrderId: "CB1024",
   products: [],
   customizingProduct: null,
+  currentDetailProduct: null,
+  currentDetailQty: 1,
   currentDietFilter: 'all',
   currentStall: 'all',
   currentCategory: 'All',
@@ -787,7 +789,7 @@ const StudentApp = {
       const qty = inCart ? inCart.quantity : 0;
 
       return `
-        <div class="featured-food-card" onclick="StudentApp.openCustomizationModal('${item.id}')">
+        <div class="featured-food-card" onclick="StudentApp.openProductDetails('${item.id}')">
           <div class="featured-card-img-wrap">
             ${photoUrl ? `
               <img src="${photoUrl}" alt="${item.name}" class="featured-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
@@ -836,7 +838,7 @@ const StudentApp = {
     container.innerHTML = popular.map(item => {
       const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
       return `
-        <div class="popular-food-card" onclick="StudentApp.openCustomizationModal('${item.id}')">
+        <div class="popular-food-card" onclick="StudentApp.openProductDetails('${item.id}')">
           <div class="popular-card-emoji">${item.image_emoji || '🍱'}</div>
           <div class="popular-card-name">${item.name}</div>
           <div class="popular-card-price">₹${item.price}</div>
@@ -972,7 +974,7 @@ const StudentApp = {
         const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
 
         return `
-          <div class="food-card-row" onclick="StudentApp.openCustomizationModal('${item.id}')" data-product-id="${item.id}">
+          <div class="food-card-row" onclick="StudentApp.openProductDetails('${item.id}')" data-product-id="${item.id}">
             <div class="food-photo-wrap">
               ${photoUrl ? `
                 <img src="${photoUrl}" alt="${item.name}" class="food-card-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
@@ -1191,29 +1193,349 @@ const StudentApp = {
     App.showToast(`Added ${this.customizingProduct.name} to cart!`, 'success');
   },
 
-  addToCart(productId) {
+  // ==========================================
+  // Product Details Screen (Step 7)
+  // ==========================================
+  openProductDetails(productId, isModal = false) {
     const product = this.products.find(p => p.id === productId);
-    if (!product) return;
-
-    if (product.is_available === false || (product.stock !== undefined && product.stock <= 0)) {
-      App.showToast(`Sorry, ${product.name} is currently out of stock!`, 'warning');
+    if (!product) {
+      console.warn("Product not found:", productId);
       return;
     }
 
+    this.currentDetailProduct = product;
+    this.currentDetailQty = 1;
+
+    const htmlContent = this.renderProductDetailsHtml(product, isModal);
+
+    if (isModal) {
+      const modalBody = document.getElementById('product-detail-modal-body');
+      if (modalBody) {
+        modalBody.innerHTML = htmlContent;
+        App.openModal('product-detail-modal');
+      }
+    } else {
+      const screenContainer = document.getElementById('screen-product-detail-content');
+      if (screenContainer) {
+        screenContainer.innerHTML = htmlContent;
+      }
+      this.navigateTo('product-detail');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  },
+
+  renderProductDetailsHtml(item, isModal = false) {
+    const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
+    const photoUrl = this.productPhotos[item.id] || item.image_url;
+    const inCart = this.cart.find(c => c.productId === item.id);
+    const inCartQty = inCart ? inCart.quantity : 0;
+    const stockCount = item.stock !== undefined ? item.stock : 25;
+    const currentQty = this.currentDetailQty || 1;
+    const subtotal = item.price * currentQty;
+
+    return `
+      <div class="product-detail-page-wrapper">
+        <!-- Top Navigation & Breadcrumbs -->
+        <div class="product-detail-top-bar">
+          <div class="product-detail-breadcrumbs">
+            <a onclick="StudentApp.navigateTo('menu')">Menu</a>
+            <span>/</span>
+            <span style="color:#64748B;">${item.category || 'Dishes'}</span>
+            <span>/</span>
+            <span style="font-weight:700;color:var(--text-primary);">${item.name}</span>
+          </div>
+          <button class="btn-secondary" onclick="${isModal ? "App.closeModal('product-detail-modal')" : "StudentApp.navigateTo('menu')"}" style="padding:6px 14px;font-size:12px;border-radius:999px;">
+            ${isModal ? '✕ Close' : '← Back to Menu'}
+          </button>
+        </div>
+
+        <div class="product-detail-grid">
+          <!-- Left Column: Hero Media & Badges -->
+          <div class="product-detail-media-card">
+            <div class="product-detail-hero-media">
+              ${photoUrl ? `
+                <img src="${photoUrl}" alt="${item.name}" class="product-detail-hero-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="food-emoji-fallback" style="display:none;font-size:72px;">${item.image_emoji || '🍱'}</div>
+              ` : `
+                <div class="food-emoji-fallback" style="display:flex;font-size:72px;align-items:center;justify-content:center;height:100%;">${item.image_emoji || '🍱'}</div>
+              `}
+
+              <div class="product-detail-media-badges">
+                <span class="product-detail-diet-tag ${item.is_veg ? 'veg' : 'non-veg'}">
+                  <span class="${item.is_veg ? 'veg-indicator' : 'non-veg-indicator'}" style="position:static;"></span>
+                  <span>${item.is_veg ? 'Pure Veg' : 'Non-Veg'}</span>
+                </span>
+                <span class="stock-badge ${isOutOfStock ? 'out-of-stock' : 'in-stock'}" style="font-size:11.5px;padding:4px 10px;">
+                  ${isOutOfStock ? '✕ Currently Sold Out' : '● In Stock'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Food Specs Strip -->
+            <div style="padding:14px 18px;background:#F8FAFC;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-around;text-align:center;">
+              <div>
+                <div style="font-size:10.5px;color:#64748B;font-weight:600;text-transform:uppercase;">Prep Time</div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-top:2px;">⏱ ${item.prep_time || '8 mins'}</div>
+              </div>
+              <div style="border-left:1px solid #E2E8F0;height:24px;align-self:center;"></div>
+              <div>
+                <div style="font-size:10.5px;color:#64748B;font-weight:600;text-transform:uppercase;">Calories</div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-top:2px;">🔥 ${item.calories || '380 kcal'}</div>
+              </div>
+              <div style="border-left:1px solid #E2E8F0;height:24px;align-self:center;"></div>
+              <div>
+                <div style="font-size:10.5px;color:#64748B;font-weight:600;text-transform:uppercase;">Stall Counter</div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-top:2px;">🏛 Counter 2</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Product Info, Availability, Quantity Selector & Add to Cart -->
+          <div class="product-detail-info-card">
+            <div class="product-detail-header">
+              <div class="product-detail-tag-row">
+                <span class="product-category-pill">${item.category || 'Canteen Special'}</span>
+                <span class="product-rating-pill">⭐ ${item.rating || 4.8} / 5.0 (420+ student reviews)</span>
+                ${item.popular ? `<span style="font-size:11px;font-weight:700;color:#4F46E5;background:#EEF2FF;padding:2px 8px;border-radius:999px;">Top Student Pick</span>` : ''}
+              </div>
+              <h1 class="product-detail-title">${item.name}</h1>
+              
+              <div class="product-detail-price-wrap">
+                <span class="product-detail-current-price">₹${item.price}</span>
+                <span class="product-detail-price-note">Campus Subsidized Student Rate</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="product-detail-desc">${item.description}</p>
+
+            <!-- Dietary & Nutritional highlights -->
+            <div class="product-detail-meta-strip">
+              <span class="product-meta-cell">🥗 100% Fresh Daily Ingredients</span>
+              <span class="product-meta-cell">⚡ Rapid Break Pickup Ready</span>
+              ${item.protein_g ? `<span class="product-meta-cell" style="color:#4F46E5;font-weight:700;">💪 ${item.protein_g}g Protein</span>` : ''}
+            </div>
+
+            <!-- Availability Status Banner (Step 7 Requirement) -->
+            <div class="product-detail-availability-banner ${isOutOfStock ? 'sold-out' : 'in-stock'}" id="detail-availability-banner">
+              <div>
+                <div class="status-title">
+                  ${isOutOfStock ? `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    Currently Sold Out
+                  ` : `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    In Stock & Available
+                  `}
+                </div>
+                <div class="status-sub">
+                  ${isOutOfStock 
+                    ? 'This dish is temporarily unavailable. Kitchen restock in progress.' 
+                    : `Fresh batch ready at Counter 2 (${stockCount} portion${stockCount === 1 ? '' : 's'} available).`}
+                </div>
+              </div>
+              <span style="font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:white;">
+                ${isOutOfStock ? 'Unavailable' : `${stockCount} Left`}
+              </span>
+            </div>
+
+            <!-- Quantity Selector Section (Step 7 Requirement) -->
+            <div class="product-detail-qty-section">
+              <div class="product-detail-qty-header">
+                <label for="detail-qty-val">Select Quantity:</label>
+                <div class="product-detail-subtotal-preview" id="detail-subtotal-val">Total: ₹${subtotal}</div>
+              </div>
+              <div class="product-detail-stepper-control">
+                <button 
+                  type="button"
+                  id="detail-qty-minus" 
+                  class="detail-stepper-btn" 
+                  onclick="StudentApp.adjustDetailQuantity(-1)"
+                  ${isOutOfStock || currentQty <= 1 ? 'disabled' : ''}
+                  title="Decrease quantity">
+                  −
+                </button>
+                <span id="detail-qty-val" class="detail-qty-display">${currentQty}</span>
+                <button 
+                  type="button"
+                  id="detail-qty-plus" 
+                  class="detail-stepper-btn" 
+                  onclick="StudentApp.adjustDetailQuantity(1)"
+                  ${isOutOfStock || (item.stock !== undefined && currentQty >= item.stock) ? 'disabled' : ''}
+                  title="Increase quantity">
+                  +
+                </button>
+                <span style="font-size:12.5px;color:#64748B;margin-left:6px;font-weight:600;">
+                  ${isOutOfStock ? '(Unavailable)' : `(Max available: ${stockCount})`}
+                </span>
+              </div>
+            </div>
+
+            <!-- Action Buttons (Step 7 Requirement) -->
+            <div class="product-detail-actions-row">
+              <button 
+                type="button"
+                id="detail-add-cart-btn" 
+                class="product-detail-add-btn" 
+                onclick="StudentApp.confirmDetailAddToCart()"
+                ${isOutOfStock ? 'disabled' : ''}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span id="detail-add-btn-text">
+                  ${isOutOfStock ? 'Item Out of Stock — Unavailable' : `Add to Cart • ₹${subtotal}`}
+                </span>
+              </button>
+
+              <button 
+                type="button"
+                class="product-detail-customize-btn" 
+                onclick="StudentApp.openCustomizationModal('${item.id}')"
+                ${isOutOfStock ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                <span>⚙️ Customize Spice & Add-ons</span>
+              </button>
+            </div>
+
+            <!-- Existing In-Tray Notice -->
+            ${inCartQty > 0 ? `
+              <div class="product-detail-already-in-tray" id="detail-in-tray-notice">
+                <span>🛒</span>
+                <span>You currently have <strong>${inCartQty} portion${inCartQty === 1 ? '' : 's'}</strong> of this dish in your tray.</span>
+              </div>
+            ` : `
+              <div class="product-detail-already-in-tray" id="detail-in-tray-notice" style="display:none;"></div>
+            `}
+
+            <!-- Success Confirmation Banner (Step 7 Requirement: clear success confirmation) -->
+            <div id="detail-success-card" class="detail-success-card" style="display:none;">
+              <div class="detail-success-header">
+                <span class="detail-success-icon-badge">✓</span>
+                <div>
+                  <div class="detail-success-title">Item Successfully Added to Tray!</div>
+                  <div id="detail-success-sub" class="detail-success-msg" style="padding-left:0;margin-top:2px;">
+                    Added successfully.
+                  </div>
+                </div>
+              </div>
+              <div class="detail-success-actions">
+                <button type="button" class="detail-success-view-tray-btn" onclick="StudentApp.navigateTo('cart')">
+                  View Tray & Checkout →
+                </button>
+                <button type="button" class="detail-success-continue-btn" onclick="StudentApp.navigateTo('menu')">
+                  Continue Browsing Menu
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  adjustDetailQuantity(delta) {
+    if (!this.currentDetailProduct) return;
+    const item = this.currentDetailProduct;
+
+    // Validate if unavailable (Step 7 requirement)
+    if (item.is_available === false || (item.stock !== undefined && item.stock <= 0)) {
+      App.showToast(`Sorry, ${item.name} is currently out of stock!`, 'warning');
+      return;
+    }
+
+    const current = this.currentDetailQty || 1;
+    const maxStock = item.stock !== undefined ? item.stock : 99;
+    const next = current + delta;
+
+    if (next < 1) {
+      return;
+    }
+    if (next > maxStock) {
+      App.showToast(`Maximum available stock (${maxStock}) reached for ${item.name}!`, 'warning');
+      return;
+    }
+
+    this.currentDetailQty = next;
+
+    // Update UI elements
+    const qtyValEl = document.getElementById('detail-qty-val');
+    const subtotalEl = document.getElementById('detail-subtotal-val');
+    const btnTextEl = document.getElementById('detail-add-btn-text');
+    const minusBtn = document.getElementById('detail-qty-minus');
+    const plusBtn = document.getElementById('detail-qty-plus');
+
+    const subtotal = item.price * next;
+    if (qtyValEl) qtyValEl.textContent = next;
+    if (subtotalEl) subtotalEl.textContent = `Total: ₹${subtotal}`;
+    if (btnTextEl) btnTextEl.textContent = `Add to Cart • ₹${subtotal}`;
+
+    if (minusBtn) minusBtn.disabled = (next <= 1);
+    if (plusBtn) plusBtn.disabled = (next >= maxStock);
+  },
+
+  confirmDetailAddToCart() {
+    if (!this.currentDetailProduct) return;
+    const item = this.currentDetailProduct;
+
+    // Validate unavailable products (Step 7 requirement)
+    if (item.is_available === false || (item.stock !== undefined && item.stock <= 0)) {
+      App.showToast(`Cannot add ${item.name} — product is currently unavailable or out of stock!`, 'error');
+      return;
+    }
+
+    const qty = this.currentDetailQty || 1;
+    const success = this.addToCart(item.id, qty);
+    if (!success) return;
+
+    // Show clear success confirmation in UI (Step 7 requirement)
+    const successCard = document.getElementById('detail-success-card');
+    const successSub = document.getElementById('detail-success-sub');
+    const inTrayNotice = document.getElementById('detail-in-tray-notice');
+
+    const inCart = this.cart.find(c => c.productId === item.id);
+    const totalInCart = inCart ? inCart.quantity : qty;
+
+    if (successCard) {
+      if (successSub) {
+        successSub.textContent = `Added ${qty} portion${qty === 1 ? '' : 's'} of ${item.name} (₹${item.price * qty}) to your order tray. Total in tray: ${totalInCart}.`;
+      }
+      successCard.style.display = 'flex';
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    if (inTrayNotice) {
+      inTrayNotice.style.display = 'flex';
+      inTrayNotice.innerHTML = `<span>🛒</span><span>You currently have <strong>${totalInCart} portion${totalInCart === 1 ? '' : 's'}</strong> of this dish in your tray.</span>`;
+    }
+  },
+
+  addToCart(productId, quantity = 1) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return false;
+
+    // Validate unavailable products (Step 7 requirement)
+    if (product.is_available === false || (product.stock !== undefined && product.stock <= 0)) {
+      App.showToast(`Sorry, ${product.name} is currently out of stock!`, 'warning');
+      return false;
+    }
+
+    const qtyToAdd = Math.max(1, parseInt(quantity) || 1);
     const existing = this.cart.find(c => c.productId === productId);
     if (existing) {
-      if (product.stock !== undefined && existing.quantity >= product.stock) {
-        App.showToast(`Maximum available stock (${product.stock}) reached for ${product.name}!`, 'warning');
-        return;
+      if (product.stock !== undefined && (existing.quantity + qtyToAdd) > product.stock) {
+        App.showToast(`Cannot add ${qtyToAdd} more. Maximum stock (${product.stock}) reached for ${product.name}!`, 'warning');
+        return false;
       }
-      existing.quantity += 1;
+      existing.quantity += qtyToAdd;
     } else {
+      if (product.stock !== undefined && qtyToAdd > product.stock) {
+        App.showToast(`Cannot add ${qtyToAdd}. Only ${product.stock} portions available in stock!`, 'warning');
+        return false;
+      }
       this.cart.push({
         productId: product.id,
         name: product.name,
         price: product.price,
         image_emoji: product.image_emoji || '🍱',
-        quantity: 1
+        quantity: qtyToAdd
       });
     }
 
@@ -1221,7 +1543,8 @@ const StudentApp = {
     this.updateCartShortcutBanner();
     this.renderMenuList(this.products);
     this.renderDesktopCart();
-    App.showToast(`Added ${product.name} to cart!`, 'success');
+    App.showToast(`✓ Added ${qtyToAdd} × ${product.name} to tray!`, 'success');
+    return true;
   },
 
   decrementCart(productId) {
