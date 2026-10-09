@@ -53,6 +53,9 @@
       <button class="desktop-nav-btn" data-screen="tracking" onclick="StudentApp.navigateTo('tracking')">
         Track Order
       </button>
+      <button class="desktop-nav-btn" data-screen="order-history" onclick="StudentApp.navigateTo('order-history')">
+        Order History
+      </button>
       <button class="desktop-nav-btn" data-screen="rewards-store" onclick="StudentApp.openLoyaltyStoreModal()">
         Rewards
       </button>
@@ -1922,11 +1925,41 @@
             </div>
 
             <!-- Past Orders / Reorder Section -->
-            <div style="padding:0 18px;">
+            <div style="padding:0 18px 20px;">
               <div class="section-title" style="margin-bottom:10px;">Order History (1-Click Reorder)</div>
               <div id="profile-order-history-list">
                 <!-- Rendered via JS -->
               </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------------------------
+               SCREEN 13: STUDENT ORDER HISTORY (STEP 14)
+               ---------------------------------------------------------------- -->
+          <div id="screen-order-history" class="mob-screen">
+            <div class="home-top-bar">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <button type="button" class="back-btn" onclick="StudentApp.navigateTo('home')" style="border:none;background:none;font-size:18px;cursor:pointer;color:#0F172A;" title="Back to Home">←</button>
+                <div class="user-greeting">
+                  <h3>My Order History</h3>
+                  <p>Past dining receipts, tracking & 1-click reorder</p>
+                </div>
+              </div>
+              <button type="button" class="reset-btn" onclick="StudentApp.renderOrderHistory()" style="padding:6px 12px;font-size:12px;display:flex;align-items:center;gap:4px;" title="Refresh Orders">
+                ⟳ Refresh
+              </button>
+            </div>
+
+            <!-- Filter chips -->
+            <div class="history-filter-chips" style="display:flex;gap:6px;overflow-x:auto;padding:0 18px 12px;">
+              <button type="button" class="order-filter-btn active" data-filter="all" onclick="StudentApp.filterOrderHistory('all')">All Orders</button>
+              <button type="button" class="order-filter-btn" data-filter="active" onclick="StudentApp.filterOrderHistory('active')">In Kitchen / Active</button>
+              <button type="button" class="order-filter-btn" data-filter="completed" onclick="StudentApp.filterOrderHistory('completed')">Fulfilled</button>
+            </div>
+
+            <!-- Orders Container -->
+            <div id="order-history-list" class="order-history-list-container" style="padding:0 18px 24px;">
+              <!-- Rendered via JS -->
             </div>
           </div>
 

@@ -1160,6 +1160,10 @@
 
           <!-- Account Actions -->
           <div style="margin-top:16px;background:white;border-radius:18px;padding:8px 16px;border:1px solid #E2E8F0;">
+            <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.navigateTo('order-history')">
+              <span style="font-size:13px;font-weight:600;">📋 View Order History</span>
+              <span style="color:#94A3B8;">→</span>
+            </div>
             <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.navigateTo('login')">
               <span style="font-size:13px;font-weight:600;">Switch / Sign In to Another Account</span>
               <span style="color:#94A3B8;">→</span>
@@ -1168,6 +1172,31 @@
               <span style="font-size:13px;font-weight:600;color:#EF4444;">Sign Out from Device</span>
               <span style="color:#EF4444;"></span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN 12: STUDENT ORDER HISTORY (STEP 14)
+           ==================================================================== -->
+      <div id="screen-order-history" class="mob-screen">
+        <div class="screen-header-bar">
+          <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
+          <div class="screen-title">Order History</div>
+          <button class="reset-btn" onclick="StudentApp.renderOrderHistory()" style="border:none;background:none;font-size:15px;color:var(--primary);cursor:pointer;" title="Refresh">⟳</button>
+        </div>
+
+        <div style="padding:16px;">
+          <!-- Filter chips -->
+          <div class="history-filter-chips" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;">
+            <button type="button" class="order-filter-btn active" data-filter="all" onclick="StudentApp.filterOrderHistory('all')">All Orders</button>
+            <button type="button" class="order-filter-btn" data-filter="active" onclick="StudentApp.filterOrderHistory('active')">In Progress</button>
+            <button type="button" class="order-filter-btn" data-filter="completed" onclick="StudentApp.filterOrderHistory('completed')">Completed</button>
+          </div>
+
+          <!-- Orders Container -->
+          <div id="mob-order-history-list" class="order-history-list-container">
+            <!-- Rendered via JS -->
           </div>
         </div>
       </div>

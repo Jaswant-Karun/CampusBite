@@ -362,6 +362,9 @@ const StudentApp = {
     } else if (screenId === 'profile') {
       this.stopTrackingLivePolling();
       this.renderProfile();
+    } else if (screenId === 'order-history') {
+      this.stopTrackingLivePolling();
+      this.renderOrderHistory();
     } else if (screenId === 'tracking') {
       this.startTrackingLivePolling();
       this.renderTracking(this.currentTrackOrderId);
@@ -2709,14 +2712,7 @@ const StudentApp = {
   },
 
   viewOrderHistory() {
-    this.navigateTo('profile');
-    setTimeout(() => {
-      const historyEl = document.getElementById('profile-order-history-list') || 
-                        document.getElementById('screen-profile');
-      if (historyEl) {
-        historyEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 150);
+    this.navigateTo('order-history');
   },
 
   async renderTracking(orderId) {
@@ -2937,53 +2933,231 @@ const StudentApp = {
       avatarEl.textContent = (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
     }
 
-    try {
-      const data = await window.api.getOrders({ user_id: this.currentUser.id });
-      const historyContainer = document.getElementById('profile-order-history-list');
-      if (historyContainer && data.orders) {
-        if (!data.orders.length) {
-          historyContainer.innerHTML = '<p style="font-size:12px;color:#94A3B8;">No past orders yet</p>';
-          return;
-        }
+    await this.renderOrderHistory();
+  },
 
-        historyContainer.innerHTML = data.orders.map(o => `
-          <div style="background:white;border:1px solid #E2E8F0;border-radius:12px;padding:12px;margin-bottom:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:700;font-size:13px;color:#0F172A;">#${o.id}</span>
-              <span style="font-size:11px;font-weight:700;color:${o.order_status === 'Ready' ? '#10B981' : '#64748B'};">${o.order_status}</span>
+  // ==========================================
+  // STEP 14: Student Order History Controller
+  // ==========================================
+  async renderOrderHistory(filter = 'all') {
+    this.currentOrderHistoryFilter = filter;
+
+    // Update active filter chip buttons
+    document.querySelectorAll('.history-filter-chips .order-filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+
+    try {
+      const userId = this.currentUser ? this.currentUser.id : 'u-101';
+      const data = await window.api.getOrders({ user_id: userId });
+      const orders = data && data.orders ? data.orders : [];
+
+      let filtered = [...orders];
+      if (filter === 'active') {
+        filtered = filtered.filter(o => {
+          const s = (o.order_status || '').toLowerCase();
+          return s !== 'completed' && s !== 'cancelled';
+        });
+      } else if (filter === 'completed') {
+        filtered = filtered.filter(o => {
+          const s = (o.order_status || '').toLowerCase();
+          return s === 'completed';
+        });
+      }
+
+      const containers = [
+        document.getElementById('order-history-list'),
+        document.getElementById('mob-order-history-list'),
+        document.getElementById('profile-order-history-list')
+      ].filter(Boolean);
+
+      if (!containers.length) return;
+
+      if (!filtered.length) {
+        const emptyHtml = `
+          <div class="history-empty-card" style="text-align:center;padding:36px 16px;background:white;border-radius:18px;border:1px dashed #CBD5E1;margin:10px 0;">
+            <div style="font-size:36px;margin-bottom:8px;">📋</div>
+            <h4 style="font-size:15px;color:#0F172A;margin:0 0 4px;font-weight:700;">No Orders Found</h4>
+            <p style="font-size:12px;color:#64748B;margin:0 0 16px;">
+              ${filter === 'all' ? 'You have not placed any canteen orders yet.' : `No orders in "${filter}" filter.`}
+            </p>
+            <button type="button" class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:9px 18px;font-size:12.5px;border-radius:12px;display:inline-flex;align-items:center;gap:6px;">
+              <span>🍽 Browse Canteen Menu</span>
+            </button>
+          </div>
+        `;
+        containers.forEach(c => { c.innerHTML = emptyHtml; });
+        return;
+      }
+
+      const cardsHtml = filtered.map(o => {
+        // 1. Order ID (e.g. #CB1024)
+        const orderIdDisplay = `#${o.id}`;
+
+        // 2. Date (Formatted)
+        const d = o.created_at ? new Date(o.created_at) : new Date();
+        const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const fullDate = `${dateStr}, ${timeStr}`;
+
+        // 3. Payment Status (e.g. PAID or PENDING)
+        const rawPay = String(o.payment_status || 'PAID').toUpperCase();
+        const isPaid = rawPay.includes('PAID');
+        const paymentLabel = isPaid ? 'PAID' : (o.payment_status || 'PENDING');
+        const paymentMethod = o.payment_method || 'UPI';
+
+        // 4. Order Status (Canonical 5 statuses)
+        const rawStatus = (o.order_status || 'Order Placed');
+        let statusBadgeClass = 'placed';
+        const sLower = rawStatus.toLowerCase();
+        if (sLower === 'confirmed') statusBadgeClass = 'confirmed';
+        else if (sLower === 'preparing') statusBadgeClass = 'preparing';
+        else if (sLower === 'ready' || sLower === 'ready for pickup') statusBadgeClass = 'ready';
+        else if (sLower === 'completed') statusBadgeClass = 'completed';
+
+        // 5. Items breakdown
+        const items = o.items || [];
+        const itemsHtml = items.map(i => `
+          <div class="history-item-row" style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:12.5px;color:#334155;">
+            <div>
+              <strong style="color:#0F172A;">${i.name}</strong>
+              <span style="color:#64748B;font-size:11.5px;margin-left:4px;">× ${i.quantity}</span>
             </div>
-            <div style="font-size:12px;color:#64748B;margin:4px 0;">
-              ${o.items.map(i => `${i.name} × ${i.quantity}`).join(', ')}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;border-top:1px dashed #E2E8F0;padding-top:6px;">
-              <span style="font-weight:800;font-size:13px;color:#0F172A;">₹${o.total_amount}</span>
-              <button class="add-mini-btn" style="width:auto;padding:3px 10px;" onclick="StudentApp.reorderPastItems('${o.id}')">
-                Reorder
-              </button>
-            </div>
+            <span style="font-weight:700;color:#0F172A;">₹${i.price * i.quantity}</span>
           </div>
         `).join('');
-      }
+
+        // 6. Total Amount
+        const totalAmountDisplay = `₹${o.total_amount}`;
+
+        return `
+          <div class="order-history-card" data-order-id="${o.id}">
+            <div class="history-card-header">
+              <div>
+                <span class="history-order-id">${orderIdDisplay}</span>
+                <span class="order-date-text">📅 ${fullDate}</span>
+              </div>
+              <div class="history-badges-col">
+                <span class="order-status-badge status-${statusBadgeClass}">${rawStatus}</span>
+                <span class="payment-status-pill ${isPaid ? 'paid' : 'pending'}">${paymentLabel} • ${paymentMethod}</span>
+              </div>
+            </div>
+
+            <div class="history-items-box">
+              ${itemsHtml}
+            </div>
+
+            <div class="history-card-footer">
+              <div class="history-total-col">
+                <span class="history-total-label">Total Amount</span>
+                <span class="history-total-val">${totalAmountDisplay}</span>
+              </div>
+              <div class="history-actions-row">
+                <button type="button" class="history-btn-view" onclick="StudentApp.viewOrder('${o.id}')" title="Track or view order receipt">
+                  VIEW ORDER
+                </button>
+                <button type="button" class="history-btn-reorder" onclick="StudentApp.reorderPastItems('${o.id}')" title="Add available items to cart">
+                  REORDER
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      containers.forEach(c => { c.innerHTML = cardsHtml; });
     } catch (e) {
-      console.warn("Failed to load history", e);
+      console.error("Failed to load order history:", e);
     }
   },
 
+  filterOrderHistory(filter) {
+    this.renderOrderHistory(filter);
+  },
+
+  viewOrder(orderId) {
+    this.currentTrackOrderId = orderId;
+    this.navigateTo('tracking');
+    if (typeof this.renderTracking === 'function') {
+      this.renderTracking(orderId);
+    }
+  },
+
+  viewOrderDetails(orderId) {
+    return this.viewOrder(orderId);
+  },
+
+  // Step 14: Reorder items with product availability checking
   async reorderPastItems(orderId) {
     try {
+      // 1. Ensure latest catalog and inventory are loaded from database
+      if (!this.products || !this.products.length) {
+        await this.loadProducts();
+      }
+
+      // 2. Fetch the target order
       const res = await window.api.getOrder(orderId);
-      if (res.success && res.order) {
-        res.order.items.forEach(i => {
-          for (let q = 0; q < i.quantity; q++) {
-            this.addToCart(i.product_id);
+      if (!res.success || !res.order) {
+        App.showToast(`Order #${orderId} not found`, 'error');
+        return;
+      }
+
+      const order = res.order;
+      if (!order.items || !order.items.length) {
+        App.showToast(`Order #${orderId} has no items to reorder`, 'warning');
+        return;
+      }
+
+      const addedItems = [];
+      const unavailableItems = [];
+
+      for (const item of order.items) {
+        // Look up in current product catalog
+        const product = this.products.find(p => p.id === item.product_id || p.name.toLowerCase() === item.name.toLowerCase());
+
+        // Check product availability: must exist, is_available !== false, and stock > 0
+        const isAvailable = product && product.is_available !== false && (product.stock === undefined || product.stock > 0);
+
+        if (isAvailable) {
+          const qtyToAdd = Math.max(1, parseInt(item.quantity) || 1);
+          const maxAvailable = product.stock !== undefined ? Math.min(qtyToAdd, product.stock) : qtyToAdd;
+
+          if (maxAvailable > 0) {
+            const added = this.addToCart(product.id, maxAvailable);
+            if (added !== false) {
+              addedItems.push({ name: product.name, quantity: maxAvailable });
+            } else {
+              unavailableItems.push({ name: item.name, reason: 'Stock limit reached' });
+            }
+          } else {
+            unavailableItems.push({ name: item.name, reason: 'Out of stock' });
           }
-        });
+        } else {
+          const reason = !product ? 'Discontinued' : (product.is_available === false ? 'Unavailable today' : 'Out of stock');
+          unavailableItems.push({ name: item.name, reason });
+        }
+      }
+
+      // 3. Show suitable messages based on product availability
+      if (unavailableItems.length > 0 && addedItems.length > 0) {
+        const unavailText = unavailableItems.map(u => `${u.name} (${u.reason})`).join(', ');
+        App.showToast(`Added available items to tray. Note: ${unavailText} is currently unavailable.`, 'warning', 5000);
         this.navigateTo('cart');
-        App.showToast(`Loaded items from #${orderId} into cart!`, 'success');
+      } else if (unavailableItems.length > 0 && addedItems.length === 0) {
+        const unavailText = unavailableItems.map(u => `${u.name} (${u.reason})`).join(', ');
+        App.showToast(`Cannot reorder: All items (${unavailText}) are currently unavailable or out of stock!`, 'error', 5000);
+      } else if (addedItems.length > 0) {
+        App.showToast(`All items from Order #${orderId} added to your tray!`, 'success');
+        this.navigateTo('cart');
       }
     } catch (e) {
-      App.showToast('Reorder failed', 'error');
+      console.error("Reorder error:", e);
+      App.showToast('Reorder failed: ' + (e.message || ''), 'error');
     }
+  },
+
+  reorderOrder(orderId) {
+    return this.reorderPastItems(orderId);
   },
 
   async refreshUserLoyalty() {

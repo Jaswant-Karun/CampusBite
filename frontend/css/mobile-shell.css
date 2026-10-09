@@ -1879,3 +1879,166 @@
   border: 1px solid #E2E8F0;
   text-align: center;
 }
+
+/* ==========================================================================
+   Screen 13: Student Order History (Step 14)
+   ========================================================================== */
+.order-history-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.order-history-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.history-order-id {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+  display: block;
+}
+
+.order-date-text {
+  font-size: 11.5px;
+  color: #64748B;
+  display: block;
+  margin-top: 2px;
+}
+
+.history-badges-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.payment-status-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+}
+
+.payment-status-pill.paid {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #86EFAC;
+}
+
+.payment-status-pill.pending {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.history-items-box {
+  background: #F8FAFC;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #F1F5F9;
+}
+
+.history-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: #334155;
+  padding: 3px 0;
+}
+
+.history-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.history-total-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-total-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-total-val {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.history-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-btn-view {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.history-btn-view:hover {
+  background: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.history-btn-reorder {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #4F46E5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.history-btn-reorder:hover {
+  background: #4338CA;
+  transform: translateY(-1px);
+}
+
