@@ -212,8 +212,8 @@ const StudentApp = {
     App.showToast(`Reward Claimed: ₹${discountAmount} voucher applied to your meal tray.`, 'success');
   },
 
-  openCustomerReviewModal() {
-    App.openModal('customer-review-modal');
+  openCustomerReviewModal(targetOrderId = null) {
+    this.openReviewModal(targetOrderId);
   },
 
   filterByDiet(dietType, btn) {
@@ -3490,6 +3490,11 @@ const StudentApp = {
                 <button type="button" class="history-btn-reorder" onclick="StudentApp.reorderPastItems('${o.id}')" title="Add available items to cart">
                   REORDER
                 </button>
+                ${(statusBadgeClass === 'completed' || sLower === 'completed' || sLower === 'delivered') ? `
+                  <button type="button" class="history-btn-rate" onclick="StudentApp.openReviewModalForOrder('${o.id}')" title="Rate this completed meal">
+                    ⭐ Rate Meal
+                  </button>
+                ` : ''}
               </div>
             </div>
           </div>
