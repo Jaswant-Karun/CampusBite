@@ -100,13 +100,16 @@ const OrderSchema = new mongoose.Schema({
   order_status: { 
     type: String, 
     enum: [
-      'Placed', 'Confirmed', 'Preparing', 'Ready', 'Completed', 'Cancelled', 'Pending',
+      'Placed', 'Order Placed', 'Confirmed', 'Preparing', 'Ready', 'Ready for Pickup', 'Completed', 'Cancelled', 'Pending',
       'PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'COMPLETED', 'CANCELLED'
     ],
-    default: 'Placed',
+    default: 'Order Placed',
     set: v => {
-      if (!v) return 'Placed';
+      if (!v) return 'Order Placed';
       const clean = v.trim();
+      const lower = clean.toLowerCase();
+      if (lower === 'order placed' || lower === 'placed') return 'Order Placed';
+      if (lower === 'ready for pickup' || lower === 'ready') return 'Ready for Pickup';
       const upper = clean.toUpperCase();
       if (['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'COMPLETED', 'CANCELLED', 'PLACED'].includes(upper)) {
         return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
@@ -114,6 +117,7 @@ const OrderSchema = new mongoose.Schema({
       return clean;
     }
   },
+  estimated_prep_time: { type: String, default: '~8–12 mins' },
   pickup_slot: { type: String, required: true },
   pickup_counter: { type: Number, default: 1 },
   loyalty_points_earned: { type: Number, default: 0 }

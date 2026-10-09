@@ -118,8 +118,11 @@ const KdsApp = {
   },
 
   updateStats() {
-    const preparingCount = this.orders.filter(o => ['Placed', 'Confirmed', 'Preparing'].includes(o.order_status)).length;
-    const readyCount = this.orders.filter(o => o.order_status === 'Ready').length;
+    const isPrep = o => ['Placed', 'Order Placed', 'Confirmed', 'Preparing'].includes(o.order_status);
+    const isReady = o => ['Ready', 'Ready for Pickup'].includes(o.order_status);
+
+    const preparingCount = this.orders.filter(isPrep).length;
+    const readyCount = this.orders.filter(isReady).length;
     const completedToday = this.orders.filter(o => o.order_status === 'Completed').length;
 
     const prepStatEl = document.getElementById('kds-stat-preparing');
@@ -143,8 +146,11 @@ const KdsApp = {
     const readyContainer = document.getElementById('kds-ready-cards');
     if (!prepContainer || !readyContainer) return;
 
-    const preparingOrders = this.orders.filter(o => ['Placed', 'Confirmed', 'Preparing'].includes(o.order_status));
-    const readyOrders = this.orders.filter(o => o.order_status === 'Ready');
+    const isPrep = o => ['Placed', 'Order Placed', 'Confirmed', 'Preparing'].includes(o.order_status);
+    const isReady = o => ['Ready', 'Ready for Pickup'].includes(o.order_status);
+
+    const preparingOrders = this.orders.filter(isPrep);
+    const readyOrders = this.orders.filter(isReady);
 
     // Render Preparing Column
     if (preparingOrders.length === 0) {

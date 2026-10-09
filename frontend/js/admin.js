@@ -185,7 +185,17 @@ const AdminApp = {
 
     let filtered = [...this.orders];
     if (this.activeOrderFilter !== 'All') {
-      filtered = filtered.filter(o => o.order_status.toLowerCase() === this.activeOrderFilter.toLowerCase());
+      const targetFilter = this.activeOrderFilter.toLowerCase();
+      filtered = filtered.filter(o => {
+        const os = (o.order_status || '').toLowerCase();
+        if (targetFilter === 'order placed' || targetFilter === 'placed') {
+          return os === 'order placed' || os === 'placed';
+        }
+        if (targetFilter === 'ready for pickup' || targetFilter === 'ready') {
+          return os === 'ready for pickup' || os === 'ready';
+        }
+        return os === targetFilter;
+      });
     }
 
     if (!filtered.length) {
@@ -199,7 +209,12 @@ const AdminApp = {
     }
 
     container.innerHTML = filtered.map(order => {
-      const statusClass = order.order_status.toLowerCase();
+      const rawStatus = (order.order_status || 'Order Placed').toLowerCase();
+      let statusClass = 'placed';
+      if (rawStatus === 'confirmed') statusClass = 'confirmed';
+      else if (rawStatus === 'preparing') statusClass = 'preparing';
+      else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') statusClass = 'ready';
+      else if (rawStatus === 'completed') statusClass = 'completed';
 
       return `
         <div class="admin-order-card">
@@ -222,6 +237,9 @@ const AdminApp = {
           <div class="order-meta-info">
             <div><strong>${order.customer_name}</strong> (${order.customer_phone || 'Student'})</div>
             <div>Pickup: <strong>Counter ${order.pickup_counter}</strong> • Slot: <strong>${order.pickup_slot}</strong></div>
+            <div style="margin-top:4px;color:var(--primary);font-weight:600;font-size:11.5px;">
+              ⏱ Est. Prep: <strong>${order.estimated_prep_time || '10–12 mins'}</strong>
+            </div>
           </div>
 
           <div class="order-items-box">
@@ -234,8 +252,8 @@ const AdminApp = {
           </div>
 
           <div class="order-actions-row">
-            <span style="font-size:11.5px;color:var(--text-muted);">Action:</span>
-            <div style="display:flex;gap:6px;">
+            <span style="font-size:11.5px;color:var(--text-muted);">Status:</span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
               ${this.renderOrderActionButtons(order)}
             </div>
           </div>
@@ -245,34 +263,58 @@ const AdminApp = {
   },
 
   renderOrderActionButtons(order) {
-    switch (order.order_status) {
-      case 'Placed':
-        return `
-          <button class="stage-advance-btn btn-confirm" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Confirmed')">
-            Confirm
-          </button>
-        `;
-      case 'Confirmed':
-        return `
-          <button class="stage-advance-btn btn-preparing" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Preparing')">
-            Start Preparing
-          </button>
-        `;
-      case 'Preparing':
-        return `
-          <button class="stage-advance-btn btn-ready" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Ready')">
-            Mark Ready
-          </button>
-        `;
-      case 'Ready':
-        return `
-          <button class="stage-advance-btn btn-complete" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Completed')">
-            Complete Pickup
-          </button>
-        `;
-      default:
-        return `<span style="font-size:11px;color:var(--accent-emerald);">Order Fulfilled</span>`;
+    const rawStatus = (order.order_status || '').toLowerCase();
+    const isPlaced = rawStatus === 'placed' || rawStatus === 'order placed';
+    const isConfirmed = rawStatus === 'confirmed';
+    const isPreparing = rawStatus === 'preparing';
+    const isReady = rawStatus === 'ready' || rawStatus === 'ready for pickup';
+    const isCompleted = rawStatus === 'completed';
+
+    let advanceBtn = '';
+    if (isPlaced) {
+      advanceBtn = `
+        <button class="stage-advance-btn btn-confirm" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Confirmed')" title="Advance to Confirmed">
+          Confirm →
+        </button>
+      `;
+    } else if (isConfirmed) {
+      advanceBtn = `
+        <button class="stage-advance-btn btn-preparing" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Preparing')" title="Advance to Preparing">
+          Start Prep →
+        </button>
+      `;
+    } else if (isPreparing) {
+      advanceBtn = `
+        <button class="stage-advance-btn btn-ready" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Ready for Pickup')" title="Advance to Ready for Pickup">
+          Mark Ready →
+        </button>
+      `;
+    } else if (isReady) {
+      advanceBtn = `
+        <button class="stage-advance-btn btn-complete" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Completed')" title="Mark as Completed">
+          Complete Pickup ✓
+        </button>
+      `;
+    } else {
+      advanceBtn = `<span style="font-size:11px;font-weight:700;color:var(--accent-emerald);background:#DCFCE7;padding:3px 8px;border-radius:999px;">✓ Fulfilled</span>`;
     }
+
+    const selectDropdown = `
+      <select class="admin-status-dropdown" onchange="AdminApp.advanceOrderStatus('${order.id}', this.value)" style="padding:4px 8px;font-size:11.5px;font-weight:700;border-radius:8px;border:1px solid #CBD5E1;background:white;color:#1E293B;cursor:pointer;">
+        <option value="Order Placed" ${isPlaced ? 'selected' : ''}>1. Order Placed</option>
+        <option value="Confirmed" ${isConfirmed ? 'selected' : ''}>2. Confirmed</option>
+        <option value="Preparing" ${isPreparing ? 'selected' : ''}>3. Preparing</option>
+        <option value="Ready for Pickup" ${isReady ? 'selected' : ''}>4. Ready for Pickup</option>
+        <option value="Completed" ${isCompleted ? 'selected' : ''}>5. Completed</option>
+      </select>
+    `;
+
+    return `
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        ${selectDropdown}
+        ${advanceBtn}
+      </div>
+    `;
   },
 
   async advanceOrderStatus(orderId, newStatus) {
@@ -283,13 +325,23 @@ const AdminApp = {
         await this.loadOrders();
         await this.loadKPIsAndAnalytics();
 
-        // If the student is tracking this order, trigger refresh in mobile view
-        if (window.StudentApp && window.StudentApp.currentTrackOrderId === orderId) {
-          window.StudentApp.renderTracking(orderId);
+        // If student is tracking this order or student view is loaded, trigger immediate live tracking refresh
+        if (window.StudentApp) {
+          if (typeof window.StudentApp.renderTracking === 'function') {
+            window.StudentApp.renderTracking(orderId);
+          }
+          if (typeof window.StudentApp.renderTrackingView === 'function') {
+            window.StudentApp.renderTrackingView(orderId);
+          }
+          if (typeof window.StudentApp.loadActiveOrders === 'function') {
+            window.StudentApp.loadActiveOrders();
+          }
         }
+      } else {
+        App.showToast(res.message || 'Failed to update order status', 'error');
       }
     } catch (e) {
-      App.showToast('Failed to update order status', 'error');
+      App.showToast('Failed to update order status: ' + (e.message || ''), 'error');
     }
   },
 

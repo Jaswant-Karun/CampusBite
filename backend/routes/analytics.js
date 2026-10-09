@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
   orders.forEach(order => {
     calculatedTodayRevenue += order.total_amount;
     todayOrdersCount += 1;
-    if (['Placed', 'Confirmed', 'Preparing'].includes(order.order_status)) {
+    if (['Placed', 'Order Placed', 'Confirmed', 'Preparing'].includes(order.order_status)) {
       pendingCount += 1;
     }
   });

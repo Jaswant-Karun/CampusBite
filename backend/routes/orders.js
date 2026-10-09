@@ -3,6 +3,27 @@ const router = express.Router();
 const db = require('../data/db');
 const eventBus = require('../services/eventBus');
 
+// Helper to calculate / resolve estimated preparation time
+function calculateEstimatedPrepTime(order) {
+  if (order.estimated_prep_time && typeof order.estimated_prep_time === 'string' && order.estimated_prep_time.trim()) {
+    return order.estimated_prep_time;
+  }
+  let maxPrepMinutes = 8;
+  if (order.items && order.items.length) {
+    for (const item of order.items) {
+      const prod = db.data.products.find(p => p.id === item.product_id);
+      const prepStr = prod?.prep_time || item.prep_time || '8 mins';
+      const parsed = parseInt(prepStr);
+      if (!isNaN(parsed) && parsed > maxPrepMinutes) {
+        maxPrepMinutes = parsed;
+      }
+    }
+  }
+  const minMinutes = maxPrepMinutes;
+  const maxMinutes = maxPrepMinutes + (order.items && order.items.length > 2 ? 4 : 2);
+  return `~${minMinutes}–${maxMinutes} mins`;
+}
+
 // GET all orders (with optional filters)
 router.get('/', (req, res) => {
   let orders = [...db.data.orders];
@@ -19,6 +40,13 @@ router.get('/', (req, res) => {
   // Sort latest first
   orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
+  // Ensure every order has estimated_prep_time
+  orders.forEach(o => {
+    if (!o.estimated_prep_time) {
+      o.estimated_prep_time = calculateEstimatedPrepTime(o);
+    }
+  });
+
   res.json({
     success: true,
     count: orders.length,
@@ -31,6 +59,9 @@ router.get('/:id', (req, res) => {
   const order = db.data.orders.find(o => o.id === req.params.id);
   if (!order) {
     return res.status(404).json({ success: false, message: 'Order not found' });
+  }
+  if (!order.estimated_prep_time) {
+    order.estimated_prep_time = calculateEstimatedPrepTime(order);
   }
   res.json({ success: true, order });
 });
@@ -223,7 +254,8 @@ router.post('/', async (req, res) => {
     upi_id: req.body.upi_id || (payment_method === 'UPI' ? 'student@okaxis' : null),
     card_masked: maskedCard,
     card_brand: cardBrand,
-    order_status: 'Placed',
+    order_status: 'Order Placed',
+    estimated_prep_time: calculateEstimatedPrepTime({ items: processedItems }),
     pickup_slot: pickup_slot || '12:00 PM – 12:15 PM',
     pickup_counter: pickupCounter,
     special_instructions: special_instructions || '',
@@ -331,17 +363,45 @@ router.put('/:id/status', async (req, res) => {
     return res.status(404).json({ success: false, message: 'Order not found' });
   }
 
-  const validStatuses = ['Placed', 'Confirmed', 'Preparing', 'Ready', 'Completed', 'Cancelled'];
-  if (!validStatuses.includes(status)) {
-    return res.status(400).json({ success: false, message: `Status must be one of: ${validStatuses.join(', ')}` });
+  const statusMap = {
+    'order placed': 'Order Placed',
+    'placed': 'Order Placed',
+    'confirmed': 'Confirmed',
+    'preparing': 'Preparing',
+    'ready for pickup': 'Ready for Pickup',
+    'ready': 'Ready for Pickup',
+    'completed': 'Completed',
+    'cancelled': 'Cancelled'
+  };
+
+  const rawKey = (status || '').trim().toLowerCase();
+  const normalizedStatus = statusMap[rawKey];
+
+  if (!normalizedStatus) {
+    return res.status(400).json({ 
+      success: false, 
+      message: 'Status must be one of: Order Placed, Confirmed, Preparing, Ready for Pickup, Completed, Cancelled' 
+    });
   }
 
   const oldStatus = order.order_status;
-  order.order_status = status;
+  order.order_status = normalizedStatus;
   order.updated_at = new Date().toISOString();
 
+  // Dynamically update estimated prep time based on status progress
+  if (!order.estimated_prep_time) {
+    order.estimated_prep_time = calculateEstimatedPrepTime(order);
+  }
+  if (normalizedStatus === 'Ready for Pickup') {
+    order.estimated_prep_time = '0 mins (Ready for Pickup)';
+  } else if (normalizedStatus === 'Completed') {
+    order.estimated_prep_time = 'Fulfilled';
+  } else if (normalizedStatus === 'Preparing') {
+    order.estimated_prep_time = '~4–6 mins (In Kitchen Prep)';
+  }
+
   // If completed, decrement pending orders count
-  if (status === 'Completed' && oldStatus !== 'Completed') {
+  if (normalizedStatus === 'Completed' && oldStatus !== 'Completed') {
     db.data.analytics.pending_orders = Math.max(0, db.data.analytics.pending_orders - 1);
   }
 
@@ -351,24 +411,33 @@ router.put('/:id/status', async (req, res) => {
   try {
     const { Order: MongoOrder } = require('../data/mongo');
     if (MongoOrder) {
-      await MongoOrder.findOneAndUpdate({ id: order.id }, { order_status: status, updated_at: order.updated_at });
+      await MongoOrder.findOneAndUpdate(
+        { id: order.id }, 
+        { order_status: normalizedStatus, estimated_prep_time: order.estimated_prep_time, updated_at: order.updated_at }
+      );
     }
   } catch (err) {}
 
   // Determine user friendly icon & message for status transition
   let statusIcon = 'PLACED';
-  let statusMsg = `Order #${order.id} status is now ${status}.`;
+  let statusMsg = `Order #${order.id} status is now ${normalizedStatus}.`;
 
-  if (status === 'Preparing') {
+  if (normalizedStatus === 'Order Placed') {
+    statusIcon = 'PLACED';
+    statusMsg = `Order #${order.id} has been placed and received by canteen staff.`;
+  } else if (normalizedStatus === 'Confirmed') {
+    statusIcon = 'CONFIRMED';
+    statusMsg = `Order #${order.id} is confirmed. Kitchen has queued preparation.`;
+  } else if (normalizedStatus === 'Preparing') {
     statusIcon = 'PREPARING';
     statusMsg = `Kitchen is actively preparing Order #${order.id} at Counter ${order.pickup_counter}.`;
-  } else if (status === 'Ready') {
+  } else if (normalizedStatus === 'Ready for Pickup') {
     statusIcon = 'READY';
     statusMsg = `Order #${order.id} is READY FOR PICKUP at Counter ${order.pickup_counter}! Show your token #${order.id}.`;
-  } else if (status === 'Completed') {
+  } else if (normalizedStatus === 'Completed') {
     statusIcon = 'COMPLETED';
     statusMsg = `Order #${order.id} has been picked up. Thank you for dining with CampusBite!`;
-  } else if (status === 'Cancelled') {
+  } else if (normalizedStatus === 'Cancelled') {
     statusIcon = 'CANCELLED';
     statusMsg = `Order #${order.id} was cancelled. Refund credited to CampusPay wallet.`;
   }
@@ -379,14 +448,21 @@ router.put('/:id/status', async (req, res) => {
     target: 'all',
     userId: order.user_id,
     icon: statusIcon,
-    title: `Order #${order.id}: ${status}`,
+    title: `Order #${order.id}: ${normalizedStatus}`,
     message: statusMsg,
-    data: { orderId: order.id, status: status, counter: order.pickup_counter, order: order }
+    data: { 
+      orderId: order.id, 
+      status: normalizedStatus, 
+      order_status: normalizedStatus,
+      counter: order.pickup_counter, 
+      estimated_prep_time: order.estimated_prep_time,
+      order: order 
+    }
   });
 
   res.json({
     success: true,
-    message: `Order #${order.id} status updated to ${status}`,
+    message: `Order #${order.id} status updated to ${normalizedStatus}`,
     order: order
   });
 });
