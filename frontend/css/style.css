@@ -2262,5 +2262,208 @@ h2 { font-weight: 600; }
   color: var(--text-primary);
 }
 
+/* ==========================================================================
+   ORDER CONFIRMATION & TOKEN DESIGN SYSTEM (STEP 10)
+   Clean Fintech / SaaS Design System: Indigo, Deep Navy, Teal, White, Soft Slate
+   ========================================================================== */
+.confirmation-layout {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirmation-hero-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.confirmation-hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #10B981, #6366F1, #3B82F6);
+}
+
+.confirm-success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12);
+  border: 3px solid #10B981;
+  color: #10B981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  animation: pulseSuccess 2s infinite;
+}
+
+@keyframes pulseSuccess {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { box-shadow: 0 0 0 14px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.confirm-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 4px;
+}
+
+.confirm-subtitle {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+}
+
+/* Digital Token Stub Card */
+.token-pass-card {
+  background: #FFFFFF;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  background-image: radial-gradient(#F1F5F9 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+.token-pass-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed #CBD5E1;
+  padding-bottom: 12px;
+}
+
+.token-badge-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.token-counter-pill {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #86EFAC;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.token-number-hero-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.token-number-display {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.token-qr-preview-box {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 6px;
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.token-pass-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  border-top: 1px dashed #CBD5E1;
+  padding-top: 12px;
+  text-align: left;
+}
+
+.token-pass-item-label {
+  font-size: 11.5px;
+  color: #64748B;
+  margin-bottom: 2px;
+}
+
+.token-pass-item-val {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+/* Receipt Details Card */
+.confirm-receipt-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+
+.confirm-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  font-size: 13px;
+  color: #334155;
+}
+
+.confirm-receipt-row.total {
+  border-top: 1px solid #E2E8F0;
+  margin-top: 6px;
+  padding-top: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.confirm-loyalty-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-top: 12px;
+  color: #92400E;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
 
 
