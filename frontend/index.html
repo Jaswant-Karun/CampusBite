@@ -1880,59 +1880,228 @@
           </div>
 
           <!-- ----------------------------------------------------------------
-               SCREEN 12: PROFILE & REWARDS CRM
+               SCREEN 12: STUDENT PROFILE & LOYALTY PASS (STEP 15)
                ---------------------------------------------------------------- -->
           <div id="screen-profile" class="mob-screen">
-            <div class="home-top-bar">
-              <div class="user-greeting">
-                <h3>Campus Profile</h3>
-                <p>Rewards, Coupons & History</p>
-              </div>
-            </div>
-
-            <div class="profile-card">
-              <div class="avatar-monogram lg" style="margin:0 auto 10px;">JK</div>
-              <div class="profile-info">
-                <h3 id="profile-user-name">Jaswant Karun</h3>
-                <p id="profile-user-id">CB-2024-2028 • Computer Science & Business Systems</p>
-                <p id="profile-user-phone" style="font-size:12px;color:#64748B;margin-top:2px;">87541 59344</p>
-                <div style="display:inline-block;font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:999px;margin-top:4px;">
-                  Gold Tier Diner
+            <div class="home-top-bar" style="margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <button type="button" class="back-btn" onclick="StudentApp.navigateTo('home')" style="border:none;background:none;font-size:18px;cursor:pointer;color:#0F172A;" title="Back to Home">←</button>
+                <div class="user-greeting">
+                  <h3 style="font-size:20px;font-weight:800;color:var(--text-primary);margin:0;">Student Profile & Campus Loyalty</h3>
+                  <p style="font-size:12.5px;color:var(--text-secondary);margin:2px 0 0;">Manage personal details, membership tier pass, and loyalty points ledger</p>
                 </div>
               </div>
             </div>
 
-            <!-- Rewards Balance Card -->
-            <div class="rewards-balance-card">
-              <div class="rewards-top">
-                <span style="font-size:12px;color:#94A3B8;">CAMPUSBITE REWARDS</span>
-                <span style="font-size:11px;color:#FBBF24;">100 pts = ₹10 off</span>
+            <div class="profile-section-container">
+              <!-- 1. Profile Hero Section -->
+              <div class="profile-hero-card">
+                <div class="profile-hero-left">
+                  <div class="profile-avatar-wrapper" onclick="StudentApp.openEditProfileModal()" title="Click to change profile picture" style="cursor:pointer;">
+                    <img id="profile-avatar-img" class="profile-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Student Profile Avatar" style="display:block;">
+                    <div id="profile-avatar-display" class="profile-avatar-initials" style="display:none;">JK</div>
+                    <button type="button" class="profile-avatar-edit-btn" title="Change Avatar Photo">📷</button>
+                  </div>
+                  <div class="profile-hero-meta">
+                    <h2>
+                      <span id="profile-user-name">Jaswant Karun</span>
+                      <span class="verified-student-badge">✓ Verified Student</span>
+                    </h2>
+                    <p class="profile-hero-sub" id="profile-user-id">CB-2024-2028 • Computer Science & Business Systems</p>
+                    <div class="profile-hero-contacts">
+                      <span class="profile-contact-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span id="profile-user-email">jaswant@campus.edu</span>
+                      </span>
+                      <span class="profile-contact-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span id="profile-user-phone">87541 59344</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="profile-hero-actions">
+                  <button type="button" class="profile-edit-trigger-btn" onclick="StudentApp.openEditProfileModal()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Profile
+                  </button>
+                  <button type="button" class="profile-switch-btn" onclick="StudentApp.openProfileSwitcherModal()">
+                    Switch Account ▾
+                  </button>
+                </div>
               </div>
-              <div class="rewards-points-count">
-                ⭐ <span id="profile-loyalty-pts">420</span> Points
-              </div>
-              <p style="font-size:11.5px;color:#CBD5E1;margin:6px 0 12px;">Earn 10 points for every ₹100 spent at canteen</p>
-              <button class="redeem-action-btn" onclick="StudentApp.navigateTo('cart')">
-                Redeem on Next Order
-              </button>
-            </div>
 
-            <!-- Quick Navigation Shortcuts -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 14px;">
-              <button class="add-mini-btn" style="padding:10px;background:white;color:#0F172A;" onclick="StudentApp.navigateTo('wallet')">
-                CampusPay Wallet
-              </button>
-              <button class="add-mini-btn" style="padding:10px;background:white;color:#0F172A;" onclick="StudentApp.navigateTo('sustainability')">
-                Sustainability ESG
-              </button>
-            </div>
+              <!-- 2. Clean Luxury Loyalty Card -->
+              <div class="campus-loyalty-card">
+                <div class="loyalty-card-top">
+                  <div class="loyalty-card-brand">
+                    <div class="loyalty-card-brand-logo">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <span class="loyalty-card-brand-title">CAMPUSBITE PASS</span>
+                  </div>
+                  <span class="loyalty-card-tier-badge" id="loyalty-card-tier">★ GOLD CAMPUS DINER</span>
+                </div>
 
-            <!-- Past Orders / Reorder Section -->
-            <div style="padding:0 18px 20px;">
-              <div class="section-title" style="margin-bottom:10px;">Order History (1-Click Reorder)</div>
-              <div id="profile-order-history-list">
-                <!-- Rendered via JS -->
+                <div class="loyalty-card-center">
+                  <div>
+                    <div class="loyalty-card-chip-row">
+                      <div class="loyalty-card-chip" title="Smart Canteen Chip"></div>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,0.6);"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                    </div>
+                    <div class="loyalty-card-pts-label">Current Points Balance</div>
+                    <div class="loyalty-card-pts-value">
+                      <span id="loyalty-card-current-pts">420</span>
+                      <span class="loyalty-card-pts-unit">Points</span>
+                      <!-- Keep backward compatibility ID -->
+                      <span id="profile-loyalty-pts" style="display:none;">420</span>
+                    </div>
+                    <div class="loyalty-card-worth-pill" id="loyalty-card-worth">
+                      💰 Worth ₹42.00 in Free Canteen Meals
+                    </div>
+                  </div>
+                  <div class="loyalty-card-counter-scan">
+                    <div class="loyalty-card-barcode" title="Counter Barcode">
+                      <span style="width:2px;"></span><span style="width:1px;"></span><span style="width:3px;"></span><span style="width:1px;"></span><span style="width:2px;"></span><span style="width:3px;"></span><span style="width:1px;"></span><span style="width:2px;"></span><span style="width:3px;"></span><span style="width:1px;"></span>
+                    </div>
+                    <span style="font-size:9.5px;color:#94A3B8;letter-spacing:1px;">SCAN AT COUNTER</span>
+                  </div>
+                </div>
+
+                <div class="loyalty-card-bottom">
+                  <div class="loyalty-cardholder-details">
+                    <div class="loyalty-cardholder-name" id="loyalty-card-name">JASWANT KARUN</div>
+                    <div class="loyalty-cardholder-id" id="loyalty-card-id">CB-2024-2028 • CSBS</div>
+                  </div>
+                  <div class="loyalty-card-rule-pill">
+                    ⭐ Every ₹100 spent = 10 loyalty points
+                  </div>
+                </div>
+
+                <div class="loyalty-tier-progress-box">
+                  <div class="loyalty-tier-progress-header">
+                    <span>Tier Progression</span>
+                    <span id="loyalty-tier-next-label">Gold → Platinum (700 pts)</span>
+                  </div>
+                  <div class="loyalty-progress-track">
+                    <div class="loyalty-progress-fill" id="loyalty-tier-progress-bar" style="width: 75%;"></div>
+                  </div>
+                </div>
+
+                <div class="loyalty-action-row">
+                  <button type="button" class="loyalty-redeem-btn" onclick="StudentApp.openRedeemLoyaltyModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+                    Redeem Points (₹10 off per 100 pts)
+                  </button>
+                  <button type="button" class="loyalty-order-btn" onclick="StudentApp.navigateTo('menu')">
+                    Order from Menu →
+                  </button>
+                </div>
               </div>
+
+              <!-- 3. Three-Column Loyalty Summary Metrics Grid -->
+              <div class="loyalty-metrics-grid">
+                <div class="loyalty-metric-card current">
+                  <span class="loyalty-metric-icon">⭐</span>
+                  <div class="loyalty-metric-label">Current Points</div>
+                  <div class="loyalty-metric-value" id="loyalty-stat-current">420</div>
+                  <div class="loyalty-metric-sub">Available balance</div>
+                </div>
+                <div class="loyalty-metric-card earned">
+                  <span class="loyalty-metric-icon">📈</span>
+                  <div class="loyalty-metric-label">Points Earned</div>
+                  <div class="loyalty-metric-value" id="loyalty-stat-earned">+470</div>
+                  <div class="loyalty-metric-sub">Lifetime orders & bonus</div>
+                </div>
+                <div class="loyalty-metric-card used">
+                  <span class="loyalty-metric-icon">🎁</span>
+                  <div class="loyalty-metric-label">Points Used</div>
+                  <div class="loyalty-metric-value" id="loyalty-stat-used">-50</div>
+                  <div class="loyalty-metric-sub">Redeemed for discounts</div>
+                </div>
+              </div>
+
+              <!-- 4. Account Information Card -->
+              <div class="profile-account-card">
+                <div class="profile-account-card-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                    Account Information
+                  </h3>
+                  <button type="button" class="btn-link" onclick="StudentApp.openEditProfileModal()" style="font-size:12px;color:#4F46E5;background:none;border:none;cursor:pointer;font-weight:700;">Edit Info ✎</button>
+                </div>
+                <div class="account-details-grid">
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Full Name</span>
+                    <span class="account-detail-val" id="account-info-name">Jaswant Karun</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">College Email</span>
+                    <span class="account-detail-val" id="account-info-email">jaswant@campus.edu</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Mobile Phone</span>
+                    <span class="account-detail-val" id="account-info-phone">+91 87541 59344</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Student / Roll ID</span>
+                    <span class="account-detail-val" id="account-info-studentid">CB-2024-2028</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Academic Department</span>
+                    <span class="account-detail-val" id="account-info-dept">Computer Science & Business Systems</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Account Role</span>
+                    <span class="account-detail-val" id="account-info-role">Student (Active)</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">Membership Status</span>
+                    <span class="account-detail-val" id="account-info-status" style="color:#059669;">Active Verified Campus Diner</span>
+                  </div>
+                  <div class="account-detail-item">
+                    <span class="account-detail-label">CampusPay Wallet</span>
+                    <span class="account-detail-val" id="account-info-wallet">₹850.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5. Loyalty Activity History Ledger -->
+              <div class="loyalty-history-card">
+                <div class="loyalty-history-header">
+                  <div class="loyalty-history-title-group">
+                    <h3>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      Loyalty History & Ledger
+                    </h3>
+                    <p>Every ₹100 spent = 10 loyalty points recorded in database</p>
+                  </div>
+                  <div class="loyalty-filter-chips">
+                    <button type="button" class="loyalty-filter-chip active" onclick="StudentApp.filterLoyaltyHistory('all', this)">All</button>
+                    <button type="button" class="loyalty-filter-chip" onclick="StudentApp.filterLoyaltyHistory('earned', this)">Earned (+)</button>
+                    <button type="button" class="loyalty-filter-chip" onclick="StudentApp.filterLoyaltyHistory('redeemed', this)">Redeemed (-)</button>
+                  </div>
+                </div>
+                <div id="loyalty-history-list" class="loyalty-ledger-list">
+                  <!-- Rendered dynamically via StudentApp.renderLoyaltyHistory() -->
+                </div>
+              </div>
+
+              <!-- Quick Navigation Shortcuts -->
+              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-top:4px;">
+                <button type="button" class="add-mini-btn" style="padding:11px;background:white;color:#0F172A;border:1px solid #E2E8F0;border-radius:12px;font-weight:700;" onclick="StudentApp.navigateTo('order-history')">
+                  📋 Order History
+                </button>
+                <button type="button" class="add-mini-btn" style="padding:11px;background:white;color:#0F172A;border:1px solid #E2E8F0;border-radius:12px;font-weight:700;" onclick="StudentApp.navigateTo('wallet')">
+                  💳 CampusPay Wallet
+                </button>
+                <button type="button" class="add-mini-btn" style="padding:11px;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:12px;font-weight:700;" onclick="StudentApp.logout()">
+                  Sign Out
+                </button>
+              </div>
+
+              <!-- Past Orders / Reorder Section (Backward compatibility) -->
+              <div id="profile-order-history-list" style="display:none;"></div>
             </div>
           </div>
 
@@ -2224,6 +2393,130 @@
         <button class="btn-outline" onclick="App.closeModal('profile-switcher-modal'); StudentApp.logout();" style="font-size:12px;padding:6px 14px;color:#EF4444;border-color:rgba(239,68,68,0.4);">
           Sign Out from Device
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Profile Modal (Step 15) -->
+  <div class="modal-overlay" id="edit-profile-modal">
+    <div class="modal-window" style="max-width:520px;">
+      <button class="modal-close-btn" onclick="App.closeModal('edit-profile-modal')">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Edit Student Profile</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:16px;">
+        Update your personal details, college contact information, and avatar photo:
+      </p>
+
+      <form id="edit-profile-form" onsubmit="event.preventDefault(); StudentApp.saveProfile();">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <!-- Name -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Full Name *</label>
+            <input type="text" id="edit-profile-name" required style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;">
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">College Email *</label>
+            <input type="email" id="edit-profile-email" required style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;">
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Phone Number *</label>
+            <input type="tel" id="edit-profile-phone" required style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;">
+          </div>
+
+          <!-- Department -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Department / Course</label>
+            <input type="text" id="edit-profile-dept" style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;">
+          </div>
+
+          <!-- Student ID (Readonly) -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Student / Roll ID</label>
+            <input type="text" id="edit-profile-studentid" style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-muted);box-sizing:border-box;" readonly>
+          </div>
+
+          <!-- Profile Photo Presets -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Choose Profile Photo Preset</label>
+            <div class="avatar-preset-grid">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 1" title="Select Avatar 1">
+              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 2" title="Select Avatar 2">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 3" title="Select Avatar 3">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 4" title="Select Avatar 4">
+            </div>
+          </div>
+
+          <!-- Custom Image URL -->
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Or Custom Image URL</label>
+            <input type="url" id="edit-profile-image-url" placeholder="https://example.com/photo.jpg" style="width:100%;padding:9px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:10px;">
+          <button type="button" class="btn-outline" onclick="App.closeModal('edit-profile-modal')" style="padding:9px 16px;font-size:13px;">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:9px 20px;font-size:13px;font-weight:700;">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Redeem Loyalty Points Modal (Step 15) -->
+  <div class="modal-overlay" id="redeem-loyalty-modal">
+    <div class="modal-window" style="max-width:480px;">
+      <button class="modal-close-btn" onclick="App.closeModal('redeem-loyalty-modal')">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <span style="font-size:24px;">⭐</span>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Redeem Loyalty Points</h3>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">
+        Conversion rate: <strong>Every 100 points = ₹10 off</strong> your canteen bill or wallet credit.
+      </p>
+
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:11px;font-weight:700;color:#B45309;text-transform:uppercase;">Available Balance</span>
+          <div style="font-size:22px;font-weight:900;color:#92400E;" id="redeem-modal-avail-pts">420 Pts</div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:11px;font-weight:700;color:#B45309;text-transform:uppercase;">Max Cash Value</span>
+          <div style="font-size:20px;font-weight:900;color:#16A34A;" id="redeem-modal-max-val">₹40.00</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Select Points to Redeem</label>
+          <select id="redeem-points-select" onchange="StudentApp.onRedeemPointsChange()" style="width:100%;padding:10px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:13.5px;font-weight:700;background:var(--input-bg);color:var(--text-primary);">
+            <option value="100">100 Points → ₹10 Voucher</option>
+            <option value="200">200 Points → ₹20 Voucher</option>
+            <option value="300">300 Points → ₹30 Voucher</option>
+            <option value="400">400 Points → ₹40 Voucher</option>
+          </select>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);">Redemption Destination</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-primary);cursor:pointer;">
+            <input type="radio" name="redeem-dest" value="voucher" checked>
+            <span>Canteen Discount Voucher (Apply on upcoming orders)</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-primary);cursor:pointer;">
+            <input type="radio" name="redeem-dest" value="wallet">
+            <span>Direct Credit to CampusPay Wallet (Instant usable cash)</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn-outline" onclick="App.closeModal('redeem-loyalty-modal')" style="padding:9px 16px;font-size:13px;">Cancel</button>
+        <button type="button" class="btn-primary" onclick="StudentApp.executeLoyaltyRedemption()" style="padding:9px 20px;font-size:13px;font-weight:700;background:#F59E0B;border-color:#F59E0B;">Confirm Redemption</button>
       </div>
     </div>
   </div>
