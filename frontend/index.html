@@ -1462,6 +1462,37 @@
 
                 <!-- Right Column: Order Items Review & Final CTA -->
                 <div class="checkout-summary-column">
+                  <!-- Coupon Section in Checkout (Step 9) -->
+                  <div class="coupon-input-card" id="checkout-coupon-section">
+                    <div style="font-size:12.5px;font-weight:700;color:var(--text-primary);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+                      <span>🏷️ Have a Promo Coupon?</span>
+                      <span style="font-size:10.5px;color:var(--primary);font-weight:700;">Instant Deduction</span>
+                    </div>
+
+                    <!-- Active Coupon Status in Checkout -->
+                    <div class="applied-coupon-status-pill" id="checkout-applied-coupon-pill" style="display:none;">
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <span>✓</span>
+                        <strong id="checkout-applied-coupon-name">CAMPUS20</strong>
+                      </div>
+                      <button class="remove-coupon-btn" onclick="StudentApp.removeCoupon()">Remove ✕</button>
+                    </div>
+
+                    <div class="coupon-row">
+                      <input type="text" class="coupon-input" id="checkout-coupon-field" placeholder="E.g. CAMPUS20" value="">
+                      <button class="apply-coupon-btn" onclick="StudentApp.applyCouponCode(document.getElementById('checkout-coupon-field').value)">Apply</button>
+                    </div>
+
+                    <div class="coupon-chips-list">
+                      <span class="coupon-chip" onclick="document.getElementById('checkout-coupon-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                        <strong>CAMPUS20</strong> (20%)
+                      </span>
+                      <span class="coupon-chip" onclick="document.getElementById('checkout-coupon-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                        <strong>STUDENT10</strong> (10%)
+                      </span>
+                    </div>
+                  </div>
+
                   <div class="bill-summary-card">
                     <h4 style="font-size:15px;font-weight:800;color:var(--text-primary);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;">
                       <span>Order Review</span>
