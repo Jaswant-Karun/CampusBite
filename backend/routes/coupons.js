@@ -140,4 +140,21 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// DELETE remove coupon (Admin)
+router.delete('/:id', (req, res) => {
+  const index = db.data.coupons.findIndex(c => c.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: 'Coupon not found' });
+  }
+
+  const removed = db.data.coupons.splice(index, 1)[0];
+  db.saveData();
+
+  res.json({
+    success: true,
+    message: `Coupon ${removed.code} deleted successfully`,
+    coupon: removed
+  });
+});
+
 module.exports = router;

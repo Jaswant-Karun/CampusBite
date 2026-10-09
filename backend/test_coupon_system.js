@@ -29,7 +29,8 @@ function runTest(name, fn) {
 // ----------------------------------------------------
 // Backend Validation Tests
 // ----------------------------------------------------
-const { coupons } = require('./data/db');
+const db = require('./data/db');
+const coupons = db.data.coupons;
 const express = require('express');
 
 // Mock request simulation helper for /api/coupons/apply
