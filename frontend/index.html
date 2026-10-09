@@ -1180,14 +1180,38 @@
 
                 <!-- Right Column: Order Summary & Checkout -->
                 <div class="cart-summary-column">
-                  <!-- Coupon Box -->
-                  <div class="coupon-input-card">
-                    <div style="font-size:12.5px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-                      <span>🏷️ Have a Promo Coupon?</span>
+                  <!-- Coupon Section (Step 9) -->
+                  <div class="coupon-input-card" id="cart-coupon-section">
+                    <div style="font-size:12.5px;font-weight:700;color:var(--text-primary);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+                      <span>🏷️ Promo Coupon Code</span>
+                      <span style="font-size:10.5px;color:var(--primary);font-weight:700;">Step 9 System</span>
                     </div>
+
+                    <!-- Active Coupon Status (when applied) -->
+                    <div class="applied-coupon-status-pill" id="cart-applied-coupon-pill" style="display:none;">
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <span>✓</span>
+                        <strong id="cart-applied-coupon-name">CAMPUS20</strong>
+                      </div>
+                      <button class="remove-coupon-btn" onclick="StudentApp.removeCoupon()">Remove ✕</button>
+                    </div>
+
                     <div class="coupon-row">
                       <input type="text" class="coupon-input" id="coupon-input-field" placeholder="E.g. CAMPUS20" value="CAMPUS20">
                       <button class="apply-coupon-btn" onclick="StudentApp.applyCouponCode()">Apply</button>
+                    </div>
+
+                    <!-- Quick sample coupons for testing -->
+                    <div class="coupon-chips-list">
+                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                        <strong>CAMPUS20</strong> (20% OFF)
+                      </span>
+                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                        <strong>STUDENT10</strong> (10% OFF)
+                      </span>
+                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='BIGBITE200'; StudentApp.applyCouponCode('BIGBITE200');">
+                        <strong>BIGBITE200</strong> (₹50 OFF)
+                      </span>
                     </div>
                   </div>
 
