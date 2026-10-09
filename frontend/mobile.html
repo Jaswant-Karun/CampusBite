@@ -668,17 +668,17 @@
               </div>
 
               <div style="display:flex;gap:8px;">
-                <input type="text" id="coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
-                <button onclick="StudentApp.applyCouponCode()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
+                <input type="text" id="mob-cart-coupon-field" name="coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
+                <button id="mob-cart-apply-coupon-btn" onclick="StudentApp.applyCouponCode(document.getElementById('mob-cart-coupon-field').value)" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
                   Apply
                 </button>
               </div>
 
               <div class="coupon-chips-list" style="margin-top:8px;">
-                <span class="coupon-chip" onclick="document.getElementById('coupon-input').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                <span class="coupon-chip" onclick="if(document.getElementById('mob-cart-coupon-field')) document.getElementById('mob-cart-coupon-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
                   CAMPUS20 (20%)
                 </span>
-                <span class="coupon-chip" onclick="document.getElementById('coupon-input').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                <span class="coupon-chip" onclick="if(document.getElementById('mob-cart-coupon-field')) document.getElementById('mob-cart-coupon-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
                   STUDENT10 (10%)
                 </span>
               </div>
@@ -757,19 +757,19 @@
           </div>
 
           <!-- Coupon Section in Mobile Checkout (Step 9) -->
-          <div style="background:white;border-radius:18px;padding:14px 16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+          <div style="background:white;border-radius:18px;padding:14px 16px;border:1px solid #E2E8F0;margin-bottom:14px;" id="mob-checkout-coupon-section">
             <strong style="font-size:12.5px;display:block;margin-bottom:8px;">🏷️ Apply Promo Coupon</strong>
             <div style="display:flex;gap:8px;">
-              <input type="text" id="mob-checkout-coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
-              <button onclick="StudentApp.applyCouponCode(document.getElementById('mob-checkout-coupon-input').value)" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
+              <input type="text" id="mob-checkout-coupon-field" name="mob-checkout-coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
+              <button id="mob-checkout-apply-coupon-btn" onclick="StudentApp.applyCouponCode(document.getElementById('mob-checkout-coupon-field').value)" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
                 Apply
               </button>
             </div>
             <div class="coupon-chips-list" style="margin-top:8px;">
-              <span class="coupon-chip" onclick="document.getElementById('mob-checkout-coupon-input').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+              <span class="coupon-chip" onclick="if(document.getElementById('mob-checkout-coupon-field')) document.getElementById('mob-checkout-coupon-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
                 CAMPUS20 (20%)
               </span>
-              <span class="coupon-chip" onclick="document.getElementById('mob-checkout-coupon-input').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+              <span class="coupon-chip" onclick="if(document.getElementById('mob-checkout-coupon-field')) document.getElementById('mob-checkout-coupon-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
                 STUDENT10 (10%)
               </span>
             </div>

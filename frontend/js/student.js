@@ -1844,16 +1844,18 @@ const StudentApp = {
   async applyCouponCode(code) {
     const heroInput = document.getElementById('hero-combo-coupon-input');
     const desktopInput = document.getElementById('desktop-sidebar-coupon-input');
-    const cartInput = document.getElementById('coupon-input-field');
+    const cartInput = document.getElementById('cart-coupon-field') || document.getElementById('coupon-input-field');
     const checkoutInput = document.getElementById('checkout-coupon-field');
-    const mobileInput = document.getElementById('coupon-input');
+    const mobileInput = document.getElementById('mob-cart-coupon-field') || document.getElementById('coupon-input');
+    const mobCheckoutInput = document.getElementById('mob-checkout-coupon-field') || document.getElementById('mob-checkout-coupon-input');
 
     const couponCode = (code || 
       (heroInput ? heroInput.value : '') || 
       (desktopInput ? desktopInput.value : '') || 
       (checkoutInput ? checkoutInput.value : '') ||
       (cartInput ? cartInput.value : '') || 
-      (mobileInput ? mobileInput.value : '')).trim().toUpperCase();
+      (mobileInput ? mobileInput.value : '') ||
+      (mobCheckoutInput ? mobCheckoutInput.value : '')).trim().toUpperCase();
 
     if (!couponCode) {
       App.showToast('Please type a coupon code', 'warning');
@@ -1872,6 +1874,7 @@ const StudentApp = {
     if (cartInput) cartInput.value = couponCode;
     if (checkoutInput) checkoutInput.value = couponCode;
     if (mobileInput) mobileInput.value = couponCode;
+    if (mobCheckoutInput) mobCheckoutInput.value = couponCode;
 
     const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const currentApplied = this.appliedCoupon ? this.appliedCoupon.code : null;
@@ -1933,7 +1936,13 @@ const StudentApp = {
     }
 
     // Reset input fields
-    const inputs = ['coupon-input-field', 'checkout-coupon-field', 'coupon-input', 'hero-combo-coupon-input'];
+    const inputs = [
+      'cart-coupon-field', 'coupon-input-field',
+      'checkout-coupon-field',
+      'mob-cart-coupon-field', 'coupon-input',
+      'mob-checkout-coupon-field', 'mob-checkout-coupon-input',
+      'hero-combo-coupon-input', 'desktop-sidebar-coupon-input'
+    ];
     inputs.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
@@ -1951,9 +1960,21 @@ const StudentApp = {
       if (isApplied) {
         cartPill.style.display = 'flex';
         const label = document.getElementById('cart-applied-coupon-name');
-        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_value}% OFF)`;
+        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_type === 'percentage' ? this.appliedCoupon.discount_value + '% OFF' : '₹' + this.appliedCoupon.discount_value + ' OFF'})`;
       } else {
         cartPill.style.display = 'none';
+      }
+    }
+
+    // Update Mobile Cart pill
+    const mobCartPill = document.getElementById('mob-cart-applied-coupon-pill');
+    if (mobCartPill) {
+      if (isApplied) {
+        mobCartPill.style.display = 'flex';
+        const label = document.getElementById('mob-cart-applied-coupon-name');
+        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_type === 'percentage' ? this.appliedCoupon.discount_value + '% OFF' : '₹' + this.appliedCoupon.discount_value + ' OFF'})`;
+      } else {
+        mobCartPill.style.display = 'none';
       }
     }
 
@@ -1963,7 +1984,7 @@ const StudentApp = {
       if (isApplied) {
         chkPill.style.display = 'flex';
         const label = document.getElementById('checkout-applied-coupon-name');
-        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_value}% OFF)`;
+        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_type === 'percentage' ? this.appliedCoupon.discount_value + '% OFF' : '₹' + this.appliedCoupon.discount_value + ' OFF'})`;
       } else {
         chkPill.style.display = 'none';
       }
@@ -2637,3 +2658,13 @@ const StudentApp = {
 };
 
 window.StudentApp = StudentApp;
+
+// Global helper functions for Step 9 Coupon System
+function applyCouponCode(code) { return StudentApp.applyCouponCode(code); }
+function removeCoupon() { return StudentApp.removeCoupon(); }
+function updateAppliedCouponUI() { return StudentApp.updateAppliedCouponUI(); }
+function calculateCartBill() { return StudentApp.calculateCartBill(); }
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { StudentApp, applyCouponCode, removeCoupon, updateAppliedCouponUI, calculateCartBill };
+}
