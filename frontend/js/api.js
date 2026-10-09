@@ -129,7 +129,7 @@ const api = {
 
   // Coupons
   getCoupons: () => api.get('/coupons'),
-  applyCoupon: (code, subtotal) => api.post('/coupons/apply', { code, subtotal }),
+  applyCoupon: (code, subtotal, already_applied_code) => api.post('/coupons/apply', { code, subtotal, already_applied_code }),
   createCoupon: (data) => api.post('/coupons', data),
   toggleCoupon: (id, is_active) => api.put(`/coupons/${id}`, { is_active }),
 
