@@ -2,43 +2,92 @@
  * CampusBite Real-Time Notification Event Bus (SSE Engine)
  * Manages Server-Sent Events (SSE) connections for live updates to both
  * the Customer Website, Mobile App, and Admin Operations Hub.
+ * Fully synchronized with JSON database and MongoDB persistence.
  */
+
+const db = require('../data/db');
 
 class NotificationEventBus {
   constructor() {
     this.clients = new Set();
-    this.notifications = [
-      {
-        id: "notif-init-1",
-        title: "Welcome to CampusBite",
-        message: "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
-        type: "SYSTEM",
-        target: "all",
-        icon: "",
-        created_at: new Date(Date.now() - 3600000).toISOString(),
-        read: false
-      },
-      {
-        id: "notif-init-2",
-        title: "Flash Offer Active",
-        message: "Use code FIRSTBITE for 20% discount on your student meal tray!",
-        type: "PROMO",
-        target: "student",
-        icon: "",
-        created_at: new Date(Date.now() - 1800000).toISOString(),
-        read: false
-      },
-      {
-        id: "notif-init-3",
-        title: "Kitchen System Online",
-        message: "Live POS sync with MongoDB active. Real-time token dispatch enabled.",
-        type: "ADMIN",
-        target: "admin",
-        icon: "",
-        created_at: new Date(Date.now() - 2400000).toISOString(),
-        read: false
+    
+    // Sync initial notifications from DB store
+    if (db.data && Array.isArray(db.data.notifications) && db.data.notifications.length) {
+      this.notifications = [...db.data.notifications];
+    } else {
+      this.notifications = [
+        {
+          id: "notif-seed-1",
+          title: "Order Confirmed: #CB1024",
+          message: "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
+          type: "ORDER_CONFIRMED",
+          target: "student",
+          userId: "u-101",
+          icon: "CONFIRMED",
+          read: false,
+          created_at: new Date(Date.now() - 30 * 60000).toISOString()
+        },
+        {
+          id: "notif-seed-2",
+          title: "Order Being Prepared: #CB1025",
+          message: "Kitchen is actively preparing your order #CB1025 at Counter 2.",
+          type: "ORDER_PREPARING",
+          target: "student",
+          userId: "u-101",
+          icon: "PREPARING",
+          read: false,
+          created_at: new Date(Date.now() - 15 * 60000).toISOString()
+        },
+        {
+          id: "notif-seed-3",
+          title: "Order Ready for Pickup: #CB1020",
+          message: "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
+          type: "ORDER_READY",
+          target: "student",
+          userId: "u-101",
+          icon: "READY",
+          read: false,
+          created_at: new Date(Date.now() - 45 * 60000).toISOString()
+        },
+        {
+          id: "notif-seed-4",
+          title: "Order Completed: #CB1018",
+          message: "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
+          type: "ORDER_COMPLETED",
+          target: "student",
+          userId: "u-101",
+          icon: "COMPLETED",
+          read: true,
+          created_at: new Date(Date.now() - 180 * 60000).toISOString()
+        },
+        {
+          id: "notif-seed-5",
+          title: "Coupon Available: CAMPUS20",
+          message: "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
+          type: "COUPON_AVAILABLE",
+          target: "student",
+          userId: "u-101",
+          icon: "COUPON",
+          read: false,
+          created_at: new Date(Date.now() - 360 * 60000).toISOString()
+        },
+        {
+          id: "notif-seed-6",
+          title: "Welcome to CampusBite",
+          message: "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
+          type: "SYSTEM",
+          target: "all",
+          userId: null,
+          icon: "SYSTEM",
+          read: true,
+          created_at: new Date(Date.now() - 720 * 60000).toISOString()
+        }
+      ];
+      if (db.data) {
+        db.data.notifications = [...this.notifications];
+        db.saveData();
       }
-    ];
+    }
 
     // Keep connections alive with heartbeat ping every 25s
     setInterval(() => {
@@ -106,14 +155,23 @@ class NotificationEventBus {
       userId: notification.userId || null,
       icon: notification.icon || "",
       data: notification.data || null,
-      created_at: new Date().toISOString(),
-      read: false
+      created_at: notification.created_at || new Date().toISOString(),
+      read: notification.read !== undefined ? notification.read : false
     };
 
-    // Store in history (max 50)
+    // Store in memory (max 100)
     this.notifications.unshift(record);
-    if (this.notifications.length > 50) {
+    if (this.notifications.length > 100) {
       this.notifications.pop();
+    }
+
+    // Persist to JSON db store
+    if (db.data && Array.isArray(db.data.notifications)) {
+      db.data.notifications.unshift(record);
+      if (db.data.notifications.length > 100) {
+        db.data.notifications.pop();
+      }
+      db.saveData();
     }
 
     // Sync to MongoDB if available
@@ -133,7 +191,9 @@ class NotificationEventBus {
       } else if (record.target === 'admin' && client.role === 'admin') {
         isRecipient = true;
       } else if (record.target === 'student' && client.role !== 'admin') {
-        isRecipient = true;
+        if (!record.userId || record.userId === client.userId) {
+          isRecipient = true;
+        }
       } else if (record.target === 'user' && record.userId === client.userId) {
         isRecipient = true;
       }
@@ -151,10 +211,17 @@ class NotificationEventBus {
   }
 
   getNotifications(role = 'all', userId = null) {
+    // Keep in sync with db.data.notifications
+    if (db.data && Array.isArray(db.data.notifications)) {
+      this.notifications = db.data.notifications;
+    }
+
     return this.notifications.filter(n => {
       if (n.target === 'all') return true;
       if (role === 'admin' && n.target === 'admin') return true;
-      if (role !== 'admin' && n.target === 'student') return true;
+      if (role !== 'admin' && n.target === 'student') {
+        if (!n.userId || !userId || n.userId === userId) return true;
+      }
       if (userId && n.userId === userId) return true;
       return false;
     });
@@ -167,13 +234,51 @@ class NotificationEventBus {
   markAllAsRead(role = 'all', userId = null) {
     const items = this.getNotifications(role, userId);
     items.forEach(n => { n.read = true; });
+
+    // Also update in db.data.notifications
+    if (db.data && Array.isArray(db.data.notifications)) {
+      const targetIds = new Set(items.map(item => item.id));
+      db.data.notifications.forEach(n => {
+        if (targetIds.has(n.id)) {
+          n.read = true;
+        }
+      });
+      db.saveData();
+    }
+
+    // Sync to Mongo if available
+    try {
+      const { Notification: MongoNotification } = require('../data/mongo');
+      if (MongoNotification) {
+        const ids = items.map(i => i.id);
+        MongoNotification.updateMany({ id: { $in: ids } }, { $set: { read: true } }).catch(() => {});
+      }
+    } catch (e) {}
+
     return items.length;
   }
 
   markAsRead(notificationId) {
-    const n = this.notifications.find(item => item.id === notificationId);
-    if (n) n.read = true;
-    return n;
+    let found = this.notifications.find(item => item.id === notificationId);
+    if (found) found.read = true;
+
+    if (db.data && Array.isArray(db.data.notifications)) {
+      const dbItem = db.data.notifications.find(item => item.id === notificationId);
+      if (dbItem) {
+        dbItem.read = true;
+        found = dbItem;
+      }
+      db.saveData();
+    }
+
+    try {
+      const { Notification: MongoNotification } = require('../data/mongo');
+      if (MongoNotification) {
+        MongoNotification.updateOne({ id: notificationId }, { $set: { read: true } }).catch(() => {});
+      }
+    } catch (e) {}
+
+    return found;
   }
 }
 
