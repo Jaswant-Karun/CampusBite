@@ -45,7 +45,8 @@ router.post('/', async (req, res) => {
     coupon_code, 
     payment_method, 
     pickup_slot,
-    redeem_loyalty_points
+    redeem_loyalty_points,
+    special_instructions
   } = req.body;
 
   if (!items || !items.length) {
@@ -163,6 +164,7 @@ router.post('/', async (req, res) => {
     order_status: 'Placed',
     pickup_slot: pickup_slot || 'Within 10-15 mins',
     pickup_counter: pickupCounter,
+    special_instructions: special_instructions || '',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     loyalty_points_earned: pointsEarned

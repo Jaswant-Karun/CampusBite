@@ -356,6 +356,8 @@ const StudentApp = {
 
     if (screenId === 'cart') {
       this.renderCart();
+    } else if (screenId === 'checkout') {
+      this.renderCheckout();
     } else if (screenId === 'profile') {
       this.renderProfile();
     } else if (screenId === 'tracking') {
@@ -1905,7 +1907,7 @@ const StudentApp = {
   },
 
   proceedToCheckout() {
-    // Step 8 Requirement: Do not allow checkout with an empty cart
+    // Step 8 & 9 Requirement: Do not allow checkout with an empty cart
     if (!this.cart || !this.cart.length) {
       App.showToast('Your cart is empty! Please add items before proceeding to checkout.', 'warning');
       return false;
@@ -1914,14 +1916,207 @@ const StudentApp = {
     return true;
   },
 
+  // ==========================================
+  // Step 9: Checkout Screen & Payment Methods
+  // ==========================================
+  selectPickupSlot(slot) {
+    if (!slot) return;
+    this.selectedPickupSlot = slot;
+    
+    // Update desktop slot pills
+    document.querySelectorAll('.pickup-slot-grid .slot-pill').forEach(pill => {
+      const pSlot = pill.dataset.slot || '';
+      const isMatch = pSlot === slot || 
+        pSlot.replace(/[–—]/g, '-').trim() === slot.replace(/[–—]/g, '-').trim();
+      pill.classList.toggle('active', isMatch);
+    });
+
+    // Update mobile pickup slot radios
+    document.querySelectorAll('.pickup-slot-radio').forEach(radio => {
+      const input = radio.querySelector('input');
+      const val = input ? input.value : '';
+      const isMatch = val === slot || val.replace(/[–—]/g, '-').trim() === slot.replace(/[–—]/g, '-').trim();
+      radio.classList.toggle('active', isMatch);
+      if (input) input.checked = isMatch;
+    });
+
+    // Update summary text
+    const summarySlotEl = document.getElementById('checkout-slot-summary-text');
+    if (summarySlotEl) summarySlotEl.textContent = slot;
+  },
+
+  selectPaymentMethod(method) {
+    if (!method) return;
+    this.selectedPaymentMethod = method;
+
+    // Update desktop payment options
+    document.querySelectorAll('.payment-options-list .payment-method-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.method === method);
+    });
+
+    // Update mobile payment options
+    document.querySelectorAll('#screen-checkout .payment-method-card').forEach(card => {
+      const input = card.querySelector('input');
+      const val = input ? input.value : card.dataset.method;
+      const isMatch = val === method;
+      card.classList.toggle('active', isMatch);
+      if (input) input.checked = isMatch;
+    });
+
+    // Update summary text
+    const summaryModeEl = document.getElementById('checkout-mode-summary-text');
+    if (summaryModeEl) {
+      const labels = {
+        'UPI': 'Simulated UPI',
+        'Wallet': 'CampusPay Wallet',
+        'Cash': 'Pay Cash at Counter',
+        'Card': 'Smart RFID / Card'
+      };
+      summaryModeEl.textContent = labels[method] || method;
+    }
+  },
+
+  renderCheckout() {
+    // Empty cart protection
+    if (!this.cart || !this.cart.length) {
+      App.showToast('Your cart is empty! Please select items first.', 'warning');
+      this.navigateTo('menu');
+      return;
+    }
+
+    const { subtotal, discount, couponDiscount, loyaltyDiscount, facultyDiscount, total } = this.calculateCartBill();
+
+    // Render Order Review items list (Desktop)
+    const reviewContainer = document.getElementById('checkout-review-items-list');
+    if (reviewContainer) {
+      reviewContainer.innerHTML = this.cart.map(item => `
+        <div class="checkout-review-item-row">
+          <div>
+            <div class="checkout-review-item-title">${item.name}</div>
+            <div class="checkout-review-item-meta">₹${item.price} × ${item.quantity}</div>
+          </div>
+          <div class="checkout-review-item-price">₹${item.price * item.quantity}</div>
+        </div>
+      `).join('');
+    }
+
+    // Render Order Review items list (Mobile)
+    const mobReviewContainer = document.getElementById('mob-checkout-review-items');
+    if (mobReviewContainer) {
+      mobReviewContainer.innerHTML = this.cart.map(item => `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#F8FAFC;padding:7px 10px;border-radius:10px;font-size:12px;">
+          <div>
+            <strong style="color:var(--text-primary);">${item.name}</strong>
+            <div style="font-size:10.5px;color:#64748B;">₹${item.price} × ${item.quantity}</div>
+          </div>
+          <strong style="color:var(--text-primary);">₹${item.price * item.quantity}</strong>
+        </div>
+      `).join('');
+    }
+
+    // Update Items Count Badges
+    const totalItemsCount = this.cart.reduce((sum, i) => sum + i.quantity, 0);
+    const countBadge = document.getElementById('checkout-items-count-badge');
+    if (countBadge) countBadge.textContent = `${totalItemsCount} ${totalItemsCount === 1 ? 'Item' : 'Items'}`;
+    const mobCountBadge = document.getElementById('mob-checkout-items-count-badge');
+    if (mobCountBadge) mobCountBadge.textContent = `${totalItemsCount} ${totalItemsCount === 1 ? 'Item' : 'Items'}`;
+
+    // Update Subtotal
+    const subtotalEl = document.getElementById('checkout-subtotal-val');
+    if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+
+    // Update Discounts
+    const discountRow = document.getElementById('checkout-discount-row');
+    const discountVal = document.getElementById('checkout-discount-val');
+    if (discountRow && discountVal) {
+      if (discount > 0) {
+        discountRow.style.display = 'flex';
+        discountVal.textContent = `-₹${discount}`;
+      } else {
+        discountRow.style.display = 'none';
+      }
+    }
+
+    // Coupon discount row
+    const couponRow = document.getElementById('checkout-coupon-row');
+    const couponVal = document.getElementById('checkout-coupon-val');
+    const couponLabel = document.getElementById('checkout-coupon-code-label');
+    if (couponRow && couponVal) {
+      if (couponDiscount > 0 && this.appliedCoupon) {
+        couponRow.style.display = 'flex';
+        couponVal.textContent = `-₹${couponDiscount}`;
+        if (couponLabel) couponLabel.textContent = this.appliedCoupon.code;
+      } else {
+        couponRow.style.display = 'none';
+      }
+    }
+
+    // Loyalty discount row
+    const loyaltyRow = document.getElementById('checkout-loyalty-row');
+    const loyaltyVal = document.getElementById('checkout-loyalty-val');
+    if (loyaltyRow && loyaltyVal) {
+      if (loyaltyDiscount > 0) {
+        loyaltyRow.style.display = 'flex';
+        loyaltyVal.textContent = `-₹${loyaltyDiscount}`;
+      } else {
+        loyaltyRow.style.display = 'none';
+      }
+    }
+
+    // Faculty discount row
+    const facultyRow = document.getElementById('checkout-faculty-row');
+    const facultyVal = document.getElementById('checkout-faculty-val');
+    if (facultyRow && facultyVal) {
+      if (facultyDiscount > 0) {
+        facultyRow.style.display = 'flex';
+        facultyVal.textContent = `-₹${facultyDiscount}`;
+      } else {
+        facultyRow.style.display = 'none';
+      }
+    }
+
+    // Total Payable
+    const totalEl = document.getElementById('checkout-total-val');
+    if (totalEl) totalEl.textContent = `₹${total}`;
+    const mobTotalEl = document.getElementById('mob-checkout-total-val');
+    if (mobTotalEl) mobTotalEl.textContent = `₹${total}`;
+    const btnAmt = document.getElementById('checkout-btn-amount');
+    if (btnAmt) btnAmt.textContent = `₹${total}`;
+
+    // Customer Identity & Wallet Info
+    if (this.currentUser) {
+      const nameEl = document.getElementById('checkout-customer-name');
+      if (nameEl) nameEl.textContent = this.currentUser.name;
+      const deptEl = document.getElementById('checkout-customer-dept');
+      if (deptEl) deptEl.textContent = this.currentUser.department || 'CSBS';
+      const walletHint = document.getElementById('checkout-wallet-balance-hint');
+      if (walletHint) walletHint.textContent = `Balance: ₹${this.currentUser.wallet_balance || 0}`;
+    }
+
+    // Sync active slot and payment UI
+    this.selectPickupSlot(this.selectedPickupSlot);
+    this.selectPaymentMethod(this.selectedPaymentMethod);
+  },
+
+  // Alias for mobile & callers
+  async placeOrder() {
+    return await this.executePaymentAndPlaceOrder();
+  },
+
   async executePaymentAndPlaceOrder() {
-    const { subtotal, couponDiscount, loyaltyDiscount, total } = this.calculateCartBill();
+    if (!this.cart || !this.cart.length) {
+      App.showToast('Your cart is empty! Please add items before placing order.', 'warning');
+      this.navigateTo('menu');
+      return;
+    }
+
+    const { total } = this.calculateCartBill();
 
     if (this.selectedPaymentMethod === 'UPI') {
       this.showUpiSimulationModal(total);
     } else if (this.selectedPaymentMethod === 'Wallet') {
       if (this.currentUser.wallet_balance < total) {
-        App.showToast(`Insufficient CampusPay balance (₹${this.currentUser.wallet_balance}). Please top-up.`, 'warning');
+        App.showToast(`Insufficient CampusPay balance (₹${this.currentUser.wallet_balance}). Required: ₹${total}. Please top-up.`, 'warning');
         this.navigateTo('wallet');
         return;
       }
@@ -1952,6 +2147,10 @@ const StudentApp = {
   },
 
   async finalizeOrderPlacement() {
+    const notesEl = document.getElementById('checkout-instructions-input') || 
+                    document.getElementById('mob-checkout-instructions-input');
+    const instructions = notesEl ? notesEl.value.trim() : '';
+
     const orderPayload = {
       user_id: this.currentUser.id,
       customer_name: this.currentUser.name,
@@ -1960,7 +2159,8 @@ const StudentApp = {
       coupon_code: this.appliedCoupon ? this.appliedCoupon.code : null,
       payment_method: this.selectedPaymentMethod,
       pickup_slot: this.selectedPickupSlot,
-      redeem_loyalty_points: this.redeemLoyalty
+      redeem_loyalty_points: this.redeemLoyalty,
+      special_instructions: instructions
     };
 
     try {
@@ -1974,6 +2174,7 @@ const StudentApp = {
         this.redeemLoyalty = false;
         this.saveCartToSession();
         this.updateCartBadge();
+        if (notesEl) notesEl.value = '';
 
         await this.refreshUserLoyalty();
         this.showOrderConfirmation(order);
@@ -1984,6 +2185,8 @@ const StudentApp = {
         }
 
         App.showToast(`Order #${order.id} placed into MongoDB! Token ready.`, 'success');
+      } else {
+        App.showToast((res && res.message) || 'Failed to place order.', 'error');
       }
     } catch (e) {
       App.showToast('Failed to place order. Please try again.', 'error');
