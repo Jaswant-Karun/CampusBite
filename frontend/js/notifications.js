@@ -147,11 +147,14 @@ class CampusNotificationManager {
     // If Student Website or Mobile App:
     if (this.role !== 'admin' && window.StudentApp) {
       if (notif.type === 'ORDER_STATUS_CHANGED' || notif.type === 'ORDER_PLACED') {
+        const orderId = notif.data?.orderId || notif.data?.order?.id;
         if (typeof window.StudentApp.loadActiveOrders === 'function') {
           window.StudentApp.loadActiveOrders();
         }
         if (typeof window.StudentApp.renderTrackingView === 'function') {
-          window.StudentApp.renderTrackingView();
+          window.StudentApp.renderTrackingView(orderId);
+        } else if (typeof window.StudentApp.renderTracking === 'function') {
+          window.StudentApp.renderTracking(orderId);
         }
       }
       if (notif.type === 'price_updated' || notif.type === 'product_updated' || notif.type === 'product_added') {

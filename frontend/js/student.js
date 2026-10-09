@@ -360,11 +360,16 @@ const StudentApp = {
     } else if (screenId === 'checkout') {
       this.renderCheckout();
     } else if (screenId === 'profile') {
+      this.stopTrackingLivePolling();
       this.renderProfile();
     } else if (screenId === 'tracking') {
+      this.startTrackingLivePolling();
       this.renderTracking(this.currentTrackOrderId);
     } else if (screenId === 'wallet') {
+      this.stopTrackingLivePolling();
       this.updateWalletUI();
+    } else {
+      this.stopTrackingLivePolling();
     }
 
     this.renderDesktopCart();
@@ -2698,6 +2703,7 @@ const StudentApp = {
       window.CampusQR.renderTo('confirm-token-qr-mob', qrData, 64);
     }
 
+    this.currentTrackOrderId = order.id;
     this.navigateTo('confirmation');
   },
 
@@ -2720,41 +2726,170 @@ const StudentApp = {
         const o = res.order;
         this.currentTrackOrderId = o.id;
 
-        document.getElementById('track-order-id-badge').textContent = `ORDER #${o.id}`;
-        document.getElementById('track-counter-num').textContent = `Counter ${o.pickup_counter}`;
-        document.getElementById('track-slot-text').textContent = o.pickup_slot;
+        // 1. Order ID Badges & Header Data
+        const badge = document.getElementById('track-order-id-badge');
+        if (badge) badge.textContent = `ORDER #${o.id}`;
 
-        const itemsText = o.items.map(i => `${i.name} × ${i.quantity}`).join(', ');
-        document.getElementById('track-items-summary').textContent = itemsText;
-        document.getElementById('track-total-paid').textContent = `₹${o.total_amount} (${o.payment_method})`;
+        const mobId = document.getElementById('track-order-id');
+        if (mobId) mobId.textContent = `#${o.id}`;
 
-        const stages = ['Placed', 'Confirmed', 'Preparing', 'Ready', 'Completed'];
-        const currentIdx = stages.indexOf(o.order_status);
+        const counterNum = document.getElementById('track-counter-num');
+        if (counterNum) counterNum.textContent = `Counter ${o.pickup_counter || 1}`;
+
+        const qrCounterHint = document.getElementById('track-qr-counter-hint');
+        if (qrCounterHint) qrCounterHint.textContent = `Counter ${o.pickup_counter || 1}`;
+
+        const slotText = document.getElementById('track-slot-text');
+        if (slotText) slotText.textContent = o.pickup_slot || '12:30 PM - 12:40 PM';
+
+        const itemsSummary = document.getElementById('track-items-summary');
+        if (itemsSummary && o.items) {
+          itemsSummary.textContent = o.items.map(i => `${i.name} × ${i.quantity}`).join(', ');
+        }
+
+        const totalPaid = document.getElementById('track-total-paid');
+        if (totalPaid) {
+          totalPaid.textContent = `₹${o.total_amount} (${o.payment_method || 'UPI'})`;
+        }
+
+        // 2. Canonical Status Mapping (Step 13: 5 Required Stages)
+        // 1. Order Placed
+        // 2. Confirmed
+        // 3. Preparing
+        // 4. Ready for Pickup
+        // 5. Completed
+        const rawStatus = String(o.order_status || '').trim().toLowerCase();
+        let currentIdx = 0;
+        if (rawStatus === 'placed' || rawStatus === 'order placed') {
+          currentIdx = 0;
+        } else if (rawStatus === 'confirmed') {
+          currentIdx = 1;
+        } else if (rawStatus === 'preparing' || rawStatus === 'cooking') {
+          currentIdx = 2;
+        } else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') {
+          currentIdx = 3;
+        } else if (rawStatus === 'completed' || rawStatus === 'fulfilled') {
+          currentIdx = 4;
+        }
+
+        // 3. Estimated Preparation Time (Step 13)
+        const prepTimeVal = document.getElementById('track-prep-time-val');
+        const prepStatusMsg = document.getElementById('track-prep-status-msg');
+
+        let displayPrepTime = o.estimated_prep_time || '~8–12 mins';
+        let displayStatusMsg = 'Kitchen is actively preparing your meal';
+
+        if (currentIdx === 0) {
+          displayPrepTime = o.estimated_prep_time || '~10–12 mins';
+          displayStatusMsg = 'Order logged in canteen database & awaiting chef acceptance';
+        } else if (currentIdx === 1) {
+          displayPrepTime = '~8–10 mins';
+          displayStatusMsg = `Canteen confirmed • Queued for cooking at Counter ${o.pickup_counter || 1}`;
+        } else if (currentIdx === 2) {
+          displayPrepTime = '~4–6 mins (In Kitchen Prep)';
+          displayStatusMsg = 'Chef is actively cooking fresh batch on the hot line';
+        } else if (currentIdx === 3) {
+          displayPrepTime = '0 mins (Ready for Pickup Now!)';
+          displayStatusMsg = `Trays packed at Counter ${o.pickup_counter || 1} • Show token #${o.id}`;
+        } else if (currentIdx === 4) {
+          displayPrepTime = 'Order Completed';
+          displayStatusMsg = 'Order picked up & fulfilled • Thank you for dining with CampusBite!';
+        }
+
+        if (prepTimeVal) prepTimeVal.textContent = displayPrepTime;
+        if (prepStatusMsg) prepStatusMsg.textContent = displayStatusMsg;
+
+        // 4. Visual Progress Tracker (Step 13)
+        // Example:
+        // Order Placed ✓
+        // Confirmed ✓
+        // Preparing ✓
+        // Ready for Pickup ○
+        // Completed ○
+        const stages = [
+          { key: 'placed', title: 'Order Placed', desc: 'Received & logged in database' },
+          { key: 'confirmed', title: 'Confirmed', desc: 'Canteen accepted order & scheduled prep' },
+          { key: 'preparing', title: 'Preparing', desc: 'Chef actively cooking in kitchen' },
+          { key: 'ready', title: 'Ready for Pickup', desc: `Ready at Counter ${o.pickup_counter || 1} • Collect with your token` },
+          { key: 'completed', title: 'Completed', desc: 'Order picked up & rewards credited' }
+        ];
 
         stages.forEach((stage, idx) => {
-          const stepElem = document.getElementById(`track-step-${stage.toLowerCase()}`);
-          if (stepElem) {
-            stepElem.classList.remove('completed', 'current');
-            if (idx < currentIdx) {
-              stepElem.classList.add('completed');
-            } else if (idx === currentIdx) {
-              stepElem.classList.add('current');
-            }
+          const stepEl = document.getElementById(`track-step-${stage.key}`);
+          const circleEl = document.getElementById(`track-circle-${stage.key}`);
+          const symbolEl = document.getElementById(`track-symbol-${stage.key}`);
+          const descEl = document.getElementById(`track-desc-${stage.key}`);
+
+          const isDone = idx < currentIdx;
+          const isCurrent = idx === currentIdx;
+          const isReached = idx <= currentIdx;
+
+          if (stepEl) {
+            stepEl.classList.remove('completed', 'current', 'pending');
+            if (isDone) stepEl.classList.add('completed');
+            else if (isCurrent) stepEl.classList.add('current');
+            else stepEl.classList.add('pending');
+          }
+
+          // Use database status rather than hardcoded progress:
+          // Reached steps show ✓, Pending steps show ○
+          const mark = isReached ? '✓' : '○';
+
+          if (circleEl) {
+            circleEl.textContent = mark;
+          }
+          if (symbolEl) {
+            symbolEl.textContent = mark;
+          }
+          if (descEl && stage.desc) {
+            descEl.textContent = stage.desc;
           }
         });
 
+        // 5. Ready Alert Banner
         const readyAlert = document.getElementById('order-ready-banner-alert');
         if (readyAlert) {
-          readyAlert.style.display = o.order_status === 'Ready' ? 'block' : 'none';
+          const isReady = currentIdx === 3;
+          readyAlert.style.display = isReady ? 'block' : 'none';
+          if (isReady) {
+            readyAlert.textContent = `ORDER READY FOR PICKUP AT COUNTER ${o.pickup_counter || 1}! SHOW TOKEN #${o.id}`;
+          }
         }
 
-        // Render Contactless Pickup QR Code
+        // 6. Contactless QR Code Token
         if (window.CampusQR) {
-          window.CampusQR.renderTo('tracking-qr-container', `CAMPUSBITE:${o.id}:${o.customer_name}:${o.total_amount}`, 150);
+          window.CampusQR.renderTo(
+            'tracking-qr-container',
+            `CAMPUSBITE:${o.id}:${o.customer_name}:${o.total_amount}:COUNTER${o.pickup_counter || 1}`,
+            150
+          );
         }
       }
     } catch (e) {
       console.warn("Could not load tracking order", e);
+    }
+  },
+
+  renderTrackingView(orderId) {
+    return this.renderTracking(orderId || this.currentTrackOrderId);
+  },
+
+  startTrackingLivePolling() {
+    this.stopTrackingLivePolling();
+    this.trackingPollTimer = setInterval(() => {
+      const screen = document.getElementById('screen-tracking');
+      if (screen && screen.classList.contains('active')) {
+        this.renderTracking(this.currentTrackOrderId);
+      } else {
+        this.stopTrackingLivePolling();
+      }
+    }, 3000);
+  },
+
+  stopTrackingLivePolling() {
+    if (this.trackingPollTimer) {
+      clearInterval(this.trackingPollTimer);
+      this.trackingPollTimer = null;
     }
   },
 

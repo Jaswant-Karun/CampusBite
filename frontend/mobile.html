@@ -1014,69 +1014,115 @@
       <div id="screen-tracking" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">Live Order Tracking </div>
+          <div class="screen-title">Live Order Tracking</div>
           <div style="width:24px;"></div>
         </div>
 
         <div style="padding:16px;">
+          <div id="order-ready-banner-alert" style="display:none;margin-bottom:12px;background:#DCFCE7;border:1px solid #86EFAC;color:#166534;padding:12px;border-radius:12px;font-size:12.5px;font-weight:700;text-align:center;">
+            ORDER READY FOR PICKUP AT COUNTER
+          </div>
+
           <!-- Order Header Card -->
-          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:16px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-              <div>
-                <span style="font-size:11px;color:#64748B;font-weight:600;">ACTIVE ORDER</span>
-                <div style="font-size:17px;font-weight:800;color:#0F172A;" id="track-order-id">#CB1024</div>
-              </div>
-              <span class="crowd-status-badge status-low">
-                <span class="status-dot"></span> In Kitchen Prep
-              </span>
+          <div class="tracking-header-card" style="margin:0 0 14px;text-align:center;">
+            <span class="order-badge-pill" id="track-order-id-badge">ORDER #CB1024</span>
+            <div style="font-size:12px;color:#64748B;" id="track-items-summary">Classic Burger × 2, Lemon Juice × 1</div>
+            <div class="pickup-counter-badge" id="track-counter-num">Counter 2</div>
+            <div style="font-size:11.5px;color:#64748B;margin-top:6px;">Scheduled: <strong id="track-slot-text">12:30 PM - 12:40 PM</strong></div>
+            <div style="font-size:11px;color:#64748B;margin-top:2px;" id="track-total-paid">₹180 (UPI)</div>
+          </div>
+
+          <!-- Estimated Preparation Time Banner (Step 13) -->
+          <div class="tracking-prep-card" id="track-prep-time-card" style="margin:0 0 14px;">
+            <div class="prep-card-icon">⏱</div>
+            <div class="prep-card-info">
+              <div class="prep-card-label">Estimated Preparation Time</div>
+              <div class="prep-card-value" id="track-prep-time-val">~8–12 mins</div>
+              <div class="prep-card-status" id="track-prep-status-msg">Kitchen is preparing your order</div>
             </div>
-            <div style="margin-top:12px;padding-top:10px;border-top:1px solid #F1F5F9;font-size:12px;color:#64748B;display:flex;justify-content:space-between;">
-              <span>Pickup: <strong>Express Counter 2</strong></span>
-              <span>Estimated: <strong>~4 mins</strong></span>
+            <div class="prep-sync-badge" id="track-sync-badge">
+              <span class="sync-dot live"></span> Live Sync
             </div>
           </div>
 
-          <!-- Step-by-Step Progress Pipeline -->
-          <div class="tracking-pipeline-wrap">
-            <div class="track-step done">
-              <div class="track-step-icon"></div>
-              <div class="track-step-text">
-                <strong>Order Placed</strong>
-                <span>Persisted in MongoDB & payment verified</span>
+          <!-- Digital QR Code Token Card for Contactless Pickup -->
+          <div style="background:white;border:2px dashed rgba(79,70,229,0.3);border-radius:16px;padding:16px;margin-bottom:16px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.03);">
+            <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+              Contactless Verification QR Code
+            </div>
+            <div id="tracking-qr-container" style="display:inline-block;padding:8px;background:#FFFFFF;border-radius:12px;border:1px solid var(--border-subtle);margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <!-- Dynamic SVG QR Code -->
+            </div>
+            <div style="font-size:11.5px;color:var(--text-secondary);font-weight:600;">
+              Show this code at <strong style="color:var(--text-primary);" id="track-qr-counter-hint">Counter 2</strong> for 2-second tray handover
+            </div>
+          </div>
+
+          <!-- 5-Stage Visual Progress Tracker (Step 13) -->
+          <div class="tracking-stepper" id="tracking-stepper-container" style="margin:16px 8px;">
+            <div class="tracking-step-item" id="track-step-placed">
+              <div class="step-circle" id="track-circle-placed">✓</div>
+              <div class="step-content">
+                <div class="step-title-row">
+                  <h4>Order Placed</h4>
+                  <span class="step-symbol" id="track-symbol-placed">✓</span>
+                </div>
+                <p id="track-desc-placed">Received & logged in database</p>
               </div>
             </div>
 
-            <div class="track-step done">
-              <div class="track-step-icon"></div>
-              <div class="track-step-text">
-                <strong>Accepted by Canteen</strong>
-                <span>Kitchen assigned prep slot</span>
+            <div class="tracking-step-item" id="track-step-confirmed">
+              <div class="step-circle" id="track-circle-confirmed">✓</div>
+              <div class="step-content">
+                <div class="step-title-row">
+                  <h4>Confirmed</h4>
+                  <span class="step-symbol" id="track-symbol-confirmed">✓</span>
+                </div>
+                <p id="track-desc-confirmed">Canteen accepted order & scheduled prep</p>
               </div>
             </div>
 
-            <div class="track-step active">
-              <div class="track-step-icon"></div>
-              <div class="track-step-text">
-                <strong>Cooking & Packaging</strong>
-                <span>Chef preparing fresh batch</span>
+            <div class="tracking-step-item" id="track-step-preparing">
+              <div class="step-circle" id="track-circle-preparing">✓</div>
+              <div class="step-content">
+                <div class="step-title-row">
+                  <h4>Preparing</h4>
+                  <span class="step-symbol" id="track-symbol-preparing">✓</span>
+                </div>
+                <p id="track-desc-preparing">Chef actively cooking in kitchen</p>
               </div>
             </div>
 
-            <div class="track-step">
-              <div class="track-step-icon"></div>
-              <div class="track-step-text">
-                <strong>Ready for Pickup</strong>
-                <span>Notification sent to phone</span>
+            <div class="tracking-step-item" id="track-step-ready">
+              <div class="step-circle" id="track-circle-ready">○</div>
+              <div class="step-content">
+                <div class="step-title-row">
+                  <h4>Ready for Pickup</h4>
+                  <span class="step-symbol" id="track-symbol-ready">○</span>
+                </div>
+                <p id="track-desc-ready">Ready at counter • Collect with your token</p>
               </div>
             </div>
 
-            <div class="track-step">
-              <div class="track-step-icon">⭐</div>
-              <div class="track-step-text">
-                <strong>Order Completed</strong>
-                <span>Enjoy meal & earn loyalty points</span>
+            <div class="tracking-step-item" id="track-step-completed">
+              <div class="step-circle" id="track-circle-completed">○</div>
+              <div class="step-content">
+                <div class="step-title-row">
+                  <h4>Completed</h4>
+                  <span class="step-symbol" id="track-symbol-completed">○</span>
+                </div>
+                <p id="track-desc-completed">Order picked up & rewards credited</p>
               </div>
             </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
+            <button type="button" class="track-refresh-btn" onclick="StudentApp.renderTracking()">
+              ⟳ Refresh Live Status
+            </button>
+            <button class="add-mini-btn" style="padding:10px;font-size:12px;background:#F1F5F9;color:#334155;border-color:#CBD5E1;" onclick="StudentApp.openReviewModal()">
+              ⭐ Give Feedback / Review
+            </button>
           </div>
         </div>
       </div>

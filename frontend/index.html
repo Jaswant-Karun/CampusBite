@@ -1752,6 +1752,9 @@
           <!-- ----------------------------------------------------------------
                SCREEN 11: LIVE ORDER TRACKING
                ---------------------------------------------------------------- -->
+          <!-- ----------------------------------------------------------------
+               SCREEN 11: LIVE ORDER TRACKING
+               ---------------------------------------------------------------- -->
           <div id="screen-tracking" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
@@ -1764,12 +1767,26 @@
               ORDER READY FOR PICKUP AT COUNTER
             </div>
 
+            <!-- Active Order Overview Card -->
             <div class="tracking-header-card">
               <span class="order-badge-pill" id="track-order-id-badge">ORDER #CB1024</span>
               <div style="font-size:12px;color:#64748B;" id="track-items-summary">Classic Burger × 2, Lemon Juice × 1</div>
               <div class="pickup-counter-badge" id="track-counter-num">Counter 2</div>
               <div style="font-size:11.5px;color:#64748B;margin-top:6px;">Scheduled: <strong id="track-slot-text">12:30 PM - 12:40 PM</strong></div>
               <div style="font-size:11px;color:#64748B;margin-top:2px;" id="track-total-paid">₹180 (UPI)</div>
+            </div>
+
+            <!-- Estimated Preparation Time Banner (Step 13) -->
+            <div class="tracking-prep-card" id="track-prep-time-card">
+              <div class="prep-card-icon">⏱</div>
+              <div class="prep-card-info">
+                <div class="prep-card-label">Estimated Preparation Time</div>
+                <div class="prep-card-value" id="track-prep-time-val">~8–12 mins</div>
+                <div class="prep-card-status" id="track-prep-status-msg">Kitchen is preparing your order</div>
+              </div>
+              <div class="prep-sync-badge" id="track-sync-badge">
+                <span class="sync-dot live"></span> Live Sync
+              </div>
             </div>
 
             <!-- Digital QR Code Token Card for Contactless Pickup -->
@@ -1781,56 +1798,77 @@
                 <!-- Dynamic SVG QR Code -->
               </div>
               <div style="font-size:11.5px;color:var(--text-secondary);font-weight:600;">
-                Show this code at <strong style="color:var(--text-primary);">Counter 2</strong> for 2-second tray handover
+                Show this code at <strong style="color:var(--text-primary);" id="track-qr-counter-hint">Counter 2</strong> for 2-second tray handover
               </div>
             </div>
 
-            <!-- 5-Stage Stepper -->
-            <div class="tracking-stepper">
+            <!-- 5-Stage Visual Progress Tracker (Step 13) -->
+            <div class="tracking-stepper" id="tracking-stepper-container">
               <div class="tracking-step-item" id="track-step-placed">
-                <div class="step-circle">✓</div>
+                <div class="step-circle" id="track-circle-placed">✓</div>
                 <div class="step-content">
-                  <h4>Order Placed</h4>
-                  <p>Received by MongoDB system</p>
+                  <div class="step-title-row">
+                    <h4>Order Placed</h4>
+                    <span class="step-symbol" id="track-symbol-placed">✓</span>
+                  </div>
+                  <p id="track-desc-placed">Received & logged in database</p>
                 </div>
               </div>
 
               <div class="tracking-step-item" id="track-step-confirmed">
-                <div class="step-circle">✓</div>
+                <div class="step-circle" id="track-circle-confirmed">✓</div>
                 <div class="step-content">
-                  <h4>Order Confirmed</h4>
-                  <p>Canteen accepted order</p>
+                  <div class="step-title-row">
+                    <h4>Confirmed</h4>
+                    <span class="step-symbol" id="track-symbol-confirmed">✓</span>
+                  </div>
+                  <p id="track-desc-confirmed">Canteen accepted order & scheduled prep</p>
                 </div>
               </div>
 
-              <div class="tracking-step-item current" id="track-step-preparing">
-                <div class="step-circle" style="font-size:12px;font-weight:800;">2</div>
+              <div class="tracking-step-item" id="track-step-preparing">
+                <div class="step-circle" id="track-circle-preparing">✓</div>
                 <div class="step-content">
-                  <h4>Preparing in Kitchen</h4>
-                  <p>Chef is cooking fresh batch</p>
+                  <div class="step-title-row">
+                    <h4>Preparing</h4>
+                    <span class="step-symbol" id="track-symbol-preparing">✓</span>
+                  </div>
+                  <p id="track-desc-preparing">Chef actively cooking in kitchen</p>
                 </div>
               </div>
 
               <div class="tracking-step-item" id="track-step-ready">
-                <div class="step-circle">●</div>
+                <div class="step-circle" id="track-circle-ready">○</div>
                 <div class="step-content">
-                  <h4>Ready for Pickup</h4>
-                  <p>Head to Counter 2 with your token</p>
+                  <div class="step-title-row">
+                    <h4>Ready for Pickup</h4>
+                    <span class="step-symbol" id="track-symbol-ready">○</span>
+                  </div>
+                  <p id="track-desc-ready">Ready at counter • Collect with your token</p>
                 </div>
               </div>
 
               <div class="tracking-step-item" id="track-step-completed">
-                <div class="step-circle" style="font-size:12px;font-weight:800;">4</div>
+                <div class="step-circle" id="track-circle-completed">○</div>
                 <div class="step-content">
-                  <h4>Completed</h4>
-                  <p>Order picked up & enjoyed!</p>
+                  <div class="step-title-row">
+                    <h4>Completed</h4>
+                    <span class="step-symbol" id="track-symbol-completed">○</span>
+                  </div>
+                  <p id="track-desc-completed">Order picked up & rewards credited</p>
                 </div>
               </div>
             </div>
 
-            <div style="padding:0 18px 20px;">
+            <div style="padding:0 18px 20px;display:flex;flex-direction:column;gap:8px;">
+              <button type="button" class="track-refresh-btn" onclick="StudentApp.renderTracking()">
+                ⟳ Refresh Live Status
+              </button>
               <button class="add-mini-btn" style="padding:10px;font-size:12px;background:#F1F5F9;color:#334155;border-color:#CBD5E1;" onclick="StudentApp.openReviewModal()">
                 ⭐ Give Feedback / Review
+              </button>
+              <button type="button" class="btn-secondary" style="padding:10px;font-size:12px;text-align:center;border-radius:12px;" onclick="StudentApp.navigateTo('home')">
+                ← Back to Home
               </button>
             </div>
           </div>
