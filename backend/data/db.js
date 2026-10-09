@@ -573,34 +573,70 @@ const INITIAL_DATA = {
   ],
   notifications: [
     {
-      id: "notif-init-1",
+      id: "notif-seed-1",
+      title: "Order Confirmed: #CB1024",
+      message: "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
+      type: "ORDER_CONFIRMED",
+      target: "student",
+      userId: "u-101",
+      icon: "CONFIRMED",
+      read: false,
+      created_at: new Date(Date.now() - 30 * 60000).toISOString()
+    },
+    {
+      id: "notif-seed-2",
+      title: "Order Being Prepared: #CB1025",
+      message: "Kitchen is actively preparing your order #CB1025 at Counter 2.",
+      type: "ORDER_PREPARING",
+      target: "student",
+      userId: "u-101",
+      icon: "PREPARING",
+      read: false,
+      created_at: new Date(Date.now() - 15 * 60000).toISOString()
+    },
+    {
+      id: "notif-seed-3",
+      title: "Order Ready for Pickup: #CB1020",
+      message: "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
+      type: "ORDER_READY",
+      target: "student",
+      userId: "u-101",
+      icon: "READY",
+      read: false,
+      created_at: new Date(Date.now() - 45 * 60000).toISOString()
+    },
+    {
+      id: "notif-seed-4",
+      title: "Order Completed: #CB1018",
+      message: "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
+      type: "ORDER_COMPLETED",
+      target: "student",
+      userId: "u-101",
+      icon: "COMPLETED",
+      read: true,
+      created_at: new Date(Date.now() - 180 * 60000).toISOString()
+    },
+    {
+      id: "notif-seed-5",
+      title: "Coupon Available: CAMPUS20",
+      message: "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
+      type: "COUPON_AVAILABLE",
+      target: "student",
+      userId: "u-101",
+      icon: "COUPON",
+      read: false,
+      created_at: new Date(Date.now() - 360 * 60000).toISOString()
+    },
+    {
+      id: "notif-seed-6",
       title: "Welcome to CampusBite",
       message: "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
       type: "SYSTEM",
       target: "all",
-      icon: "CB",
-      read: false,
-      created_at: new Date(Date.now() - 3600000).toISOString()
-    },
-    {
-      id: "notif-init-2",
-      title: "Flash Offer Active",
-      message: "Use code CAMPUS20 for 20% discount on your student meal tray!",
-      type: "PROMO",
-      target: "student",
-      icon: "OFFER",
-      read: false,
-      created_at: new Date(Date.now() - 1800000).toISOString()
-    },
-    {
-      id: "notif-init-3",
-      title: "Kitchen System Online",
-      message: "Live POS sync with MongoDB active. Real-time token dispatch enabled.",
-      type: "ADMIN",
-      target: "admin",
-      icon: "ADMIN",
-      read: false,
-      created_at: new Date(Date.now() - 2400000).toISOString()
+      userId: null,
+      icon: "SYSTEM",
+      read: true,
+      created_at: new Date(Date.now() - 720 * 60000).toISOString()
     }
   ],
   analytics: {
@@ -718,9 +754,17 @@ class Database {
           parsed.categories = INITIAL_DATA.categories;
           updated = true;
         }
-        if (!parsed.notifications) {
+        if (!parsed.notifications || !parsed.notifications.length) {
           parsed.notifications = INITIAL_DATA.notifications;
           updated = true;
+        } else {
+          INITIAL_DATA.notifications.forEach(seed => {
+            const existing = parsed.notifications.find(n => n.id === seed.id || (n.type === seed.type && n.title === seed.title));
+            if (!existing) {
+              parsed.notifications.push(seed);
+              updated = true;
+            }
+          });
         }
         if (!parsed.coupons || !parsed.coupons.length) {
           parsed.coupons = INITIAL_DATA.coupons;
