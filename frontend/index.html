@@ -2462,15 +2462,17 @@
   </div>
 
   <!-- ========================================================================
-       SPECIAL FEATURE 3: REAL DYNAMIC UPI QR PAYMENT MODAL
+       STEP 11: SIMULATED PAYMENT MODALS (UPI & CARD)
+       Academic Prototype: No real money transactions. Safe simulated flow.
        ======================================================================== -->
+  <!-- 1. SIMULATED UPI PAYMENT MODAL -->
   <div class="modal-overlay" id="upi-payment-modal">
     <div class="modal-window" style="max-width:480px;text-align:center;">
       <button class="modal-close-btn">&times;</button>
 
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Real Dynamic UPI Payment</h3>
+        <h3 style="font-size:19px;font-weight:800;color:var(--text-primary);margin:0;">Simulated UPI Payment</h3>
       </div>
       <div id="upi-modal-order-ref" style="font-size:11px;font-weight:800;color:#14B8A6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
         Order Token #CB1024
@@ -2478,6 +2480,16 @@
 
       <div style="font-size:28px;font-weight:900;color:var(--text-primary);margin-bottom:12px;" id="upi-modal-amount">
         ₹180.00
+      </div>
+
+      <!-- Student UPI ID Input (Step 11 Requirement) -->
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:left;">
+        <label style="display:block;font-size:11.5px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;">Your UPI ID / Virtual Payment Address</label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="upi-id-input" placeholder="e.g. student@okaxis or jaswant@upi" value="student@okaxis" style="flex:1;background:white;border:1.5px solid #CBD5E1;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:700;color:var(--text-primary);outline:none;">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('upi-id-input').value='jaswant@okhdfcbank'" style="padding:8px 12px;font-size:11.5px;white-space:nowrap;">Use Auto</button>
+        </div>
+        <span style="font-size:10.5px;color:#64748B;display:block;margin-top:4px;">Academic Simulation: Enter any mock VPA (e.g. name@bank)</span>
       </div>
 
       <!-- QR Frame Container -->
@@ -2490,7 +2502,7 @@
 
       <!-- UPI Merchant VPA & Copy -->
       <div style="display:inline-flex;align-items:center;gap:8px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:6px 14px;margin-bottom:12px;">
-        <span style="font-size:11.5px;color:var(--text-muted);">UPI VPA:</span>
+        <span style="font-size:11.5px;color:var(--text-muted);">Canteen VPA:</span>
         <strong style="font-size:12px;color:var(--text-primary);">campusbite@okaxis</strong>
         <button class="btn-glass" onclick="CampusUPI.copyUpiId()" style="padding:3px 8px;font-size:10.5px;margin-left:4px;">
           Copy
@@ -2510,14 +2522,103 @@
         </a>
       </div>
 
-      <div style="display:flex;gap:10px;margin-top:14px;">
-        <button class="btn-primary" onclick="CampusUPI.confirmUpiPaid()" style="flex:1;padding:12px;background:linear-gradient(135deg,#10B981,#059669);border-color:#10B981;">
-          Verify & Confirm Payment
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
+        <button class="btn-primary" id="upi-confirm-pay-btn" onclick="StudentApp.confirmUpiPayment(false)" style="width:100%;padding:13px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#10B981,#059669);border-color:#10B981;">
+          ✓ Approve Simulated Payment (PAID)
         </button>
-        <button class="btn-outline" onclick="App.closeModal('upi-payment-modal')" style="padding:12px 18px;">
-          Cancel
-        </button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-outline" id="upi-simulate-fail-btn" onclick="StudentApp.confirmUpiPayment(true)" style="flex:1;padding:10px;font-size:12px;color:#DC2626;border-color:rgba(220,38,38,0.3);">
+            ✕ Simulate Failure (FAILED)
+          </button>
+          <button class="btn-outline" onclick="App.closeModal('upi-payment-modal')" style="padding:10px 16px;font-size:12px;">
+            Cancel
+          </button>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- 2. SIMULATED CARD PAYMENT MODAL (Step 11 Requirement) -->
+  <div class="modal-overlay" id="card-payment-modal">
+    <div class="modal-window" style="max-width:480px;">
+      <button class="modal-close-btn">&times;</button>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="width:36px;height:36px;background:rgba(99,102,241,0.12);color:#4F46E5;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">
+          💳
+        </div>
+        <div>
+          <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Simulated Card Payment</h3>
+          <span style="font-size:11px;color:#64748B;">Academic Prototype • No Real Transactions</span>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#1E293B,#0F172A);color:white;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 8px 20px rgba(15,23,42,0.25);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <span style="font-size:11px;letter-spacing:1px;color:#94A3B8;text-transform:uppercase;">Campus Smart Card</span>
+          <strong style="font-size:14px;color:#F59E0B;">CAMPUSPAY DEBIT</strong>
+        </div>
+        <div style="font-size:17px;font-weight:800;letter-spacing:2px;font-family:monospace;margin-bottom:12px;" id="card-preview-number">
+          •••• •••• •••• 8821
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;">
+          <div>
+            <span style="color:#94A3B8;display:block;font-size:9.5px;">CARDHOLDER</span>
+            <strong id="card-preview-name">JASWANT KARUN</strong>
+          </div>
+          <div style="text-align:right;">
+            <span style="color:#94A3B8;display:block;font-size:9.5px;">EXPIRES</span>
+            <strong id="card-preview-expiry">12/28</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 14px;margin-bottom:14px;">
+        <span style="font-size:12px;color:#64748B;">Total Amount Payable:</span>
+        <strong style="font-size:18px;color:var(--primary);" id="card-modal-amount">₹0</strong>
+      </div>
+
+      <form id="simulated-card-form" onsubmit="event.preventDefault(); StudentApp.confirmCardPayment(false);" style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <label style="display:block;font-size:11.5px;font-weight:700;color:#475569;margin-bottom:4px;">Cardholder Name</label>
+          <input type="text" id="card-name-input" value="Jaswant Karun" placeholder="Name on card" required style="width:100%;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:600;box-sizing:border-box;">
+        </div>
+
+        <div>
+          <label style="display:block;font-size:11.5px;font-weight:700;color:#475569;margin-bottom:4px;">Card Number</label>
+          <input type="text" id="card-number-input" maxlength="19" value="4532 8920 1234 8821" placeholder="•••• •••• •••• ••••" required oninput="StudentApp.formatCardNumberInput(this)" style="width:100%;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:700;letter-spacing:1px;font-family:monospace;box-sizing:border-box;">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;color:#475569;margin-bottom:4px;">Expiry Date</label>
+            <input type="text" id="card-expiry-input" maxlength="5" value="12/28" placeholder="MM/YY" required oninput="StudentApp.formatCardExpiryInput(this)" style="width:100%;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:700;text-align:center;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;color:#475569;margin-bottom:4px;">CVV / Security Code</label>
+            <input type="password" id="card-cvv-input" maxlength="3" value="429" placeholder="•••" required style="width:100%;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:700;text-align:center;letter-spacing:2px;box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div style="font-size:11px;color:#64748B;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:6px;">
+          <span>🔒</span>
+          <span>PCI DSS Protected: Sensitive card details are masked (•••• 8821) and never stored in plaintext.</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+          <button type="submit" class="btn-primary" id="card-confirm-pay-btn" style="width:100%;padding:13px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#4F46E5,#4338CA);">
+            ✓ Authorize Card Payment (PAID)
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button type="button" class="btn-outline" id="card-simulate-fail-btn" onclick="StudentApp.confirmCardPayment(true)" style="flex:1;padding:10px;font-size:12px;color:#DC2626;border-color:rgba(220,38,38,0.3);">
+              ✕ Simulate Card Failure (FAILED)
+            </button>
+            <button type="button" class="btn-outline" onclick="App.closeModal('card-payment-modal')" style="padding:10px 16px;font-size:12px;">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 

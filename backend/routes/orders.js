@@ -389,4 +389,80 @@ router.put('/:id/status', async (req, res) => {
   });
 });
 
+// POST /api/orders/simulate-payment (Step 11 Requirement: Simulated Payment API)
+router.post('/simulate-payment', (req, res) => {
+  const { payment_method, upi_id, card_number, expiry, cvv, simulate_failure, amount } = req.body;
+
+  if (simulate_failure) {
+    return res.status(400).json({
+      success: false,
+      payment_status: 'FAILED',
+      message: 'Simulated payment was declined by the test gateway.'
+    });
+  }
+
+  if (payment_method === 'UPI') {
+    const vpa = (upi_id || '').trim();
+    if (!vpa || !vpa.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        payment_status: 'FAILED',
+        message: 'Invalid UPI ID format. Please use format like student@bank.'
+      });
+    }
+    return res.json({
+      success: true,
+      payment_status: 'PAID',
+      payment_method: 'UPI',
+      upi_id: vpa,
+      amount: Number(amount) || 0,
+      transaction_id: 'TXN-UPI-' + Date.now(),
+      message: 'Simulated UPI payment verified successfully.'
+    });
+  }
+
+  if (payment_method === 'Card') {
+    const rawDigits = String(card_number || '').replace(/\D/g, '');
+    if (rawDigits.length < 13 || rawDigits.length > 19) {
+      return res.status(400).json({
+        success: false,
+        payment_status: 'FAILED',
+        message: 'Invalid card number length. Must be 13-19 digits.'
+      });
+    }
+    const last4 = rawDigits.slice(-4);
+    const masked = `•••• •••• •••• ${last4}`;
+    const brand = rawDigits.startsWith('4') ? 'Visa' : (rawDigits.startsWith('5') ? 'Mastercard' : 'RuPay');
+
+    return res.json({
+      success: true,
+      payment_status: 'PAID',
+      payment_method: 'Card',
+      card_masked: masked,
+      card_brand: brand,
+      amount: Number(amount) || 0,
+      auth_code: 'AUTH-' + Math.floor(100000 + Math.random() * 900000),
+      message: 'Simulated card payment authorized successfully.'
+    });
+  }
+
+  if (['Cash', 'Cash on Delivery', 'Pay at Counter'].includes(payment_method)) {
+    return res.json({
+      success: true,
+      payment_status: 'PENDING',
+      payment_method: 'Cash',
+      amount: Number(amount) || 0,
+      message: 'Pay at Counter marked as PENDING payment.'
+    });
+  }
+
+  res.json({
+    success: true,
+    payment_status: 'PAID',
+    payment_method: payment_method || 'UPI',
+    amount: Number(amount) || 0,
+    message: 'Simulated payment processed successfully.'
+  });
+});
+
 module.exports = router;
