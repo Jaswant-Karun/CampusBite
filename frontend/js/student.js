@@ -2712,7 +2712,12 @@ const StudentApp = {
   },
 
   viewOrderHistory() {
-    this.navigateTo('order-history');
+    // Dedicated Order History Screen (Step 14) with profile fallback (Step 12)
+    if (document.getElementById('screen-order-history')) {
+      this.navigateTo('order-history');
+    } else {
+      this.navigateTo('profile');
+    }
   },
 
   async renderTracking(orderId) {
