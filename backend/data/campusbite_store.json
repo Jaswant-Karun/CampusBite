@@ -1595,6 +1595,14 @@
   ],
   "loyalty_transactions": [
     {
+      "id": "lt-1791539691733",
+      "user_id": "u-101",
+      "points": -100,
+      "type": "redeemed",
+      "description": "Redeemed 100 pts → ₹10 added to CampusPay Wallet",
+      "date": "2026-10-09T09:54:51.733Z"
+    },
+    {
       "id": "lt-1791539497037",
       "user_id": "u-101",
       "points": -100,

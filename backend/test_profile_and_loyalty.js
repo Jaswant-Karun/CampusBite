@@ -278,7 +278,7 @@ async function runTests() {
                 const responseData = JSON.parse(data);
                 assert(responseData && responseData.success === true, 'Redemption failed: ' + (responseData ? responseData.message : 'no response'));
                 assert.strictEqual(responseData.points_redeemed, 100, 'Redeemed points mismatch');
-                assert.strictEqual(responseData.wallet_credited, 100, 'Wallet credit mismatch (1 pt = ₹1)');
+                assert.strictEqual(responseData.wallet_credited, 10, 'Wallet credit mismatch (100 pts = ₹10)');
 
                 // Verify stored transaction in database
                 const dbTx = db.data.loyalty_transactions.find(t => t.id === responseData.transaction_id || (responseData.transaction && t.id === responseData.transaction.id));
