@@ -126,6 +126,7 @@ const api = {
   getOrder: (id) => api.get(`/orders/${id}`),
   createOrder: (data) => api.post('/orders', data),
   updateOrderStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
+  simulatePayment: (data) => api.post('/orders/simulate-payment', data),
 
   // Coupons
   getCoupons: () => api.get('/coupons'),
