@@ -2,17 +2,17 @@
   "users": [
     {
       "id": "u-101",
-      "name": "Jaswant Karun",
+      "name": "Jaswant Karun (Updated)",
       "email": "jaswant@campus.edu",
       "alternate_email": "24cb023@kpriet.ac.in",
-      "phone": "87541 59344",
+      "phone": "+91 98765 43210",
       "role": "student",
       "studentId": "CB-2024-2028",
-      "department": "Computer Science & Business Systems",
-      "loyalty_points": 593,
-      "wallet_balance": 850,
+      "department": "Computer Science & Engineering",
+      "loyalty_points": 493,
+      "wallet_balance": 860,
       "avatar": "👨🎓",
-      "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
+      "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       "account_status": "Active Verified Student",
       "joined_date": "2024-08-16"
     },
@@ -1594,6 +1594,22 @@
     }
   ],
   "loyalty_transactions": [
+    {
+      "id": "lt-1791539497037",
+      "user_id": "u-101",
+      "points": -100,
+      "type": "redeemed",
+      "description": "Redeemed 100 pts → ₹10 added to CampusPay Wallet",
+      "date": "2026-10-09T09:51:37.037Z"
+    },
+    {
+      "id": "lt-1791539399117",
+      "user_id": "u-101",
+      "points": -100,
+      "type": "redeemed",
+      "description": "Redeemed 100 pts → ₹10 added to CampusPay Wallet",
+      "date": "2026-10-09T09:49:59.117Z"
+    },
     {
       "id": "lt-1791528520827",
       "user_id": "u-101",

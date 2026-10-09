@@ -183,9 +183,11 @@ router.post('/redeem', async (req, res) => {
     success: true,
     message: `Successfully redeemed ${ptsToRedeem} points for ₹${discountAmount} voucher!`,
     current_points: user.loyalty_points,
+    points_redeemed: ptsToRedeem,
     points_earned: pointsEarned,
     points_used: pointsUsed,
     discount_voucher_value: discountAmount,
+    wallet_credited: credit_to_wallet ? discountAmount : 0,
     wallet_balance: user.wallet_balance,
     transaction: tx
   });
