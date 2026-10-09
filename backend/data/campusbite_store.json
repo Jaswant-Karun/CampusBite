@@ -9,7 +9,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Business Systems",
-      "loyalty_points": 460,
+      "loyalty_points": 467,
       "wallet_balance": 850,
       "avatar": "👨🎓"
     },
@@ -201,7 +201,7 @@
       "price": 70,
       "category": "Drinks",
       "image_emoji": "🥤",
-      "stock": 38,
+      "stock": 37,
       "is_available": true,
       "rating": 4.9,
       "prep_time": "4 mins",
@@ -594,6 +594,37 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1038",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
+      "items": [
+        {
+          "product_id": "p-6",
+          "name": "Cold Coffee with Ice Cream",
+          "price": 70,
+          "quantity": 1,
+          "image_emoji": "🥤"
+        }
+      ],
+      "subtotal": 70,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 70,
+      "payment_method": "Cash",
+      "payment_status": "PENDING",
+      "upi_id": null,
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Placed",
+      "pickup_slot": "12:30 PM – 12:45 PM",
+      "pickup_counter": 3,
+      "special_instructions": "",
+      "created_at": "2026-10-09T05:06:36.453Z",
+      "updated_at": "2026-10-09T05:06:36.453Z",
+      "loyalty_points_earned": 7
+    },
     {
       "id": "CB1037",
       "user_id": "u-101",
@@ -994,6 +1025,14 @@
   ],
   "loyalty_transactions": [
     {
+      "id": "lt-1791522396454",
+      "user_id": "u-101",
+      "points": 7,
+      "type": "earned",
+      "description": "Order #CB1038 purchase reward",
+      "date": "2026-10-09T05:06:36.453Z"
+    },
+    {
       "id": "lt-1791522386357",
       "user_id": "u-101",
       "points": 6,
@@ -1075,10 +1114,10 @@
     }
   ],
   "analytics": {
-    "today_revenue": 13052,
-    "today_orders": 193,
+    "today_revenue": 13122,
+    "today_orders": 194,
     "total_customers": 142,
-    "pending_orders": 23,
+    "pending_orders": 24,
     "avg_rating": 4.8,
     "ratings_breakdown": {
       "food_quality": 4.6,
