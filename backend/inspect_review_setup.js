@@ -1,10 +1,9 @@
 const fs = require('fs');
 
-const indexHtml = fs.readFileSync('frontend/index.html', 'utf8');
-const lines = indexHtml.split('\n');
-
-lines.forEach((l, i) => {
-  if (l.includes('id="tab-') || l.includes('class="admin-tab') || l.includes('admin-nav')) {
-    console.log(`Line ${i + 1}: ${l.trim()}`);
+const files = fs.readdirSync('frontend');
+files.forEach(f => {
+  if (f.endsWith('.html')) {
+    const txt = fs.readFileSync('frontend/' + f, 'utf8');
+    console.log(f, 'has AdminApp:', txt.includes('AdminApp'), 'has admin.js:', txt.includes('admin.js'));
   }
 });
