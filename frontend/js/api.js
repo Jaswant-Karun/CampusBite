@@ -146,6 +146,7 @@ const api = {
 
   // Analytics & BI
   getAnalytics: () => api.get('/analytics'),
+  getCustomers: () => api.get('/analytics/customers'),
 
   // AI Demand Prediction
   getDemandPrediction: () => api.get('/demand-prediction'),
