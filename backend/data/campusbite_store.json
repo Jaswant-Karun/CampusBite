@@ -9,8 +9,8 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 493,
-      "wallet_balance": 860,
+      "loyalty_points": 593,
+      "wallet_balance": 850,
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       "account_status": "Active Verified Student",
@@ -1625,14 +1625,6 @@
     }
   ],
   "loyalty_transactions": [
-    {
-      "id": "lt-1791541452322",
-      "user_id": "u-101",
-      "points": -100,
-      "type": "redeemed",
-      "description": "Redeemed 100 pts → ₹10 added to CampusPay Wallet",
-      "date": "2026-10-09T10:24:12.322Z"
-    },
     {
       "id": "lt-1791539691733",
       "user_id": "u-101",
