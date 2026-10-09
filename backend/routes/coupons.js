@@ -13,33 +13,43 @@ router.get('/', (req, res) => {
 
 // POST validate and apply coupon
 router.post('/apply', (req, res) => {
-  const { code, subtotal } = req.body;
+  const { code, subtotal, already_applied_code } = req.body;
 
-  if (!code) {
+  if (!code || !code.trim()) {
     return res.status(400).json({ success: false, message: 'Please enter a coupon code' });
   }
 
-  const coupon = db.data.coupons.find(c => c.code.toUpperCase() === code.trim().toUpperCase());
+  const cleanCode = code.trim().toUpperCase();
 
+  // Validate already applied coupon
+  if (already_applied_code && already_applied_code.trim().toUpperCase() === cleanCode) {
+    return res.status(400).json({ success: false, message: 'This coupon is already applied to your order' });
+  }
+
+  const coupon = db.data.coupons.find(c => c.code.toUpperCase() === cleanCode);
+
+  // Validate invalid coupon
   if (!coupon) {
     return res.status(404).json({ success: false, message: 'Invalid coupon code. Try CAMPUS20' });
   }
 
+  // Validate active status
   if (!coupon.is_active) {
-    return res.status(400).json({ success: false, message: 'This coupon has expired or is deactivated' });
+    return res.status(400).json({ success: false, message: 'This coupon has been deactivated' });
+  }
+
+  // Validate expiry date
+  if (coupon.expiry_date) {
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (coupon.expiry_date < todayStr) {
+      return res.status(400).json({ success: false, message: `This coupon expired on ${coupon.expiry_date}` });
+    }
   }
 
   const orderAmount = Number(subtotal) || 0;
+
+  // Validate minimum order requirement
   if (orderAmount < coupon.minimum_order) {
-    if (orderAmount === 0) {
-      return res.json({
-        success: true,
-        preapplied: true,
-        message: `Offer code ${coupon.code} activated! 20% OFF will apply automatically when your tray reaches ₹${coupon.minimum_order}.`,
-        discount: 0,
-        coupon: coupon
-      });
-    }
     return res.status(400).json({ 
       success: false, 
       coupon: coupon,
@@ -47,12 +57,22 @@ router.post('/apply', (req, res) => {
     });
   }
 
+  // Calculate discount safely (never allow invalid or negative discounts)
   let discount = 0;
   if (coupon.discount_type === 'percentage') {
-    discount = Math.min(Math.round((orderAmount * coupon.discount_value) / 100), coupon.max_discount || 100);
+    discount = Math.round((orderAmount * coupon.discount_value) / 100);
+    if (coupon.max_discount) {
+      discount = Math.min(discount, coupon.max_discount);
+    }
   } else {
-    discount = Math.min(coupon.discount_value, orderAmount);
+    discount = coupon.discount_value;
+    if (coupon.max_discount) {
+      discount = Math.min(discount, coupon.max_discount);
+    }
   }
+
+  // Ensure discount does not exceed the order amount
+  discount = Math.max(0, Math.min(discount, orderAmount));
 
   res.json({
     success: true,

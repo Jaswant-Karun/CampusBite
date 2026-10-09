@@ -361,6 +361,42 @@ const INITIAL_DATA = {
       expiry_date: "2026-12-31",
       is_active: true,
       badge: "Wheel Perk"
+    },
+    {
+      id: "c-9",
+      code: "EXPIRED50",
+      description: "50% Flash Clearance (Expired Voucher)",
+      discount_type: "percentage",
+      discount_value: 50,
+      minimum_order: 50,
+      max_discount: 100,
+      expiry_date: "2023-01-01",
+      is_active: true,
+      badge: "Expired Test"
+    },
+    {
+      id: "c-10",
+      code: "INACTIVE15",
+      description: "15% Paused Promotional Campaign",
+      discount_type: "percentage",
+      discount_value: 15,
+      minimum_order: 50,
+      max_discount: 50,
+      expiry_date: "2026-12-31",
+      is_active: false,
+      badge: "Deactivated"
+    },
+    {
+      id: "c-11",
+      code: "BIGBITE200",
+      description: "Flat ₹50 OFF on orders above ₹200",
+      discount_type: "flat",
+      discount_value: 50,
+      minimum_order: 200,
+      max_discount: 50,
+      expiry_date: "2026-12-31",
+      is_active: true,
+      badge: "Min Order Test"
     }
   ],
   orders: [
