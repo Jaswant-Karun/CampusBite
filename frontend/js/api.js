@@ -110,6 +110,7 @@ const api = {
   getMe: () => api.get('/auth/me'),
   checkAdmin: () => api.get('/auth/admin-check'),
   getProfile: (id) => api.get(`/auth/profile/${id}`),
+  updateProfile: (id, data) => api.put(`/auth/profile/${id}`, data),
 
   // Categories
   getCategories: () => api.get('/categories'),
@@ -136,7 +137,7 @@ const api = {
 
   // Loyalty
   getLoyalty: (userId) => api.get(`/loyalty/${userId}`),
-  redeemLoyalty: (userId, points) => api.post('/loyalty/redeem', { user_id: userId, points }),
+  redeemLoyalty: (userId, points, credit_to_wallet = false) => api.post('/loyalty/redeem', { user_id: userId, points, credit_to_wallet }),
 
   // Reviews
   getReviews: () => api.get('/reviews'),

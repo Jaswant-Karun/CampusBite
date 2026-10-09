@@ -21,7 +21,10 @@ const INITIAL_DATA = {
       department: "Computer Science & Business Systems",
       loyalty_points: 420,
       wallet_balance: 850,
-      avatar: "JK"
+      avatar: "JK",
+      profile_image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
+      account_status: "Active Verified Student",
+      joined_date: "2024-08-16"
     },
     {
       id: "u-102",
@@ -529,6 +532,14 @@ const INITIAL_DATA = {
   ],
   loyalty_transactions: [
     {
+      id: "lt-0",
+      user_id: "u-101",
+      points: 437,
+      type: "earned",
+      description: "Welcome Bonus & Campus Orientation Dining Credits",
+      date: new Date(Date.now() - 7 * 86400000).toISOString()
+    },
+    {
       id: "lt-1",
       user_id: "u-101",
       points: 15,
@@ -735,6 +746,35 @@ class Database {
               }
             }
           });
+        }
+        if (!parsed.loyalty_transactions || !parsed.loyalty_transactions.length) {
+          parsed.loyalty_transactions = INITIAL_DATA.loyalty_transactions;
+          updated = true;
+        } else {
+          INITIAL_DATA.loyalty_transactions.forEach(seed => {
+            const existing = parsed.loyalty_transactions.find(lt => lt.id === seed.id);
+            if (!existing) {
+              parsed.loyalty_transactions.push(seed);
+              updated = true;
+            }
+          });
+        }
+        if (parsed.users) {
+          const u101 = parsed.users.find(u => u.id === 'u-101');
+          if (u101) {
+            if (!u101.profile_image) {
+              u101.profile_image = INITIAL_DATA.users[0].profile_image;
+              updated = true;
+            }
+            if (!u101.account_status) {
+              u101.account_status = 'Active Verified Student';
+              updated = true;
+            }
+            if (!u101.joined_date) {
+              u101.joined_date = '2024-08-16';
+              updated = true;
+            }
+          }
         }
         if (updated) this.saveData(parsed);
         return parsed;

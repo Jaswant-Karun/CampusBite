@@ -98,17 +98,35 @@ router.post('/register', async (req, res) => {
     loyalty_points: 50, // Welcome bonus points!
     wallet_balance: 500,
     password: password || 'password123',
-    avatar: assignedRole === 'admin' ? 'AD' : name.substring(0, 2).toUpperCase()
+    avatar: assignedRole === 'admin' ? 'AD' : name.substring(0, 2).toUpperCase(),
+    profile_image: '',
+    account_status: 'Active Verified',
+    joined_date: new Date().toISOString()
   };
 
   db.data.users.push(newUser);
+  
+  // Record onboarding loyalty reward transaction
+  const welcomeTx = {
+    id: 'lt-' + Date.now(),
+    user_id: newUser.id,
+    points: 50,
+    type: 'earned',
+    description: 'Welcome to CampusBite Onboarding Bonus',
+    date: new Date().toISOString()
+  };
+  db.data.loyalty_transactions = db.data.loyalty_transactions || [];
+  db.data.loyalty_transactions.unshift(welcomeTx);
   db.saveData();
 
   // Sync to MongoDB if available
   try {
-    const { User: MongoUser } = require('../data/mongo');
+    const { User: MongoUser, LoyaltyTransaction: MongoLT } = require('../data/mongo');
     if (MongoUser) {
       await MongoUser.create(newUser);
+    }
+    if (MongoLT) {
+      await MongoLT.create(welcomeTx);
     }
   } catch (err) {}
 
@@ -129,6 +147,82 @@ router.get('/profile/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
   res.json({ success: true, user });
+});
+
+// PUT /api/auth/profile/:id (Update user profile)
+router.put('/profile/:id', async (req, res) => {
+  const user = db.data.users.find(u => u.id === req.params.id);
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
+  const { name, email, phone, profile_image, avatar, department, studentId } = req.body;
+
+  if (name !== undefined) {
+    if (!name.trim()) return res.status(400).json({ success: false, message: 'Name cannot be empty' });
+    user.name = name.trim();
+  }
+
+  if (email !== undefined) {
+    if (!email.trim() || !email.includes('@')) {
+      return res.status(400).json({ success: false, message: 'Valid email address is required' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+    const duplicate = db.data.users.find(u => u.id !== user.id && u.email.toLowerCase() === cleanEmail);
+    if (duplicate) {
+      return res.status(400).json({ success: false, message: 'Email is already registered to another account' });
+    }
+    user.email = cleanEmail;
+  }
+
+  if (phone !== undefined) {
+    user.phone = phone.trim();
+  }
+
+  if (profile_image !== undefined) {
+    user.profile_image = profile_image.trim();
+  }
+
+  if (avatar !== undefined) {
+    user.avatar = avatar.trim();
+  }
+
+  if (department !== undefined) {
+    user.department = department.trim();
+  }
+
+  if (studentId !== undefined) {
+    user.studentId = studentId.trim();
+  }
+
+  db.saveData();
+
+  // Sync to MongoDB if available
+  try {
+    const { User: MongoUser } = require('../data/mongo');
+    if (MongoUser) {
+      await MongoUser.updateOne(
+        { id: user.id },
+        {
+          $set: {
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            profile_image: user.profile_image,
+            avatar: user.avatar,
+            department: user.department,
+            studentId: user.studentId
+          }
+        }
+      );
+    }
+  } catch (err) {}
+
+  res.json({
+    success: true,
+    message: 'Profile updated successfully',
+    user: user
+  });
 });
 
 // GET /api/auth/me (Protected route)
