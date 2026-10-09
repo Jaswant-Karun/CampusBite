@@ -176,6 +176,38 @@ router.post('/', async (req, res) => {
     });
   }
 
+  // Step 11 Requirement: Simulated Payment & Status (PAID, PENDING, FAILED)
+  // For Pay at Counter / Cash: Mark as PENDING
+  // For UPI and Card: Mark as PAID (unless explicitly requested as FAILED)
+  let resolvedPaymentStatus = 'PAID';
+  if (['Cash', 'Cash on Delivery', 'Pay at Counter'].includes(payment_method)) {
+    resolvedPaymentStatus = 'PENDING';
+  } else if (req.body.payment_status) {
+    const rawStatus = String(req.body.payment_status).toUpperCase();
+    if (['PAID', 'PENDING', 'FAILED'].includes(rawStatus)) {
+      resolvedPaymentStatus = rawStatus;
+    }
+  }
+
+  // Reject order creation if payment status is FAILED
+  if (resolvedPaymentStatus === 'FAILED') {
+    return res.status(400).json({
+      success: false,
+      payment_status: 'FAILED',
+      message: 'Simulated payment failed. Order was not created.'
+    });
+  }
+
+  // Step 11 Requirement: Do not store sensitive card information in plaintext
+  let maskedCard = req.body.card_masked || null;
+  let cardBrand = req.body.card_brand || null;
+  if (!maskedCard && req.body.card_number) {
+    const digitsOnly = String(req.body.card_number).replace(/\D/g, '');
+    const last4 = digitsOnly.slice(-4) || '1234';
+    maskedCard = `•••• •••• •••• ${last4}`;
+    cardBrand = digitsOnly.startsWith('4') ? 'Visa' : (digitsOnly.startsWith('5') ? 'Mastercard' : 'RuPay');
+  }
+
   const newOrder = {
     id: orderNumber,
     user_id: user_id || 'u-101',
@@ -187,9 +219,12 @@ router.post('/', async (req, res) => {
     coupon_code: appliedCoupon,
     total_amount: finalAmount,
     payment_method: payment_method || 'UPI',
-    payment_status: payment_method === 'Cash' ? 'Pending (Pay at Counter)' : 'Paid (Simulated)',
+    payment_status: resolvedPaymentStatus,
+    upi_id: req.body.upi_id || (payment_method === 'UPI' ? 'student@okaxis' : null),
+    card_masked: maskedCard,
+    card_brand: cardBrand,
     order_status: 'Placed',
-    pickup_slot: pickup_slot || 'Within 10-15 mins',
+    pickup_slot: pickup_slot || '12:00 PM – 12:15 PM',
     pickup_counter: pickupCounter,
     special_instructions: special_instructions || '',
     created_at: new Date().toISOString(),
