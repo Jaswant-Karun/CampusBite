@@ -1257,76 +1257,259 @@
           </div>
 
           <!-- ----------------------------------------------------------------
-               SCREEN 9: CHECKOUT SCREEN
+               SCREEN 9: CHECKOUT SCREEN (STEP 9)
                ---------------------------------------------------------------- -->
           <div id="screen-checkout" class="mob-screen">
             <div class="home-top-bar">
               <div class="user-greeting">
-                <h3>Checkout & Pickup Slot</h3>
-                <p>Campus Main Canteen</p>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <h3>Checkout & Pickup Scheduling</h3>
+                  <span class="stock-badge in-stock" id="checkout-counter-badge">Counter 2 Express</span>
+                </div>
+                <p>Confirm pickup time slot, choose payment mode & finalize your meal order</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button class="btn-secondary" onclick="StudentApp.navigateTo('cart')" style="padding:7px 14px;font-size:12px;border-radius:999px;">
+                  ← Back to Cart
+                </button>
               </div>
             </div>
 
-            <div class="cart-page-content">
-              <!-- Pickup Slot Selector -->
-              <div style="font-size:13px;font-weight:700;color:#1E293B;">Select Pickup Time Slot:</div>
-              <div class="pickup-slot-grid">
-                <div class="slot-pill active" data-slot="12:30 PM – 12:40 PM">
-                  <div>12:30 PM – 12:40 PM</div>
-                  <span style="font-size:10px;color:#10B981;">Recommended</span>
+            <div class="cart-page-content" style="padding:0 20px 24px;">
+              <!-- Checkout Progress Stepper -->
+              <div class="checkout-progress-bar">
+                <div class="checkout-step-item completed" onclick="StudentApp.navigateTo('cart')" style="cursor:pointer;">
+                  <span class="checkout-step-num">✓</span>
+                  <span>1. Cart Tray</span>
                 </div>
-                <div class="slot-pill" data-slot="12:40 PM – 12:50 PM">
-                  <div>12:40 PM – 12:50 PM</div>
-                  <span style="font-size:10px;color:#64748B;">Standard</span>
+                <div class="checkout-step-divider"></div>
+                <div class="checkout-step-item active">
+                  <span class="checkout-step-num">2</span>
+                  <span>2. Pickup & Payment</span>
                 </div>
-                <div class="slot-pill" data-slot="01:00 PM – 01:15 PM">
-                  <div>01:00 PM – 01:15 PM</div>
-                  <span style="font-size:10px;color:#64748B;">Post-Lecture</span>
-                </div>
-                <div class="slot-pill" data-slot="Express Immediate (5-10m)">
-                  <div>Express (5-10 mins)</div>
-                  <span style="font-size:10px;color:#D97706;">Fast-track</span>
+                <div class="checkout-step-divider"></div>
+                <div class="checkout-step-item">
+                  <span class="checkout-step-num">3</span>
+                  <span>3. Token & Tracking</span>
                 </div>
               </div>
 
-              <!-- Payment Method Selection -->
-              <div style="font-size:13px;font-weight:700;color:#1E293B;margin-top:14px;">Select Payment Method:</div>
-              <div class="payment-options-list">
-                <div class="payment-method-card active" data-method="UPI">
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="status-pulse-dot"></span>
-                    <div>
-                      <strong style="font-size:13px;color:#0F172A;">Simulated UPI (GPay / PhonePe / Paytm)</strong>
-                      <div style="font-size:11px;color:#10B981;">Instant QR & Zero Queue Token</div>
+              <!-- Main Responsive Checkout Grid -->
+              <div class="checkout-layout" style="margin-top:16px;">
+                <!-- Left Column: Pickup Slot, Payment, Instructions -->
+                <div class="checkout-main-column">
+                  
+                  <!-- Section 1: Pickup Slot Selector -->
+                  <div class="checkout-section-card">
+                    <div class="checkout-section-header">
+                      <h4 class="checkout-section-title">
+                        <span>⏱️</span>
+                        <span>Select Scheduled Pickup Slot</span>
+                      </h4>
+                      <span class="checkout-section-badge">Zero Queue Guarantee</span>
+                    </div>
+                    <p style="font-size:12px;color:#64748B;margin:0 0 12px;">
+                      Your hot meal will be packaged and ready for immediate collection right as the bell rings.
+                    </p>
+                    <div class="pickup-slot-grid" id="checkout-pickup-slots-container">
+                      <div class="slot-pill active" data-slot="12:30 PM – 12:40 PM" onclick="StudentApp.selectPickupSlot('12:30 PM – 12:40 PM')">
+                        <div class="slot-pill-time">12:30 PM – 12:40 PM</div>
+                        <div class="slot-pill-desc">
+                          <span style="color:#10B981;font-weight:700;">● Recommended</span>
+                          <span>(Interval Break 1)</span>
+                        </div>
+                      </div>
+                      <div class="slot-pill" data-slot="12:40 PM – 12:50 PM" onclick="StudentApp.selectPickupSlot('12:40 PM – 12:50 PM')">
+                        <div class="slot-pill-time">12:40 PM – 12:50 PM</div>
+                        <div class="slot-pill-desc">
+                          <span style="color:#6366F1;font-weight:700;">● Standard</span>
+                          <span>(Interval Break 2)</span>
+                        </div>
+                      </div>
+                      <div class="slot-pill" data-slot="01:00 PM – 01:15 PM" onclick="StudentApp.selectPickupSlot('01:00 PM – 01:15 PM')">
+                        <div class="slot-pill-time">01:00 PM – 01:15 PM</div>
+                        <div class="slot-pill-desc">
+                          <span style="color:#D97706;font-weight:700;">● Post-Lecture</span>
+                          <span>(Lunch Break Peak)</span>
+                        </div>
+                      </div>
+                      <div class="slot-pill" data-slot="Express Immediate (5-10m)" onclick="StudentApp.selectPickupSlot('Express Immediate (5-10m)')">
+                        <div class="slot-pill-time">Express (5-10 mins)</div>
+                        <div class="slot-pill-desc">
+                          <span style="color:#DC2626;font-weight:700;">⚡ Fast-Track</span>
+                          <span>(Immediate Prep)</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <span>✓</span>
-                </div>
 
-                <div class="payment-method-card" data-method="Wallet">
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                    <div>
-                      <strong style="font-size:13px;color:#0F172A;">CampusPay Student Wallet</strong>
-                      <div style="font-size:11px;color:#6366F1;">Instant 1-tap deduction (₹850 balance)</div>
+                  <!-- Section 2: Payment Method Selector -->
+                  <div class="checkout-section-card">
+                    <div class="checkout-section-header">
+                      <h4 class="checkout-section-title">
+                        <span>💳</span>
+                        <span>Select Payment Method</span>
+                      </h4>
+                      <span class="checkout-section-badge" style="background:rgba(16,185,129,0.08);color:#10B981;">PCI Compliant</span>
+                    </div>
+
+                    <div class="payment-options-list" id="checkout-payment-methods-container">
+                      <!-- UPI Method -->
+                      <div class="payment-method-card active" data-method="UPI" onclick="StudentApp.selectPaymentMethod('UPI')">
+                        <div class="payment-method-info">
+                          <div class="payment-method-icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                          </div>
+                          <div>
+                            <div class="payment-method-title">Simulated UPI (GPay / PhonePe / Paytm)</div>
+                            <div class="payment-method-subtitle">Dynamic campus QR, instant webhook approval & token generation</div>
+                          </div>
+                        </div>
+                        <div class="payment-method-radio-indicator"></div>
+                      </div>
+
+                      <!-- Wallet Method -->
+                      <div class="payment-method-card" data-method="Wallet" onclick="StudentApp.selectPaymentMethod('Wallet')">
+                        <div class="payment-method-info">
+                          <div class="payment-method-icon-wrap" style="color:#6366F1;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                          </div>
+                          <div>
+                            <div class="payment-method-title">CampusPay Student Wallet</div>
+                            <div class="payment-method-subtitle">Instant 1-tap deduction • <span id="checkout-wallet-balance-hint" style="color:#6366F1;font-weight:700;">Balance: ₹850</span></div>
+                          </div>
+                        </div>
+                        <div class="payment-method-radio-indicator"></div>
+                      </div>
+
+                      <!-- Cash Method -->
+                      <div class="payment-method-card" data-method="Cash" onclick="StudentApp.selectPaymentMethod('Cash')">
+                        <div class="payment-method-info">
+                          <div class="payment-method-icon-wrap" style="color:#059669;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
+                          </div>
+                          <div>
+                            <div class="payment-method-title">Pay Cash at Counter</div>
+                            <div class="payment-method-subtitle">Pay exact change at Counter 2 pickup window upon arrival</div>
+                          </div>
+                        </div>
+                        <div class="payment-method-radio-indicator"></div>
+                      </div>
+
+                      <!-- Card / RFID Method -->
+                      <div class="payment-method-card" data-method="Card" onclick="StudentApp.selectPaymentMethod('Card')">
+                        <div class="payment-method-info">
+                          <div class="payment-method-icon-wrap" style="color:#D97706;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                          </div>
+                          <div>
+                            <div class="payment-method-title">Campus Smart RFID / Card</div>
+                            <div class="payment-method-subtitle">Tap institutional ID card or contactless debit card</div>
+                          </div>
+                        </div>
+                        <div class="payment-method-radio-indicator"></div>
+                      </div>
                     </div>
                   </div>
+
+                  <!-- Section 3: Dining Instructions & Student Details -->
+                  <div class="checkout-section-card">
+                    <div class="checkout-section-header">
+                      <h4 class="checkout-section-title">
+                        <span>📝</span>
+                        <span>Kitchen Notes & Special Instructions</span>
+                      </h4>
+                      <span class="checkout-section-badge">Optional</span>
+                    </div>
+                    <textarea class="checkout-notes-input" id="checkout-instructions-input" placeholder="E.g., Extra mint chutney, less spicy, pack separately for lecture room..."></textarea>
+                    
+                    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#64748B;">
+                      <div>
+                        <strong>Order for: </strong>
+                        <span id="checkout-customer-name">Jaswant Karun</span> • <span id="checkout-customer-dept">CSBS</span>
+                      </div>
+                      <div style="color:#10B981;font-weight:700;">
+                        📍 Pickup: Counter 2 Express
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
-                <div class="payment-method-card" data-method="Cash">
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
-                    <div>
-                      <strong style="font-size:13px;color:#0F172A;">Pay Cash at Counter</strong>
-                      <div style="font-size:11px;color:#64748B;">Pay when picking up order</div>
+                <!-- Right Column: Order Items Review & Final CTA -->
+                <div class="checkout-summary-column">
+                  <div class="bill-summary-card">
+                    <h4 style="font-size:15px;font-weight:800;color:var(--text-primary);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;">
+                      <span>Order Review</span>
+                      <span id="checkout-items-count-badge" style="font-size:11px;font-weight:700;color:var(--primary);background:rgba(79,70,229,0.08);padding:3px 8px;border-radius:999px;">0 Items</span>
+                    </h4>
+
+                    <!-- Dynamic list of items being ordered -->
+                    <div class="checkout-review-items-list" id="checkout-review-items-list">
+                      <!-- Rendered dynamically by StudentApp.renderCheckout() -->
+                    </div>
+
+                    <!-- Financial Summary Breakdown -->
+                    <div class="bill-row">
+                      <span>Subtotal</span>
+                      <span id="checkout-subtotal-val" style="font-weight:700;color:var(--text-primary);">₹0</span>
+                    </div>
+                    <div class="bill-row" id="checkout-discount-row" style="display:none;color:#10B981;font-weight:700;">
+                      <span>Discount</span>
+                      <span id="checkout-discount-val">-₹0</span>
+                    </div>
+                    <div class="bill-row" id="checkout-coupon-row" style="display:none;color:#10B981;font-size:12px;padding-left:10px;">
+                      <span>• Promo Coupon (<span id="checkout-coupon-code-label">CAMPUS20</span>)</span>
+                      <span id="checkout-coupon-val">-₹0</span>
+                    </div>
+                    <div class="bill-row" id="checkout-loyalty-row" style="display:none;color:#D97706;font-size:12px;padding-left:10px;">
+                      <span>• Loyalty Reward</span>
+                      <span id="checkout-loyalty-val">-₹0</span>
+                    </div>
+                    <div class="bill-row" id="checkout-faculty-row" style="display:none;color:#4F46E5;font-size:12px;padding-left:10px;">
+                      <span>• Faculty Dining Subsidy (10%)</span>
+                      <span id="checkout-faculty-val">-₹0</span>
+                    </div>
+                    <div class="bill-row">
+                      <span>Canteen Packaging & Fee</span>
+                      <span style="color:#10B981;font-weight:600;">₹0 (Campus Subsidized)</span>
+                    </div>
+                    <div class="bill-row total">
+                      <span>Total Payable</span>
+                      <span id="checkout-total-val" style="color:var(--primary);font-size:22px;font-weight:800;">₹0</span>
+                    </div>
+
+                    <!-- Pickup Slot Review Summary -->
+                    <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px 12px;margin:14px 0;font-size:12px;">
+                      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                        <span style="color:#64748B;">Pickup Window:</span>
+                        <strong id="checkout-slot-summary-text" style="color:var(--primary);">12:30 PM – 12:40 PM</strong>
+                      </div>
+                      <div style="display:flex;justify-content:space-between;">
+                        <span style="color:#64748B;">Payment Mode:</span>
+                        <strong id="checkout-mode-summary-text" style="color:#10B981;">Simulated UPI</strong>
+                      </div>
+                    </div>
+
+                    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;">
+                      <button class="checkout-btn" id="checkout-pay-btn" onclick="StudentApp.executePaymentAndPlaceOrder()" style="width:100%;padding:14px;font-size:14.5px;font-weight:800;border-radius:12px;">
+                        <span id="checkout-action-btn-text">PAY & PLACE ORDER</span> →
+                      </button>
+                      <button class="btn-secondary" onclick="StudentApp.navigateTo('cart')" style="width:100%;padding:11px;font-size:13px;border-radius:12px;font-weight:700;">
+                        ← Edit Cart Tray
+                      </button>
+                    </div>
+
+                    <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--border-subtle);display:flex;align-items:center;justify-content:space-around;font-size:11px;color:#64748B;">
+                      <span>⚡ Counter 2 Ready</span>
+                      <span>•</span>
+                      <span>🔒 100% Encrypted</span>
+                      <span>•</span>
+                      <span>⭐ 10% Loyalty Cash</span>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <button class="checkout-btn" onclick="StudentApp.executePaymentAndPlaceOrder()">
-                <span>PAY & PLACE ORDER</span> →
-              </button>
             </div>
           </div>
 
