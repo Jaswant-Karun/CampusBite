@@ -1838,15 +1838,20 @@ const StudentApp = {
     return { subtotal, couponDiscount, loyaltyDiscount, facultyDiscount, totalDiscount, total };
   },
 
+  // ==========================================
+  // Step 9: Coupon System (Validation & Immediate Recalculation)
+  // ==========================================
   async applyCouponCode(code) {
     const heroInput = document.getElementById('hero-combo-coupon-input');
     const desktopInput = document.getElementById('desktop-sidebar-coupon-input');
     const cartInput = document.getElementById('coupon-input-field');
+    const checkoutInput = document.getElementById('checkout-coupon-field');
     const mobileInput = document.getElementById('coupon-input');
 
     const couponCode = (code || 
       (heroInput ? heroInput.value : '') || 
       (desktopInput ? desktopInput.value : '') || 
+      (checkoutInput ? checkoutInput.value : '') ||
       (cartInput ? cartInput.value : '') || 
       (mobileInput ? mobileInput.value : '')).trim().toUpperCase();
 
@@ -1855,20 +1860,38 @@ const StudentApp = {
       return;
     }
 
+    // Step 9 Requirement: Validate already applied coupon
+    if (this.appliedCoupon && this.appliedCoupon.code.toUpperCase() === couponCode) {
+      App.showToast(`Coupon ${couponCode} is already applied to your order!`, 'warning');
+      return;
+    }
+
     // Keep all inputs in sync with typed code
     if (heroInput) heroInput.value = couponCode;
     if (desktopInput) desktopInput.value = couponCode;
     if (cartInput) cartInput.value = couponCode;
+    if (checkoutInput) checkoutInput.value = couponCode;
     if (mobileInput) mobileInput.value = couponCode;
 
     const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const currentApplied = this.appliedCoupon ? this.appliedCoupon.code : null;
+
     try {
-      const res = await window.api.applyCoupon(couponCode, subtotal);
+      const res = await window.api.applyCoupon(couponCode, subtotal, currentApplied);
       if (res && res.success) {
         this.appliedCoupon = res.coupon;
         this.saveCartToSession();
+
+        // Step 9 Requirement: Update the order total immediately after applying a valid coupon
         this.calculateCartBill();
         this.renderDesktopCart();
+        this.updateAppliedCouponUI();
+
+        // If on checkout, update checkout immediately
+        const checkoutScreen = document.getElementById('screen-checkout');
+        if (checkoutScreen && checkoutScreen.classList.contains('active')) {
+          this.renderCheckout();
+        }
 
         // Update hero apply button UI feedback
         const heroBtn = document.getElementById('hero-combo-apply-btn');
@@ -1883,20 +1906,67 @@ const StudentApp = {
           }, 3500);
         }
 
-        App.showToast(res.message || `Coupon ${couponCode} activated successfully!`, 'success');
+        App.showToast(res.message || `Coupon ${couponCode} applied successfully!`, 'success');
       } else {
-        if (res && res.coupon) {
-          this.appliedCoupon = res.coupon;
-          this.saveCartToSession();
-          this.calculateCartBill();
-          this.renderDesktopCart();
-          App.showToast(res.message || `Minimum order of ₹${res.coupon.minimum_order} required for ${couponCode}`, 'info');
-        } else {
-          App.showToast((res && res.message) || 'Invalid coupon code. Try CAMPUS20', 'error');
-        }
+        App.showToast((res && res.message) || `Invalid coupon code. Try CAMPUS20`, 'error');
       }
-    } catch (e) {
-      App.showToast('Invalid coupon code. Try CAMPUS20 for 20% OFF.', 'error');
+    } catch (err) {
+      const errorMsg = (err.data && err.data.message) || err.message || 'Invalid coupon code. Try CAMPUS20 for 20% OFF.';
+      App.showToast(errorMsg, 'error');
+    }
+  },
+
+  removeCoupon() {
+    if (!this.appliedCoupon) return;
+    const removedCode = this.appliedCoupon.code;
+    this.appliedCoupon = null;
+    this.saveCartToSession();
+
+    // Step 9 Requirement: Immediately update order total upon removal
+    this.calculateCartBill();
+    this.renderDesktopCart();
+    this.updateAppliedCouponUI();
+
+    const checkoutScreen = document.getElementById('screen-checkout');
+    if (checkoutScreen && checkoutScreen.classList.contains('active')) {
+      this.renderCheckout();
+    }
+
+    // Reset input fields
+    const inputs = ['coupon-input-field', 'checkout-coupon-field', 'coupon-input', 'hero-combo-coupon-input'];
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+
+    App.showToast(`Coupon ${removedCode} removed. Order total updated.`, 'info');
+  },
+
+  updateAppliedCouponUI() {
+    const isApplied = !!this.appliedCoupon;
+    
+    // Update Cart pill
+    const cartPill = document.getElementById('cart-applied-coupon-pill');
+    if (cartPill) {
+      if (isApplied) {
+        cartPill.style.display = 'flex';
+        const label = document.getElementById('cart-applied-coupon-name');
+        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_value}% OFF)`;
+      } else {
+        cartPill.style.display = 'none';
+      }
+    }
+
+    // Update Checkout pill
+    const chkPill = document.getElementById('checkout-applied-coupon-pill');
+    if (chkPill) {
+      if (isApplied) {
+        chkPill.style.display = 'flex';
+        const label = document.getElementById('checkout-applied-coupon-name');
+        if (label) label.textContent = `${this.appliedCoupon.code} (${this.appliedCoupon.discount_value}% OFF)`;
+      } else {
+        chkPill.style.display = 'none';
+      }
     }
   },
 
