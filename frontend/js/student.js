@@ -2113,9 +2113,11 @@ const StudentApp = {
     const mobCountBadge = document.getElementById('mob-checkout-items-count-badge');
     if (mobCountBadge) mobCountBadge.textContent = `${totalItemsCount} ${totalItemsCount === 1 ? 'Item' : 'Items'}`;
 
-    // Update Subtotal
+    // Update Subtotal (Desktop & Mobile)
     const subtotalEl = document.getElementById('checkout-subtotal-val');
     if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+    const mobSubtotalEl = document.getElementById('mob-checkout-subtotal-val');
+    if (mobSubtotalEl) mobSubtotalEl.textContent = `₹${subtotal}`;
 
     // Update Discounts
     const discountRow = document.getElementById('checkout-discount-row');
@@ -2129,7 +2131,7 @@ const StudentApp = {
       }
     }
 
-    // Coupon discount row
+    // Coupon discount row (Desktop & Mobile)
     const couponRow = document.getElementById('checkout-coupon-row');
     const couponVal = document.getElementById('checkout-coupon-val');
     const couponLabel = document.getElementById('checkout-coupon-code-label');
@@ -2140,6 +2142,19 @@ const StudentApp = {
         if (couponLabel) couponLabel.textContent = this.appliedCoupon.code;
       } else {
         couponRow.style.display = 'none';
+      }
+    }
+
+    const mobCouponRow = document.getElementById('mob-checkout-coupon-row');
+    const mobCouponVal = document.getElementById('mob-checkout-coupon-val');
+    const mobCouponCode = document.getElementById('mob-checkout-coupon-code');
+    if (mobCouponRow && mobCouponVal) {
+      if (couponDiscount > 0 && this.appliedCoupon) {
+        mobCouponRow.style.display = 'flex';
+        mobCouponVal.textContent = `-₹${couponDiscount}`;
+        if (mobCouponCode) mobCouponCode.textContent = this.appliedCoupon.code;
+      } else {
+        mobCouponRow.style.display = 'none';
       }
     }
 
@@ -2196,9 +2211,26 @@ const StudentApp = {
   },
 
   async executePaymentAndPlaceOrder() {
+    // Step 10 Requirement: Validate required information before continuing
     if (!this.cart || !this.cart.length) {
       App.showToast('Your cart is empty! Please add items before placing order.', 'warning');
       this.navigateTo('menu');
+      return;
+    }
+
+    if (!this.selectedPickupSlot) {
+      App.showToast('Please select a scheduled pickup time slot.', 'warning');
+      return;
+    }
+
+    if (!this.selectedPaymentMethod) {
+      App.showToast('Please select a payment method.', 'warning');
+      return;
+    }
+
+    // Step 10 Requirement: Do not create duplicate orders
+    if (this.isPlacingOrder) {
+      App.showToast('Your order is already being processed. Please wait...', 'info');
       return;
     }
 
@@ -2239,6 +2271,13 @@ const StudentApp = {
   },
 
   async finalizeOrderPlacement() {
+    // Step 10 Requirement: Do not create duplicate orders
+    if (this.isPlacingOrder) {
+      App.showToast('Order is already being placed...', 'info');
+      return;
+    }
+    this.isPlacingOrder = true;
+
     const notesEl = document.getElementById('checkout-instructions-input') || 
                     document.getElementById('mob-checkout-instructions-input');
     const instructions = notesEl ? notesEl.value.trim() : '';
@@ -2257,7 +2296,18 @@ const StudentApp = {
 
     try {
       const res = await window.api.createOrder(orderPayload);
-      if (res.success && res.order) {
+      if (res && res.is_duplicate) {
+        // Handled duplicate order gracefully
+        this.cart = [];
+        this.appliedCoupon = null;
+        this.saveCartToSession();
+        this.updateCartBadge();
+        this.showOrderConfirmation(res.order);
+        App.showToast('Order already confirmed! Showing your token CB-Express.', 'info');
+        return;
+      }
+
+      if (res && res.success && res.order) {
         const order = res.order;
         this.currentTrackOrderId = order.id;
 
@@ -2282,7 +2332,10 @@ const StudentApp = {
       }
     } catch (e) {
       App.showToast('Failed to place order. Please try again.', 'error');
+    } finally {
+      this.isPlacingOrder = false;
     }
+  },
   },
 
   // ==========================================
