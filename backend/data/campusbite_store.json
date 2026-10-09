@@ -11,7 +11,10 @@
       "department": "Computer Science & Business Systems",
       "loyalty_points": 593,
       "wallet_balance": 850,
-      "avatar": "👨🎓"
+      "avatar": "👨🎓",
+      "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
+      "account_status": "Active Verified Student",
+      "joined_date": "2024-08-16"
     },
     {
       "id": "u-102",
@@ -1822,6 +1825,14 @@
       "type": "redeemed",
       "description": "Redeemed for ₹10 off coupon on last week's order",
       "date": "2026-09-30T04:37:10.032Z"
+    },
+    {
+      "id": "lt-0",
+      "user_id": "u-101",
+      "points": 437,
+      "type": "earned",
+      "description": "Welcome Bonus & Campus Orientation Dining Credits",
+      "date": "2026-10-02T09:26:47.125Z"
     }
   ],
   "analytics": {
