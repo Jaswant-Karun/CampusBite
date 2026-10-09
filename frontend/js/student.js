@@ -2544,7 +2544,30 @@ const StudentApp = {
     const nameEl = document.getElementById('conf-customer-name');
     if (nameEl) nameEl.textContent = order.customer_name || (this.currentUser ? this.currentUser.name : 'Student');
     const paymentModeEl = document.getElementById('conf-payment-method');
-    if (paymentModeEl) paymentModeEl.textContent = `${order.payment_method || 'UPI'} (${order.payment_status || 'Paid'})`;
+    if (paymentModeEl) {
+      if (order.payment_method === 'Cash' || order.payment_status === 'PENDING') {
+        paymentModeEl.innerHTML = `<span style="color:#D97706;font-weight:700;">Pay at Counter</span> <span style="background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:800;border:1px solid #FDE68A;">PENDING</span>`;
+      } else if (order.payment_method === 'Card') {
+        const masked = order.card_masked || '•••• 8821';
+        paymentModeEl.innerHTML = `<span style="color:var(--text-primary);font-weight:700;">Card (${masked})</span> <span style="background:#DCFCE7;color:#15803D;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:800;border:1px solid #86EFAC;">PAID</span>`;
+      } else if (order.payment_method === 'UPI') {
+        const vpa = order.upi_id || 'student@okaxis';
+        paymentModeEl.innerHTML = `<span style="color:var(--text-primary);font-weight:700;">UPI (${vpa})</span> <span style="background:#DCFCE7;color:#15803D;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:800;border:1px solid #86EFAC;">PAID</span>`;
+      } else {
+        paymentModeEl.innerHTML = `<span style="color:var(--text-primary);font-weight:700;">${order.payment_method}</span> <span style="background:#DCFCE7;color:#15803D;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:800;border:1px solid #86EFAC;">PAID</span>`;
+      }
+    }
+
+    const mobPaymentStatusEl = document.getElementById('confirm-payment-status-mob');
+    if (mobPaymentStatusEl) {
+      if (order.payment_method === 'Cash' || order.payment_status === 'PENDING') {
+        mobPaymentStatusEl.innerHTML = `<span style="color:#D97706;font-weight:800;">PENDING (Pay at Counter)</span>`;
+      } else if (order.payment_method === 'Card') {
+        mobPaymentStatusEl.innerHTML = `<span style="color:#10B981;font-weight:800;">PAID (${order.card_masked || '•••• 8821'})</span>`;
+      } else {
+        mobPaymentStatusEl.innerHTML = `<span style="color:#10B981;font-weight:800;">PAID (${order.upi_id || 'UPI'})</span>`;
+      }
+    }
 
     // 5. Timestamp
     const timeEl = document.getElementById('conf-timestamp');
