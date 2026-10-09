@@ -27,7 +27,10 @@ const UserSchema = new mongoose.Schema({
   department: { type: String },
   loyalty_points: { type: Number, default: 0 },
   wallet_balance: { type: Number, default: 850 },
-  avatar: { type: String, default: 'JK' }
+  avatar: { type: String, default: 'JK' },
+  profile_image: { type: String, default: '' },
+  account_status: { type: String, default: 'Active Verified' },
+  joined_date: { type: String, default: () => new Date().toISOString() }
 }, { timestamps: true });
 
 // ==========================================
