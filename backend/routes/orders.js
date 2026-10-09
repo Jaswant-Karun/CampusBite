@@ -53,6 +53,33 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Cart items cannot be empty' });
   }
 
+  if (!pickup_slot || !pickup_slot.trim()) {
+    return res.status(400).json({ success: false, message: 'Please select a scheduled pickup slot' });
+  }
+
+  if (!payment_method || !payment_method.trim()) {
+    return res.status(400).json({ success: false, message: 'Please select a payment method' });
+  }
+
+  // Step 10 Requirement: Do not create duplicate orders
+  // Check if identical order was received within the last 5 seconds from the same user
+  const now = Date.now();
+  const recentDuplicate = db.data.orders.find(o => 
+    o.user_id === (user_id || 'u-101') &&
+    (now - new Date(o.created_at).getTime()) < 5000 &&
+    o.items && o.items.length === items.length &&
+    o.pickup_slot === pickup_slot
+  );
+
+  if (recentDuplicate) {
+    return res.status(409).json({
+      success: false,
+      is_duplicate: true,
+      message: `Duplicate order detected. Order #${recentDuplicate.id} is already placed.`,
+      order: recentDuplicate
+    });
+  }
+
   // Calculate Subtotal & Validate Stock
   let subtotal = 0;
   const processedItems = [];
