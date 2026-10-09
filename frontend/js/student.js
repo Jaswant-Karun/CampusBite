@@ -3606,31 +3606,444 @@ const StudentApp = {
     } catch (e) {}
   },
 
-  openReviewModal() {
+  /* ==========================================================================
+     STEP 16: CUSTOMER REVIEWS & FEEDBACK SYSTEM
+     ========================================================================== */
+  reviewSelectedRating: 5,
+  reviewSelectedOrderId: null,
+  reviewCompletedOrders: [],
+  reviewCachedReviews: [],
+
+  openReviewModal(targetOrderId = null) {
+    this.initAndOpenReviewModal(targetOrderId || this.currentTrackOrderId);
+  },
+
+  openReviewModalForOrder(orderId) {
+    this.initAndOpenReviewModal(orderId);
+  },
+
+  async initAndOpenReviewModal(targetOrderId = null) {
+    this.reviewSelectedOrderId = targetOrderId;
+    this.switchReviewTab('form');
+    this.setReviewRating(5);
+
+    // Fetch student orders and current review ledger
+    try {
+      const [ordersRes, reviewsRes] = await Promise.all([
+        window.api.getOrders({ user_id: this.currentUser.id }).catch(() => ({ orders: [] })),
+        window.api.getReviews().catch(() => ({ reviews: [], avg_rating: 4.8, count: 0 }))
+      ]);
+
+      const allOrders = ordersRes.orders || [];
+      this.reviewCachedReviews = reviewsRes.reviews || [];
+
+      // Filter orders that are COMPLETED / DELIVERED
+      this.reviewCompletedOrders = allOrders.filter(o => {
+        const st = (o.order_status || o.status || '').toUpperCase();
+        return st === 'COMPLETED' || st === 'DELIVERED';
+      });
+
+      // Update average rating pills on UI
+      const avgPill = `${reviewsRes.avg_rating || 4.8} ★`;
+      const pillEl = document.getElementById('review-tab-avg-pill');
+      if (pillEl) pillEl.textContent = avgPill;
+      const mobPillEl = document.getElementById('mob-review-tab-avg-pill');
+      if (mobPillEl) mobPillEl.textContent = avgPill;
+
+      // Populate Order Dropdowns (Desktop & Mobile)
+      this.populateReviewOrderDropdown(targetOrderId);
+    } catch (err) {
+      console.warn('Reviews initialization fallback:', err);
+    }
+
     App.openModal('customer-review-modal');
   },
 
+  populateReviewOrderDropdown(targetOrderId = null) {
+    const selects = [
+      document.getElementById('review-order-select'),
+      document.getElementById('mob-review-order-select')
+    ].filter(Boolean);
+
+    if (!selects.length) return;
+
+    if (this.reviewCompletedOrders.length === 0) {
+      selects.forEach(sel => {
+        sel.innerHTML = `<option value="">No completed orders found</option>`;
+        sel.disabled = true;
+      });
+      this.showReviewWarning(
+        'No Completed Orders Found',
+        'Customer reviews are only permitted after completing a canteen order. Once you place an order and collect it at the counter, return here to rate your food!'
+      );
+      this.setReviewSubmitDisabled(true);
+      return;
+    }
+
+    selects.forEach(sel => {
+      sel.disabled = false;
+      sel.innerHTML = this.reviewCompletedOrders.map(o => {
+        const d = new Date(o.created_at || Date.now());
+        const dateStr = d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        const itemsSummary = (o.items || []).map(i => i.name).join(', ') || 'Canteen Meal';
+        const alreadyReviewed = this.reviewCachedReviews.some(r => r.order_id === o.id);
+        const tag = alreadyReviewed ? ' (✓ Already Reviewed)' : '';
+        return `<option value="${o.id}">${o.id} • ${itemsSummary.substring(0, 32)}... (${dateStr})${tag}</option>`;
+      }).join('');
+    });
+
+    // Auto-select targeted order or first eligible completed order
+    let selectedId = targetOrderId;
+    if (!selectedId || !this.reviewCompletedOrders.some(o => o.id === selectedId)) {
+      // Find first unreviewed completed order
+      const firstUnreviewed = this.reviewCompletedOrders.find(o => !this.reviewCachedReviews.some(r => r.order_id === o.id));
+      selectedId = firstUnreviewed ? firstUnreviewed.id : this.reviewCompletedOrders[0].id;
+    }
+
+    selects.forEach(sel => { sel.value = selectedId; });
+    this.onReviewOrderSelected(selectedId);
+  },
+
+  onReviewOrderSelected(orderId) {
+    this.reviewSelectedOrderId = orderId;
+    if (!orderId) {
+      this.showReviewWarning('Select an Order', 'Please select a completed order to review.');
+      this.setReviewSubmitDisabled(true);
+      return;
+    }
+
+    const order = this.reviewCompletedOrders.find(o => o.id === orderId);
+    const existingReview = this.reviewCachedReviews.find(r => r.order_id === orderId);
+
+    // Update item summary display
+    const itemsText = order && order.items ? order.items.map(i => `${i.name} (×${i.quantity})`).join(', ') : 'Canteen Meal';
+    const sumEl = document.getElementById('review-order-items-summary');
+    if (sumEl) sumEl.textContent = `Dishes: ${itemsText}`;
+    const mobSumEl = document.getElementById('mob-review-order-items-summary');
+    if (mobSumEl) mobSumEl.textContent = `Dishes: ${itemsText}`;
+
+    // Verify order completion
+    if (!order) {
+      this.showReviewWarning(
+        'Order Incomplete or In Kitchen Prep',
+        'Customer reviews can only be submitted after an order has been marked Completed & Picked Up at the counter.'
+      );
+      this.setReviewSubmitDisabled(true);
+      return;
+    }
+
+    // Verify duplicate review prevention
+    if (existingReview) {
+      this.showReviewWarning(
+        'Already Reviewed',
+        `You have already submitted a review (${existingReview.rating}★: "${existingReview.comment.substring(0, 45)}...") for Order #${orderId}. Duplicate reviews are prevented.`
+      );
+      this.setReviewSubmitDisabled(true);
+      return;
+    }
+
+    // Order is completed & unreviewed: Ready for submission!
+    this.hideReviewWarning();
+    this.setReviewSubmitDisabled(false);
+  },
+
+  showReviewWarning(title, message) {
+    ['review-order-warning-banner', 'mob-review-order-warning-banner'].forEach(id => {
+      const banner = document.getElementById(id);
+      if (banner) {
+        banner.style.display = 'block';
+        const titleEl = banner.querySelector('[id$="-title"]');
+        const msgEl = banner.querySelector('[id$="-message"]');
+        if (titleEl) titleEl.textContent = title;
+        if (msgEl) msgEl.textContent = message;
+      }
+    });
+  },
+
+  hideReviewWarning() {
+    ['review-order-warning-banner', 'mob-review-order-warning-banner'].forEach(id => {
+      const banner = document.getElementById(id);
+      if (banner) banner.style.display = 'none';
+    });
+  },
+
+  setReviewSubmitDisabled(disabled) {
+    ['review-submit-btn', 'mob-review-submit-btn'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        btn.disabled = disabled;
+        btn.style.opacity = disabled ? '0.5' : '1';
+        btn.style.cursor = disabled ? 'not-allowed' : 'pointer';
+      }
+    });
+  },
+
+  switchReviewTab(tabName) {
+    const isForm = tabName === 'form';
+
+    // Desktop tabs
+    const formTab = document.getElementById('review-tab-form-content');
+    const commTab = document.getElementById('review-tab-community-content');
+    const btnForm = document.getElementById('review-tab-btn-form');
+    const btnComm = document.getElementById('review-tab-btn-community');
+
+    if (formTab) formTab.style.display = isForm ? 'block' : 'none';
+    if (commTab) commTab.style.display = isForm ? 'none' : 'block';
+    if (btnForm) btnForm.classList.toggle('active', isForm);
+    if (btnComm) btnComm.classList.toggle('active', !isForm);
+
+    // Mobile tabs
+    const mobFormTab = document.getElementById('mob-review-tab-form-content');
+    const mobCommTab = document.getElementById('mob-review-tab-community-content');
+    const mobBtnForm = document.getElementById('mob-review-tab-btn-form');
+    const mobBtnComm = document.getElementById('mob-review-tab-btn-community');
+
+    if (mobFormTab) mobFormTab.style.display = isForm ? 'block' : 'none';
+    if (mobCommTab) mobCommTab.style.display = isForm ? 'none' : 'block';
+    if (mobBtnForm) mobBtnForm.classList.toggle('active', isForm);
+    if (mobBtnComm) mobBtnComm.classList.toggle('active', !isForm);
+
+    if (!isForm) {
+      this.renderCommunityReviews();
+    }
+  },
+
+  setReviewRating(stars) {
+    this.reviewSelectedRating = Math.max(1, Math.min(5, Number(stars) || 5));
+
+    // Update rating stars UI (Desktop & Mobile)
+    const starLabels = {
+      1: '⭐ 1 Star — Poor (Needs Improvement)',
+      2: '⭐⭐ 2 Stars — Fair (Could be better)',
+      3: '⭐⭐⭐ 3 Stars — Good (Average Meal)',
+      4: '⭐⭐⭐⭐ 4 Stars — Very Good (Enjoyed it!)',
+      5: '⭐⭐⭐⭐⭐ 5 Stars — Outstanding (Hot & Fast!)'
+    };
+
+    ['star-interactive-row', 'mob-star-interactive-row'].forEach(containerId => {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.querySelectorAll('.star-pick-btn').forEach(btn => {
+          const r = Number(btn.dataset.rating);
+          btn.classList.toggle('active', r <= this.reviewSelectedRating);
+        });
+      }
+    });
+
+    const labelText = starLabels[this.reviewSelectedRating] || `${this.reviewSelectedRating} Stars`;
+    const labelEl = document.getElementById('review-rating-label');
+    if (labelEl) labelEl.textContent = labelText;
+    const mobLabelEl = document.getElementById('mob-review-rating-label');
+    if (mobLabelEl) mobLabelEl.textContent = labelText;
+
+    const selectEl = document.getElementById('review-rating-select');
+    if (selectEl) selectEl.value = String(this.reviewSelectedRating);
+  },
+
+  addReviewTag(tagText) {
+    const inputs = [
+      document.getElementById('review-comment-input'),
+      document.getElementById('mob-review-comment-input')
+    ].filter(Boolean);
+
+    inputs.forEach(input => {
+      if (!input.value.includes(tagText)) {
+        input.value = input.value ? `${input.value.trim()} • ${tagText}` : tagText;
+      }
+    });
+    this.onReviewCommentInput();
+  },
+
+  onReviewCommentInput() {
+    const c1 = document.getElementById('review-comment-input')?.value || '';
+    const c2 = document.getElementById('mob-review-comment-input')?.value || '';
+    const len = Math.max(c1.length, c2.length);
+
+    const txt = len >= 3 ? `✓ ${len} characters` : `${len}/3 min characters`;
+    const color = len >= 3 ? '#16A34A' : '#64748B';
+
+    ['review-char-count', 'mob-review-char-count'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = txt;
+        el.style.color = color;
+      }
+    });
+  },
+
+  async renderCommunityReviews() {
+    try {
+      const data = await window.api.getReviews();
+      if (!data || !data.success) return;
+
+      const avg = Number(data.avg_rating) || 4.8;
+      const total = Number(data.count) || (data.reviews || []).length;
+      const b = data.rating_breakdown || { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+
+      // Update avg rating & total reviews
+      ['review-modal-avg-rating', 'mob-review-modal-avg-rating'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = avg.toFixed(1);
+      });
+
+      ['review-modal-total-count', 'mob-review-modal-total-count'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = `${total} Student Reviews`;
+      });
+
+      // Update stars string
+      const fullStars = Math.round(avg);
+      const starStr = '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
+      ['review-modal-stars-render', 'mob-review-modal-stars-render'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = starStr;
+      });
+
+      // Update breakdown bars
+      [5, 4, 3, 2, 1].forEach(star => {
+        const count = b[star] || 0;
+        const pct = total > 0 ? Math.round((count / total) * 100) : (star === 5 ? 80 : 15);
+        
+        ['review-bar-fill-', 'mob-review-bar-fill-'].forEach(prefix => {
+          const bar = document.getElementById(`${prefix}${star}`);
+          if (bar) bar.style.width = `${pct}%`;
+        });
+
+        ['review-bar-count-', 'mob-review-bar-count-'].forEach(prefix => {
+          const countEl = document.getElementById(`${prefix}${star}`);
+          if (countEl) countEl.textContent = count;
+        });
+      });
+
+      // Render recent reviews list
+      const containers = [
+        document.getElementById('recent-reviews-list'),
+        document.getElementById('mob-recent-reviews-list')
+      ].filter(Boolean);
+
+      const reviewsList = data.reviews || [];
+      if (!reviewsList.length) {
+        containers.forEach(c => {
+          c.innerHTML = `
+            <div style="text-align:center;padding:24px 16px;color:var(--text-muted);font-size:12px;">
+              <span style="font-size:24px;">📝</span>
+              <p style="margin:4px 0 0;">No reviews recorded yet. Complete an order to be the first!</p>
+            </div>
+          `;
+        });
+        return;
+      }
+
+      const reviewsHtml = reviewsList.slice(0, 10).map(r => {
+        const author = r.user_name || 'Campus Student';
+        const initials = author.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase() || 'ST';
+        const ratingNum = Number(r.rating) || 5;
+        const starPill = '★'.repeat(ratingNum) + ' ' + ratingNum + '.0';
+        
+        let dateDisplay = 'Recent';
+        try {
+          if (r.created_at) {
+            const dt = new Date(r.created_at);
+            dateDisplay = dt.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+          }
+        } catch (e) {}
+
+        const dishName = r.product_name || 'Canteen Meal';
+
+        return `
+          <div class="review-card-item">
+            <div class="review-card-top-row">
+              <div class="review-card-author-info">
+                <div class="review-card-avatar">${initials}</div>
+                <div>
+                  <div class="review-card-author-name">${author}</div>
+                  <div class="review-card-order-tag">
+                    <span>Order #${r.order_id}</span>
+                    <span>•</span>
+                    <span style="color:#059669;font-weight:600;">${dishName.substring(0, 26)}</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                <span class="review-card-stars-pill">${starPill}</span>
+                <span style="font-size:10px;color:var(--text-muted);">${dateDisplay}</span>
+              </div>
+            </div>
+            <p class="review-card-comment-text">"${r.comment}"</p>
+            <div class="review-card-aspects-bar">
+              <span class="review-card-aspect-item">🍔 Food: <strong>${r.food_quality || ratingNum}/5</strong></span>
+              <span class="review-card-aspect-item">⚡ Speed: <strong>${r.service_speed || ratingNum}/5</strong></span>
+              <span class="review-card-aspect-item">📱 App: <strong>${r.app_experience || ratingNum}/5</strong></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      containers.forEach(c => { c.innerHTML = reviewsHtml; });
+    } catch (err) {
+      console.warn('Failed to render community reviews:', err);
+    }
+  },
+
   async submitCustomerReview() {
-    const rating = document.getElementById('review-rating-select').value;
-    const comment = document.getElementById('review-comment-input').value;
+    const sel = document.getElementById('review-order-select') || document.getElementById('mob-review-order-select');
+    const orderId = sel ? sel.value : this.reviewSelectedOrderId;
+
+    if (!orderId) {
+      App.showToast('Please select a completed order to review.', 'warning');
+      return;
+    }
+
+    const commentInput = document.getElementById('review-comment-input') || document.getElementById('mob-review-comment-input');
+    const comment = commentInput ? commentInput.value.trim() : '';
+
+    if (!comment || comment.length < 3) {
+      App.showToast('Please enter your feedback comment (minimum 3 characters).', 'warning');
+      if (commentInput) commentInput.focus();
+      return;
+    }
+
+    const rating = this.reviewSelectedRating || 5;
+
+    // Resolve dish name from order
+    const order = (this.reviewCompletedOrders || []).find(o => o.id === orderId);
+    const dishName = order && order.items && order.items.length ? order.items.map(i => i.name).join(', ') : 'Canteen Meal';
 
     try {
       const res = await window.api.submitReview({
-        order_id: this.currentTrackOrderId || 'CB1024',
+        order_id: orderId,
+        user_id: this.currentUser.id,
         user_name: this.currentUser.name,
-        rating: Number(rating),
-        food_quality: 5,
-        service_speed: 5,
+        product_name: dishName,
+        rating: rating,
+        food_quality: rating,
+        service_speed: rating,
         app_experience: 5,
-        comment: comment || 'Awesome food and zero queue!'
+        comment: comment
       });
 
       if (res.success) {
-        App.closeModal('customer-review-modal');
-        App.showToast('Review submitted to MongoDB! Thank you.', 'success');
+        App.showToast('⭐ Thank you! Your review has been saved to database.', 'success');
+        
+        // Cache and re-render
+        if (commentInput) commentInput.value = '';
+        const mobInput = document.getElementById('mob-review-comment-input');
+        if (mobInput) mobInput.value = '';
+
+        // Refresh community list
+        await this.renderCommunityReviews();
+        this.switchReviewTab('community');
+
+        // Refresh order history screen if active to show reviewed status
+        if (typeof this.renderOrderHistory === 'function') {
+          this.renderOrderHistory();
+        }
+      } else {
+        App.showToast(res.message || 'Review submission failed', 'error');
       }
-    } catch (e) {
-      App.showToast('Review submission failed', 'error');
+    } catch (err) {
+      const msg = err.data?.message || err.message || 'Failed to submit review';
+      App.showToast(msg, 'error');
     }
   },
 
