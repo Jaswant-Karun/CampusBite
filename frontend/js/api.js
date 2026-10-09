@@ -140,7 +140,8 @@ const api = {
   redeemLoyalty: (userId, points, credit_to_wallet = false) => api.post('/loyalty/redeem', { user_id: userId, points, credit_to_wallet }),
 
   // Reviews
-  getReviews: () => api.get('/reviews'),
+  getReviews: (params) => api.get('/reviews', params),
+  checkOrderReview: (orderId) => api.get(`/reviews/check/${orderId}`),
   submitReview: (data) => api.post('/reviews', data),
 
   // Analytics & BI

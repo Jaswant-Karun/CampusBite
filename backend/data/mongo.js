@@ -148,12 +148,16 @@ const CouponSchema = new mongoose.Schema({
 const ReviewSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   order_id: { type: String, required: true },
+  user_id: { type: String },
   user_name: { type: String, required: true },
+  user_avatar: { type: String },
+  product_id: { type: String },
+  product_name: { type: String },
   rating: { type: Number, required: true, min: 1, max: 5 },
   food_quality: { type: Number, default: 5 },
   service_speed: { type: Number, default: 5 },
   app_experience: { type: Number, default: 5 },
-  comment: { type: String }
+  comment: { type: String, required: true }
 }, { timestamps: true });
 
 // ==========================================
