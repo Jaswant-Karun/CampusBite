@@ -2193,12 +2193,99 @@ const StudentApp = {
     }
   },
 
+  // ==========================================
+  // Step 10: Order Confirmation & Token Generator
+  // ==========================================
   showOrderConfirmation(order) {
-    document.getElementById('conf-order-id').textContent = `#${order.id}`;
-    document.getElementById('conf-pickup-counter').textContent = `Counter ${order.pickup_counter}`;
-    document.getElementById('conf-pickup-slot').textContent = order.pickup_slot;
-    document.getElementById('conf-total-amount').textContent = `₹${order.total_amount}`;
-    document.getElementById('conf-points-earned').textContent = `+${order.loyalty_points_earned} Points`;
+    if (!order) return;
+
+    this.currentTrackOrderId = order.id;
+
+    // Save in session storage for persistence
+    try {
+      sessionStorage.setItem('campusbite_last_order', JSON.stringify(order));
+    } catch (e) {}
+
+    // 1. Order Token ID
+    const tokenDisplay = `#${order.id}`;
+    const tokenEl = document.getElementById('conf-order-id');
+    if (tokenEl) tokenEl.textContent = tokenDisplay;
+    const mobTokenEl = document.getElementById('confirm-token-number');
+    if (mobTokenEl) mobTokenEl.textContent = tokenDisplay;
+
+    // 2. Pickup Counter
+    const counterText = `Counter ${order.pickup_counter || 2} Express`;
+    const counterEl = document.getElementById('conf-pickup-counter');
+    if (counterEl) counterEl.textContent = counterText;
+    const mobCounterEl = document.getElementById('confirm-counter-badge');
+    if (mobCounterEl) mobCounterEl.textContent = counterText;
+
+    // 3. Pickup Slot
+    const slotText = order.pickup_slot || this.selectedPickupSlot || '12:30 PM – 12:40 PM';
+    const slotEl = document.getElementById('conf-pickup-slot');
+    if (slotEl) slotEl.textContent = slotText;
+    const mobSlotEl = document.getElementById('confirm-slot-time');
+    if (mobSlotEl) mobSlotEl.textContent = `Slot: ${slotText}`;
+
+    // 4. Customer Info & Payment Mode
+    const nameEl = document.getElementById('conf-customer-name');
+    if (nameEl) nameEl.textContent = order.customer_name || (this.currentUser ? this.currentUser.name : 'Student');
+    const paymentModeEl = document.getElementById('conf-payment-method');
+    if (paymentModeEl) paymentModeEl.textContent = `${order.payment_method || 'UPI'} (${order.payment_status || 'Paid'})`;
+
+    // 5. Timestamp
+    const timeEl = document.getElementById('conf-timestamp');
+    if (timeEl) {
+      const d = order.created_at ? new Date(order.created_at) : new Date();
+      timeEl.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // 6. Total Amount
+    const totalText = `₹${order.total_amount}`;
+    const totalEl = document.getElementById('conf-total-amount');
+    if (totalEl) totalEl.textContent = totalText;
+    const mobTotalEl = document.getElementById('confirm-total-amount-mob');
+    if (mobTotalEl) mobTotalEl.textContent = totalText;
+
+    // 7. Loyalty Points Earned (10% Cashback)
+    const points = order.loyalty_points_earned !== undefined ? order.loyalty_points_earned : Math.floor(order.total_amount / 10);
+    const pointsText = `+${points} Points`;
+    const pointsEl = document.getElementById('conf-points-earned');
+    if (pointsEl) pointsEl.textContent = pointsText;
+    const mobPointsEl = document.getElementById('confirm-loyalty-points-mob');
+    if (mobPointsEl) mobPointsEl.textContent = pointsText;
+
+    // 8. Items List Breakdown (Desktop)
+    const itemsListEl = document.getElementById('conf-items-list');
+    if (itemsListEl && order.items && order.items.length) {
+      itemsListEl.innerHTML = order.items.map(i => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F8FAFC;font-size:12.5px;">
+          <div>
+            <strong style="color:var(--text-primary);">${i.name}</strong>
+            <span style="color:#64748B;font-size:11px;margin-left:6px;">× ${i.quantity}</span>
+          </div>
+          <span style="font-weight:700;color:var(--text-primary);">₹${i.price * i.quantity}</span>
+        </div>
+      `).join('');
+    }
+
+    // 9. Items List Breakdown (Mobile)
+    const mobItemsListEl = document.getElementById('confirm-items-list-mob');
+    if (mobItemsListEl && order.items && order.items.length) {
+      mobItemsListEl.innerHTML = order.items.map(i => `
+        <div style="display:flex;justify-content:space-between;color:#334155;">
+          <span>${i.name} × ${i.quantity}</span>
+          <strong>₹${i.price * i.quantity}</strong>
+        </div>
+      `).join('');
+    }
+
+    // 10. Contactless QR Code Generation
+    const qrData = `CAMPUSBITE:${order.id}:${order.customer_name || 'Student'}:${order.total_amount}`;
+    if (window.CampusQR) {
+      window.CampusQR.renderTo('conf-pickup-qr', qrData, 78);
+      window.CampusQR.renderTo('confirm-token-qr-mob', qrData, 64);
+    }
 
     this.navigateTo('confirmation');
   },
