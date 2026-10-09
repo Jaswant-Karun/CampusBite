@@ -14,7 +14,8 @@ const StudentApp = {
     department: "Computer Science & Business Systems",
     loyalty_points: 420,
     wallet_balance: 850,
-    avatar: "JK"
+    avatar: "JK",
+    profile_image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80"
   },
 
   selectedAuthRole: 'student',

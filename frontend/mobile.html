@@ -1128,49 +1128,205 @@
       </div>
 
       <!-- ====================================================================
-           SCREEN 11: USER PROFILE & REWARDS
+           SCREEN 11: USER PROFILE & REWARDS (STEP 15)
            ==================================================================== -->
       <div id="screen-profile" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('home')">←</button>
-          <div class="screen-title">My Campus Profile </div>
-          <div style="width:24px;"></div>
+          <div class="screen-title">My Campus Profile</div>
+          <button class="back-btn" onclick="StudentApp.openEditProfileModal()" title="Edit Profile" style="font-size:14px;">✎</button>
         </div>
 
         <div style="padding:16px;">
-          <!-- Profile Card -->
-          <div class="profile-card-hero">
-            <div class="profile-avatar-big" id="profile-avatar-display">ST</div>
-            <h3 style="font-size:18px;margin:10px 0 2px;color:#0F172A;" id="profile-name-display">Jaswant Karun</h3>
-            <span style="font-size:12px;color:#64748B;" id="profile-id-display">CB-2024-2028 • CSBS</span>
-            <div style="font-size:11.5px;color:#10B981;font-weight:700;margin-top:4px;" id="profile-phone-display"> 87541 59344</div>
-          </div>
-
-          <!-- Loyalty Points Box -->
-          <div style="margin-top:16px;background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border-radius:18px;padding:16px;border:1px solid #FDE68A;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <span style="font-size:11px;font-weight:800;color:#B45309;text-transform:uppercase;">Campus Loyalty Club</span>
-                <div style="font-size:26px;font-weight:900;color:#92400E;" id="profile-loyalty-pts">420 Pts</div>
-                <span style="font-size:11.5px;color:#B45309;">Earn 10 pts per ₹100 spent • Silver Tier</span>
+          <!-- 1. Profile Hero Card -->
+          <div class="profile-hero-card" style="padding:16px;margin-bottom:14px;">
+            <div class="profile-hero-left" style="gap:14px;">
+              <div class="profile-avatar-wrapper" onclick="StudentApp.openEditProfileModal()" style="width:64px;height:64px;cursor:pointer;">
+                <img id="mob-profile-avatar-img" class="profile-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Avatar" style="width:64px;height:64px;display:block;">
+                <div id="mob-profile-avatar-display" class="profile-avatar-initials" style="width:64px;height:64px;font-size:22px;display:none;">JK</div>
+                <button type="button" class="profile-avatar-edit-btn" style="width:24px;height:24px;font-size:11px;">📷</button>
               </div>
-              <span style="font-size:36px;"></span>
+              <div class="profile-hero-meta">
+                <h2 style="font-size:17px;margin:0 0 2px;">
+                  <span id="mob-profile-name-display">Jaswant Karun</span>
+                  <span class="verified-student-badge" style="font-size:10px;padding:2px 6px;">✓ Verified</span>
+                </h2>
+                <div style="font-size:12px;color:var(--text-secondary);" id="mob-profile-id-display">CB-2024-2028 • CSBS</div>
+                <div style="font-size:11.5px;color:#10B981;font-weight:700;margin-top:2px;" id="mob-profile-phone-display">+91 87541 59344</div>
+                <div style="font-size:11.5px;color:var(--text-secondary);" id="mob-profile-email-display">jaswant@campus.edu</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;">
+              <button type="button" class="profile-edit-trigger-btn" onclick="StudentApp.openEditProfileModal()" style="flex:1;justify-content:center;padding:7px 12px;font-size:12px;">
+                Edit Profile
+              </button>
+              <button type="button" class="profile-switch-btn" onclick="StudentApp.openProfileSwitcherModal()" style="flex:1;justify-content:center;padding:7px 12px;font-size:12px;">
+                Switch Profile
+              </button>
             </div>
           </div>
 
-          <!-- Account Actions -->
-          <div style="margin-top:16px;background:white;border-radius:18px;padding:8px 16px;border:1px solid #E2E8F0;">
+          <!-- 2. Clean Luxury Loyalty Card -->
+          <div class="campus-loyalty-card" style="margin-bottom:14px;padding:20px 18px;">
+            <div class="loyalty-card-top" style="margin-bottom:14px;">
+              <div class="loyalty-card-brand">
+                <div class="loyalty-card-brand-logo" style="width:28px;height:28px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <span class="loyalty-card-brand-title" style="font-size:11.5px;">CAMPUSBITE PASS</span>
+              </div>
+              <span class="loyalty-card-tier-badge" id="mob-loyalty-card-tier" style="font-size:10px;padding:3px 10px;">★ GOLD DINER</span>
+            </div>
+
+            <div class="loyalty-card-center" style="margin-bottom:16px;">
+              <div>
+                <div class="loyalty-card-pts-label" style="font-size:10px;">Current Points</div>
+                <div class="loyalty-card-pts-value" style="font-size:32px;">
+                  <span id="mob-loyalty-current-pts">420</span>
+                  <span class="loyalty-card-pts-unit" style="font-size:13px;">Points</span>
+                  <!-- Backward compatibility ID -->
+                  <span id="profile-loyalty-pts" style="display:none;">420 Pts</span>
+                </div>
+                <div class="loyalty-card-worth-pill" id="mob-loyalty-worth-pill" style="font-size:11px;">
+                  💰 Worth ₹42.00 Discount
+                </div>
+              </div>
+              <div class="loyalty-card-counter-scan">
+                <div class="loyalty-card-barcode" style="height:24px;">
+                  <span style="width:2px;"></span><span style="width:1px;"></span><span style="width:3px;"></span><span style="width:1px;"></span><span style="width:2px;"></span><span style="width:3px;"></span><span style="width:1px;"></span>
+                </div>
+                <span style="font-size:9px;color:#94A3B8;">SCAN TO EARN</span>
+              </div>
+            </div>
+
+            <div class="loyalty-card-bottom" style="padding-top:10px;">
+              <div class="loyalty-cardholder-details">
+                <div class="loyalty-cardholder-name" id="mob-loyalty-card-name" style="font-size:12.5px;">JASWANT KARUN</div>
+                <div class="loyalty-cardholder-id" id="mob-loyalty-card-id" style="font-size:10.5px;">CB-2024-2028</div>
+              </div>
+              <div class="loyalty-card-rule-pill" style="font-size:10px;padding:3px 8px;">
+                ₹100 = 10 Pts
+              </div>
+            </div>
+
+            <div class="loyalty-tier-progress-box" style="margin-top:12px;padding:8px 10px;">
+              <div class="loyalty-tier-progress-header" style="font-size:10.5px;">
+                <span>Tier Goal</span>
+                <span id="mob-loyalty-tier-next-label">Gold → Platinum (700 pts)</span>
+              </div>
+              <div class="loyalty-progress-track" style="height:6px;">
+                <div class="loyalty-progress-fill" id="mob-loyalty-tier-progress-bar" style="width:75%;"></div>
+              </div>
+            </div>
+
+            <div class="loyalty-action-row" style="margin-top:12px;">
+              <button type="button" class="loyalty-redeem-btn" onclick="StudentApp.openRedeemLoyaltyModal()" style="flex:1;justify-content:center;padding:9px 12px;font-size:12px;">
+                Redeem (₹10 / 100 pts)
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Three-Column Loyalty Summary Metrics Grid -->
+          <div class="loyalty-metrics-grid" style="grid-template-columns:repeat(3, 1fr);gap:8px;margin-bottom:14px;">
+            <div class="loyalty-metric-card current" style="padding:10px 8px;">
+              <span class="loyalty-metric-icon" style="font-size:14px;">⭐</span>
+              <div class="loyalty-metric-label" style="font-size:9.5px;">Current</div>
+              <div class="loyalty-metric-value" id="mob-loyalty-stat-current" style="font-size:18px;">420</div>
+              <div class="loyalty-metric-sub" style="font-size:9.5px;">Available</div>
+            </div>
+            <div class="loyalty-metric-card earned" style="padding:10px 8px;">
+              <span class="loyalty-metric-icon" style="font-size:14px;">📈</span>
+              <div class="loyalty-metric-label" style="font-size:9.5px;">Earned</div>
+              <div class="loyalty-metric-value" id="mob-loyalty-stat-earned" style="font-size:18px;">+470</div>
+              <div class="loyalty-metric-sub" style="font-size:9.5px;">Lifetime</div>
+            </div>
+            <div class="loyalty-metric-card used" style="padding:10px 8px;">
+              <span class="loyalty-metric-icon" style="font-size:14px;">🎁</span>
+              <div class="loyalty-metric-label" style="font-size:9.5px;">Used</div>
+              <div class="loyalty-metric-value" id="mob-loyalty-stat-used" style="font-size:18px;">-50</div>
+              <div class="loyalty-metric-sub" style="font-size:9.5px;">Redeemed</div>
+            </div>
+          </div>
+
+          <!-- 4. Account Information Card -->
+          <div class="profile-account-card" style="padding:16px;margin-bottom:14px;">
+            <div class="profile-account-card-header" style="margin-bottom:12px;">
+              <h3 style="font-size:13.5px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Account Information
+              </h3>
+              <button type="button" class="btn-link" onclick="StudentApp.openEditProfileModal()" style="font-size:11.5px;color:#4F46E5;background:none;border:none;cursor:pointer;font-weight:700;">Edit ✎</button>
+            </div>
+            <div class="account-details-grid" style="grid-template-columns:1fr;gap:10px;">
+              <div class="account-detail-item">
+                <span class="account-detail-label">Full Name</span>
+                <span class="account-detail-val" id="mob-account-info-name">Jaswant Karun</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">College Email</span>
+                <span class="account-detail-val" id="mob-account-info-email">jaswant@campus.edu</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">Phone</span>
+                <span class="account-detail-val" id="mob-account-info-phone">+91 87541 59344</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">Student ID</span>
+                <span class="account-detail-val" id="mob-account-info-studentid">CB-2024-2028</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">Department</span>
+                <span class="account-detail-val" id="mob-account-info-dept">Computer Science & Business Systems</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">Account Role & Status</span>
+                <span class="account-detail-val" id="mob-account-info-role" style="color:#059669;">Student (Verified Active)</span>
+              </div>
+              <div class="account-detail-item">
+                <span class="account-detail-label">CampusPay Wallet</span>
+                <span class="account-detail-val" id="mob-account-info-wallet">₹850.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Loyalty Activity History Ledger -->
+          <div class="loyalty-history-card" style="padding:16px;margin-bottom:14px;">
+            <div class="loyalty-history-header" style="margin-bottom:12px;">
+              <div class="loyalty-history-title-group">
+                <h3 style="font-size:14px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Loyalty History Ledger
+                </h3>
+                <p style="font-size:11px;">Every ₹100 spent = 10 pts in database</p>
+              </div>
+              <div class="loyalty-filter-chips">
+                <button type="button" class="loyalty-filter-chip active" onclick="StudentApp.filterLoyaltyHistory('all', this)" style="padding:4px 10px;font-size:11px;">All</button>
+                <button type="button" class="loyalty-filter-chip" onclick="StudentApp.filterLoyaltyHistory('earned', this)" style="padding:4px 10px;font-size:11px;">Earned</button>
+                <button type="button" class="loyalty-filter-chip" onclick="StudentApp.filterLoyaltyHistory('redeemed', this)" style="padding:4px 10px;font-size:11px;">Used</button>
+              </div>
+            </div>
+            <div id="mob-loyalty-history-list" class="loyalty-ledger-list">
+              <!-- Rendered dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- Account Actions Navigation -->
+          <div style="background:white;border-radius:18px;padding:8px 16px;border:1px solid #E2E8F0;">
             <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.navigateTo('order-history')">
               <span style="font-size:13px;font-weight:600;">📋 View Order History</span>
               <span style="color:#94A3B8;">→</span>
             </div>
-            <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.navigateTo('login')">
-              <span style="font-size:13px;font-weight:600;">Switch / Sign In to Another Account</span>
+            <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.navigateTo('wallet')">
+              <span style="font-size:13px;font-weight:600;">💳 CampusPay Wallet</span>
+              <span style="color:#94A3B8;">→</span>
+            </div>
+            <div style="padding:12px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.openProfileSwitcherModal()">
+              <span style="font-size:13px;font-weight:600;">👥 Switch Active Profile</span>
               <span style="color:#94A3B8;">→</span>
             </div>
             <div style="padding:12px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="StudentApp.logout()">
-              <span style="font-size:13px;font-weight:600;color:#EF4444;">Sign Out from Device</span>
-              <span style="color:#EF4444;"></span>
+              <span style="font-size:13px;font-weight:600;color:#EF4444;">🚪 Sign Out from Device</span>
+              <span style="color:#EF4444;">→</span>
             </div>
           </div>
         </div>
@@ -1280,7 +1436,116 @@
     </div>
   </div>
 
+  <!-- Edit Student Profile Modal (Step 15) -->
+  <div class="modal-overlay" id="edit-profile-modal">
+    <div class="modal-window" style="max-width:440px;">
+      <button class="modal-close-btn" onclick="App.closeModal('edit-profile-modal')">&times;</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:20px;">✎</span>
+        <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Edit Profile</h3>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+        Update your personal details and avatar:
+      </p>
 
+      <form id="mob-edit-profile-form" onsubmit="event.preventDefault(); StudentApp.saveProfile();">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Full Name *</label>
+            <input type="text" id="mob-edit-profile-name" required style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">College Email *</label>
+            <input type="email" id="mob-edit-profile-email" required style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Phone Number *</label>
+            <input type="tel" id="mob-edit-profile-phone" required style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Department</label>
+            <input type="text" id="mob-edit-profile-dept" style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Student ID</label>
+            <input type="text" id="mob-edit-profile-studentid" readonly style="width:100%;padding:8px 10px;border:1px solid #E2E8F0;background:#F8FAFC;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Choose Avatar Preset</label>
+            <div class="avatar-preset-grid" style="grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 10px;">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 1" style="width:48px;height:48px;">
+              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 2" style="width:48px;height:48px;">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 3" style="width:48px;height:48px;">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80" class="avatar-preset-item" onclick="StudentApp.selectAvatarPreset(this.src)" alt="Preset 4" style="width:48px;height:48px;">
+            </div>
+          </div>
+          <div>
+            <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:3px;">Or Custom Image URL</label>
+            <input type="url" id="mob-edit-profile-image-url" placeholder="https://example.com/photo.jpg" style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:12.5px;box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:8px;">
+          <button type="button" class="btn-outline" onclick="App.closeModal('edit-profile-modal')" style="padding:8px 14px;font-size:12px;">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:8px 16px;font-size:12px;font-weight:700;">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Redeem Loyalty Points Modal (Step 15) -->
+  <div class="modal-overlay" id="redeem-loyalty-modal">
+    <div class="modal-window" style="max-width:440px;">
+      <button class="modal-close-btn" onclick="App.closeModal('redeem-loyalty-modal')">&times;</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:22px;">⭐</span>
+        <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Redeem Loyalty Points</h3>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">
+        Rate: <strong>Every 100 points = ₹10 off</strong> canteen meals.
+      </p>
+
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:10.5px;font-weight:700;color:#B45309;text-transform:uppercase;">Available Balance</span>
+          <div style="font-size:20px;font-weight:900;color:#92400E;" id="mob-redeem-modal-avail-pts">420 Pts</div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:10.5px;font-weight:700;color:#B45309;text-transform:uppercase;">Cash Value</span>
+          <div style="font-size:18px;font-weight:900;color:#16A34A;" id="mob-redeem-modal-max-val">₹40.00</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;">Select Points</label>
+          <select id="mob-redeem-points-select" onchange="StudentApp.onRedeemPointsChange()" style="width:100%;padding:9px 10px;border:1px solid #CBD5E1;border-radius:8px;font-size:13px;font-weight:700;">
+            <option value="100">100 Points → ₹10 Voucher</option>
+            <option value="200">200 Points → ₹20 Voucher</option>
+            <option value="300">300 Points → ₹30 Voucher</option>
+            <option value="400">400 Points → ₹40 Voucher</option>
+          </select>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="display:block;font-size:11.5px;font-weight:700;">Destination</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+            <input type="radio" name="mob-redeem-dest" value="voucher" checked>
+            <span>Canteen Discount Voucher</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+            <input type="radio" name="mob-redeem-dest" value="wallet">
+            <span>Direct Credit to CampusPay Wallet</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:8px;">
+        <button type="button" class="btn-outline" onclick="App.closeModal('redeem-loyalty-modal')" style="padding:8px 14px;font-size:12px;">Cancel</button>
+        <button type="button" class="btn-primary" onclick="StudentApp.executeLoyaltyRedemption()" style="padding:8px 16px;font-size:12px;font-weight:700;background:#F59E0B;border-color:#F59E0B;">Confirm</button>
+      </div>
+    </div>
+  </div>
 
   <!-- User Profile Switcher Modal -->
   <div class="modal-overlay" id="profile-switcher-modal">
