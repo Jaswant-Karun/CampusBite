@@ -777,57 +777,79 @@
 
           <!-- Order Mini Review Card -->
           <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+          <!-- Order Mini Review Card (Step 10 Requirement) -->
+          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;" id="mob-checkout-summary-card">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-              <strong style="font-size:13.5px;color:#0F172A;">Order Review</strong>
+              <strong style="font-size:13.5px;color:#0F172A;">Order Summary</strong>
               <span id="mob-checkout-items-count-badge" style="font-size:11px;font-weight:700;color:var(--primary);background:rgba(79,70,229,0.08);padding:2px 8px;border-radius:999px;">0 Items</span>
             </div>
-            <div id="mob-checkout-review-items" style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto;margin-bottom:10px;">
+            <!-- 1. Ordered Products & 2. Quantity -->
+            <div id="mob-checkout-review-items" style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto;margin-bottom:12px;">
               <!-- Populated by StudentApp.renderCheckout() -->
             </div>
-            <div style="border-top:1px dashed #E2E8F0;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:12px;color:#64748B;">Total Payable:</span>
-              <strong id="mob-checkout-total-val" style="font-size:17px;color:var(--primary);">₹0</strong>
+            <!-- Financial Summary: Subtotal, Coupon Discount, Final Total -->
+            <div style="border-top:1px dashed #E2E8F0;padding-top:10px;display:flex;flex-direction:column;gap:6px;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;color:#64748B;">
+                <span>Subtotal</span>
+                <span id="mob-checkout-subtotal-val" style="font-weight:700;color:var(--text-primary);">₹0</span>
+              </div>
+              <div id="mob-checkout-coupon-row" style="display:none;justify-content:space-between;color:#10B981;font-weight:700;">
+                <span>Coupon Discount (<span id="mob-checkout-coupon-code"></span>)</span>
+                <span id="mob-checkout-coupon-val">-₹0</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #F1F5F9;">
+                <span style="font-weight:700;color:#0F172A;">Final Total:</span>
+                <strong id="mob-checkout-total-val" style="font-size:18px;color:var(--primary);">₹0</strong>
+              </div>
             </div>
           </div>
 
-          <!-- Pickup Slot Selection -->
+          <!-- Pickup Slot Selection (Step 10 Requirement: 5 exact slots) -->
           <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
               <strong style="font-size:13.5px;">Choose Your Pickup Slot ⏱️</strong>
-              <span style="font-size:10px;color:#10B981;font-weight:700;">Counter 2 Ready</span>
+              <span style="font-size:10px;color:#10B981;font-weight:700;">Counter 2 Express</span>
             </div>
-            <p style="font-size:11.5px;color:#64748B;margin-bottom:12px;">Your food will be freshly packaged and waiting at Counter 2.</p>
+            <p style="font-size:11.5px;color:#64748B;margin-bottom:12px;">Your food will be freshly prepared and waiting at the counter.</p>
             
             <div style="display:flex;flex-direction:column;gap:8px;">
-              <label class="pickup-slot-radio active" onclick="StudentApp.selectPickupSlot('12:30 PM – 12:40 PM')">
-                <input type="radio" name="pickup-slot" value="12:30 PM – 12:40 PM" checked>
+              <label class="pickup-slot-radio active" onclick="StudentApp.selectPickupSlot('12:00 PM – 12:15 PM')">
+                <input type="radio" name="pickup-slot" value="12:00 PM – 12:15 PM" checked>
                 <div>
-                  <strong>Next Break: 12:30 PM – 12:40 PM</strong>
-                  <span style="display:block;font-size:11px;color:#10B981;">⚡ Fast Track Pickup (Recommended)</span>
+                  <strong>12:00 PM – 12:15 PM</strong>
+                  <span style="display:block;font-size:11px;color:#10B981;">⚡ Early Lunch (Pre-Rush)</span>
                 </div>
               </label>
 
-              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('12:40 PM – 12:50 PM')">
-                <input type="radio" name="pickup-slot" value="12:40 PM – 12:50 PM">
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('12:15 PM – 12:30 PM')">
+                <input type="radio" name="pickup-slot" value="12:15 PM – 12:30 PM">
                 <div>
-                  <strong>12:40 PM – 12:50 PM</strong>
-                  <span style="display:block;font-size:11px;color:#64748B;">Standard break slot</span>
+                  <strong>12:15 PM – 12:30 PM</strong>
+                  <span style="display:block;font-size:11px;color:#6366F1;">● Recommended (Interval Break 1)</span>
                 </div>
               </label>
 
-              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('01:00 PM – 01:15 PM')">
-                <input type="radio" name="pickup-slot" value="01:00 PM – 01:15 PM">
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('12:30 PM – 12:45 PM')">
+                <input type="radio" name="pickup-slot" value="12:30 PM – 12:45 PM">
                 <div>
-                  <strong>01:00 PM – 01:15 PM (Lunch Window)</strong>
-                  <span style="display:block;font-size:11px;color:#F59E0B;">Moderate crowd expected</span>
+                  <strong>12:30 PM – 12:45 PM</strong>
+                  <span style="display:block;font-size:11px;color:#D97706;">● Peak Break (Interval Rush)</span>
                 </div>
               </label>
 
-              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('Express Immediate (5-10m)')">
-                <input type="radio" name="pickup-slot" value="Express Immediate (5-10m)">
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('12:45 PM – 1:00 PM')">
+                <input type="radio" name="pickup-slot" value="12:45 PM – 1:00 PM">
                 <div>
-                  <strong>Express Immediate (5-10 mins)</strong>
-                  <span style="display:block;font-size:11px;color:#DC2626;">⚡ Fast-track priority prep</span>
+                  <strong>12:45 PM – 1:00 PM</strong>
+                  <span style="display:block;font-size:11px;color:#8B5CF6;">● Hot Fresh Batch</span>
+                </div>
+              </label>
+
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('1:00 PM – 1:15 PM')">
+                <input type="radio" name="pickup-slot" value="1:00 PM – 1:15 PM">
+                <div>
+                  <strong>1:00 PM – 1:15 PM</strong>
+                  <span style="display:block;font-size:11px;color:#059669;">● Post-Lecture (Main Lunch)</span>
                 </div>
               </label>
             </div>
