@@ -2259,32 +2259,154 @@
     </div>
   </div>
 
-  <!-- Customer Feedback & Review Modal -->
+  <!-- Customer Feedback & Review Modal (STEP 16) -->
   <div class="modal-overlay" id="customer-review-modal">
-    <div class="modal-window">
-      <button class="modal-close-btn">&times;</button>
-      <h3 style="font-size:18px;font-weight:800;margin-bottom:6px;">How was your canteen experience? ⭐</h3>
-      <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:16px;">Help us improve queue speed and food taste.</p>
-
-      <div class="form-group">
-        <label class="form-label">Overall Rating</label>
-        <select class="form-input" id="review-rating-select">
-          <option value="5">⭐⭐⭐⭐⭐ Excellent (5/5)</option>
-          <option value="4">⭐⭐⭐⭐ Good (4/5)</option>
-          <option value="3">⭐⭐⭐ Average (3/5)</option>
-          <option value="2">⭐⭐ Needs Improvement (2/5)</option>
-          <option value="1">⭐ Poor (1/5)</option>
-        </select>
+    <div class="modal-window reviews-modal-window">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:22px;">⭐</span>
+          <div>
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Student Reviews & Feedback</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Verified ratings from completed canteen orders</p>
+          </div>
+        </div>
+        <button class="modal-close-btn">&times;</button>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Your Comments / Experience</label>
-        <textarea class="form-input" id="review-comment-input" rows="3" placeholder="Food was hot and pickup was instant..."></textarea>
+      <!-- Segmented Navigation Tabs -->
+      <div class="reviews-nav-segmented">
+        <button type="button" class="review-seg-btn active" id="review-tab-btn-form" onclick="StudentApp.switchReviewTab('form')">
+          <span>✍️ Write a Review</span>
+        </button>
+        <button type="button" class="review-seg-btn" id="review-tab-btn-community" onclick="StudentApp.switchReviewTab('community')">
+          <span>🌟 Recent Reviews (<span id="review-tab-avg-pill">4.8 ★</span>)</span>
+        </button>
       </div>
 
-      <button class="splash-btn" onclick="StudentApp.submitCustomerReview()">
-        Submit Feedback to MongoDB
-      </button>
+      <div class="review-modal-body-scroll">
+        <!-- TAB 1: WRITE A REVIEW -->
+        <div id="review-tab-form-content">
+          <!-- Completed Order Selector & Verification Banner -->
+          <div class="review-order-banner" id="review-order-banner">
+            <div class="review-order-banner-header">
+              <span style="font-size:12px;font-weight:700;color:var(--text-secondary);">Select Completed Order:</span>
+              <span class="review-order-status-pill" id="review-order-status-badge">Completed ✓</span>
+            </div>
+            <select class="form-input" id="review-order-select" onchange="StudentApp.onReviewOrderSelected(this.value)" style="margin-bottom:6px;font-weight:600;">
+              <option value="">Loading completed orders...</option>
+            </select>
+            <div id="review-order-items-summary" style="font-size:11.5px;color:var(--text-muted);">
+              Cheese Burger Deluxe, Cold Coffee with Ice Cream
+            </div>
+          </div>
+
+          <!-- Alert for in-progress or non-completed orders / duplicate reviews -->
+          <div id="review-order-warning-banner" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#991B1B;">
+            <div style="display:flex;align-items:center;gap:8px;font-weight:700;">
+              <span>⚠️</span>
+              <span id="review-warning-title">Order Not Completed</span>
+            </div>
+            <p id="review-warning-message" style="margin:4px 0 0;font-size:11.5px;opacity:0.9;">
+              Reviews can only be submitted after your order is completed and collected at the counter.
+            </p>
+          </div>
+
+          <!-- Interactive 1–5 Star Rating Picker -->
+          <div class="star-rating-box">
+            <div style="font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;">Your Overall Rating (1–5 Stars)</div>
+            <div class="star-interactive-row" id="star-interactive-row">
+              <button type="button" class="star-pick-btn active" data-rating="1" onclick="StudentApp.setReviewRating(1)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="2" onclick="StudentApp.setReviewRating(2)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="3" onclick="StudentApp.setReviewRating(3)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="4" onclick="StudentApp.setReviewRating(4)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="5" onclick="StudentApp.setReviewRating(5)">★</button>
+            </div>
+            <div class="star-rating-label" id="review-rating-label">⭐⭐⭐⭐⭐ 5 Stars — Outstanding!</div>
+            <!-- Hidden backward-compatible select -->
+            <select class="form-input" id="review-rating-select" style="display:none;">
+              <option value="5" selected>5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+          </div>
+
+          <!-- Quick Feedback Tags -->
+          <div style="margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:700;color:var(--text-secondary);">What went well? (Tap to add)</span>
+            <div class="review-tag-pills">
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🔥 Piping Hot & Fresh')">🔥 Piping Hot & Fresh</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('⚡ Zero Queue Pickup')">⚡ Zero Queue Pickup</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('👌 Delicious Taste')">👌 Delicious Taste</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🥤 Cold & Crisp')">🥤 Cold & Crisp</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🌱 Good Portion Size')">🌱 Good Portion Size</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🧼 Hygienic Packing')">🧼 Hygienic Packing</span>
+            </div>
+          </div>
+
+          <!-- Feedback Comments -->
+          <div class="form-group" style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <label class="form-label" style="margin:0;">Written Feedback / Experience</label>
+              <span id="review-char-count" style="font-size:11px;color:var(--text-muted);">Min 3 characters</span>
+            </div>
+            <textarea class="form-input" id="review-comment-input" rows="3" placeholder="Tell us how the food tasted and how smooth your counter pickup was..." oninput="StudentApp.onReviewCommentInput()"></textarea>
+          </div>
+
+          <button type="button" class="splash-btn" id="review-submit-btn" onclick="StudentApp.submitCustomerReview()" style="width:100%;padding:12px;border-radius:12px;font-weight:800;font-size:14px;">
+            Submit Customer Review ⭐
+          </button>
+        </div>
+
+        <!-- TAB 2: COMMUNITY RECENT REVIEWS & AVERAGE RATING -->
+        <div id="review-tab-community-content" style="display:none;">
+          <!-- Benchmark Summary Card -->
+          <div class="review-community-hero">
+            <div class="review-score-big">
+              <span class="review-score-number" id="review-modal-avg-rating">4.8</span>
+              <div class="review-score-stars" id="review-modal-stars-render">★★★★★</div>
+              <span class="review-score-total" id="review-modal-total-count">42+ Student Reviews</span>
+            </div>
+            <div class="review-breakdown-bars">
+              <div class="review-bar-row">
+                <span>5★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="review-bar-fill-5" style="width: 82%;"></div></div>
+                <span id="review-bar-count-5">35</span>
+              </div>
+              <div class="review-bar-row">
+                <span>4★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="review-bar-fill-4" style="width: 14%;"></div></div>
+                <span id="review-bar-count-4">6</span>
+              </div>
+              <div class="review-bar-row">
+                <span>3★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="review-bar-fill-3" style="width: 4%;"></div></div>
+                <span id="review-bar-count-3">1</span>
+              </div>
+              <div class="review-bar-row">
+                <span>2★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="review-bar-fill-2" style="width: 0%;"></div></div>
+                <span id="review-bar-count-2">0</span>
+              </div>
+              <div class="review-bar-row">
+                <span>1★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="review-bar-fill-1" style="width: 0%;"></div></div>
+                <span id="review-bar-count-1">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Recent Reviews List -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h4 style="font-size:13.5px;font-weight:700;color:var(--text-primary);margin:0;">Recent Verified Reviews</h4>
+            <span style="font-size:11px;color:var(--text-muted);">Real canteen orders</span>
+          </div>
+          <div class="reviews-grid-stream" id="recent-reviews-list">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
