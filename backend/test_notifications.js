@@ -205,9 +205,8 @@ async function runTests() {
 
   } finally {
     server.close();
+    process.exit(failed > 0 ? 1 : 0);
   }
-
-  if (failed > 0) process.exit(1);
 }
 
 runTests().catch(err => {
