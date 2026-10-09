@@ -2070,6 +2070,61 @@
       "icon": "ADMIN",
       "read": false,
       "created_at": "2026-10-08T13:21:04.995Z"
+    },
+    {
+      "id": "notif-seed-1",
+      "title": "Order Confirmed: #CB1024",
+      "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "read": false,
+      "created_at": "2026-10-09T13:57:51.752Z"
+    },
+    {
+      "id": "notif-seed-2",
+      "title": "Order Being Prepared: #CB1025",
+      "message": "Kitchen is actively preparing your order #CB1025 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "read": false,
+      "created_at": "2026-10-09T14:12:51.752Z"
+    },
+    {
+      "id": "notif-seed-3",
+      "title": "Order Ready for Pickup: #CB1020",
+      "message": "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
+      "type": "ORDER_READY",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "READY",
+      "read": false,
+      "created_at": "2026-10-09T13:42:51.752Z"
+    },
+    {
+      "id": "notif-seed-4",
+      "title": "Order Completed: #CB1018",
+      "message": "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "read": true,
+      "created_at": "2026-10-09T11:27:51.752Z"
+    },
+    {
+      "id": "notif-seed-5",
+      "title": "Coupon Available: CAMPUS20",
+      "message": "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COUPON",
+      "read": false,
+      "created_at": "2026-10-09T08:27:51.752Z"
     }
   ]
 }
