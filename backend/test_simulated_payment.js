@@ -305,8 +305,14 @@ async function runTests() {
     console.log(`Step 11 Test Summary: ${passed}/${total} passed (${Math.round((passed / total) * 100)}%)`);
     console.log(`==============================================\n`);
 
+    if (testServer) {
+      testServer.close();
+    }
+
     if (passed !== total) {
       process.exit(1);
+    } else {
+      process.exit(0);
     }
   } finally {
     if (testServer) {

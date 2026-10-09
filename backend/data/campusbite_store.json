@@ -9,7 +9,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Business Systems",
-      "loyalty_points": 467,
+      "loyalty_points": 488,
       "wallet_balance": 850,
       "avatar": "👨🎓"
     },
@@ -96,7 +96,7 @@
       "price": 80,
       "category": "Snacks",
       "image_emoji": "🍔",
-      "stock": 19,
+      "stock": 18,
       "is_available": true,
       "rating": 4.8,
       "prep_time": "8 mins",
@@ -138,7 +138,7 @@
       "price": 60,
       "category": "Snacks",
       "image_emoji": "🥪",
-      "stock": 12,
+      "stock": 11,
       "is_available": true,
       "rating": 4.6,
       "prep_time": "6 mins",
@@ -201,7 +201,7 @@
       "price": 70,
       "category": "Drinks",
       "image_emoji": "🥤",
-      "stock": 37,
+      "stock": 36,
       "is_available": true,
       "rating": 4.9,
       "prep_time": "4 mins",
@@ -594,6 +594,99 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1041",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
+      "items": [
+        {
+          "product_id": "p-6",
+          "name": "Cold Coffee with Ice Cream",
+          "price": 70,
+          "quantity": 1,
+          "image_emoji": "🥤"
+        }
+      ],
+      "subtotal": 70,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 70,
+      "payment_method": "Cash",
+      "payment_status": "PENDING",
+      "upi_id": null,
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Placed",
+      "pickup_slot": "12:30 PM – 12:45 PM",
+      "pickup_counter": 3,
+      "special_instructions": "",
+      "created_at": "2026-10-09T05:07:25.983Z",
+      "updated_at": "2026-10-09T05:07:25.983Z",
+      "loyalty_points_earned": 7
+    },
+    {
+      "id": "CB1040",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
+      "items": [
+        {
+          "product_id": "p-3",
+          "name": "Veg Grilled Sandwich",
+          "price": 60,
+          "quantity": 1,
+          "image_emoji": "🥪"
+        }
+      ],
+      "subtotal": 60,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 60,
+      "payment_method": "Card",
+      "payment_status": "PAID",
+      "upi_id": null,
+      "card_masked": "•••• •••• •••• 4455",
+      "card_brand": "Mastercard",
+      "order_status": "Placed",
+      "pickup_slot": "12:15 PM – 12:30 PM",
+      "pickup_counter": 2,
+      "special_instructions": "",
+      "created_at": "2026-10-09T05:07:25.906Z",
+      "updated_at": "2026-10-09T05:07:25.906Z",
+      "loyalty_points_earned": 6
+    },
+    {
+      "id": "CB1039",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 1,
+          "image_emoji": "🍔"
+        }
+      ],
+      "subtotal": 80,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 80,
+      "payment_method": "UPI",
+      "payment_status": "PAID",
+      "upi_id": "jaswant@okaxis",
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Placed",
+      "pickup_slot": "12:00 PM – 12:15 PM",
+      "pickup_counter": 1,
+      "special_instructions": "",
+      "created_at": "2026-10-09T05:07:25.086Z",
+      "updated_at": "2026-10-09T05:07:25.086Z",
+      "loyalty_points_earned": 8
+    },
     {
       "id": "CB1038",
       "user_id": "u-101",
@@ -1025,6 +1118,30 @@
   ],
   "loyalty_transactions": [
     {
+      "id": "lt-1791522445984",
+      "user_id": "u-101",
+      "points": 7,
+      "type": "earned",
+      "description": "Order #CB1041 purchase reward",
+      "date": "2026-10-09T05:07:25.983Z"
+    },
+    {
+      "id": "lt-1791522445907",
+      "user_id": "u-101",
+      "points": 6,
+      "type": "earned",
+      "description": "Order #CB1040 purchase reward",
+      "date": "2026-10-09T05:07:25.906Z"
+    },
+    {
+      "id": "lt-1791522445087",
+      "user_id": "u-101",
+      "points": 8,
+      "type": "earned",
+      "description": "Order #CB1039 purchase reward",
+      "date": "2026-10-09T05:07:25.086Z"
+    },
+    {
       "id": "lt-1791522396454",
       "user_id": "u-101",
       "points": 7,
@@ -1114,10 +1231,10 @@
     }
   ],
   "analytics": {
-    "today_revenue": 13122,
-    "today_orders": 194,
+    "today_revenue": 13332,
+    "today_orders": 197,
     "total_customers": 142,
-    "pending_orders": 24,
+    "pending_orders": 27,
     "avg_rating": 4.8,
     "ratings_breakdown": {
       "food_quality": 4.6,
