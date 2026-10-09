@@ -1780,6 +1780,132 @@
           </div>
         </div>
       </form>
+    <!-- Customer Feedback & Review Modal (STEP 16) -->
+  <div class="modal-overlay" id="customer-review-modal">
+    <div class="modal-window reviews-modal-window" style="padding:18px !important;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:20px;">⭐</span>
+          <div>
+            <h3 style="font-size:16px;font-weight:800;color:var(--text-primary);margin:0;">Student Reviews & Feedback</h3>
+            <p style="font-size:11px;color:var(--text-secondary);margin:1px 0 0;">Verified ratings from completed canteen orders</p>
+          </div>
+        </div>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <div class="reviews-nav-segmented">
+        <button type="button" class="review-seg-btn active" id="mob-review-tab-btn-form" onclick="StudentApp.switchReviewTab('form')">
+          <span>✍️ Write Review</span>
+        </button>
+        <button type="button" class="review-seg-btn" id="mob-review-tab-btn-community" onclick="StudentApp.switchReviewTab('community')">
+          <span>🌟 Reviews (<span id="mob-review-tab-avg-pill">4.8 ★</span>)</span>
+        </button>
+      </div>
+
+      <div class="review-modal-body-scroll">
+        <!-- TAB 1: WRITE A REVIEW -->
+        <div id="mob-review-tab-form-content">
+          <!-- Completed Order Selector & Verification Banner -->
+          <div class="review-order-banner" id="mob-review-order-banner">
+            <div class="review-order-banner-header">
+              <span style="font-size:11.5px;font-weight:700;color:var(--text-secondary);">Completed Order:</span>
+              <span class="review-order-status-pill" id="mob-review-order-status-badge">Completed ✓</span>
+            </div>
+            <select class="form-input" id="mob-review-order-select" onchange="StudentApp.onReviewOrderSelected(this.value)" style="margin-bottom:6px;font-weight:600;font-size:12px;">
+              <option value="">Loading completed orders...</option>
+            </select>
+            <div id="mob-review-order-items-summary" style="font-size:11px;color:var(--text-muted);">
+              Cheese Burger Deluxe, Cold Coffee
+            </div>
+          </div>
+
+          <!-- Alert for in-progress or non-completed orders / duplicate reviews -->
+          <div id="mob-review-order-warning-banner" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:11.5px;color:#991B1B;">
+            <div style="display:flex;align-items:center;gap:6px;font-weight:700;">
+              <span>⚠️</span>
+              <span id="mob-review-warning-title">Order Not Completed</span>
+            </div>
+            <p id="mob-review-warning-message" style="margin:3px 0 0;font-size:11px;opacity:0.9;">
+              Reviews can only be submitted after your order is completed and collected at the counter.
+            </p>
+          </div>
+
+          <!-- Interactive 1–5 Star Rating Picker -->
+          <div class="star-rating-box" style="padding:12px;">
+            <div style="font-size:11.5px;font-weight:700;color:var(--text-secondary);margin-bottom:4px;">Overall Rating (1–5 Stars)</div>
+            <div class="star-interactive-row" id="mob-star-interactive-row">
+              <button type="button" class="star-pick-btn active" data-rating="1" onclick="StudentApp.setReviewRating(1)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="2" onclick="StudentApp.setReviewRating(2)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="3" onclick="StudentApp.setReviewRating(3)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="4" onclick="StudentApp.setReviewRating(4)">★</button>
+              <button type="button" class="star-pick-btn active" data-rating="5" onclick="StudentApp.setReviewRating(5)">★</button>
+            </div>
+            <div class="star-rating-label" id="mob-review-rating-label" style="font-size:12px;">⭐⭐⭐⭐⭐ 5 Stars — Outstanding!</div>
+          </div>
+
+          <!-- Quick Feedback Tags -->
+          <div style="margin-bottom:6px;">
+            <span style="font-size:11.5px;font-weight:700;color:var(--text-secondary);">Highlights:</span>
+            <div class="review-tag-pills" style="gap:4px;margin:6px 0 10px;">
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🔥 Piping Hot')">🔥 Piping Hot</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('⚡ Quick Pickup')">⚡ Quick Pickup</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('👌 Tasty Meal')">👌 Tasty Meal</span>
+              <span class="review-tag-pill" onclick="StudentApp.addReviewTag('🥤 Ice Cold')">🥤 Ice Cold</span>
+            </div>
+          </div>
+
+          <!-- Feedback Comments -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+              <label class="form-label" style="margin:0;font-size:12px;">Feedback / Experience</label>
+              <span id="mob-review-char-count" style="font-size:10.5px;color:var(--text-muted);">Min 3 chars</span>
+            </div>
+            <textarea class="form-input" id="mob-review-comment-input" rows="3" placeholder="Tell us about the food taste and pickup speed..." oninput="StudentApp.onReviewCommentInput()"></textarea>
+          </div>
+
+          <button type="button" class="splash-btn" id="mob-review-submit-btn" onclick="StudentApp.submitCustomerReview()" style="width:100%;padding:11px;border-radius:12px;font-weight:800;font-size:13px;">
+            Submit Customer Review ⭐
+          </button>
+        </div>
+
+        <!-- TAB 2: COMMUNITY RECENT REVIEWS & AVERAGE RATING -->
+        <div id="mob-review-tab-community-content" style="display:none;">
+          <div class="review-community-hero" style="padding:14px;margin-bottom:14px;">
+            <div class="review-score-big" style="min-width:90px;">
+              <span class="review-score-number" id="mob-review-modal-avg-rating" style="font-size:36px;">4.8</span>
+              <div class="review-score-stars" id="mob-review-modal-stars-render" style="font-size:13px;">★★★★★</div>
+              <span class="review-score-total" id="mob-review-modal-total-count" style="font-size:10px;">42+ Reviews</span>
+            </div>
+            <div class="review-breakdown-bars">
+              <div class="review-bar-row">
+                <span>5★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="mob-review-bar-fill-5" style="width: 82%;"></div></div>
+                <span id="mob-review-bar-count-5">35</span>
+              </div>
+              <div class="review-bar-row">
+                <span>4★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="mob-review-bar-fill-4" style="width: 14%;"></div></div>
+                <span id="mob-review-bar-count-4">6</span>
+              </div>
+              <div class="review-bar-row">
+                <span>3★</span>
+                <div class="review-bar-track"><div class="review-bar-fill" id="mob-review-bar-fill-3" style="width: 4%;"></div></div>
+                <span id="mob-review-bar-count-3">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="font-size:12.5px;font-weight:700;color:var(--text-primary);margin:0;">Recent Reviews</h4>
+            <span style="font-size:10.5px;color:var(--text-muted);">Real orders</span>
+          </div>
+          <div class="reviews-grid-stream" id="mob-recent-reviews-list">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
