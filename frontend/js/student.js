@@ -2336,7 +2336,6 @@ const StudentApp = {
       this.isPlacingOrder = false;
     }
   },
-  },
 
   // ==========================================
   // Step 10: Order Confirmation & Token Generator
