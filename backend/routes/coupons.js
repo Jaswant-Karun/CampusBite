@@ -108,12 +108,12 @@ router.post('/', (req, res) => {
   db.saveData();
 
   eventBus.broadcast({
-    type: 'NEW_OFFER',
+    type: 'COUPON_AVAILABLE',
     target: 'student',
-    icon: '',
-    title: `New Deal Drop: ${newCoupon.code}`,
+    icon: 'COUPON',
+    title: `Coupon Available: ${newCoupon.code}`,
     message: `${newCoupon.description} Use code ${newCoupon.code} to get ${newCoupon.discount_value}% OFF!`,
-    data: { coupon: newCoupon }
+    data: { coupon: newCoupon, legacyType: 'NEW_OFFER' }
   });
 
   res.status(201).json({
@@ -130,8 +130,20 @@ router.put('/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'Coupon not found' });
   }
 
+  const prevActive = coupon.is_active;
   coupon.is_active = req.body.is_active !== undefined ? req.body.is_active : !coupon.is_active;
   db.saveData();
+
+  if (!prevActive && coupon.is_active) {
+    eventBus.broadcast({
+      type: 'COUPON_AVAILABLE',
+      target: 'student',
+      icon: 'COUPON',
+      title: `Offer Available: ${coupon.code}`,
+      message: `${coupon.description} Use code ${coupon.code} on your next order!`,
+      data: { coupon: coupon, legacyType: 'NEW_OFFER' }
+    });
+  }
 
   res.json({
     success: true,

@@ -322,13 +322,13 @@ router.post('/', async (req, res) => {
 
   // 2. Broadcast live notification to Student / Customer
   eventBus.broadcast({
-    type: 'ORDER_PLACED',
+    type: 'ORDER_CONFIRMED',
     target: 'student',
     userId: newOrder.user_id,
-    icon: '',
-    title: `Order Confirmed: Token #${newOrder.id}`,
-    message: `Payment successful! Your order has reached Counter ${newOrder.pickup_counter}. Slot: ${newOrder.pickup_slot}.`,
-    data: { orderId: newOrder.id, token: newOrder.id, counter: newOrder.pickup_counter }
+    icon: 'CONFIRMED',
+    title: `Order Confirmed: #${newOrder.id}`,
+    message: `Payment successful! Your order #${newOrder.id} has been confirmed. Routed to Counter ${newOrder.pickup_counter}. Slot: ${newOrder.pickup_slot}.`,
+    data: { orderId: newOrder.id, token: newOrder.id, counter: newOrder.pickup_counter, legacyType: 'ORDER_PLACED' }
   });
 
   // 3. Check for low stock alerts on affected items
@@ -418,37 +418,51 @@ router.put('/:id/status', async (req, res) => {
     }
   } catch (err) {}
 
-  // Determine user friendly icon & message for status transition
+  // Determine user friendly icon, title & message for status transition
   let statusIcon = 'PLACED';
   let statusMsg = `Order #${order.id} status is now ${normalizedStatus}.`;
+  let eventType = 'ORDER_STATUS_CHANGED';
+  let notifTitle = `Order #${order.id}: ${normalizedStatus}`;
 
   if (normalizedStatus === 'Order Placed') {
+    eventType = 'ORDER_PLACED';
     statusIcon = 'PLACED';
+    notifTitle = `Order Placed: #${order.id}`;
     statusMsg = `Order #${order.id} has been placed and received by canteen staff.`;
   } else if (normalizedStatus === 'Confirmed') {
+    eventType = 'ORDER_CONFIRMED';
     statusIcon = 'CONFIRMED';
-    statusMsg = `Order #${order.id} is confirmed. Kitchen has queued preparation.`;
+    notifTitle = `Order Confirmed: #${order.id}`;
+    statusMsg = `Your order #${order.id} is confirmed. Kitchen has queued preparation.`;
   } else if (normalizedStatus === 'Preparing') {
+    eventType = 'ORDER_PREPARING';
     statusIcon = 'PREPARING';
-    statusMsg = `Kitchen is actively preparing Order #${order.id} at Counter ${order.pickup_counter}.`;
+    notifTitle = `Order Being Prepared: #${order.id}`;
+    statusMsg = `Kitchen is actively preparing your order #${order.id} at Counter ${order.pickup_counter}.`;
   } else if (normalizedStatus === 'Ready for Pickup') {
+    eventType = 'ORDER_READY';
     statusIcon = 'READY';
-    statusMsg = `Order #${order.id} is READY FOR PICKUP at Counter ${order.pickup_counter}! Show your token #${order.id}.`;
+    notifTitle = `Order Ready: #${order.id}`;
+    statusMsg = `Order #${order.id} is READY FOR PICKUP at Counter ${order.pickup_counter}! Please show your token #${order.id}.`;
   } else if (normalizedStatus === 'Completed') {
+    eventType = 'ORDER_COMPLETED';
     statusIcon = 'COMPLETED';
+    notifTitle = `Order Completed: #${order.id}`;
     statusMsg = `Order #${order.id} has been picked up. Thank you for dining with CampusBite!`;
   } else if (normalizedStatus === 'Cancelled') {
+    eventType = 'ORDER_CANCELLED';
     statusIcon = 'CANCELLED';
+    notifTitle = `Order Cancelled: #${order.id}`;
     statusMsg = `Order #${order.id} was cancelled. Refund credited to CampusPay wallet.`;
   }
 
   // Broadcast to both Customer and Admin
   eventBus.broadcast({
-    type: 'ORDER_STATUS_CHANGED',
+    type: eventType,
     target: 'all',
     userId: order.user_id,
     icon: statusIcon,
-    title: `Order #${order.id}: ${normalizedStatus}`,
+    title: notifTitle,
     message: statusMsg,
     data: { 
       orderId: order.id, 
@@ -456,7 +470,8 @@ router.put('/:id/status', async (req, res) => {
       order_status: normalizedStatus,
       counter: order.pickup_counter, 
       estimated_prep_time: order.estimated_prep_time,
-      order: order 
+      order: order,
+      legacyType: 'ORDER_STATUS_CHANGED'
     }
   });
 

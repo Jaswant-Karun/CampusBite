@@ -20,6 +20,28 @@ router.get('/', (req, res) => {
   });
 });
 
+// POST create notification directly
+router.post('/', (req, res) => {
+  const { title, message, type, target, userId, icon, data } = req.body;
+  if (!title || !message) {
+    return res.status(400).json({ success: false, message: 'Title and message are required' });
+  }
+  const notif = eventBus.broadcast({
+    title,
+    message,
+    type: type || 'INFO',
+    target: target || 'student',
+    userId: userId || null,
+    icon: icon || '',
+    data: data || {}
+  });
+  res.status(201).json({
+    success: true,
+    message: 'Notification created successfully',
+    notification: notif
+  });
+});
+
 // POST mark all notifications as read
 router.post('/read-all', (req, res) => {
   const { role, userId } = req.body;
