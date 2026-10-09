@@ -654,16 +654,34 @@
               <!-- Rendered via JS -->
             </div>
 
-            <!-- Coupon Code Input -->
-            <div style="margin-top:16px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;">
-              <strong style="font-size:12.5px;display:block;margin-bottom:8px;">Have a Promo Code?</strong>
+            <!-- Coupon Code Section (Step 9) -->
+            <div style="margin-top:16px;background:white;border-radius:16px;padding:14px;border:1px solid #E2E8F0;" id="mob-cart-coupon-section">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong style="font-size:12.5px;">Have a Promo Coupon?</strong>
+                <span style="font-size:10px;color:var(--primary);font-weight:700;">Step 9</span>
+              </div>
+
+              <!-- Active Status Pill -->
+              <div class="applied-coupon-status-pill" id="mob-cart-applied-coupon-pill" style="display:none;margin-bottom:8px;">
+                <span id="mob-cart-applied-coupon-name">CAMPUS20 (20% OFF)</span>
+                <button class="remove-coupon-btn" onclick="StudentApp.removeCoupon()">✕</button>
+              </div>
+
               <div style="display:flex;gap:8px;">
                 <input type="text" id="coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
                 <button onclick="StudentApp.applyCouponCode()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
                   Apply
                 </button>
               </div>
-              <div id="coupon-status-msg" style="font-size:11px;margin-top:6px;"></div>
+
+              <div class="coupon-chips-list" style="margin-top:8px;">
+                <span class="coupon-chip" onclick="document.getElementById('coupon-input').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                  CAMPUS20 (20%)
+                </span>
+                <span class="coupon-chip" onclick="document.getElementById('coupon-input').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                  STUDENT10 (10%)
+                </span>
+              </div>
             </div>
 
             <!-- Loyalty Points Redemption -->
@@ -735,6 +753,25 @@
             <div style="color:#CBD5E1;">→</div>
             <div style="color:#94A3B8;display:flex;align-items:center;gap:4px;">
               <span>○</span> Confirmation
+            </div>
+          </div>
+
+          <!-- Coupon Section in Mobile Checkout (Step 9) -->
+          <div style="background:white;border-radius:18px;padding:14px 16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+            <strong style="font-size:12.5px;display:block;margin-bottom:8px;">🏷️ Apply Promo Coupon</strong>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="mob-checkout-coupon-input" placeholder="e.g. CAMPUS20" style="flex:1;border:1px solid #CBD5E1;border-radius:10px;padding:8px 12px;font-size:12px;text-transform:uppercase;">
+              <button onclick="StudentApp.applyCouponCode(document.getElementById('mob-checkout-coupon-input').value)" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">
+                Apply
+              </button>
+            </div>
+            <div class="coupon-chips-list" style="margin-top:8px;">
+              <span class="coupon-chip" onclick="document.getElementById('mob-checkout-coupon-input').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                CAMPUS20 (20%)
+              </span>
+              <span class="coupon-chip" onclick="document.getElementById('mob-checkout-coupon-input').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                STUDENT10 (10%)
+              </span>
             </div>
           </div>
 
