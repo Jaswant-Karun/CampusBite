@@ -543,6 +543,54 @@
       "expiry_date": "2026-12-31",
       "is_active": true,
       "badge": "🥪 Wheel Perk"
+    },
+    {
+      "id": "c-102",
+      "code": "WELCOME10",
+      "description": "10% OFF your meals across campus",
+      "discount_type": "percentage",
+      "discount_value": 10,
+      "minimum_order": 50,
+      "max_discount": 30,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "Welcome Deal"
+    },
+    {
+      "id": "c-103",
+      "code": "BIGBITE200",
+      "description": "Flat ₹50 OFF on orders of ₹200 or more",
+      "discount_type": "flat",
+      "discount_value": 50,
+      "minimum_order": 200,
+      "max_discount": 50,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "Hunger Buster"
+    },
+    {
+      "id": "c-104",
+      "code": "EXPIRED50",
+      "description": "50% OFF flash voucher (Expired)",
+      "discount_type": "percentage",
+      "discount_value": 50,
+      "minimum_order": 100,
+      "max_discount": 100,
+      "expiry_date": "2023-01-01",
+      "is_active": true,
+      "badge": "Expired Voucher"
+    },
+    {
+      "id": "c-105",
+      "code": "INACTIVE15",
+      "description": "15% OFF discontinued promotion",
+      "discount_type": "percentage",
+      "discount_value": 15,
+      "minimum_order": 50,
+      "max_discount": 40,
+      "expiry_date": "2026-12-31",
+      "is_active": false,
+      "badge": "Disabled Promo"
     }
   ],
   "orders": [

@@ -710,6 +710,27 @@ class Database {
         if (!parsed.coupons || !parsed.coupons.length) {
           parsed.coupons = INITIAL_DATA.coupons;
           updated = true;
+        } else {
+          INITIAL_DATA.coupons.forEach(seed => {
+            const existing = parsed.coupons.find(c => c.code.toUpperCase() === seed.code.toUpperCase());
+            if (!existing) {
+              parsed.coupons.push(seed);
+              updated = true;
+            } else {
+              if (seed.code === 'EXPIRED50') {
+                existing.expiry_date = seed.expiry_date;
+                updated = true;
+              }
+              if (seed.code === 'INACTIVE15') {
+                existing.is_active = false;
+                updated = true;
+              }
+              if (seed.code === 'BIGBITE200') {
+                existing.minimum_order = 200;
+                updated = true;
+              }
+            }
+          });
         }
         if (updated) this.saveData(parsed);
         return parsed;

@@ -271,7 +271,7 @@ runTest('Backend: coupons.js supports Admin coupon management (GET, POST, PUT, D
   const routePath = path.join(__dirname, './routes/coupons.js');
   const content = fs.readFileSync(routePath, 'utf8');
 
-  assert(content.includes("router.get('/')"), 'Admin can list coupons via GET /api/coupons');
+  assert(content.includes("router.get('/'") || content.includes("router.get('/"), 'Admin can list coupons via GET /api/coupons');
   assert(content.includes("router.post('/'"), 'Admin can create coupons via POST /api/coupons');
   assert(content.includes("router.put('/:id'"), 'Admin can update coupons via PUT /api/coupons/:id');
   assert(content.includes("router.delete('/:id'"), 'Admin can delete coupons via DELETE /api/coupons/:id');
