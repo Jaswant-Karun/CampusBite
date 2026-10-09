@@ -2238,6 +2238,14 @@ const StudentApp = {
 
     if (this.selectedPaymentMethod === 'UPI') {
       this.showUpiSimulationModal(total);
+    } else if (this.selectedPaymentMethod === 'Card') {
+      this.showCardSimulationModal(total);
+    } else if (this.selectedPaymentMethod === 'Cash' || this.selectedPaymentMethod === 'Pay at Counter') {
+      // Step 11 Requirement: For Pay at Counter / Cash: Mark payment as PENDING
+      await this.finalizeOrderPlacement({ 
+        payment_method: 'Cash', 
+        payment_status: 'PENDING' 
+      });
     } else if (this.selectedPaymentMethod === 'Wallet') {
       if (this.currentUser.wallet_balance < total) {
         App.showToast(`Insufficient CampusPay balance (₹${this.currentUser.wallet_balance}). Required: ₹${total}. Please top-up.`, 'warning');
@@ -2247,30 +2255,183 @@ const StudentApp = {
       this.currentUser.wallet_balance -= total;
       this.updateWalletUI();
       App.showToast(`Deducted ₹${total} from CampusPay Wallet!`, 'success');
-      await this.finalizeOrderPlacement();
+      await this.finalizeOrderPlacement({ 
+        payment_method: 'Wallet', 
+        payment_status: 'PAID' 
+      });
     } else {
-      await this.finalizeOrderPlacement();
+      await this.finalizeOrderPlacement({ 
+        payment_method: this.selectedPaymentMethod, 
+        payment_status: 'PAID' 
+      });
     }
   },
 
+  // ==========================================
+  // Step 11: Simulated Payment System
+  // Academic prototype — No real money or APIs
+  // ==========================================
   showUpiSimulationModal(amount) {
+    const formattedAmt = Number(amount || 0).toFixed(2);
+    
+    // Desktop modal amount
+    const amtEl = document.getElementById('upi-modal-amount');
+    if (amtEl) amtEl.textContent = `₹${formattedAmt}`;
+
+    // Mobile modal amount
+    const mobAmtEl = document.getElementById('mob-upi-modal-amount');
+    if (mobAmtEl) mobAmtEl.textContent = `₹${formattedAmt}`;
+
+    // Default student UPI ID
+    const upiInput = document.getElementById('upi-id-input');
+    if (upiInput && !upiInput.value) {
+      upiInput.value = 'student@okaxis';
+    }
+    const mobUpiInput = document.getElementById('mob-upi-id-input');
+    if (mobUpiInput && !mobUpiInput.value) {
+      mobUpiInput.value = 'student@okaxis';
+    }
+
+    // QR Render
     if (window.CampusUPI) {
       window.CampusUPI.openUpiModal(amount, 'CB' + Math.floor(1000 + Math.random() * 9000));
     } else {
-      const amtEl = document.getElementById('upi-modal-amount');
-      if (amtEl) amtEl.textContent = `₹${amount}`;
       App.openModal('upi-payment-modal');
     }
   },
 
-  async confirmUpiSuccess() {
+  async confirmUpiPayment(simulateFailure = false) {
+    if (simulateFailure) {
+      // Step 11 Requirement: Payment status FAILED simulation
+      App.closeModal('upi-payment-modal');
+      App.showToast('Simulated UPI Payment FAILED / Declined. Payment status: FAILED', 'error');
+      return;
+    }
+
+    // Read UPI ID input (Desktop or Mobile)
+    const upiInput = document.getElementById('upi-id-input');
+    const mobUpiInput = document.getElementById('mob-upi-id-input');
+    const upiId = (upiInput ? upiInput.value : (mobUpiInput ? mobUpiInput.value : '')) || 'student@okaxis';
+
+    if (!upiId.trim() || !upiId.includes('@')) {
+      App.showToast('Please enter a valid UPI ID (e.g. student@okaxis)', 'warning');
+      return;
+    }
+
     App.closeModal('upi-payment-modal');
-    App.closeModal('upi-simulation-modal');
-    App.showToast('UPI Payment Approved! Verifying with MongoDB...', 'success');
-    await this.finalizeOrderPlacement();
+    App.showToast(`Simulated UPI Payment Approved for ${upiId}! (Status: PAID)`, 'success');
+
+    // Create the order with PAID status
+    await this.finalizeOrderPlacement({
+      payment_method: 'UPI',
+      payment_status: 'PAID',
+      upi_id: upiId.trim()
+    });
   },
 
-  async finalizeOrderPlacement() {
+  confirmUpiSuccess() {
+    return this.confirmUpiPayment(false);
+  },
+
+  showCardSimulationModal(amount) {
+    const formattedAmt = Number(amount || 0).toFixed(2);
+
+    const amtEl = document.getElementById('card-modal-amount');
+    if (amtEl) amtEl.textContent = `₹${formattedAmt}`;
+
+    const mobAmtEl = document.getElementById('mob-card-modal-amount');
+    if (mobAmtEl) mobAmtEl.textContent = `₹${formattedAmt}`;
+
+    // Pre-fill student name
+    const nameInput = document.getElementById('card-name-input');
+    if (nameInput && this.currentUser) {
+      nameInput.value = this.currentUser.name;
+      const previewName = document.getElementById('card-preview-name');
+      if (previewName) previewName.textContent = this.currentUser.name.toUpperCase();
+    }
+
+    App.openModal('card-payment-modal');
+  },
+
+  formatCardNumberInput(input) {
+    if (!input) return;
+    let val = input.value.replace(/\D/g, '').substring(0, 16);
+    let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+    input.value = formatted;
+
+    // Update virtual card preview (Masked sensitive digits)
+    const preview = document.getElementById('card-preview-number');
+    if (preview) {
+      const last4 = val.slice(-4) || '8821';
+      preview.textContent = `•••• •••• •••• ${last4}`;
+    }
+  },
+
+  formatCardExpiryInput(input) {
+    if (!input) return;
+    let val = input.value.replace(/\D/g, '').substring(0, 4);
+    if (val.length >= 2) {
+      val = val.substring(0, 2) + '/' + val.substring(2);
+    }
+    input.value = val;
+
+    const preview = document.getElementById('card-preview-expiry');
+    if (preview) {
+      preview.textContent = val || '12/28';
+    }
+  },
+
+  async confirmCardPayment(simulateFailure = false) {
+    if (simulateFailure) {
+      // Step 11 Requirement: Payment status FAILED simulation
+      App.closeModal('card-payment-modal');
+      App.showToast('Simulated Card Payment Declined by Test Bank. Payment status: FAILED', 'error');
+      return;
+    }
+
+    // Read card inputs
+    const cardNumEl = document.getElementById('card-number-input') || document.getElementById('mob-card-number-input');
+    const expiryEl = document.getElementById('card-expiry-input') || document.getElementById('mob-card-expiry-input');
+    const cvvEl = document.getElementById('card-cvv-input') || document.getElementById('mob-card-cvv-input');
+
+    const rawNum = cardNumEl ? cardNumEl.value.replace(/\D/g, '') : '4532892012348821';
+    const expiry = expiryEl ? expiryEl.value.trim() : '12/28';
+    const cvv = cvvEl ? cvvEl.value.trim() : '429';
+
+    if (rawNum.length < 13 || rawNum.length > 19) {
+      App.showToast('Please enter a valid card number (13-19 digits)', 'warning');
+      return;
+    }
+
+    if (expiry.length < 4 || !expiry.includes('/')) {
+      App.showToast('Please enter a valid expiry date (MM/YY)', 'warning');
+      return;
+    }
+
+    if (cvv.length < 3) {
+      App.showToast('Please enter a valid 3-digit CVV', 'warning');
+      return;
+    }
+
+    // Step 11 Security Requirement: Do not store sensitive card information in plaintext
+    // Mask sensitive details (CVV is discarded completely)
+    const last4 = rawNum.slice(-4) || '8821';
+    const maskedCard = `•••• •••• •••• ${last4}`;
+    const brand = rawNum.startsWith('4') ? 'Visa' : (rawNum.startsWith('5') ? 'Mastercard' : 'RuPay');
+
+    App.closeModal('card-payment-modal');
+    App.showToast(`Simulated Card Payment Authorized! (${brand} ${maskedCard}) • Status: PAID`, 'success');
+
+    // Create order with PAID status & masked card
+    await this.finalizeOrderPlacement({
+      payment_method: 'Card',
+      payment_status: 'PAID',
+      card_masked: maskedCard,
+      card_brand: brand
+    });
+  },
+
+  async finalizeOrderPlacement(paymentOptions = {}) {
     // Step 10 Requirement: Do not create duplicate orders
     if (this.isPlacingOrder) {
       App.showToast('Order is already being placed...', 'info');
@@ -2282,13 +2443,20 @@ const StudentApp = {
                     document.getElementById('mob-checkout-instructions-input');
     const instructions = notesEl ? notesEl.value.trim() : '';
 
+    const resolvedMethod = paymentOptions.payment_method || this.selectedPaymentMethod || 'UPI';
+    const resolvedStatus = paymentOptions.payment_status || (resolvedMethod === 'Cash' ? 'PENDING' : 'PAID');
+
     const orderPayload = {
       user_id: this.currentUser.id,
       customer_name: this.currentUser.name,
       customer_phone: this.currentUser.phone,
       items: this.cart.map(c => ({ product_id: c.productId, name: c.name, price: c.price, quantity: c.quantity })),
       coupon_code: this.appliedCoupon ? this.appliedCoupon.code : null,
-      payment_method: this.selectedPaymentMethod,
+      payment_method: resolvedMethod,
+      payment_status: resolvedStatus,
+      upi_id: paymentOptions.upi_id || (resolvedMethod === 'UPI' ? 'student@okaxis' : null),
+      card_masked: paymentOptions.card_masked || null,
+      card_brand: paymentOptions.card_brand || null,
       pickup_slot: this.selectedPickupSlot,
       redeem_loyalty_points: this.redeemLoyalty,
       special_instructions: instructions
@@ -2326,7 +2494,8 @@ const StudentApp = {
           window.AdminApp.loadKPIsAndAnalytics();
         }
 
-        App.showToast(`Order #${order.id} placed into MongoDB! Token ready.`, 'success');
+        const statusMsg = order.payment_status === 'PENDING' ? 'Payment: PENDING (Pay at Counter)' : 'Payment: PAID';
+        App.showToast(`Order #${order.id} placed into MongoDB! ${statusMsg}`, 'success');
       } else {
         App.showToast((res && res.message) || 'Failed to place order.', 'error');
       }
