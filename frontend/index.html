@@ -1613,15 +1613,35 @@
                 </div>
               </div>
 
-              <!-- Main Confirmation Layout -->
+              <!-- Main Confirmation Layout (Step 12: Professional Order Confirmation Screen) -->
               <div class="confirmation-layout" style="margin-top:20px;">
                 <!-- Hero Header -->
                 <div class="confirmation-hero-card">
                   <div class="confirm-success-icon-wrap">
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   </div>
-                  <h2 class="confirm-title">Order Placed Successfully! 🎉</h2>
-                  <p class="confirm-subtitle">Your food token is generated and cooking dispatch has started.</p>
+                  <h2 class="confirm-title">Order Confirmed! 🎉</h2>
+                  <p class="confirm-subtitle">Your meal order is confirmed and sent to the kitchen for preparation.</p>
+
+                  <!-- Key Order Summary Banner (Step 12 Requirement) -->
+                  <div class="confirmation-highlight-banner" id="conf-highlight-banner" style="margin-top:16px;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:14px;padding:12px 18px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:12px;">
+                    <div style="text-align:center;">
+                      <div style="font-size:10.5px;text-transform:uppercase;color:#64748B;font-weight:700;letter-spacing:0.5px;">Order ID</div>
+                      <strong style="font-size:16px;color:var(--primary);font-weight:900;" id="conf-order-id-label">Order #CB1024</strong>
+                    </div>
+                    <div style="width:1px;height:28px;background:#CBD5E1;"></div>
+                    <div style="text-align:center;">
+                      <div style="font-size:10.5px;text-transform:uppercase;color:#64748B;font-weight:700;letter-spacing:0.5px;">Payment Status</div>
+                      <span id="conf-payment-status-badge" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;background:#DCFCE7;color:#15803D;border:1px solid #86EFAC;">
+                        Payment: Paid
+                      </span>
+                    </div>
+                    <div style="width:1px;height:28px;background:#CBD5E1;"></div>
+                    <div style="text-align:center;">
+                      <div style="font-size:10.5px;text-transform:uppercase;color:#64748B;font-weight:700;letter-spacing:0.5px;">Scheduled Pickup</div>
+                      <strong style="font-size:14px;color:#0F172A;font-weight:800;" id="conf-pickup-slot-label">Pickup: 12:30 PM – 12:45 PM</strong>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Digital Pickup Pass Stub -->
@@ -1636,11 +1656,11 @@
 
                   <div class="token-number-hero-wrap">
                     <div>
-                      <div style="font-size:11.5px;color:#64748B;font-weight:700;text-transform:uppercase;">ORDER TOKEN NUMBER</div>
+                      <div style="font-size:11.5px;color:#64748B;font-weight:700;text-transform:uppercase;">OFFICIAL TOKEN NUMBER</div>
                       <div class="token-number-display" id="conf-order-id">#CB1024</div>
                       <div style="font-size:12px;color:#10B981;font-weight:700;" id="conf-pass-status-text">⚡ Zero-Queue Priority Token</div>
                     </div>
-                    <div class="token-qr-preview-box" id="conf-pickup-qr">
+                    <div class="token-qr-preview-box" id="conf-pickup-qr" title="Scan at express counter">
                       <!-- Rendered by window.CampusQR or fallback icon -->
                       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="7" y1="7" x2="7.01" y2="7"></line><line x1="17" y1="7" x2="17.01" y2="7"></line><line x1="17" y1="17" x2="17.01" y2="17"></line><line x1="7" y1="17" x2="7.01" y2="17"></line></svg>
                     </div>
@@ -1649,28 +1669,36 @@
                   <div class="token-pass-details-grid">
                     <div>
                       <div class="token-pass-item-label">Scheduled Pickup Slot</div>
-                      <div class="token-pass-item-val" id="conf-pickup-slot">12:30 PM – 12:40 PM</div>
+                      <div class="token-pass-item-val" id="conf-pickup-slot">Pickup: 12:30 PM – 12:45 PM</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Payment Status</div>
+                      <div class="token-pass-item-val" id="conf-payment-method">Payment: Paid</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Order Date & Time</div>
+                      <div class="token-pass-item-val" id="conf-timestamp">09 Oct 2026, 12:30 PM</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Estimated Preparation Time</div>
+                      <div class="token-pass-item-val" id="conf-prep-time" style="color:#D97706;font-weight:800;">⏱ ~8–12 mins</div>
                     </div>
                     <div>
                       <div class="token-pass-item-label">Customer Name</div>
                       <div class="token-pass-item-val" id="conf-customer-name">Jaswant Karun</div>
                     </div>
                     <div>
-                      <div class="token-pass-item-label">Payment Mode</div>
-                      <div class="token-pass-item-val" id="conf-payment-method">Simulated UPI</div>
-                    </div>
-                    <div>
-                      <div class="token-pass-item-label">Order Timestamp</div>
-                      <div class="token-pass-item-val" id="conf-timestamp">Just Now</div>
+                      <div class="token-pass-item-label">Pickup Counter</div>
+                      <div class="token-pass-item-val" id="conf-counter-val">Counter 2 Express</div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Receipt & Items Breakdown Card -->
+                <!-- Receipt & Items Breakdown Card (Step 12: Order Items & Total Amount) -->
                 <div class="confirm-receipt-card">
                   <h4 style="font-size:14.5px;font-weight:800;color:var(--text-primary);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;">
-                    <span>Order Receipt Summary</span>
-                    <span style="font-size:11px;font-weight:700;color:#10B981;background:#DCFCE7;padding:3px 8px;border-radius:999px;">Paid in Full</span>
+                    <span>Ordered Products & Receipt</span>
+                    <span id="conf-receipt-status-pill" style="font-size:11px;font-weight:700;color:#10B981;background:#DCFCE7;padding:3px 8px;border-radius:999px;">Payment: Paid</span>
                   </h4>
 
                   <!-- Ordered Items List -->
@@ -1684,8 +1712,8 @@
                   </div>
 
                   <div class="confirm-receipt-row total">
-                    <span>Total Amount Paid</span>
-                    <span id="conf-total-amount" style="color:var(--primary);font-size:20px;">₹180</span>
+                    <span>Total Amount</span>
+                    <span id="conf-total-amount" style="color:var(--primary);font-size:22px;font-weight:900;">₹180</span>
                   </div>
 
                   <!-- Loyalty Points Highlight -->
@@ -1698,14 +1726,23 @@
                   </div>
                 </div>
 
-                <!-- Action CTAs -->
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                  <button class="checkout-btn" onclick="StudentApp.navigateTo('tracking')" style="width:100%;padding:14px;font-size:15px;font-weight:800;border-radius:12px;">
-                    Track Order Live 📍 →
+                <!-- Action CTAs (Step 12 Buttons: TRACK ORDER, VIEW ORDER HISTORY, BACK TO HOME) -->
+                <div class="confirm-action-buttons-wrap" style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
+                  <button type="button" class="checkout-btn" id="conf-track-order-btn" onclick="StudentApp.navigateTo('tracking')" style="width:100%;padding:14px;font-size:14.5px;font-weight:800;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                    <span>TRACK ORDER</span>
                   </button>
-                  <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="width:100%;padding:11px;font-size:13px;border-radius:12px;font-weight:700;">
-                    ← Back to Canteen Menu
-                  </button>
+
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <button type="button" class="btn-secondary" id="conf-view-history-btn" onclick="StudentApp.viewOrderHistory()" style="padding:12px;font-size:13px;border-radius:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;">
+                      <span>📋</span>
+                      <span>VIEW ORDER HISTORY</span>
+                    </button>
+                    <button type="button" class="btn-outline" id="conf-back-home-btn" onclick="StudentApp.navigateTo('home')" style="padding:12px;font-size:13px;border-radius:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;">
+                      <span>🏠</span>
+                      <span>BACK TO HOME</span>
+                    </button>
+                  </div>
                 </div>
 
               </div>
