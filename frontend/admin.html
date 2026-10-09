@@ -193,78 +193,183 @@
     <!-- Main Workspace Area - Soft Slate #F8FAFC -->
     <div class="admin-main-area">
       
-      <!-- Top Title & Quick Stats -->
+      <!-- Top Title & Quick Action Bar -->
       <div class="admin-header-row">
         <div class="admin-page-title">
-          <h1 style="color:#0F172A;">Canteen Operations Hub</h1>
-          <p style="color:#64748B;">Real-time order dispatch, inventory automation, and predictive intelligence</p>
+          <h1 style="color:#0F172A;" id="admin-main-heading">Canteen Operations Dashboard</h1>
+          <p style="color:#64748B;" id="admin-main-subheading">Live order dispatch, telemetry & business intelligence</p>
         </div>
         <div class="admin-action-controls">
+          <button class="reset-btn" onclick="AdminApp.loadAllData()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            Refresh Data
+          </button>
           <button class="btn-primary" onclick="AdminApp.openAddProductModal()" style="padding:8px 16px;font-size:13px;">
             + Add Food Item
           </button>
         </div>
       </div>
 
-      <!-- KPI Metrics Cards Grid -->
-      <div class="kpi-cards-grid">
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <span class="kpi-label">Today's Revenue</span>
-            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg></span>
+      <!-- ====================================================================
+           TAB 1: DASHBOARD (STEP 18 CORE SAAS VIEW)
+           ==================================================================== -->
+      <div id="admin-tab-dashboard" class="admin-tab-panel active">
+        
+        <!-- Dashboard 5 KPI Cards -->
+        <div class="dashboard-kpi-grid">
+          <!-- 1. Today's Sales -->
+          <div class="saas-kpi-card sales">
+            <div class="saas-kpi-top">
+              <span class="saas-kpi-label">Today's Sales</span>
+              <div class="saas-kpi-icon">₹</div>
+            </div>
+            <div class="saas-kpi-val" id="kpi-sales">₹0</div>
+            <div class="saas-kpi-sub" id="kpi-sales-trend">
+              <strong>↑ Real-time</strong> from paid canteen orders
+            </div>
+            <!-- Backward compatibility hook -->
+            <span id="kpi-revenue" style="display:none;"></span>
           </div>
-          <div class="kpi-value" id="kpi-revenue">₹12,450</div>
-          <div class="kpi-trend positive" style="color:#14B8A6;">↑ +18.4% vs yesterday</div>
+
+          <!-- 2. Today's Orders -->
+          <div class="saas-kpi-card orders">
+            <div class="saas-kpi-top">
+              <span class="saas-kpi-label">Today's Orders</span>
+              <div class="saas-kpi-icon">📋</div>
+            </div>
+            <div class="saas-kpi-val" id="kpi-orders">0</div>
+            <div class="saas-kpi-sub" id="kpi-orders-trend">
+              <strong>100%</strong> logged in database
+            </div>
+          </div>
+
+          <!-- 3. Active Customers -->
+          <div class="saas-kpi-card customers">
+            <div class="saas-kpi-top">
+              <span class="saas-kpi-label">Active Customers</span>
+              <div class="saas-kpi-icon">👥</div>
+            </div>
+            <div class="saas-kpi-val" id="kpi-customers">0</div>
+            <div class="saas-kpi-sub">
+              Verified students & faculty diners
+            </div>
+          </div>
+
+          <!-- 4. Pending Orders -->
+          <div class="saas-kpi-card pending">
+            <div class="saas-kpi-top">
+              <span class="saas-kpi-label">Pending Orders</span>
+              <div class="saas-kpi-icon">⏳</div>
+            </div>
+            <div class="saas-kpi-val" id="kpi-pending">0</div>
+            <div class="saas-kpi-sub" style="color:#D97706;">
+              In kitchen prep & awaiting pickup
+            </div>
+          </div>
+
+          <!-- 5. Average Rating -->
+          <div class="saas-kpi-card rating">
+            <div class="saas-kpi-top">
+              <span class="saas-kpi-label">Average Rating</span>
+              <div class="saas-kpi-icon">⭐</div>
+            </div>
+            <div class="saas-kpi-val" id="kpi-rating">4.8 / 5.0</div>
+            <div class="saas-kpi-sub" id="kpi-rating-sub">
+              From verified student reviews
+            </div>
+          </div>
         </div>
 
-        <div class="kpi-card green">
-          <div class="kpi-top">
-            <span class="kpi-label">Today's Orders</span>
-            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>
+        <!-- Hidden low-stock kpi for badge sync -->
+        <span id="kpi-low-stock" style="display:none;">0</span>
+
+        <!-- Middle Row: Sales Overview Chart & Order Status Overview -->
+        <div class="dashboard-middle-grid">
+          
+          <!-- Sales Overview Chart Card -->
+          <div class="saas-panel-card" id="dashboard-sales-chart-card">
+            <div class="saas-panel-header">
+              <div class="saas-panel-title">
+                <h3>Sales Overview</h3>
+                <p>Live dining revenue velocity across days and peak rush hours</p>
+              </div>
+              <div class="saas-btn-segmented">
+                <button type="button" class="saas-seg-btn active" id="btn-chart-view-weekly" onclick="AdminApp.switchDashboardChartView('weekly')">Weekly Sales</button>
+                <button type="button" class="saas-seg-btn" id="btn-chart-view-hourly" onclick="AdminApp.switchDashboardChartView('hourly')">Hourly Traffic</button>
+              </div>
+            </div>
+            <div class="chart-canvas-wrapper" id="dashboard-sales-chart" style="min-height:210px;">
+              <!-- Rendered via JS -->
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px dashed #E2E8F0;padding-top:12px;margin-top:12px;font-size:12px;color:#64748B;">
+              <span>Total Catalog Revenue: <strong style="color:#10B981;" id="dashboard-total-revenue-tag">₹0</strong></span>
+              <span>Express Counter 1 & 2 Live</span>
+            </div>
           </div>
-          <div class="kpi-value" id="kpi-orders">186</div>
-          <div class="kpi-trend positive" style="color:#14B8A6;">↑ 42 peak lunch surge</div>
+
+          <!-- Order Status Overview Card -->
+          <div class="saas-panel-card" id="dashboard-order-status-card">
+            <div class="saas-panel-header">
+              <div class="saas-panel-title">
+                <h3>Order Status Overview</h3>
+                <p>Real-time lifecycle distribution of student dining tokens</p>
+              </div>
+              <span style="font-size:11.5px;font-weight:700;background:#EEF2FF;color:#4F46E5;padding:3px 9px;border-radius:999px;" id="dashboard-total-orders-pill">
+                0 Total Orders
+              </span>
+            </div>
+
+            <div class="order-status-breakdown-list" id="dashboard-order-status-breakdown">
+              <!-- Rendered dynamically via AdminApp.renderOrderStatusOverview() -->
+            </div>
+          </div>
+
         </div>
 
-        <div class="kpi-card indigo">
-          <div class="kpi-top">
-            <span class="kpi-label">Active Customers</span>
-            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+        <!-- Bottom Row: Recent Orders Table -->
+        <div class="saas-table-card" id="dashboard-recent-orders-card">
+          <div class="saas-table-header">
+            <div>
+              <h3 style="font-size:16.5px;font-weight:800;color:#0F172A;margin:0;">Recent Orders</h3>
+              <p style="font-size:12px;color:#64748B;margin:2px 0 0;">Latest dining orders received in real-time from student apps</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn-secondary" onclick="AdminApp.switchTab('orders')" style="padding:6px 14px;font-size:12px;border-radius:8px;">
+                View All in Orders Tab →
+              </button>
+              <button type="button" class="reset-btn" onclick="AdminApp.loadOrders()" style="padding:6px 12px;font-size:12px;">
+                ⟳ Refresh
+              </button>
+            </div>
           </div>
-          <div class="kpi-value" id="kpi-customers">142</div>
-          <div class="kpi-trend positive" style="color:#4F46E5;">Students & Faculty</div>
+
+          <div class="saas-table-container">
+            <table class="saas-data-table">
+              <thead>
+                <tr>
+                  <th>Token #</th>
+                  <th>Customer</th>
+                  <th>Items Ordered</th>
+                  <th>Total (₹)</th>
+                  <th>Payment</th>
+                  <th>Order Status</th>
+                  <th>Placed At</th>
+                  <th style="text-align:right;">Quick Action</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-orders-tbody">
+                <!-- Rendered dynamically via AdminApp.renderRecentOrdersTable() -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="kpi-card amber">
-          <div class="kpi-top">
-            <span class="kpi-label">Pending Kitchen Orders</span>
-            <span class="kpi-icon-pill">⏳</span>
-          </div>
-          <div class="kpi-value" id="kpi-pending">23</div>
-          <div class="kpi-trend neutral" style="color:#F59E0B;">Across Counter 1, 2, 3</div>
-        </div>
-
-        <div class="kpi-card green">
-          <div class="kpi-top">
-            <span class="kpi-label">Average Satisfaction</span>
-            <span class="kpi-icon-pill"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
-          </div>
-          <div class="kpi-value" id="kpi-rating">4.5 / 5.0</div>
-          <div class="kpi-trend positive" style="color:#14B8A6;">From 84 student reviews</div>
-        </div>
-
-        <div class="kpi-card rose">
-          <div class="kpi-top">
-            <span class="kpi-label">Low Stock Alerts</span>
-            <span class="kpi-icon-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
-          </div>
-          <div class="kpi-value" id="kpi-low-stock">4</div>
-          <div class="kpi-trend neutral" style="color:#DC2626;">Action required</div>
-        </div>
       </div>
 
-      <!-- TAB 1: LIVE ORDERS BOARD -->
-      <div id="admin-tab-orders" class="admin-tab-panel active">
+      <!-- ====================================================================
+           TAB 2: ORDERS (LIVE KANBAN QUEUE)
+           ==================================================================== -->
+      <div id="admin-tab-orders" class="admin-tab-panel">
         <div class="orders-filter-bar">
           <div class="orders-filter-chips">
             <button class="order-filter-btn active" data-status="All">All Orders</button>
@@ -287,12 +392,49 @@
         </div>
       </div>
 
-      <!-- TAB 2: INVENTORY & STOCK MANAGEMENT -->
+      <!-- ====================================================================
+           TAB 3: PRODUCTS (FULL MENU CATALOG MANAGEMENT)
+           ==================================================================== -->
+      <div id="admin-tab-products" class="admin-tab-panel">
+        <div class="orders-filter-bar">
+          <div>
+            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Canteen Products & Menu Catalog</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin:0;">Manage food items, pricing, prep times, and live availability</p>
+          </div>
+          <button class="btn-primary" onclick="AdminApp.openAddProductModal()" style="padding:8px 16px;font-size:13px;">+ Add New Food Item</button>
+        </div>
+
+        <div class="saas-table-card">
+          <div class="saas-table-container">
+            <table class="saas-data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Price (₹)</th>
+                  <th>Est. Prep</th>
+                  <th>Live Stock</th>
+                  <th>Availability</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody">
+                <!-- Rendered dynamically via AdminApp.renderProductsTable() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TAB 4: INVENTORY & STOCK MANAGEMENT
+           ==================================================================== -->
       <div id="admin-tab-inventory" class="admin-tab-panel">
         <div class="orders-filter-bar">
           <div>
-            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Real-Time Inventory & Price Management</h3>
-            <p style="font-size:12px;color:var(--text-muted);margin:0;">Instant inline price updates, stock adjustment, and menu controls</p>
+            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Real-Time Inventory & Stock Management</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin:0;">Instant inline price updates, stock adjustment, and replenishment alerts</p>
           </div>
           <button class="btn-primary" onclick="AdminApp.openAddProductModal()" style="padding:8px 16px;font-size:13px;">+ Add New Product</button>
         </div>
@@ -316,64 +458,46 @@
         </div>
       </div>
 
-      <!-- TAB 3: SALES & PEAK SURGE ANALYTICS -->
-      <div id="admin-tab-analytics" class="admin-tab-panel">
-        <div class="analytics-grid-two-col">
-          <div class="chart-card">
-            <div class="chart-header">
-              <div>
-                <div class="chart-title">Weekly Revenue Trends</div>
-                <div style="font-size:12px;color:var(--text-muted);">Total revenue generated per day (Mon - Sun)</div>
-              </div>
-              <span style="font-size:12px;font-weight:700;color:#14B8A6;">₹64,600 Total Week</span>
-            </div>
-            <div class="chart-canvas-wrapper" id="weekly-revenue-chart-canvas"></div>
+      <!-- ====================================================================
+           TAB 5: CUSTOMERS (VERIFIED CAMPUS DINERS CRM)
+           ==================================================================== -->
+      <div id="admin-tab-customers" class="admin-tab-panel">
+        <div class="orders-filter-bar">
+          <div>
+            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Campus Customers & Diners Directory</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin:0;">Registered students, dining spend metrics, loyalty balances & account status</p>
           </div>
-
-          <div class="chart-card">
-            <div class="chart-header">
-              <div class="chart-title">Top Selling Items</div>
-              <span style="font-size:11px;color:var(--text-muted);">Units Sold</span>
-            </div>
-            <div class="top-selling-list" id="admin-top-selling-list">
-              <!-- Rendered via JS -->
-            </div>
-          </div>
+          <button class="reset-btn" onclick="AdminApp.loadCustomers()" style="padding:7px 14px;font-size:12.5px;">⟳ Refresh Customers</button>
         </div>
 
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Peak Rush Hour Traffic Analysis (9 AM – 3 PM)</div>
-              <div style="font-size:12px;color:var(--text-muted);">Order volume distribution to plan kitchen staffing</div>
-            </div>
-            <span style="font-size:12px;background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:999px;font-weight:700;">
-              Peak: 12:00 PM – 1:30 PM (180+ orders)
-            </span>
+        <div class="saas-table-card">
+          <div class="saas-table-container">
+            <table class="saas-data-table">
+              <thead>
+                <tr>
+                  <th>Student / ID</th>
+                  <th>Name</th>
+                  <th>Contact Details</th>
+                  <th>Department</th>
+                  <th>Wallet Balance</th>
+                  <th>Loyalty Points</th>
+                  <th>Orders Placed</th>
+                  <th>Total Spent</th>
+                  <th>Account Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-customers-tbody">
+                <!-- Rendered dynamically via AdminApp.loadCustomers() -->
+              </tbody>
+            </table>
           </div>
-          <div class="chart-canvas-wrapper" id="hourly-demand-chart-canvas"></div>
         </div>
       </div>
 
-      <!-- TAB 4: AI DEMAND PREDICTION ENGINE (CORE INNOVATION) -->
-      <div id="admin-tab-demand" class="admin-tab-panel">
-        <div class="ai-banner-card">
-          <div class="ai-banner-badge">
-            Core Innovation Module
-          </div>
-          <div class="ai-banner-title">AI Predictive Demand & Batch Prep Advisor</div>
-          <div class="ai-banner-desc">
-            CampusBite analyzes historical order averages from MongoDB, student timetables, and campus promotions to predict tomorrow's lunch rush before it occurs. Avoid stock-outs and minimize food waste.
-          </div>
-        </div>
-
-        <div class="ai-prediction-cards-grid" id="ai-predictions-grid">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
-
-      <!-- TAB 5: DIGITAL MARKETING & COUPONS -->
-      <div id="admin-tab-marketing" class="admin-tab-panel">
+      <!-- ====================================================================
+           TAB 6: DIGITAL MARKETING & COUPONS
+           ==================================================================== -->
+      <div id="admin-tab-coupons" class="admin-tab-panel">
         <div class="marketing-grid">
           <div class="campaign-form-card">
             <h3 style="color:#0F172A;font-weight:700;">Publish New Offer Campaign</h3>
@@ -408,7 +532,9 @@
         </div>
       </div>
 
-      <!-- TAB 6: CUSTOMER FEEDBACK & CRM -->
+      <!-- ====================================================================
+           TAB 7: CUSTOMER FEEDBACK & REVIEWS
+           ==================================================================== -->
       <div id="admin-tab-reviews" class="admin-tab-panel">
         <div class="chart-card" style="margin-bottom:20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -436,6 +562,91 @@
 
         <div class="reviews-grid" id="admin-reviews-list">
           <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TAB 8: SALES & BUSINESS ANALYTICS
+           ==================================================================== -->
+      <div id="admin-tab-analytics" class="admin-tab-panel">
+        <div class="analytics-grid-two-col">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Weekly Revenue Trends</div>
+                <div style="font-size:12px;color:var(--text-muted);">Total revenue generated per day (Mon - Sun)</div>
+              </div>
+              <span style="font-size:12px;font-weight:700;color:#14B8A6;" id="analytics-weekly-total-tag">₹64,600 Total Week</span>
+            </div>
+            <div class="chart-canvas-wrapper" id="weekly-revenue-chart-canvas"></div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Top Selling Items</div>
+              <span style="font-size:11px;color:var(--text-muted);">Units Sold</span>
+            </div>
+            <div class="top-selling-list" id="admin-top-selling-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Peak Rush Hour Traffic Analysis (9 AM – 3 PM)</div>
+              <div style="font-size:12px;color:var(--text-muted);">Order volume distribution to plan kitchen staffing</div>
+            </div>
+            <span style="font-size:12px;background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:999px;font-weight:700;">
+              Peak: 12:00 PM – 1:30 PM (180+ orders)
+            </span>
+          </div>
+          <div class="chart-canvas-wrapper" id="hourly-demand-chart-canvas"></div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TAB 9: CANTEEN SYSTEM SETTINGS
+           ==================================================================== -->
+      <div id="admin-tab-settings" class="admin-tab-panel">
+        <div class="saas-panel-card" style="margin-bottom:20px;">
+          <h3 style="font-size:18px;font-weight:800;color:#0F172A;margin-bottom:6px;">Canteen Operational Configuration</h3>
+          <p style="font-size:12px;color:#64748B;margin-bottom:18px;">Manage counter channels, operating slots, and database diagnostics</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
+            <div style="padding:16px;border:1px solid #E2E8F0;border-radius:14px;background:#F8FAFC;">
+              <strong style="display:block;font-size:13.5px;color:#0F172A;margin-bottom:4px;">Express Counters Status</strong>
+              <p style="font-size:11.5px;color:#64748B;margin-bottom:12px;">Active pickup lines mapped to kitchen tokens</p>
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;">
+                <label style="display:flex;align-items:center;justify-content:space-between;">
+                  <span>Counter 1 (Fast Food & Rolls)</span>
+                  <input type="checkbox" checked disabled>
+                </label>
+                <label style="display:flex;align-items:center;justify-content:space-between;">
+                  <span>Counter 2 (Beverages & Coffee)</span>
+                  <input type="checkbox" checked disabled>
+                </label>
+                <label style="display:flex;align-items:center;justify-content:space-between;">
+                  <span>Counter 3 (Full Thali & Meals)</span>
+                  <input type="checkbox" checked disabled>
+                </label>
+              </div>
+            </div>
+
+            <div style="padding:16px;border:1px solid #E2E8F0;border-radius:14px;background:#F8FAFC;">
+              <strong style="display:block;font-size:13.5px;color:#0F172A;margin-bottom:4px;">Database & Storage Engine</strong>
+              <p style="font-size:11.5px;color:#64748B;margin-bottom:12px;">Real-time sync between Memory, JSON, and MongoDB</p>
+              <div style="font-size:12px;color:#334155;line-height:1.6;">
+                <div>Engine: <strong style="color:#4F46E5;">MongoDB Community / JSON Store</strong></div>
+                <div>Status: <span style="color:#10B981;font-weight:700;">● Online Synchronized</span></div>
+                <div>Simulated Payments: <strong style="color:#10B981;">UPI, Card, Wallet Active</strong></div>
+              </div>
+              <button type="button" class="reset-btn" onclick="AdminApp.resetDemoDatabase()" style="margin-top:14px;width:100%;justify-content:center;">
+                Reset Demo Database
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
