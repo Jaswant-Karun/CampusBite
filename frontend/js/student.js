@@ -372,6 +372,11 @@ const StudentApp = {
     } else if (screenId === 'wallet') {
       this.stopTrackingLivePolling();
       this.updateWalletUI();
+    } else if (screenId === 'notifications') {
+      this.stopTrackingLivePolling();
+      if (window.CampusNotifications) {
+        window.CampusNotifications.renderScreen();
+      }
     } else {
       this.stopTrackingLivePolling();
     }

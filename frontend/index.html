@@ -56,6 +56,9 @@
       <button class="desktop-nav-btn" data-screen="order-history" onclick="StudentApp.navigateTo('order-history')">
         Order History
       </button>
+      <button class="desktop-nav-btn" data-screen="notifications" onclick="StudentApp.navigateTo('notifications')">
+        Notifications
+      </button>
       <button class="desktop-nav-btn" data-screen="profile" onclick="StudentApp.navigateTo('profile')">
         Profile & Loyalty
       </button>
@@ -127,7 +130,9 @@
             <!-- Rendered dynamically -->
           </div>
           <div class="notif-panel-footer">
-            <span style="color:#94A3B8;">SSE Real-Time Stream</span>
+            <button type="button" class="notif-tool-btn" onclick="StudentApp.navigateTo('notifications'); CampusNotifications.closePanel();" style="color:#A5B4FC;font-weight:700;">
+              View Full Screen ↗
+            </button>
             <button class="notif-test-btn" onclick="CampusNotifications.triggerDemoPush()">
               Test Push
             </button>
@@ -2088,12 +2093,15 @@
               </div>
 
               <!-- Quick Navigation Shortcuts -->
-              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-top:4px;">
+              <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-top:4px;">
                 <button type="button" class="add-mini-btn" style="padding:11px;background:white;color:#0F172A;border:1px solid #E2E8F0;border-radius:12px;font-weight:700;" onclick="StudentApp.navigateTo('order-history')">
-                  📋 Order History
+                  📋 Orders
                 </button>
                 <button type="button" class="add-mini-btn" style="padding:11px;background:white;color:#0F172A;border:1px solid #E2E8F0;border-radius:12px;font-weight:700;" onclick="StudentApp.navigateTo('wallet')">
-                  💳 CampusPay Wallet
+                  💳 CampusPay
+                </button>
+                <button type="button" class="add-mini-btn" style="padding:11px;background:white;color:#0F172A;border:1px solid #E2E8F0;border-radius:12px;font-weight:700;" onclick="StudentApp.navigateTo('notifications')">
+                  🔔 Notifications
                 </button>
                 <button type="button" class="add-mini-btn" style="padding:11px;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:12px;font-weight:700;" onclick="StudentApp.logout()">
                   Sign Out
@@ -2132,6 +2140,85 @@
             <!-- Orders Container -->
             <div id="order-history-list" class="order-history-list-container" style="padding:0 18px 24px;">
               <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------------------------
+               SCREEN 14: NOTIFICATION SCREEN (STEP 17)
+               ---------------------------------------------------------------- -->
+          <div id="screen-notifications" class="mob-screen">
+            <div class="home-top-bar">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <button type="button" class="back-btn" onclick="StudentApp.navigateTo('home')" style="border:none;background:none;font-size:18px;cursor:pointer;color:#0F172A;" title="Back to Home">←</button>
+                <div class="user-greeting">
+                  <h3>Notifications Center</h3>
+                  <p>Real-time campus order progress, kitchen updates & deals</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button type="button" class="reset-btn" onclick="CampusNotifications.markAllRead()" style="padding:6px 12px;font-size:12px;display:flex;align-items:center;gap:4px;" title="Mark All as Read">
+                  ✓ Mark All Read
+                </button>
+              </div>
+            </div>
+
+            <div class="notif-screen-container">
+              <!-- Banner Overview -->
+              <div class="notif-screen-header-banner">
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <span style="font-size:22px;">🔔</span>
+                    <strong style="font-size:16px;">Campus Live Dispatch</strong>
+                    <span id="screen-notif-unread-count" style="background:#EF4444;color:#FFFFFF;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:800;">
+                      0 unread
+                    </span>
+                    <span id="screen-notif-total-count" style="background:rgba(255,255,255,0.18);color:#FFFFFF;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;">
+                      0 total
+                    </span>
+                  </div>
+                  <p style="margin:0;font-size:12px;color:#CBD5E1;opacity:0.9;">
+                    Order confirmations, preparation milestones, pickup calls & instant discount drops.
+                  </p>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button type="button" class="btn-secondary" onclick="CampusNotifications.triggerDemoPush('confirmed')" style="padding:5px 10px;font-size:11px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);">
+                    + Confirmed
+                  </button>
+                  <button type="button" class="btn-secondary" onclick="CampusNotifications.triggerDemoPush('preparing')" style="padding:5px 10px;font-size:11px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);">
+                    + Preparing
+                  </button>
+                  <button type="button" class="btn-secondary" onclick="CampusNotifications.triggerDemoPush('ready')" style="padding:5px 10px;font-size:11px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);">
+                    + Ready
+                  </button>
+                  <button type="button" class="btn-secondary" onclick="CampusNotifications.triggerDemoPush('completed')" style="padding:5px 10px;font-size:11px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);">
+                    + Done
+                  </button>
+                  <button type="button" class="btn-secondary" onclick="CampusNotifications.triggerDemoPush('coupon')" style="padding:5px 10px;font-size:11px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);">
+                    + Coupon
+                  </button>
+                </div>
+              </div>
+
+              <!-- Filter tabs -->
+              <div class="notif-screen-filters">
+                <button type="button" class="notif-filter-pill active" data-filter="all" onclick="CampusNotifications.setFilter('all')">
+                  All Notifications
+                </button>
+                <button type="button" class="notif-filter-pill" data-filter="unread" onclick="CampusNotifications.setFilter('unread')">
+                  Unread
+                </button>
+                <button type="button" class="notif-filter-pill" data-filter="orders" onclick="CampusNotifications.setFilter('orders')">
+                  Orders (Confirmed/Prep/Ready/Done)
+                </button>
+                <button type="button" class="notif-filter-pill" data-filter="offers" onclick="CampusNotifications.setFilter('offers')">
+                  Offers & Coupons
+                </button>
+              </div>
+
+              <!-- Notification items container -->
+              <div id="screen-notifications-list">
+                <!-- Rendered dynamically via CampusNotifications.renderScreen() -->
+              </div>
             </div>
           </div>
 
