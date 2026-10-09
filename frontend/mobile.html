@@ -713,84 +713,140 @@
       </div>
 
       <!-- ====================================================================
-           SCREEN 8: CHECKOUT & PAYMENT METHOD
+           SCREEN 8: CHECKOUT & PAYMENT METHOD (STEP 9)
            ==================================================================== -->
       <div id="screen-checkout" class="mob-screen">
         <div class="screen-header-bar">
           <button class="back-btn" onclick="StudentApp.navigateTo('cart')">←</button>
-          <div class="screen-title">Checkout & Pickup </div>
+          <div class="screen-title">Checkout & Pickup</div>
           <div style="width:24px;"></div>
         </div>
 
         <div style="padding:16px;">
+          <!-- Progress Stepper on Mobile -->
+          <div style="display:flex;align-items:center;justify-content:space-between;background:white;border-radius:14px;padding:10px 16px;border:1px solid #E2E8F0;margin-bottom:14px;font-size:11.5px;font-weight:700;">
+            <div style="color:#10B981;display:flex;align-items:center;gap:4px;" onclick="StudentApp.navigateTo('cart')">
+              <span>✓</span> Cart
+            </div>
+            <div style="color:#CBD5E1;">→</div>
+            <div style="color:var(--primary);display:flex;align-items:center;gap:4px;">
+              <span>●</span> Pickup & Pay
+            </div>
+            <div style="color:#CBD5E1;">→</div>
+            <div style="color:#94A3B8;display:flex;align-items:center;gap:4px;">
+              <span>○</span> Confirmation
+            </div>
+          </div>
+
+          <!-- Order Mini Review Card -->
+          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <strong style="font-size:13.5px;color:#0F172A;">Order Review</strong>
+              <span id="mob-checkout-items-count-badge" style="font-size:11px;font-weight:700;color:var(--primary);background:rgba(79,70,229,0.08);padding:2px 8px;border-radius:999px;">0 Items</span>
+            </div>
+            <div id="mob-checkout-review-items" style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto;margin-bottom:10px;">
+              <!-- Populated by StudentApp.renderCheckout() -->
+            </div>
+            <div style="border-top:1px dashed #E2E8F0;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:12px;color:#64748B;">Total Payable:</span>
+              <strong id="mob-checkout-total-val" style="font-size:17px;color:var(--primary);">₹0</strong>
+            </div>
+          </div>
+
           <!-- Pickup Slot Selection -->
-          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:16px;">
-            <strong style="font-size:13.5px;display:block;margin-bottom:8px;">Choose Your Pickup Slot ⏱️</strong>
+          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <strong style="font-size:13.5px;">Choose Your Pickup Slot ⏱️</strong>
+              <span style="font-size:10px;color:#10B981;font-weight:700;">Counter 2 Ready</span>
+            </div>
             <p style="font-size:11.5px;color:#64748B;margin-bottom:12px;">Your food will be freshly packaged and waiting at Counter 2.</p>
             
             <div style="display:flex;flex-direction:column;gap:8px;">
-              <label class="pickup-slot-radio active">
-                <input type="radio" name="pickup-slot" value="12:30 PM – 12:40 PM" checked onchange="StudentApp.selectedPickupSlot = this.value">
+              <label class="pickup-slot-radio active" onclick="StudentApp.selectPickupSlot('12:30 PM – 12:40 PM')">
+                <input type="radio" name="pickup-slot" value="12:30 PM – 12:40 PM" checked>
                 <div>
                   <strong>Next Break: 12:30 PM – 12:40 PM</strong>
-                  <span style="display:block;font-size:11px;color:#10B981;"> Fast Track Pickup (Recommended)</span>
+                  <span style="display:block;font-size:11px;color:#10B981;">⚡ Fast Track Pickup (Recommended)</span>
                 </div>
               </label>
 
-              <label class="pickup-slot-radio">
-                <input type="radio" name="pickup-slot" value="12:40 PM – 12:50 PM" onchange="StudentApp.selectedPickupSlot = this.value">
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('12:40 PM – 12:50 PM')">
+                <input type="radio" name="pickup-slot" value="12:40 PM – 12:50 PM">
                 <div>
                   <strong>12:40 PM – 12:50 PM</strong>
                   <span style="display:block;font-size:11px;color:#64748B;">Standard break slot</span>
                 </div>
               </label>
 
-              <label class="pickup-slot-radio">
-                <input type="radio" name="pickup-slot" value="01:00 PM – 01:15 PM" onchange="StudentApp.selectedPickupSlot = this.value">
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('01:00 PM – 01:15 PM')">
+                <input type="radio" name="pickup-slot" value="01:00 PM – 01:15 PM">
                 <div>
                   <strong>01:00 PM – 01:15 PM (Lunch Window)</strong>
-                  <span style="display:block;font-size:11px;color:#F59E0B;"> Moderate crowd expected</span>
+                  <span style="display:block;font-size:11px;color:#F59E0B;">Moderate crowd expected</span>
+                </div>
+              </label>
+
+              <label class="pickup-slot-radio" onclick="StudentApp.selectPickupSlot('Express Immediate (5-10m)')">
+                <input type="radio" name="pickup-slot" value="Express Immediate (5-10m)">
+                <div>
+                  <strong>Express Immediate (5-10 mins)</strong>
+                  <span style="display:block;font-size:11px;color:#DC2626;">⚡ Fast-track priority prep</span>
                 </div>
               </label>
             </div>
           </div>
 
           <!-- Payment Options -->
-          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:16px;">
-            <strong style="font-size:13.5px;display:block;margin-bottom:12px;">Select Payment Method </strong>
+          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:14px;">
+            <strong style="font-size:13.5px;display:block;margin-bottom:12px;">Select Payment Method 💳</strong>
 
             <div style="display:flex;flex-direction:column;gap:10px;">
-              <label class="payment-method-card active" onclick="StudentApp.selectPaymentMethod('CampusPay')">
-                <input type="radio" name="pay-method" value="CampusPay" checked>
+              <label class="payment-method-card active" onclick="StudentApp.selectPaymentMethod('UPI')">
+                <input type="radio" name="pay-method" value="UPI" checked>
                 <div style="flex:1;">
-                  <strong style="font-size:13px;display:block;">CampusPay Digital Wallet (1-Tap)</strong>
-                  <span style="font-size:11px;color:#64748B;">Instant debit from your ₹850 balance</span>
+                  <strong style="font-size:13px;display:block;">Simulated UPI (GPay / PhonePe / Paytm)</strong>
+                  <span style="font-size:11px;color:#10B981;">Instant dynamic QR & zero-queue token</span>
                 </div>
-                <span style="font-size:22px;"></span>
+                <span style="font-size:18px;color:#10B981;">✓</span>
               </label>
 
-              <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('UPI')">
-                <input type="radio" name="pay-method" value="UPI">
+              <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('Wallet')">
+                <input type="radio" name="pay-method" value="Wallet">
                 <div style="flex:1;">
-                  <strong style="font-size:13px;display:block;">Simulated UPI QR (GPay / PhonePe)</strong>
-                  <span style="font-size:11px;color:#64748B;">Interactive QR code simulation</span>
+                  <strong style="font-size:13px;display:block;">CampusPay Student Wallet (1-Tap)</strong>
+                  <span style="font-size:11px;color:#64748B;">Instant debit from your ₹850 balance</span>
                 </div>
-                <span style="font-size:22px;"></span>
+                <span style="font-size:18px;">💳</span>
               </label>
 
               <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('Cash')">
                 <input type="radio" name="pay-method" value="Cash">
                 <div style="flex:1;">
-                  <strong style="font-size:13px;display:block;">Cash on Pickup</strong>
-                  <span style="font-size:11px;color:#64748B;">Pay physical cash at Counter 2</span>
+                  <strong style="font-size:13px;display:block;">Pay Cash at Counter</strong>
+                  <span style="font-size:11px;color:#64748B;">Pay physical cash at Counter 2 pickup window</span>
                 </div>
-                <span style="font-size:22px;"></span>
+                <span style="font-size:18px;">💵</span>
+              </label>
+
+              <label class="payment-method-card" onclick="StudentApp.selectPaymentMethod('Card')">
+                <input type="radio" name="pay-method" value="Card">
+                <div style="flex:1;">
+                  <strong style="font-size:13px;display:block;">Smart RFID / Debit Card</strong>
+                  <span style="font-size:11px;color:#64748B;">Tap student campus ID card</span>
+                </div>
+                <span style="font-size:18px;">🏷️</span>
               </label>
             </div>
           </div>
 
+          <!-- Special Instructions -->
+          <div style="background:white;border-radius:18px;padding:16px;border:1px solid #E2E8F0;margin-bottom:16px;">
+            <strong style="font-size:13px;display:block;margin-bottom:8px;">Dietary & Kitchen Notes 📝</strong>
+            <textarea class="checkout-notes-input" id="mob-checkout-instructions-input" placeholder="E.g., Extra napkins, no onion, separate packing..." style="height:60px;"></textarea>
+          </div>
+
           <!-- Place Order Button -->
-          <button class="splash-btn" onclick="StudentApp.placeOrder()">
+          <button class="splash-btn" id="mob-checkout-pay-btn" onclick="StudentApp.executePaymentAndPlaceOrder()">
             <span>Confirm Order & Pay</span>
             <span id="checkout-btn-amount">₹0</span>
           </button>
