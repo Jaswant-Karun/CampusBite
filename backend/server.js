@@ -150,13 +150,17 @@ app.get('*', (req, res) => {
 app.use(errorHandler);
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🚀 CAMPUSBITE PLATFORM RUNNING`);
-  console.log(`📦 Database: MongoDB (${mongoManager.connectionUri})`);
-  console.log(`📍 Customer Website:   http://localhost:${PORT}`);
-  console.log(`📊 Admin Operations:   http://localhost:${PORT}/admin`);
-  console.log(`📱 Standalone Mobile:  http://localhost:${PORT}/mobile`);
-  console.log(`📺 Kitchen KDS TV:     http://localhost:${PORT}/counter`);
-  console.log(`====================================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🚀 CAMPUSBITE PLATFORM RUNNING`);
+    console.log(`📦 Database: MongoDB (${mongoManager.connectionUri})`);
+    console.log(`📍 Customer Website:   http://localhost:${PORT}`);
+    console.log(`📊 Admin Operations:   http://localhost:${PORT}/admin`);
+    console.log(`📱 Standalone Mobile:  http://localhost:${PORT}/mobile`);
+    console.log(`📺 Kitchen KDS TV:     http://localhost:${PORT}/counter`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = app;
