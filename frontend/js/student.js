@@ -2436,6 +2436,7 @@ const StudentApp = {
     });
   },
 
+  // finalizeOrderPlacement()
   async finalizeOrderPlacement(paymentOptions = {}) {
     // Step 10 Requirement: Do not create duplicate orders
     if (this.isPlacingOrder) {
