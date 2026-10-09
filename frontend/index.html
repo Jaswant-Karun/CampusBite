@@ -1197,19 +1197,19 @@
                     </div>
 
                     <div class="coupon-row">
-                      <input type="text" class="coupon-input" id="coupon-input-field" placeholder="E.g. CAMPUS20" value="CAMPUS20">
-                      <button class="apply-coupon-btn" onclick="StudentApp.applyCouponCode()">Apply</button>
+                      <input type="text" class="coupon-input" id="cart-coupon-field" name="coupon-input-field" placeholder="E.g. CAMPUS20" value="CAMPUS20">
+                      <button class="apply-coupon-btn" id="cart-apply-coupon-btn" onclick="StudentApp.applyCouponCode(document.getElementById('cart-coupon-field').value)">Apply</button>
                     </div>
 
                     <!-- Quick sample coupons for testing -->
                     <div class="coupon-chips-list">
-                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
+                      <span class="coupon-chip" onclick="if(document.getElementById('cart-coupon-field')) document.getElementById('cart-coupon-field').value='CAMPUS20'; StudentApp.applyCouponCode('CAMPUS20');">
                         <strong>CAMPUS20</strong> (20% OFF)
                       </span>
-                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
+                      <span class="coupon-chip" onclick="if(document.getElementById('cart-coupon-field')) document.getElementById('cart-coupon-field').value='STUDENT10'; StudentApp.applyCouponCode('STUDENT10');">
                         <strong>STUDENT10</strong> (10% OFF)
                       </span>
-                      <span class="coupon-chip" onclick="document.getElementById('coupon-input-field').value='BIGBITE200'; StudentApp.applyCouponCode('BIGBITE200');">
+                      <span class="coupon-chip" onclick="if(document.getElementById('cart-coupon-field')) document.getElementById('cart-coupon-field').value='BIGBITE200'; StudentApp.applyCouponCode('BIGBITE200');">
                         <strong>BIGBITE200</strong> (₹50 OFF)
                       </span>
                     </div>
