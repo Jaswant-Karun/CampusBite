@@ -9,8 +9,8 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 593,
-      "wallet_balance": 850,
+      "loyalty_points": 493,
+      "wallet_balance": 860,
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       "account_status": "Active Verified Student",
@@ -1534,9 +1534,40 @@
       "created_at": "2026-10-01T02:37:10.032Z",
       "updated_at": "2026-10-01T03:02:10.032Z",
       "loyalty_points_earned": 15
+    },
+    {
+      "id": "cb-test-comp-1791540817965",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "order_status": "Completed",
+      "items": [
+        {
+          "product_id": "p-2",
+          "name": "Cheese Burger Deluxe",
+          "price": 100,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 100,
+      "created_at": "2026-10-09T10:13:37.965Z"
     }
   ],
   "reviews": [
+    {
+      "id": "r-1791540817967",
+      "order_id": "cb-test-comp-1791540817965",
+      "user_id": "u-101",
+      "user_name": "Jaswant Karun (Updated)",
+      "user_avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+      "product_id": null,
+      "product_name": "Cheese Burger Deluxe",
+      "rating": 5,
+      "food_quality": 5,
+      "service_speed": 5,
+      "app_experience": 5,
+      "comment": "Burger was piping hot, freshly grilled, and ready right at Counter 2!",
+      "created_at": "2026-10-09T10:13:37.967Z"
+    },
     {
       "id": "r-1791467175540",
       "order_id": "CB1035",
@@ -1594,6 +1625,14 @@
     }
   ],
   "loyalty_transactions": [
+    {
+      "id": "lt-1791541452322",
+      "user_id": "u-101",
+      "points": -100,
+      "type": "redeemed",
+      "description": "Redeemed 100 pts → ₹10 added to CampusPay Wallet",
+      "date": "2026-10-09T10:24:12.322Z"
+    },
     {
       "id": "lt-1791539691733",
       "user_id": "u-101",

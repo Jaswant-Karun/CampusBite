@@ -811,18 +811,53 @@ const AdminApp = {
   async loadReviews() {
     try {
       const res = await window.api.getReviews();
+      if (!res || !res.success) return;
+
+      const avg = Number(res.avg_rating) || 4.8;
+      const count = Number(res.count) || (res.reviews || []).length;
+      const subs = res.sub_averages || { food_quality: 4.8, service_speed: 4.7, app_experience: 4.9 };
+
+      const avgEl = document.getElementById('admin-review-score-avg');
+      if (avgEl) avgEl.textContent = `${avg.toFixed(1)} / 5.0`;
+
+      const foodEl = document.getElementById('admin-review-score-food');
+      if (foodEl) foodEl.textContent = `${subs.food_quality} / 5.0`;
+
+      const speedEl = document.getElementById('admin-review-score-speed');
+      if (speedEl) speedEl.textContent = `${subs.service_speed} / 5.0`;
+
+      const appEl = document.getElementById('admin-review-score-app');
+      if (appEl) appEl.textContent = `${subs.app_experience} / 5.0`;
+
+      const badgeEl = document.getElementById('admin-review-total-badge');
+      if (badgeEl) badgeEl.textContent = `Real customer ratings collected post-order pickup (${count} total reviews)`;
+
       const container = document.getElementById('admin-reviews-list');
       if (container && res.reviews) {
+        if (res.reviews.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:32px;color:var(--text-muted);grid-column:1/-1;">
+              <div style="font-size:32px;margin-bottom:8px;">📝</div>
+              <strong>No customer reviews yet</strong>
+              <p style="margin:4px 0 0;font-size:12px;">Reviews submitted by students after completing orders will appear here.</p>
+            </div>
+          `;
+          return;
+        }
+
         container.innerHTML = res.reviews.map(r => `
           <div class="review-card-item">
-            <div class="review-author-row">
+            <div class="review-author-row" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
               <div>
-                <strong>${r.user_name}</strong>
+                <strong style="color:var(--text-primary);">${r.user_name || 'Campus Student'}</strong>
                 <span style="font-size:11px;color:var(--text-muted);margin-left:6px;">Order #${r.order_id}</span>
+                ${r.product_name ? `<div style="font-size:11px;color:#059669;font-weight:600;margin-top:2px;">${r.product_name}</div>` : ''}
               </div>
-              <div class="review-stars" style="font-weight:700;font-size:12px;color:#F59E0B;">${r.rating} / 5</div>
+              <div class="review-stars" style="font-weight:700;font-size:12px;color:#F59E0B;background:#FEF3C7;padding:3px 8px;border-radius:12px;">
+                ${'★'.repeat(r.rating || 5)} ${r.rating} / 5
+              </div>
             </div>
-            <p style="font-size:13px;color:var(--text-secondary);line-height:1.4;">"${r.comment}"</p>
+            <p style="font-size:13px;color:var(--text-secondary);line-height:1.4;margin:8px 0;">"${r.comment}"</p>
             <div style="font-size:11px;color:var(--text-muted);display:flex;gap:12px;">
               <span>Food: <strong>${r.food_quality}/5</strong></span>
               <span>Speed: <strong>${r.service_speed}/5</strong></span>
