@@ -854,25 +854,53 @@
       </div>
 
       <!-- ====================================================================
-           SCREEN 9: CONFIRMATION & TOKEN DISPLAY
+           SCREEN 9: CONFIRMATION & TOKEN DISPLAY (STEP 10)
            ==================================================================== -->
       <div id="screen-confirmation" class="mob-screen">
-        <div style="padding:28px 18px;text-align:center;">
-          <div class="confirm-icon-pulse"></div>
-          <h2 style="font-size:22px;color:#0F172A;margin:12px 0 4px;">Order Confirmed!</h2>
-          <p style="font-size:12.5px;color:#64748B;margin-bottom:20px;">Sent to Canteen Kitchen & MongoDB</p>
+        <div style="padding:24px 16px;text-align:center;">
+          <div class="confirm-icon-pulse" style="width:68px;height:68px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid #10B981;color:#10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <h2 style="font-size:22px;color:#0F172A;margin:8px 0 4px;font-weight:800;">Order Confirmed! 🎉</h2>
+          <p style="font-size:12.5px;color:#64748B;margin-bottom:16px;">Sent to Canteen Kitchen & MongoDB</p>
 
-          <!-- Pickup Token Box -->
-          <div class="token-display-box">
-            <span style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;">YOUR PICKUP TOKEN</span>
-            <div class="token-number-hero" id="confirm-token-number">CB-402</div>
+          <!-- Pickup Token Pass Stub -->
+          <div class="token-display-box" style="background:white;border:1.5px dashed #CBD5E1;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow-sm);text-align:center;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;">OFFICIAL PICKUP TOKEN</span>
+              <span id="confirm-counter-badge" style="background:#DCFCE7;color:#15803D;border:1px solid #86EFAC;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">Counter 2 Express</span>
+            </div>
+            
+            <div class="token-number-hero" id="confirm-token-number" style="font-size:36px;font-weight:900;color:var(--primary);margin:4px 0;">#CB1024</div>
             <div style="font-size:12px;color:#64748B;" id="confirm-slot-time">Slot: 12:30 PM – 12:40 PM</div>
-            <div style="font-size:11px;color:#10B981;font-weight:700;margin-top:6px;"> Express Counter 2</div>
+            
+            <!-- Contactless QR container on mobile -->
+            <div id="confirm-token-qr-mob" style="margin:12px auto 6px;width:72px;height:72px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </div>
+            <div style="font-size:10.5px;color:#10B981;font-weight:700;">⚡ Instant Counter Verification</div>
           </div>
 
-          <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+          <!-- Mobile Order Receipt Summary -->
+          <div style="background:white;border-radius:18px;border:1px solid #E2E8F0;padding:16px;text-align:left;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:800;color:#0F172A;margin-bottom:8px;border-bottom:1px solid #F1F5F9;padding-bottom:6px;">Receipt Overview</div>
+            <div id="confirm-items-list-mob" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:12px;">
+              <!-- Populated by StudentApp.showOrderConfirmation() -->
+            </div>
+            <div style="display:flex;justify-content:space-between;border-top:1px dashed #E2E8F0;padding-top:8px;font-size:13px;">
+              <span style="color:#64748B;">Total Amount:</span>
+              <strong id="confirm-total-amount-mob" style="color:var(--primary);font-size:15px;">₹180</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px;">
+              <span style="color:#64748B;">Loyalty Cashback:</span>
+              <strong id="confirm-loyalty-points-mob" style="color:#D97706;">+18 Points</strong>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex;flex-direction:column;gap:10px;">
             <button class="splash-btn" onclick="StudentApp.navigateTo('tracking')">
-              <span>Track Live Preparation Status </span>
+              <span>Track Live Preparation Status 📍</span>
             </button>
             <button class="outline-btn" onclick="StudentApp.navigateTo('home')">
               Back to Home Menu

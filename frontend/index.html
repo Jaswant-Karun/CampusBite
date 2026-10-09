@@ -1514,40 +1514,139 @@
           </div>
 
           <!-- ----------------------------------------------------------------
-               SCREEN 10: ORDER CONFIRMATION
+               SCREEN 10: ORDER CONFIRMATION (STEP 10)
                ---------------------------------------------------------------- -->
           <div id="screen-confirmation" class="mob-screen">
-            <div style="text-align:center;padding:40px 20px 20px;">
-              <div style="width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid #10B981;color:#10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-              <h2 style="font-family:var(--font-heading);font-size:24px;font-weight:800;color:#0F172A;">Order Confirmed!</h2>
-              <p style="font-size:13px;color:#64748B;margin-top:4px;">Persisted into MongoDB & dispatched to kitchen.</p>
+            <div class="home-top-bar">
+              <div class="user-greeting">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <h3>Order Confirmed</h3>
+                  <span class="stock-badge in-stock" id="conf-status-badge">Kitchen Dispatched</span>
+                </div>
+                <p>Your order is tokenized, registered in MongoDB, and dispatched to kitchen</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="padding:7px 14px;font-size:12px;border-radius:999px;">
+                  ← Back to Menu
+                </button>
+              </div>
+            </div>
 
-              <div style="background:white;border-radius:18px;border:1px solid #E2E8F0;padding:20px;margin:20px 0;text-align:left;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                  <span style="font-size:12px;color:#64748B;">Order Token:</span>
-                  <span style="font-weight:800;font-size:15px;color:var(--primary);" id="conf-order-id">#CB1024</span>
+            <div class="cart-page-content" style="padding:0 20px 24px;">
+              <!-- Progress Stepper (Completed) -->
+              <div class="checkout-progress-bar">
+                <div class="checkout-step-item completed" onclick="StudentApp.navigateTo('cart')" style="cursor:pointer;">
+                  <span class="checkout-step-num">✓</span>
+                  <span>1. Cart Tray</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                  <span style="font-size:12px;color:#64748B;">Pickup Counter:</span>
-                  <span style="font-weight:800;font-size:15px;color:#10B981;" id="conf-pickup-counter">Counter 2</span>
+                <div class="checkout-step-divider"></div>
+                <div class="checkout-step-item completed" onclick="StudentApp.navigateTo('checkout')" style="cursor:pointer;">
+                  <span class="checkout-step-num">✓</span>
+                  <span>2. Pickup & Pay</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                  <span style="font-size:12px;color:#64748B;">Pickup Time Slot:</span>
-                  <span style="font-weight:700;font-size:13px;color:#0F172A;" id="conf-pickup-slot">12:30 PM – 12:40 PM</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-top:1px dashed #E2E8F0;padding-top:10px;">
-                  <span style="font-size:12px;color:#64748B;">Total Paid:</span>
-                  <span style="font-weight:800;font-size:16px;color:#0F172A;" id="conf-total-amount">₹180</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;">
-                  <span style="font-size:12px;color:#64748B;">Loyalty Earned:</span>
-                  <span style="font-weight:700;font-size:13px;color:#D97706;" id="conf-points-earned">+18 Points</span>
+                <div class="checkout-step-divider"></div>
+                <div class="checkout-step-item active">
+                  <span class="checkout-step-num">3</span>
+                  <span>3. Token & Tracking</span>
                 </div>
               </div>
 
-              <button class="splash-btn" onclick="StudentApp.navigateTo('tracking')">
-                Track Order Live →
-              </button>
+              <!-- Main Confirmation Layout -->
+              <div class="confirmation-layout" style="margin-top:20px;">
+                <!-- Hero Header -->
+                <div class="confirmation-hero-card">
+                  <div class="confirm-success-icon-wrap">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <h2 class="confirm-title">Order Placed Successfully! 🎉</h2>
+                  <p class="confirm-subtitle">Your food token is generated and cooking dispatch has started.</p>
+                </div>
+
+                <!-- Digital Pickup Pass Stub -->
+                <div class="token-pass-card">
+                  <div class="token-pass-header">
+                    <div class="token-badge-title">
+                      <span>🏷️</span>
+                      <span>CAMPUS PICKUP PASS</span>
+                    </div>
+                    <span class="token-counter-pill" id="conf-pickup-counter">Counter 2 Express</span>
+                  </div>
+
+                  <div class="token-number-hero-wrap">
+                    <div>
+                      <div style="font-size:11.5px;color:#64748B;font-weight:700;text-transform:uppercase;">ORDER TOKEN NUMBER</div>
+                      <div class="token-number-display" id="conf-order-id">#CB1024</div>
+                      <div style="font-size:12px;color:#10B981;font-weight:700;" id="conf-pass-status-text">⚡ Zero-Queue Priority Token</div>
+                    </div>
+                    <div class="token-qr-preview-box" id="conf-pickup-qr">
+                      <!-- Rendered by window.CampusQR or fallback icon -->
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="7" y1="7" x2="7.01" y2="7"></line><line x1="17" y1="7" x2="17.01" y2="7"></line><line x1="17" y1="17" x2="17.01" y2="17"></line><line x1="7" y1="17" x2="7.01" y2="17"></line></svg>
+                    </div>
+                  </div>
+
+                  <div class="token-pass-details-grid">
+                    <div>
+                      <div class="token-pass-item-label">Scheduled Pickup Slot</div>
+                      <div class="token-pass-item-val" id="conf-pickup-slot">12:30 PM – 12:40 PM</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Customer Name</div>
+                      <div class="token-pass-item-val" id="conf-customer-name">Jaswant Karun</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Payment Mode</div>
+                      <div class="token-pass-item-val" id="conf-payment-method">Simulated UPI</div>
+                    </div>
+                    <div>
+                      <div class="token-pass-item-label">Order Timestamp</div>
+                      <div class="token-pass-item-val" id="conf-timestamp">Just Now</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Receipt & Items Breakdown Card -->
+                <div class="confirm-receipt-card">
+                  <h4 style="font-size:14.5px;font-weight:800;color:var(--text-primary);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;">
+                    <span>Order Receipt Summary</span>
+                    <span style="font-size:11px;font-weight:700;color:#10B981;background:#DCFCE7;padding:3px 8px;border-radius:999px;">Paid in Full</span>
+                  </h4>
+
+                  <!-- Ordered Items List -->
+                  <div id="conf-items-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+                    <!-- Populated dynamically by StudentApp.showOrderConfirmation() -->
+                  </div>
+
+                  <div class="confirm-receipt-row">
+                    <span style="color:#64748B;">Packaging & Canteen Charges</span>
+                    <span style="color:#10B981;font-weight:600;">₹0 (Campus Subsidized)</span>
+                  </div>
+
+                  <div class="confirm-receipt-row total">
+                    <span>Total Amount Paid</span>
+                    <span id="conf-total-amount" style="color:var(--primary);font-size:20px;">₹180</span>
+                  </div>
+
+                  <!-- Loyalty Points Highlight -->
+                  <div class="confirm-loyalty-highlight">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span>⭐</span>
+                      <span>Loyalty Cashback Accrued:</span>
+                    </div>
+                    <strong id="conf-points-earned" style="font-size:15px;color:#D97706;">+18 Points</strong>
+                  </div>
+                </div>
+
+                <!-- Action CTAs -->
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <button class="checkout-btn" onclick="StudentApp.navigateTo('tracking')" style="width:100%;padding:14px;font-size:15px;font-weight:800;border-radius:12px;">
+                    Track Order Live 📍 →
+                  </button>
+                  <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="width:100%;padding:11px;font-size:13px;border-radius:12px;font-weight:700;">
+                    ← Back to Canteen Menu
+                  </button>
+                </div>
+
+              </div>
             </div>
           </div>
 
