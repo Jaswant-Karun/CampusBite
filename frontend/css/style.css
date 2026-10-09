@@ -1923,4 +1923,344 @@ h2 { font-weight: 600; }
   margin-bottom: 18px;
 }
 
+/* ==========================================================================
+   CHECKOUT & PAYMENT DESIGN SYSTEM (STEP 9)
+   Clean Fintech / SaaS Design System: Indigo, Deep Navy, Teal, White, Soft Slate
+   ========================================================================== */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.checkout-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.checkout-summary-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 20px;
+}
+
+/* Checkout Progress Stepper */
+.checkout-progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
+}
+
+.checkout-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748B;
+}
+
+.checkout-step-item.active {
+  color: var(--primary);
+}
+
+.checkout-step-item.completed {
+  color: #10B981;
+}
+
+.checkout-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.checkout-step-item.active .checkout-step-num {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.checkout-step-item.completed .checkout-step-num {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.checkout-step-divider {
+  flex: 1;
+  height: 2px;
+  background: #E2E8F0;
+  margin: 0 16px;
+}
+
+/* Checkout Section Cards */
+.checkout-section-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.checkout-section-card:hover {
+  border-color: #CBD5E1;
+}
+
+.checkout-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.checkout-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.checkout-section-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(79, 70, 229, 0.08);
+  color: var(--primary);
+}
+
+/* Pickup Slot Selection Grid */
+.pickup-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.slot-pill {
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.slot-pill:hover {
+  border-color: #94A3B8;
+  background: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.slot-pill.active {
+  background: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12), var(--shadow-sm);
+}
+
+.slot-pill-time {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.slot-pill-desc {
+  font-size: 11.5px;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slot-pill.active .slot-pill-time {
+  color: var(--primary);
+}
+
+/* Payment Method Cards */
+.payment-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.payment-method-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.payment-method-card:hover {
+  border-color: #94A3B8;
+  background: #F8FAFC;
+}
+
+.payment-method-card.active {
+  border-color: var(--primary);
+  background: #FAFAFF;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.payment-method-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.payment-method-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.payment-method-card.active .payment-method-icon-wrap {
+  background: rgba(79, 70, 229, 0.12);
+}
+
+.payment-method-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.payment-method-subtitle {
+  font-size: 12px;
+  color: #64748B;
+}
+
+.payment-method-radio-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.payment-method-card.active .payment-method-radio-indicator {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.payment-method-radio-indicator::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.payment-method-card.active .payment-method-radio-indicator::after {
+  opacity: 1;
+}
+
+/* Dietary & Special Request Box */
+.checkout-notes-input {
+  width: 100%;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-primary);
+  resize: vertical;
+  min-height: 64px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.checkout-notes-input:focus {
+  border-color: var(--primary);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Checkout Review Items */
+.checkout-review-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 14px;
+}
+
+.checkout-review-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: #F8FAFC;
+  border-radius: 10px;
+  font-size: 12.5px;
+}
+
+.checkout-review-item-title {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.checkout-review-item-meta {
+  font-size: 11px;
+  color: #64748B;
+}
+
+.checkout-review-item-price {
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+
 
