@@ -593,6 +593,12 @@ const StudentApp = {
     }
 
     // 2. Topbar user pill
+    const topAvatar = document.getElementById('topbar-avatar');
+    if (topAvatar) {
+      topAvatar.textContent = (this.currentUser.avatar && this.currentUser.avatar.length <= 3) 
+        ? this.currentUser.avatar 
+        : (this.currentUser.name || 'JK').split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+    }
     const topPillName = document.getElementById('topbar-user-name');
     if (topPillName) {
       topPillName.textContent = this.currentUser.name;
@@ -2917,29 +2923,448 @@ const StudentApp = {
     App.showToast(`Successfully added ₹${num} to your CampusPay Wallet!`, 'success');
   },
 
-  // Profile & History
+  // ==========================================
+  // STEP 15: Student Profile & Loyalty Controller
+  // ==========================================
+  currentLoyaltyData: null,
+  loyaltyFilter: 'all',
+
   async renderProfile() {
+    // 1. Fetch fresh user loyalty data from backend API
     await this.refreshUserLoyalty();
 
-    const nameEl = document.getElementById('profile-user-name') || document.getElementById('profile-name-display');
-    if (nameEl) nameEl.textContent = this.currentUser.name || 'Campus Student';
+    const u = this.currentUser || {};
+    const loy = this.currentLoyaltyData || {
+      current_points: u.loyalty_points || 0,
+      points_earned: u.loyalty_points || 0,
+      points_used: 0,
+      point_value_inr: Math.floor((u.loyalty_points || 0) / 100) * 10,
+      tier: 'Gold Campus Diner',
+      tier_badge: 'GOLD',
+      next_tier: 'Platinum (700 pts)',
+      progress_percent: 75,
+      transactions: []
+    };
 
-    const idEl = document.getElementById('profile-user-id') || document.getElementById('profile-id-display');
-    if (idEl) idEl.textContent = `${this.currentUser.studentId || 'CB-2024-2028'} • ${this.currentUser.department || 'Computer Science'}`;
+    // 2. Profile identity fields (Desktop & Mobile)
+    const fullName = u.name || 'Jaswant Karun';
+    const email = u.email || 'jaswant@campus.edu';
+    const phone = u.phone || '+91 87541 59344';
+    const studentId = u.studentId || 'CB-2024-2028';
+    const dept = u.department || 'Computer Science & Business Systems';
+    const role = (u.role || 'student').toUpperCase();
+    const walletBal = `₹${(u.wallet_balance !== undefined ? u.wallet_balance : 850).toFixed(2)}`;
 
-    const phoneEl = document.getElementById('profile-user-phone') || document.getElementById('profile-phone-display');
-    if (phoneEl) phoneEl.textContent = `${this.currentUser.phone || '87541 59344'}`;
+    // Desktop elements
+    const nameEl = document.getElementById('profile-user-name');
+    if (nameEl) nameEl.textContent = fullName;
+    const emailEl = document.getElementById('profile-user-email');
+    if (emailEl) emailEl.textContent = email;
+    const phoneEl = document.getElementById('profile-user-phone');
+    if (phoneEl) phoneEl.textContent = phone;
+    const idEl = document.getElementById('profile-user-id');
+    if (idEl) idEl.textContent = `${studentId} • ${dept}`;
 
+    // Account Information Card (Desktop)
+    const accName = document.getElementById('account-info-name');
+    if (accName) accName.textContent = fullName;
+    const accEmail = document.getElementById('account-info-email');
+    if (accEmail) accEmail.textContent = email;
+    const accPhone = document.getElementById('account-info-phone');
+    if (accPhone) accPhone.textContent = phone;
+    const accId = document.getElementById('account-info-studentid');
+    if (accId) accId.textContent = studentId;
+    const accDept = document.getElementById('account-info-dept');
+    if (accDept) accDept.textContent = dept;
+    const accRole = document.getElementById('account-info-role');
+    if (accRole) accRole.textContent = `${role === 'STUDENT' ? 'Student (Verified)' : role}`;
+    const accWallet = document.getElementById('account-info-wallet');
+    if (accWallet) accWallet.textContent = walletBal;
+
+    // Mobile elements
+    const mobName = document.getElementById('mob-profile-name-display') || document.getElementById('profile-name-display');
+    if (mobName) mobName.textContent = fullName;
+    const mobEmail = document.getElementById('mob-profile-email-display');
+    if (mobEmail) mobEmail.textContent = email;
+    const mobPhone = document.getElementById('mob-profile-phone-display') || document.getElementById('profile-phone-display');
+    if (mobPhone) mobPhone.textContent = phone;
+    const mobId = document.getElementById('mob-profile-id-display') || document.getElementById('profile-id-display');
+    if (mobId) mobId.textContent = `${studentId} • ${dept}`;
+
+    const mobAccName = document.getElementById('mob-account-info-name');
+    if (mobAccName) mobAccName.textContent = fullName;
+    const mobAccEmail = document.getElementById('mob-account-info-email');
+    if (mobAccEmail) mobAccEmail.textContent = email;
+    const mobAccPhone = document.getElementById('mob-account-info-phone');
+    if (mobAccPhone) mobAccPhone.textContent = phone;
+    const mobAccId = document.getElementById('mob-account-info-studentid');
+    if (mobAccId) mobAccId.textContent = studentId;
+    const mobAccDept = document.getElementById('mob-account-info-dept');
+    if (mobAccDept) mobAccDept.textContent = dept;
+    const mobAccWallet = document.getElementById('mob-account-info-wallet');
+    if (mobAccWallet) mobAccWallet.textContent = walletBal;
+
+    // Avatar image vs initials
+    const initials = (u.avatar && u.avatar.length <= 3) ? u.avatar : (fullName.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase() || 'ST');
+    const avatarImgSrc = u.profile_image || '';
+
+    ['profile-avatar-img', 'mob-profile-avatar-img'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (avatarImgSrc) {
+          el.src = avatarImgSrc;
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      }
+    });
+
+    ['profile-avatar-display', 'mob-profile-avatar-display'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = initials;
+        if (avatarImgSrc) {
+          el.style.display = 'none';
+        } else {
+          el.style.display = 'flex';
+        }
+      }
+    });
+
+    // 3. Loyalty Card Rendering
+    const currentPts = loy.current_points !== undefined ? loy.current_points : (u.loyalty_points || 0);
+    const ptsEarned = loy.points_earned !== undefined ? loy.points_earned : currentPts;
+    const ptsUsed = loy.points_used !== undefined ? loy.points_used : 0;
+    const cashVal = loy.point_value_inr !== undefined ? loy.point_value_inr : Math.floor(currentPts / 100) * 10;
+    const tierTitle = loy.tier || (currentPts >= 400 ? 'Gold Campus Diner' : currentPts >= 200 ? 'Silver Saver' : 'Bronze Member');
+    const tierBadge = loy.tier_badge || (currentPts >= 400 ? 'GOLD' : currentPts >= 200 ? 'SILVER' : 'BRONZE');
+    const nextTierText = loy.next_tier ? `${tierTitle.split(' ')[0]} → ${loy.next_tier}` : 'Gold → Platinum (700 pts)';
+    const progPercent = loy.progress_percent !== undefined ? loy.progress_percent : 75;
+
+    // Card elements (Desktop)
+    const cardPts = document.getElementById('loyalty-card-current-pts');
+    if (cardPts) cardPts.textContent = currentPts;
+    const cardWorth = document.getElementById('loyalty-card-worth');
+    if (cardWorth) cardWorth.textContent = `💰 Worth ₹${cashVal}.00 in Free Canteen Meals`;
+    const cardTier = document.getElementById('loyalty-card-tier');
+    if (cardTier) cardTier.textContent = `★ ${tierBadge} CAMPUS DINER`;
+    const cardName = document.getElementById('loyalty-card-name');
+    if (cardName) cardName.textContent = fullName.toUpperCase();
+    const cardId = document.getElementById('loyalty-card-id');
+    if (cardId) cardId.textContent = `${studentId} • ${dept}`;
+    const cardNext = document.getElementById('loyalty-tier-next-label');
+    if (cardNext) cardNext.textContent = nextTierText;
+    const cardBar = document.getElementById('loyalty-tier-progress-bar');
+    if (cardBar) cardBar.style.width = `${progPercent}%`;
+
+    // Card elements (Mobile)
+    const mobCardPts = document.getElementById('mob-loyalty-current-pts');
+    if (mobCardPts) mobCardPts.textContent = currentPts;
+    const mobCardWorth = document.getElementById('mob-loyalty-worth-pill');
+    if (mobCardWorth) mobCardWorth.textContent = `💰 Worth ₹${cashVal}.00 Discount`;
+    const mobCardTier = document.getElementById('mob-loyalty-card-tier');
+    if (mobCardTier) mobCardTier.textContent = `★ ${tierBadge} DINER`;
+    const mobCardName = document.getElementById('mob-loyalty-card-name');
+    if (mobCardName) mobCardName.textContent = fullName.toUpperCase();
+    const mobCardId = document.getElementById('mob-loyalty-card-id');
+    if (mobCardId) mobCardId.textContent = studentId;
+    const mobCardNext = document.getElementById('mob-loyalty-tier-next-label');
+    if (mobCardNext) mobCardNext.textContent = nextTierText;
+    const mobCardBar = document.getElementById('mob-loyalty-tier-progress-bar');
+    if (mobCardBar) mobCardBar.style.width = `${progPercent}%`;
+
+    // Backward compatibility element
     const ptsEl = document.getElementById('profile-loyalty-pts');
-    if (ptsEl) ptsEl.textContent = `${this.currentUser.loyalty_points || 0} Pts`;
+    if (ptsEl) ptsEl.textContent = `${currentPts} Pts`;
 
-    const avatarEl = document.getElementById('profile-avatar-display');
-    if (avatarEl) {
-      const parts = (this.currentUser.name || 'ST').split(' ');
-      avatarEl.textContent = (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+    // 4. Three-Column Metrics (Desktop & Mobile)
+    const statCurrent = document.getElementById('loyalty-stat-current');
+    if (statCurrent) statCurrent.textContent = currentPts;
+    const statEarned = document.getElementById('loyalty-stat-earned');
+    if (statEarned) statEarned.textContent = `+${ptsEarned}`;
+    const statUsed = document.getElementById('loyalty-stat-used');
+    if (statUsed) statUsed.textContent = `-${ptsUsed}`;
+
+    const mobStatCurrent = document.getElementById('mob-loyalty-stat-current');
+    if (mobStatCurrent) mobStatCurrent.textContent = currentPts;
+    const mobStatEarned = document.getElementById('mob-loyalty-stat-earned');
+    if (mobStatEarned) mobStatEarned.textContent = `+${ptsEarned}`;
+    const mobStatUsed = document.getElementById('mob-loyalty-stat-used');
+    if (mobStatUsed) mobStatUsed.textContent = `-${ptsUsed}`;
+
+    // 5. Render Loyalty Transaction History
+    this.renderLoyaltyHistory('all');
+  },
+
+  renderLoyaltyHistory(filter = 'all') {
+    this.loyaltyFilter = filter;
+    const txs = (this.currentLoyaltyData && this.currentLoyaltyData.transactions) 
+      ? this.currentLoyaltyData.transactions 
+      : [];
+
+    let filtered = [...txs];
+    if (filter === 'earned') {
+      filtered = filtered.filter(t => Number(t.points) > 0 || (t.type || '').toLowerCase() === 'earned');
+    } else if (filter === 'redeemed') {
+      filtered = filtered.filter(t => Number(t.points) < 0 || (t.type || '').toLowerCase() === 'redeemed');
     }
 
-    await this.renderOrderHistory();
+    const containers = [
+      document.getElementById('loyalty-history-list'),
+      document.getElementById('mob-loyalty-history-list')
+    ].filter(Boolean);
+
+    if (!containers.length) return;
+
+    if (!filtered.length) {
+      const emptyHtml = `
+        <div style="text-align:center;padding:24px 16px;color:var(--text-secondary);font-size:12.5px;">
+          <div style="font-size:28px;margin-bottom:6px;">🧾</div>
+          <strong>No loyalty transactions found</strong>
+          <p style="margin:4px 0 0;font-size:11.5px;">Orders you place at the canteen will automatically earn 10 points per ₹100 spent.</p>
+        </div>
+      `;
+      containers.forEach(c => c.innerHTML = emptyHtml);
+      return;
+    }
+
+    const html = filtered.map(t => {
+      const pts = Number(t.points) || 0;
+      const isEarned = pts > 0 || (t.type || '').toLowerCase() === 'earned';
+      const ptsDisplay = isEarned ? `+${Math.abs(pts)} pts` : `-${Math.abs(pts)} pts`;
+      const badgeClass = isEarned ? 'earned' : 'redeemed';
+      const icon = isEarned ? '📈' : '🎁';
+
+      let dateStr = 'Recent';
+      try {
+        if (t.date) {
+          const d = new Date(t.date);
+          dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' • ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        }
+      } catch (e) {}
+
+      return `
+        <div class="loyalty-ledger-row">
+          <div class="loyalty-ledger-left">
+            <div class="loyalty-tx-icon-badge ${badgeClass}">${icon}</div>
+            <div class="loyalty-tx-info">
+              <h4>${t.description || (isEarned ? 'Canteen Order Reward' : 'Points Redemption')}</h4>
+              <time>${dateStr}</time>
+            </div>
+          </div>
+          <span class="loyalty-tx-points-badge ${badgeClass}">${ptsDisplay}</span>
+        </div>
+      `;
+    }).join('');
+
+    containers.forEach(c => c.innerHTML = html);
+  },
+
+  filterLoyaltyHistory(filter, btn) {
+    if (btn) {
+      const parent = btn.parentElement;
+      if (parent) {
+        parent.querySelectorAll('.loyalty-filter-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+      }
+    }
+    this.renderLoyaltyHistory(filter);
+  },
+
+  openEditProfileModal() {
+    const u = this.currentUser || {};
+    const nameVal = u.name || '';
+    const emailVal = u.email || '';
+    const phoneVal = u.phone || '';
+    const deptVal = u.department || 'Computer Science & Business Systems';
+    const idVal = u.studentId || 'CB-2024-2028';
+    const imgVal = u.profile_image || '';
+
+    // Populate desktop modal inputs
+    const nameIn = document.getElementById('edit-profile-name');
+    if (nameIn) nameIn.value = nameVal;
+    const emailIn = document.getElementById('edit-profile-email');
+    if (emailIn) emailIn.value = emailVal;
+    const phoneIn = document.getElementById('edit-profile-phone');
+    if (phoneIn) phoneIn.value = phoneVal;
+    const deptIn = document.getElementById('edit-profile-dept');
+    if (deptIn) deptIn.value = deptVal;
+    const idIn = document.getElementById('edit-profile-studentid');
+    if (idIn) idIn.value = idVal;
+    const imgIn = document.getElementById('edit-profile-image-url');
+    if (imgIn) imgIn.value = imgVal;
+
+    // Populate mobile modal inputs
+    const mobNameIn = document.getElementById('mob-edit-profile-name');
+    if (mobNameIn) mobNameIn.value = nameVal;
+    const mobEmailIn = document.getElementById('mob-edit-profile-email');
+    if (mobEmailIn) mobEmailIn.value = emailVal;
+    const mobPhoneIn = document.getElementById('mob-edit-profile-phone');
+    if (mobPhoneIn) mobPhoneIn.value = phoneVal;
+    const mobDeptIn = document.getElementById('mob-edit-profile-dept');
+    if (mobDeptIn) mobDeptIn.value = deptVal;
+    const mobIdIn = document.getElementById('mob-edit-profile-studentid');
+    if (mobIdIn) mobIdIn.value = idVal;
+    const mobImgIn = document.getElementById('mob-edit-profile-image-url');
+    if (mobImgIn) mobImgIn.value = imgVal;
+
+    App.openModal('edit-profile-modal');
+  },
+
+  selectAvatarPreset(url) {
+    const dIn = document.getElementById('edit-profile-image-url');
+    if (dIn) dIn.value = url;
+    const mIn = document.getElementById('mob-edit-profile-image-url');
+    if (mIn) mIn.value = url;
+
+    document.querySelectorAll('.avatar-preset-item').forEach(item => {
+      item.classList.toggle('selected', item.src === url);
+    });
+    App.showToast('Avatar preset selected! Click Save to apply.', 'info');
+  },
+
+  async saveProfile() {
+    const isMobile = window.innerWidth < 768;
+    const nameInput = document.getElementById(isMobile && document.getElementById('mob-edit-profile-name') ? 'mob-edit-profile-name' : 'edit-profile-name');
+    const emailInput = document.getElementById(isMobile && document.getElementById('mob-edit-profile-email') ? 'mob-edit-profile-email' : 'edit-profile-email');
+    const phoneInput = document.getElementById(isMobile && document.getElementById('mob-edit-profile-phone') ? 'mob-edit-profile-phone' : 'edit-profile-phone');
+    const deptInput = document.getElementById(isMobile && document.getElementById('mob-edit-profile-dept') ? 'mob-edit-profile-dept' : 'edit-profile-dept');
+    const imgInput = document.getElementById(isMobile && document.getElementById('mob-edit-profile-image-url') ? 'mob-edit-profile-image-url' : 'edit-profile-image-url');
+
+    const name = nameInput ? nameInput.value.trim() : this.currentUser.name;
+    const email = emailInput ? emailInput.value.trim() : this.currentUser.email;
+    const phone = phoneInput ? phoneInput.value.trim() : this.currentUser.phone;
+    const department = deptInput ? deptInput.value.trim() : this.currentUser.department;
+    const profile_image = imgInput ? imgInput.value.trim() : (this.currentUser.profile_image || '');
+
+    if (!name) {
+      App.showToast('Full name is required', 'error');
+      return;
+    }
+    if (!email || !email.includes('@')) {
+      App.showToast('Valid college email address is required', 'error');
+      return;
+    }
+
+    try {
+      const updateData = {
+        name,
+        email,
+        phone,
+        department,
+        profile_image,
+        avatar: name.substring(0, 2).toUpperCase()
+      };
+
+      const res = await window.api.updateProfile(this.currentUser.id, updateData);
+      if (res && res.success) {
+        // Update local user state
+        this.currentUser = { ...this.currentUser, ...res.user, profile_image };
+        try {
+          localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+        } catch (e) {}
+
+        // Update in profiles switcher array
+        const pIdx = this.profiles.findIndex(p => p.id === this.currentUser.id);
+        if (pIdx >= 0) {
+          this.profiles[pIdx] = { ...this.profiles[pIdx], ...this.currentUser };
+        }
+
+        App.closeModal('edit-profile-modal');
+        await this.renderProfile();
+        this.updateUserInterfaceDetails();
+        App.showToast('Student profile updated successfully in database!', 'success');
+      } else {
+        App.showToast(res.message || 'Profile update failed', 'error');
+      }
+    } catch (err) {
+      console.error("Save profile error:", err);
+      // Fallback local update if offline
+      this.currentUser = { ...this.currentUser, name, email, phone, department, profile_image };
+      try {
+        localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+      } catch (e) {}
+      App.closeModal('edit-profile-modal');
+      await this.renderProfile();
+      this.updateUserInterfaceDetails();
+      App.showToast('Student profile saved locally', 'success');
+    }
+  },
+
+  openRedeemLoyaltyModal() {
+    const pts = (this.currentUser && this.currentUser.loyalty_points) || 0;
+    if (pts < 100) {
+      App.showToast(`You have ${pts} loyalty points. Minimum 100 points required to redeem a ₹10 voucher!`, 'warning');
+      return;
+    }
+
+    const availPills = [
+      document.getElementById('redeem-modal-avail-pts'),
+      document.getElementById('mob-redeem-modal-avail-pts')
+    ].filter(Boolean);
+    availPills.forEach(el => el.textContent = `${pts} Pts`);
+
+    const maxValPills = [
+      document.getElementById('redeem-modal-max-val'),
+      document.getElementById('mob-redeem-modal-max-val')
+    ].filter(Boolean);
+    const maxCash = Math.floor(pts / 100) * 10;
+    maxValPills.forEach(el => el.textContent = `₹${maxCash}.00`);
+
+    // Populate select options
+    const selects = [
+      document.getElementById('redeem-points-select'),
+      document.getElementById('mob-redeem-points-select')
+    ].filter(Boolean);
+
+    selects.forEach(sel => {
+      sel.innerHTML = '';
+      for (let p = 100; p <= pts; p += 100) {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = `${p} Points → ₹${Math.floor(p / 100) * 10} Discount`;
+        sel.appendChild(opt);
+      }
+    });
+
+    App.openModal('redeem-loyalty-modal');
+  },
+
+  onRedeemPointsChange() {
+    // Dynamic recalculation if needed
+  },
+
+  async executeLoyaltyRedemption() {
+    const isMobile = window.innerWidth < 768;
+    const selEl = document.getElementById(isMobile && document.getElementById('mob-redeem-points-select') ? 'mob-redeem-points-select' : 'redeem-points-select');
+    const pts = Number(selEl ? selEl.value : 100);
+
+    const destInput = document.querySelector(`input[name="${isMobile ? 'mob-redeem-dest' : 'redeem-dest'}"]:checked`) || document.querySelector('input[name="redeem-dest"]:checked');
+    const isWallet = destInput ? destInput.value === 'wallet' : false;
+
+    try {
+      const res = await window.api.redeemLoyalty(this.currentUser.id, pts, isWallet);
+      if (res && res.success) {
+        this.currentUser.loyalty_points = res.current_points;
+        if (res.wallet_balance !== undefined) {
+          this.currentUser.wallet_balance = res.wallet_balance;
+          this.updateWalletUI();
+        }
+        try {
+          localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser));
+        } catch (e) {}
+
+        App.closeModal('redeem-loyalty-modal');
+        await this.renderProfile();
+        App.showToast(`🎉 ${res.message}`, 'success');
+      } else {
+        App.showToast(res.message || 'Redemption failed', 'error');
+      }
+    } catch (err) {
+      console.error("Loyalty redemption error:", err);
+      App.showToast('Could not complete loyalty points redemption', 'error');
+    }
   },
 
   // ==========================================
@@ -3169,10 +3594,14 @@ const StudentApp = {
   async refreshUserLoyalty() {
     try {
       const res = await window.api.getLoyalty(this.currentUser.id);
-      if (res.success) {
-        this.currentUser.loyalty_points = res.loyalty_points;
+      if (res && res.success) {
+        this.currentLoyaltyData = res;
+        this.currentUser.loyalty_points = res.current_points !== undefined ? res.current_points : res.loyalty_points;
+        const ptsVal = this.currentUser.loyalty_points;
         const chip = document.getElementById('home-loyalty-chip-pts');
-        if (chip) chip.textContent = `${res.loyalty_points} pts`;
+        if (chip) chip.textContent = `${ptsVal} pts`;
+        const mobChip = document.getElementById('mob-home-loyalty-pts');
+        if (mobChip) mobChip.textContent = `${ptsVal} pts`;
       }
     } catch (e) {}
   },
