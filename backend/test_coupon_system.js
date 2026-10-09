@@ -205,10 +205,17 @@ runTest('Validation: Already applied coupon rejected with 400', () => {
 
 // 8. Invalid / excessive discount prevention
 runTest('Validation: Discount cannot exceed subtotal or produce negative total', () => {
-  // If a flat discount is ₹50 and subtotal is ₹30
-  const res = simulateApplyCoupon({ code: 'WELCOME10', subtotal: 30 }); // WELCOME10 is 10%
-  assert(res.body.data.discount_amount <= 30);
-  assert(res.body.data.new_total >= 0);
+  const res = simulateApplyCoupon({ code: 'CAMPUS20', subtotal: 100 });
+  assert.strictEqual(res.status, 200);
+  assert(res.body.data.discount_amount <= 100, 'Discount must not exceed subtotal');
+  assert(res.body.data.new_total >= 0, 'New total cannot be negative');
+  assert.strictEqual(res.body.data.new_total, 100 - res.body.data.discount_amount);
+
+  // Test capping logic: flat discount cannot exceed subtotal
+  const flatRes = simulateApplyCoupon({ code: 'BIGBITE200', subtotal: 200 });
+  assert.strictEqual(flatRes.status, 200);
+  assert.strictEqual(flatRes.body.data.discount_amount, 50);
+  assert.strictEqual(flatRes.body.data.new_total, 150);
 });
 
 // ----------------------------------------------------
