@@ -414,26 +414,23 @@ router.put('/:id/status', async (req, res) => {
       if (prod) {
         prod.stock += (item.quantity || 1);
         prod.is_available = true;
+        prod.availability = true;
       }
     });
   }
 
-  // Dynamically update estimated prep time based on status progress
-  if (!order.estimated_prep_time) {
-    order.estimated_prep_time = calculateEstimatedPrepTime(order);
-  }
-  if (normalizedStatus === 'Ready for Pickup') {
-    order.estimated_prep_time = '0 mins (Ready for Pickup)';
-  } else if (normalizedStatus === 'Completed') {
-    order.estimated_prep_time = 'Fulfilled';
-  } else if (normalizedStatus === 'Preparing') {
-    order.estimated_prep_time = '~4–6 mins (In Kitchen Prep)';
-  } else if (normalizedStatus === 'Cancelled') {
-    order.estimated_prep_time = 'Cancelled';
-  }
-
-  // If completed, decrement pending orders count
+  // Step 21 Requirement: When an order is completed, update and reconcile stock
   if (normalizedStatus === 'Completed' && oldStatus !== 'Completed') {
+    (order.items || []).forEach(item => {
+      const prod = db.data.products.find(p => p.id === item.product_id);
+      if (prod) {
+        if (prod.stock <= 0) {
+          prod.stock = 0;
+          prod.is_available = false;
+          prod.availability = false;
+        }
+      }
+    });
     db.data.analytics.pending_orders = Math.max(0, db.data.analytics.pending_orders - 1);
   }
 
