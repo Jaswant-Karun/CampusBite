@@ -109,9 +109,13 @@ router.post('/', async (req, res) => {
     }
   }
 
-  // 5. Image & Availability
+  // 5. Image & Availability (Auto-mark unavailable when stock is 0)
   const resolvedImage = (image || image_url || '').trim();
-  const resolvedAvailability = is_available !== undefined ? Boolean(is_available) : true;
+  let resolvedAvailability = is_available !== undefined ? Boolean(is_available) : true;
+  if (numStock <= 0) {
+    numStock = 0;
+    resolvedAvailability = false;
+  }
 
   const newProduct = {
     id: 'p-' + Date.now(),
@@ -221,14 +225,24 @@ router.put('/:id', async (req, res) => {
     parsedStock = numStock;
   }
 
-  // 5. Image & Availability
+  // 5. Image & Availability (Auto-mark unavailable when stock reaches 0)
   const resolvedImage = req.body.image !== undefined 
     ? req.body.image 
     : (req.body.image_url !== undefined ? req.body.image_url : (current.image || current.image_url || ''));
 
-  const parsedAvailability = req.body.is_available !== undefined 
-    ? Boolean(req.body.is_available) 
-    : (req.body.availability !== undefined ? Boolean(req.body.availability) : current.is_available);
+  let parsedAvailability;
+  if (parsedStock <= 0) {
+    parsedStock = 0;
+    parsedAvailability = false;
+  } else if (req.body.is_available !== undefined) {
+    parsedAvailability = Boolean(req.body.is_available);
+  } else if (req.body.availability !== undefined) {
+    parsedAvailability = Boolean(req.body.availability);
+  } else if (current.stock <= 0 && parsedStock > 0) {
+    parsedAvailability = true;
+  } else {
+    parsedAvailability = current.is_available;
+  }
 
   const updated = {
     ...current,
