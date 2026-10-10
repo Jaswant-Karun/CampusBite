@@ -191,12 +191,17 @@ const AdminApp = {
 
         // 3. Active Customers KPI
         const custEl = document.getElementById('kpi-customers');
-        if (custEl) custEl.textContent = kpis.active_customers || kpis.total_customers || 0;
+        const activeCustCount = kpis.active_customers || kpis.total_customers || 0;
+        if (custEl) custEl.textContent = activeCustCount;
+        const custSubEl = document.getElementById('kpi-customers-sub');
+        if (custSubEl) {
+          custSubEl.innerHTML = `<strong>${activeCustCount} verified diners</strong> logged in database`;
+        }
 
         // 4. Pending Orders KPI
         const pendingEl = document.getElementById('kpi-pending');
         if (pendingEl) pendingEl.textContent = kpis.pending_orders || 0;
-        const pendingSubEl = document.querySelector('.saas-kpi-card.pending .saas-kpi-sub');
+        const pendingSubEl = document.getElementById('kpi-pending-sub') || document.querySelector('.saas-kpi-card.pending .saas-kpi-sub');
         if (pendingSubEl) {
           if (kpis.pending_orders > 0) {
             pendingSubEl.innerHTML = `<strong style="color:#D97706;">${kpis.pending_orders} in kitchen prep</strong> & pickup`;
