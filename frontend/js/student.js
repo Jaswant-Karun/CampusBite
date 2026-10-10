@@ -329,6 +329,28 @@ const StudentApp = {
         handleLiveOrderUpdate(e.detail.orderId);
       }
     });
+
+    // Real-Time Product Catalog Updates (Admin Product Management Sync)
+    const handleLiveProductUpdate = () => {
+      this.loadProducts();
+      if (typeof this.renderDesktopMenuGrid === 'function') {
+        this.renderDesktopMenuGrid();
+      }
+    };
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'campusbite_product_update') {
+        handleLiveProductUpdate();
+      }
+    });
+
+    window.addEventListener('campusbite:product_updated', () => {
+      handleLiveProductUpdate();
+    });
+
+    window.addEventListener('campusbite:menu_updated', () => {
+      handleLiveProductUpdate();
+    });
   },
 
   filterDiet(dietType) {
