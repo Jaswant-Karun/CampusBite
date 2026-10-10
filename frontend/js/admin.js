@@ -596,10 +596,155 @@ const AdminApp = {
       const data = await window.api.getProducts();
       if (data && data.products) {
         this.products = data.products;
+        this.renderProductsTable();
         this.renderInventoryTable();
       }
     } catch (e) {
       console.warn("Products error:", e);
+    }
+  },
+
+  renderProductsTable() {
+    const tbody = document.getElementById('admin-products-tbody');
+    if (!tbody) return;
+
+    if (!this.products.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:32px;color:#94A3B8;">
+            No food products registered in canteen menu.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = this.products.map(p => {
+      return `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="avatar-monogram sm" style="width:28px;height:28px;font-size:10px;">${(p.image_emoji || p.name).substring(0, 2).toUpperCase()}</span>
+              <div>
+                <strong style="color:var(--text-primary);font-size:13.5px;">${p.name}</strong>
+                <div style="font-size:11px;color:var(--text-muted);">${(p.description || '').substring(0, 45)}${p.description && p.description.length > 45 ? '...' : ''}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span style="background:#F1F5F9;color:#334155;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;">${p.category}</span>
+          </td>
+          <td>
+            <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:${p.is_veg ? '#ECFDF5' : '#FEF2F2'};color:${p.is_veg ? '#059669' : '#DC2626'};">
+              ${p.is_veg ? '● Pure Veg' : '▲ Non-Veg'}
+            </span>
+          </td>
+          <td>
+            <strong style="font-size:14px;color:#4F46E5;">₹${p.price}</strong>
+          </td>
+          <td>
+            <span style="font-size:12px;color:#64748B;">${p.prep_time || '5-8 mins'}</span>
+          </td>
+          <td>
+            <span style="font-weight:700;color:${p.stock <= 5 ? '#DC2626' : '#10B981'};">${p.stock} units</span>
+          </td>
+          <td>
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;">
+              <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)">
+              <span style="font-weight:600;color:${p.is_available ? '#059669' : '#94A3B8'};">${p.is_available ? 'Active' : 'Disabled'}</span>
+            </label>
+          </td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex;gap:6px;">
+              <button class="btn-outline" onclick="AdminApp.openEditProductModal('${p.id}')" style="padding:4px 10px;font-size:11.5px;border-radius:6px;font-weight:600;" title="Edit Product">Edit</button>
+              <button class="btn-outline" onclick="AdminApp.deleteProduct('${p.id}')" style="padding:4px 8px;font-size:11.5px;border-radius:6px;color:#DC2626;border-color:rgba(220,38,38,0.3);" title="Delete Product">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  async loadCustomers() {
+    try {
+      const res = await window.api.getCustomers();
+      if (res && res.success && res.customers) {
+        this.customers = res.customers;
+        this.renderCustomersTable();
+      }
+    } catch (e) {
+      console.warn("Failed to load customers:", e);
+    }
+  },
+
+  renderCustomersTable() {
+    const tbody = document.getElementById('admin-customers-tbody');
+    if (!tbody) return;
+
+    if (!this.customers.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center;padding:32px;color:#94A3B8;">
+            No campus diners recorded in database.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = this.customers.map(c => `
+      <tr>
+        <td>
+          <span class="order-token-pill">${c.student_id || c.id.toUpperCase()}</span>
+        </td>
+        <td>
+          <strong style="color:#0F172A;font-size:13.5px;">${c.name}</strong>
+          <span style="display:inline-block;margin-left:4px;font-size:10px;padding:1px 6px;border-radius:4px;background:#F1F5F9;color:#64748B;font-weight:600;">${c.role}</span>
+        </td>
+        <td>
+          <div style="font-size:12px;color:#334155;font-weight:600;">${c.phone}</div>
+          <div style="font-size:11px;color:#64748B;">${c.email}</div>
+        </td>
+        <td>
+          <span style="font-size:12px;color:#475569;font-weight:600;">${c.department || 'Campus'}</span>
+        </td>
+        <td>
+          <strong style="color:#059669;font-size:13px;">₹${c.wallet_balance || 0}</strong>
+        </td>
+        <td>
+          <span style="color:#D97706;font-weight:700;font-size:12px;">★ ${c.loyalty_points || 0}</span>
+        </td>
+        <td>
+          <strong style="font-size:13px;color:#0F172A;">${c.total_orders || 0}</strong>
+        </td>
+        <td>
+          <strong style="color:#4F46E5;font-size:13px;">₹${(c.total_spent || 0).toLocaleString()}</strong>
+        </td>
+        <td>
+          <span class="status-badge-saas ready">${c.status || 'Active Verified'}</span>
+        </td>
+      </tr>
+    `).join('');
+  },
+
+  async resetDemoDatabase() {
+    if (!confirm('Reset database to clean demo scenario state? This will reinitialize orders, inventory, and reviews.')) {
+      return;
+    }
+    try {
+      const res = await window.api.resetDemo();
+      if (res && res.success) {
+        if (window.App && window.App.showToast) {
+          window.App.showToast('Database reset to default demo scenario state.', 'success');
+        } else {
+          alert('Database reset to default demo scenario state.');
+        }
+        await this.loadAllData();
+      } else {
+        alert(res?.message || 'Failed to reset demo');
+      }
+    } catch (e) {
+      alert('Database reset error: ' + (e.message || ''));
     }
   },
 
