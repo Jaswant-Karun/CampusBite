@@ -5,6 +5,11 @@
 const AdminApp = {
   currentTab: 'dashboard',
   currentDashboardChartView: 'weekly',
+  ordersViewMode: 'table',
+  searchOrderId: '',
+  searchCustomer: '',
+  searchStatus: 'All',
+  searchDate: '',
   orders: [],
   products: [],
   customers: [],
@@ -84,12 +89,17 @@ const AdminApp = {
     });
 
     // Orders filter chips
-    document.querySelectorAll('.orders-filter-chips .order-filter-btn').forEach(btn => {
+    document.querySelectorAll('.order-filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.orders-filter-chips .order-filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.order-filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        this.activeOrderFilter = btn.dataset.status;
-        this.renderOrders();
+        const st = btn.dataset.status || 'All';
+        this.activeOrderFilter = st;
+        const statusSelect = document.getElementById('order-filter-status');
+        if (statusSelect) {
+          statusSelect.value = st;
+        }
+        this.handleOrderFilterChange();
       });
     });
   },
