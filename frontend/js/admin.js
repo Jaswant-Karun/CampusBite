@@ -958,19 +958,27 @@ const AdminApp = {
     }
 
     tbody.innerHTML = this.products.map(p => {
+      const photoSrc = p.image || p.image_url || '';
       return `
         <tr>
           <td>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="avatar-monogram sm" style="width:28px;height:28px;font-size:10px;">${(p.image_emoji || p.name).substring(0, 2).toUpperCase()}</span>
+            <div style="display:flex;align-items:center;gap:12px;">
+              ${photoSrc ? `
+                <img src="${photoSrc}" alt="${p.name}" style="width:38px;height:38px;border-radius:8px;object-fit:cover;border:1px solid #CBD5E1;flex-shrink:0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <span class="avatar-monogram sm" style="display:none;width:38px;height:38px;font-size:11px;flex-shrink:0;">${(p.image_emoji || p.name).substring(0, 2).toUpperCase()}</span>
+              ` : `
+                <span class="avatar-monogram sm" style="width:38px;height:38px;font-size:11px;flex-shrink:0;">${(p.image_emoji || p.name).substring(0, 2).toUpperCase()}</span>
+              `}
               <div>
-                <strong style="color:var(--text-primary);font-size:13.5px;">${p.name}</strong>
-                <div style="font-size:11px;color:var(--text-muted);">${(p.description || '').substring(0, 45)}${p.description && p.description.length > 45 ? '...' : ''}</div>
+                <strong style="color:var(--text-primary);font-size:13.5px;display:block;">${p.name}</strong>
+                <div style="font-size:11px;color:var(--text-muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  ${p.description || 'Campus Canteen Specialty'}
+                </div>
               </div>
             </div>
           </td>
           <td>
-            <span style="background:#F1F5F9;color:#334155;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;">${p.category}</span>
+            <span style="background:#F1F5F9;color:#334155;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:600;">${p.category}</span>
           </td>
           <td>
             <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:${p.is_veg ? '#ECFDF5' : '#FEF2F2'};color:${p.is_veg ? '#059669' : '#DC2626'};">
@@ -978,18 +986,22 @@ const AdminApp = {
             </span>
           </td>
           <td>
-            <strong style="font-size:14px;color:#4F46E5;">₹${p.price}</strong>
+            <strong style="font-size:14.5px;color:#4F46E5;">₹${p.price}</strong>
           </td>
           <td>
             <span style="font-size:12px;color:#64748B;">${p.prep_time || '5-8 mins'}</span>
           </td>
           <td>
-            <span style="font-weight:700;color:${p.stock <= 5 ? '#DC2626' : '#10B981'};">${p.stock} units</span>
+            <div style="display:inline-flex;align-items:center;gap:6px;">
+              <button type="button" onclick="AdminApp.adjustStock('${p.id}', -1)" style="width:20px;height:20px;border-radius:4px;border:1px solid #CBD5E1;background:#F8FAFC;font-size:11px;font-weight:700;cursor:pointer;" title="Decrease stock">-</button>
+              <span style="font-weight:700;font-size:13px;min-width:48px;text-align:center;color:${p.stock <= 5 ? '#DC2626' : '#10B981'};">${p.stock} pcs</span>
+              <button type="button" onclick="AdminApp.adjustStock('${p.id}', 1)" style="width:20px;height:20px;border-radius:4px;border:1px solid #CBD5E1;background:#F8FAFC;font-size:11px;font-weight:700;cursor:pointer;" title="Increase stock">+</button>
+            </div>
           </td>
           <td>
             <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;">
-              <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)">
-              <span style="font-weight:600;color:${p.is_available ? '#059669' : '#94A3B8'};">${p.is_available ? 'Active' : 'Disabled'}</span>
+              <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)" style="accent-color:#10B981;cursor:pointer;">
+              <span style="font-weight:700;font-size:11.5px;color:${p.is_available ? '#059669' : '#94A3B8'};">${p.is_available ? '● Active' : '○ Deactivated'}</span>
             </label>
           </td>
           <td style="text-align:right;">
