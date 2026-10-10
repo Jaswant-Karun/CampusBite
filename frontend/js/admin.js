@@ -1209,6 +1209,51 @@ const AdminApp = {
     }
   },
 
+  /* Live Image Preview Helper */
+  handleImagePreview(inputId, previewContainerId) {
+    const input = document.getElementById(inputId);
+    const container = document.getElementById(previewContainerId);
+    if (!container) return;
+    const url = input ? input.value.trim() : '';
+    if (url) {
+      container.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:22px;\\'>🍱</span>'" />`;
+    } else {
+      container.innerHTML = `<span style="font-size:22px;">🍱</span>`;
+    }
+  },
+
+  /* File upload to DataURL helper */
+  handleImageFileUpload(event, targetInputId, previewContainerId) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const input = document.getElementById(targetInputId);
+      if (input) input.value = dataUrl;
+      this.handleImagePreview(targetInputId, previewContainerId);
+    };
+    reader.readAsDataURL(file);
+  },
+
+  /* Broadcast Product Change for Live Student Catalogue Update */
+  notifyProductCatalogChange(productId, actionType) {
+    try {
+      localStorage.setItem('campusbite_product_update', JSON.stringify({
+        productId,
+        type: actionType,
+        timestamp: Date.now()
+      }));
+      window.dispatchEvent(new CustomEvent('campusbite:product_updated', {
+        detail: { productId, type: actionType }
+      }));
+    } catch (e) {}
+
+    if (window.StudentApp && typeof window.StudentApp.loadProducts === 'function') {
+      window.StudentApp.loadProducts();
+    }
+  },
+
   /* Open Full Edit Modal */
   openEditProductModal(productId) {
     const p = this.products.find(item => item.id === productId);
@@ -1219,14 +1264,19 @@ const AdminApp = {
 
     document.getElementById('edit-prod-id').value = p.id;
     document.getElementById('edit-prod-name').value = p.name;
-    document.getElementById('edit-prod-emoji').value = p.category || 'Meal';
     document.getElementById('edit-prod-category').value = p.category;
     document.getElementById('edit-prod-price').value = p.price;
-    document.getElementById('edit-prod-stock').value = p.stock;
+    document.getElementById('edit-prod-stock').value = p.stock !== undefined ? p.stock : 25;
     document.getElementById('edit-prod-prep').value = p.prep_time || '5-8 mins';
-    document.getElementById('edit-prod-is-veg').value = String(p.is_veg);
+    document.getElementById('edit-prod-is-veg').value = String(p.is_veg !== false);
     document.getElementById('edit-prod-desc').value = p.description || '';
-    document.getElementById('edit-prod-available').checked = Boolean(p.is_available);
+    document.getElementById('edit-prod-available').checked = Boolean(p.is_available !== false);
+
+    const imgUrlInput = document.getElementById('edit-prod-image-url');
+    if (imgUrlInput) {
+      imgUrlInput.value = p.image || p.image_url || '';
+      this.handleImagePreview('edit-prod-image-url', 'edit-prod-image-preview');
+    }
 
     App.openModal('edit-product-modal');
   },
@@ -1237,7 +1287,6 @@ const AdminApp = {
 
     const productId = document.getElementById('edit-prod-id').value;
     const name = document.getElementById('edit-prod-name').value.trim();
-    const emoji = document.getElementById('edit-prod-emoji').value.trim() || 'Meal';
     const category = document.getElementById('edit-prod-category').value;
     const price = Number(document.getElementById('edit-prod-price').value);
     const stock = Number(document.getElementById('edit-prod-stock').value);
@@ -1245,36 +1294,51 @@ const AdminApp = {
     const is_veg = document.getElementById('edit-prod-is-veg').value === 'true';
     const description = document.getElementById('edit-prod-desc').value.trim();
     const is_available = document.getElementById('edit-prod-available').checked;
+    const imageUrl = document.getElementById('edit-prod-image-url')?.value?.trim() || '';
 
-    if (!name || isNaN(price) || price <= 0) {
-      App.showToast('Please provide a valid dish name and price', 'warning');
+    // Validation
+    if (!name || name.length < 2) {
+      App.showToast('Product name is required (minimum 2 characters)', 'warning');
+      return;
+    }
+    if (isNaN(price) || price <= 0) {
+      App.showToast('Please enter a valid price greater than ₹0', 'warning');
+      return;
+    }
+    if (!category) {
+      App.showToast('Please select a valid food category', 'warning');
+      return;
+    }
+    if (isNaN(stock) || stock < 0) {
+      App.showToast('Stock count cannot be negative', 'warning');
       return;
     }
 
     try {
       const res = await window.api.updateProduct(productId, {
         name,
-        image_emoji: emoji,
         category,
         price,
         stock,
         prep_time,
         is_veg,
         description,
-        is_available
+        is_available,
+        image: imageUrl,
+        image_url: imageUrl
       });
 
-      if (res.success) {
+      if (res && res.success) {
         App.closeModal('edit-product-modal');
-        App.showToast(`Successfully saved changes for ${name} (₹${price}).`, 'success');
+        App.showToast(`Updated "${name}" (₹${price}, Stock: ${stock}).`, 'success');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
-        if (window.StudentApp) window.StudentApp.loadProducts();
+        this.notifyProductCatalogChange(productId, 'updated');
       } else {
         App.showToast(res.message || 'Update failed', 'error');
       }
     } catch (e) {
-      App.showToast('Failed to update product details', 'error');
+      App.showToast(e.message || 'Failed to update product details', 'error');
     }
   },
 
@@ -1284,27 +1348,38 @@ const AdminApp = {
 
     const newStock = Math.max(0, product.stock + delta);
     try {
-      await window.api.updateProduct(productId, { stock: newStock });
-      await this.loadProducts();
-      await this.loadKPIsAndAnalytics();
-      if (window.StudentApp) window.StudentApp.loadProducts();
+      const res = await window.api.updateProduct(productId, { stock: newStock });
+      if (res && res.success) {
+        await this.loadProducts();
+        await this.loadKPIsAndAnalytics();
+        this.notifyProductCatalogChange(productId, 'stock_updated');
+        App.showToast(`Stock updated: ${product.name} is now ${newStock} pcs.`, 'info');
+      }
     } catch (e) {
       App.showToast('Stock update failed', 'error');
     }
   },
 
   async toggleAvailability(productId, isAvailable) {
+    const product = this.products.find(p => p.id === productId);
+    const prodName = product ? product.name : 'Product';
     try {
-      await window.api.updateProduct(productId, { is_available: isAvailable });
-      await this.loadProducts();
-      if (window.StudentApp) window.StudentApp.loadProducts();
-      App.showToast('Availability updated', 'success');
+      const res = await window.api.updateProduct(productId, { is_available: isAvailable });
+      if (res && res.success) {
+        await this.loadProducts();
+        this.notifyProductCatalogChange(productId, isAvailable ? 'activated' : 'deactivated');
+        App.showToast(`"${prodName}" is now ${isAvailable ? 'Active on Student Menu' : 'Disabled / Sold Out'}`, 'success');
+      }
     } catch (e) {
       App.showToast('Failed to update availability', 'error');
     }
   },
 
   openAddProductModal() {
+    const form = document.getElementById('add-product-form');
+    if (form) form.reset();
+    const preview = document.getElementById('add-prod-image-preview');
+    if (preview) preview.innerHTML = `<span style="font-size:22px;">🍱</span>`;
     App.openModal('add-product-modal');
   },
 
@@ -1314,14 +1389,28 @@ const AdminApp = {
     const name = document.getElementById('prod-name').value.trim();
     const price = Number(document.getElementById('prod-price').value);
     const category = document.getElementById('prod-category').value;
-    const stock = Number(document.getElementById('prod-stock').value) || 20;
-    const emoji = document.getElementById('prod-emoji')?.value?.trim() || 'Meal';
+    const stock = Number(document.getElementById('prod-stock').value) || 25;
     const isVeg = document.getElementById('prod-is-veg').value === 'true';
+    const isAvailable = document.getElementById('prod-available').checked;
     const prep = document.getElementById('prod-prep')?.value?.trim() || '5-8 mins';
     const desc = document.getElementById('prod-desc')?.value?.trim() || 'Freshly prepared at Campus Canteen';
+    const imageUrl = document.getElementById('prod-image-url')?.value?.trim() || '';
 
-    if (!name || isNaN(price) || price <= 0) {
-      App.showToast('Valid name and price are required', 'warning');
+    // Validation
+    if (!name || name.length < 2) {
+      App.showToast('Product name is required (minimum 2 characters)', 'warning');
+      return;
+    }
+    if (isNaN(price) || price <= 0) {
+      App.showToast('Price must be a valid number greater than ₹0', 'warning');
+      return;
+    }
+    if (!category) {
+      App.showToast('Product category is required', 'warning');
+      return;
+    }
+    if (isNaN(stock) || stock < 0) {
+      App.showToast('Stock must be 0 or higher', 'warning');
       return;
     }
 
@@ -1331,42 +1420,48 @@ const AdminApp = {
         price,
         category,
         stock,
-        image_emoji: emoji,
         is_veg: isVeg,
+        is_available: isAvailable,
         prep_time: prep,
-        description: desc
+        description: desc,
+        image: imageUrl,
+        image_url: imageUrl
       });
 
-      if (res.success) {
+      if (res && res.success) {
         App.closeModal('add-product-modal');
         document.getElementById('add-product-form')?.reset();
-        App.showToast(`Added ${res.product.name} (₹${res.product.price}) to live menu.`, 'success');
+        App.showToast(`Added "${res.product.name}" (₹${res.product.price}) to menu!`, 'success');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
-        if (window.StudentApp) window.StudentApp.loadProducts();
+        this.notifyProductCatalogChange(res.product.id, 'created');
+      } else {
+        App.showToast(res.message || 'Failed to add product', 'error');
       }
     } catch (e) {
-      App.showToast('Error adding product', 'error');
+      App.showToast(e.message || 'Error adding product', 'error');
     }
   },
 
   async deleteProduct(productId) {
     const product = this.products.find(p => p.id === productId);
     const name = product ? product.name : 'this item';
-    if (!confirm(`Are you sure you want to remove "${name}" from the canteen menu?`)) {
+    if (!confirm(`⚠️ DELETE PRODUCT\n\nAre you sure you want to permanently delete "${name}" from the canteen menu?\n\nStudents will no longer see this dish in the catalogue.`)) {
       return;
     }
 
     try {
       const res = await window.api.deleteProduct(productId);
-      if (res.success) {
-        App.showToast(`Removed "${name}" from menu`, 'info');
+      if (res && res.success) {
+        App.showToast(`Permanently deleted "${name}" from canteen menu.`, 'info');
         await this.loadProducts();
         await this.loadKPIsAndAnalytics();
-        if (window.StudentApp) window.StudentApp.loadProducts();
+        this.notifyProductCatalogChange(productId, 'deleted');
+      } else {
+        App.showToast(res.message || 'Failed to delete product', 'error');
       }
     } catch (e) {
-      App.showToast('Failed to delete product', 'error');
+      App.showToast(e.message || 'Failed to delete product', 'error');
     }
   },
 
