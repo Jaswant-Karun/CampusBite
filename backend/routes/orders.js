@@ -366,6 +366,7 @@ router.put('/:id/status', async (req, res) => {
   const statusMap = {
     'order placed': 'Order Placed',
     'placed': 'Order Placed',
+    'pending': 'Order Placed',
     'confirmed': 'Confirmed',
     'preparing': 'Preparing',
     'ready for pickup': 'Ready for Pickup',
@@ -388,6 +389,17 @@ router.put('/:id/status', async (req, res) => {
   order.order_status = normalizedStatus;
   order.updated_at = new Date().toISOString();
 
+  // If order was cancelled, restore product stock
+  if (normalizedStatus === 'Cancelled' && oldStatus !== 'Cancelled') {
+    (order.items || []).forEach(item => {
+      const prod = db.data.products.find(p => p.id === item.product_id);
+      if (prod) {
+        prod.stock += (item.quantity || 1);
+        prod.is_available = true;
+      }
+    });
+  }
+
   // Dynamically update estimated prep time based on status progress
   if (!order.estimated_prep_time) {
     order.estimated_prep_time = calculateEstimatedPrepTime(order);
@@ -398,6 +410,8 @@ router.put('/:id/status', async (req, res) => {
     order.estimated_prep_time = 'Fulfilled';
   } else if (normalizedStatus === 'Preparing') {
     order.estimated_prep_time = '~4–6 mins (In Kitchen Prep)';
+  } else if (normalizedStatus === 'Cancelled') {
+    order.estimated_prep_time = 'Cancelled';
   }
 
   // If completed, decrement pending orders count
