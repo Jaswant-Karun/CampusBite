@@ -56,6 +56,7 @@ const ProductSchema = new mongoose.Schema({
   category: { type: String, required: true },
   category_id: { type: String },
   image: { type: String },
+  image_url: { type: String },
   image_emoji: { type: String, default: 'CB' },
   stock: { type: Number, default: 20 },
   is_available: { type: Boolean, default: true },
