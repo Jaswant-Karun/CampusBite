@@ -3,9 +3,11 @@
  */
 
 const AdminApp = {
-  currentTab: 'orders',
+  currentTab: 'dashboard',
+  currentDashboardChartView: 'weekly',
   orders: [],
   products: [],
+  customers: [],
   analyticsData: null,
   demandData: null,
   activeOrderFilter: 'All',
@@ -14,6 +16,7 @@ const AdminApp = {
     const hasAccess = await this.checkAccess();
     if (!hasAccess) return;
     this.bindEvents();
+    this.switchTab('dashboard');
     this.loadAllData();
   },
 
@@ -110,16 +113,44 @@ const AdminApp = {
       target.classList.add('active');
     }
 
-    if (tabId === 'analytics') {
-      this.renderAnalyticsCharts();
-    } else if (tabId === 'demand') {
-      this.loadDemandPredictions();
+    // Dynamic header titles
+    const headingEl = document.getElementById('admin-main-heading');
+    const subheadingEl = document.getElementById('admin-main-subheading');
+    const tabHeaders = {
+      dashboard: { title: "Canteen Operations Dashboard", sub: "Live order dispatch, telemetry & business intelligence" },
+      orders: { title: "Orders Management & Kitchen Queue", sub: "Live ticket management, status transitions & token dispatch" },
+      products: { title: "Canteen Menu & Food Catalog", sub: "Manage food items, pricing, prep times, and live availability" },
+      inventory: { title: "Real-Time Inventory & Stock Management", sub: "Instant inline price updates, stock adjustment, and replenishment alerts" },
+      customers: { title: "Campus Diners & Customer CRM", sub: "Registered students, faculty, dining spend & loyalty balances" },
+      coupons: { title: "Digital Marketing & Coupon Offers", sub: "Publish discounts, monitor campaigns & active promotions" },
+      reviews: { title: "Customer Reviews & Quality Ratings", sub: "Verified post-pickup feedback on food quality, speed & service" },
+      analytics: { title: "Sales & Business Intelligence Analytics", sub: "Revenue velocity, peak rush traffic & bestsellers analysis" },
+      settings: { title: "Canteen Operational Settings", sub: "Express pickup counters, database status & diagnostics" }
+    };
+    if (tabHeaders[tabId]) {
+      if (headingEl) headingEl.textContent = tabHeaders[tabId].title;
+      if (subheadingEl) subheadingEl.textContent = tabHeaders[tabId].sub;
+    }
+
+    if (tabId === 'dashboard') {
+      this.loadKPIsAndAnalytics();
+      this.renderRecentOrdersTable();
+      this.renderDashboardSalesChart();
+      this.renderOrderStatusOverview();
+    } else if (tabId === 'orders') {
+      this.loadOrders();
+    } else if (tabId === 'products') {
+      this.loadProducts();
     } else if (tabId === 'inventory') {
       this.renderInventoryTable();
-    } else if (tabId === 'marketing') {
+    } else if (tabId === 'customers') {
+      this.loadCustomers();
+    } else if (tabId === 'coupons' || tabId === 'marketing') {
       this.loadCoupons();
     } else if (tabId === 'reviews') {
       this.loadReviews();
+    } else if (tabId === 'analytics') {
+      this.renderAnalyticsCharts();
     }
   },
 
@@ -137,26 +168,72 @@ const AdminApp = {
       const data = await window.api.getAnalytics();
       if (data && data.success) {
         this.analyticsData = data;
+        const kpis = data.kpis || {};
         
-        // Update KPI card numbers
-        document.getElementById('kpi-revenue').textContent = `₹${data.kpis.today_revenue.toLocaleString()}`;
-        document.getElementById('kpi-orders').textContent = data.kpis.today_orders;
-        document.getElementById('kpi-customers').textContent = data.kpis.total_customers;
-        document.getElementById('kpi-pending').textContent = data.kpis.pending_orders;
-        document.getElementById('kpi-rating').textContent = `${data.kpis.avg_rating} / 5.0`;
-        document.getElementById('kpi-low-stock').textContent = data.kpis.low_stock_count;
+        // 1. Today's Sales KPI
+        const salesVal = kpis.today_sales !== undefined ? kpis.today_sales : (kpis.today_revenue || 0);
+        const salesEl = document.getElementById('kpi-sales');
+        if (salesEl) salesEl.textContent = `₹${salesVal.toLocaleString()}`;
+        const revEl = document.getElementById('kpi-revenue');
+        if (revEl) revEl.textContent = `₹${salesVal.toLocaleString()}`;
+        const salesTrendEl = document.getElementById('kpi-sales-trend');
+        if (salesTrendEl) {
+          salesTrendEl.innerHTML = `<strong>↑ ₹${salesVal.toLocaleString()}</strong> from real canteen order book`;
+        }
 
-        // Update sidebar badges
+        // 2. Today's Orders KPI
+        const ordersEl = document.getElementById('kpi-orders');
+        if (ordersEl) ordersEl.textContent = kpis.today_orders || 0;
+        const ordersTrendEl = document.getElementById('kpi-orders-trend');
+        if (ordersTrendEl) {
+          ordersTrendEl.innerHTML = `<strong>${kpis.today_orders || 0} total orders</strong> in database`;
+        }
+
+        // 3. Active Customers KPI
+        const custEl = document.getElementById('kpi-customers');
+        if (custEl) custEl.textContent = kpis.active_customers || kpis.total_customers || 0;
+
+        // 4. Pending Orders KPI
+        const pendingEl = document.getElementById('kpi-pending');
+        if (pendingEl) pendingEl.textContent = kpis.pending_orders || 0;
+        const pendingSubEl = document.querySelector('.saas-kpi-card.pending .saas-kpi-sub');
+        if (pendingSubEl) {
+          if (kpis.pending_orders > 0) {
+            pendingSubEl.innerHTML = `<strong style="color:#D97706;">${kpis.pending_orders} in kitchen prep</strong> & pickup`;
+          } else {
+            pendingSubEl.innerHTML = `<strong style="color:#10B981;">All fulfilled</strong> • No current queue`;
+          }
+        }
+
+        // 5. Average Rating KPI
+        const ratingEl = document.getElementById('kpi-rating');
+        if (ratingEl) ratingEl.textContent = `${kpis.avg_rating || 4.8} / 5.0`;
+        const ratingSubEl = document.getElementById('kpi-rating-sub');
+        if (ratingSubEl) {
+          ratingSubEl.innerHTML = `From <strong>${kpis.total_reviews || 0}</strong> verified student reviews`;
+        }
+
+        // Sidebar Badges
         const pendingBadge = document.getElementById('sidebar-pending-badge');
         if (pendingBadge) {
-          pendingBadge.textContent = data.kpis.pending_orders;
-          pendingBadge.style.display = data.kpis.pending_orders > 0 ? 'inline-block' : 'none';
+          pendingBadge.textContent = kpis.pending_orders || 0;
+          pendingBadge.style.display = (kpis.pending_orders || 0) > 0 ? 'inline-block' : 'none';
         }
 
+        const lowStock = kpis.low_stock_count || 0;
         const stockBadge = document.getElementById('sidebar-stock-badge');
         if (stockBadge) {
-          stockBadge.textContent = data.kpis.low_stock_count;
+          stockBadge.textContent = lowStock;
+          stockBadge.style.display = lowStock > 0 ? 'inline-block' : 'none';
         }
+
+        const lowStockKpi = document.getElementById('kpi-low-stock');
+        if (lowStockKpi) lowStockKpi.textContent = lowStock;
+
+        // Render Dashboard Visual Components
+        this.renderDashboardSalesChart();
+        this.renderOrderStatusOverview();
+        this.renderRecentOrdersTable();
 
         if (this.currentTab === 'analytics') {
           this.renderAnalyticsCharts();
@@ -167,12 +244,181 @@ const AdminApp = {
     }
   },
 
+  switchDashboardChartView(view) {
+    this.currentDashboardChartView = view;
+    const weeklyBtn = document.getElementById('btn-chart-view-weekly');
+    const hourlyBtn = document.getElementById('btn-chart-view-hourly');
+    if (weeklyBtn) weeklyBtn.classList.toggle('active', view === 'weekly');
+    if (hourlyBtn) hourlyBtn.classList.toggle('active', view === 'hourly');
+    this.renderDashboardSalesChart();
+  },
+
+  renderDashboardSalesChart() {
+    const container = document.getElementById('dashboard-sales-chart');
+    if (!container || !this.analyticsData) return;
+
+    if (this.currentDashboardChartView === 'hourly') {
+      const hourlyData = this.analyticsData.orders_by_hour || [];
+      if (window.CampusCharts && typeof window.CampusCharts.renderHourlyDemand === 'function') {
+        window.CampusCharts.renderHourlyDemand('dashboard-sales-chart', hourlyData);
+      }
+    } else {
+      const weeklyData = this.analyticsData.weekly_revenue || [];
+      if (window.CampusCharts && typeof window.CampusCharts.renderWeeklyRevenue === 'function') {
+        window.CampusCharts.renderWeeklyRevenue('dashboard-sales-chart', weeklyData);
+      }
+    }
+
+    // Update total catalog revenue tag
+    const totalTag = document.getElementById('dashboard-total-revenue-tag');
+    if (totalTag) {
+      const weeklyList = this.analyticsData.weekly_revenue || [];
+      const totalRev = weeklyList.reduce((sum, item) => sum + (item.revenue || 0), 0);
+      totalTag.textContent = `₹${totalRev.toLocaleString()}`;
+    }
+  },
+
+  renderOrderStatusOverview() {
+    const container = document.getElementById('dashboard-order-status-breakdown');
+    if (!container) return;
+
+    const breakdown = this.analyticsData?.order_status_overview || {
+      'Order Placed': 0,
+      'Confirmed': 0,
+      'Preparing': 0,
+      'Ready for Pickup': 0,
+      'Completed': 0,
+      'Cancelled': 0
+    };
+
+    const statusConfig = [
+      { key: 'Order Placed', label: 'Order Placed', color: '#4F46E5', count: breakdown['Order Placed'] || 0 },
+      { key: 'Confirmed', label: 'Confirmed', color: '#2563EB', count: breakdown['Confirmed'] || 0 },
+      { key: 'Preparing', label: 'Preparing in Kitchen', color: '#D97706', count: breakdown['Preparing'] || 0 },
+      { key: 'Ready for Pickup', label: 'Ready for Pickup', color: '#10B981', count: breakdown['Ready for Pickup'] || 0 },
+      { key: 'Completed', label: 'Completed & Picked Up', color: '#059669', count: breakdown['Completed'] || 0 },
+      { key: 'Cancelled', label: 'Cancelled', color: '#EF4444', count: breakdown['Cancelled'] || 0 }
+    ];
+
+    const totalOrders = Object.values(breakdown).reduce((sum, c) => sum + c, 0) || this.orders.length || 0;
+
+    const totalPill = document.getElementById('dashboard-total-orders-pill');
+    if (totalPill) {
+      totalPill.textContent = `${totalOrders} Total Orders`;
+    }
+
+    container.innerHTML = statusConfig.map(st => {
+      const pct = totalOrders > 0 ? Math.round((st.count / totalOrders) * 100) : 0;
+      return `
+        <div class="status-bar-row">
+          <div class="status-bar-meta">
+            <div class="status-bar-meta-left">
+              <span class="status-bar-dot" style="background:${st.color};"></span>
+              <span>${st.label}</span>
+            </div>
+            <div class="status-bar-meta-right">
+              <strong>${st.count}</strong> <span style="font-size:11px;color:#94A3B8;">(${pct}%)</span>
+            </div>
+          </div>
+          <div class="status-track">
+            <div class="status-fill" style="width: ${pct}%; background:${st.color};"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  renderRecentOrdersTable() {
+    const tbody = document.getElementById('dashboard-recent-orders-tbody');
+    if (!tbody) return;
+
+    const recentOrders = this.analyticsData?.recent_orders?.length
+      ? this.analyticsData.recent_orders
+      : (this.orders || []).slice(0, 8);
+
+    if (!recentOrders.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:32px;color:#94A3B8;">
+            No orders placed yet today. Orders from students will stream here in real-time.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = recentOrders.map(order => {
+      const rawStatus = (order.order_status || 'Order Placed').toLowerCase();
+      let statusClass = 'placed';
+      if (rawStatus === 'confirmed') statusClass = 'confirmed';
+      else if (rawStatus === 'preparing') statusClass = 'preparing';
+      else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') statusClass = 'ready';
+      else if (rawStatus === 'completed') statusClass = 'completed';
+      else if (rawStatus === 'cancelled') statusClass = 'cancelled';
+
+      const itemsList = (order.items || []).map(i => `${i.name} × ${i.quantity}`).join(', ') || 'Canteen Meal';
+      const itemsTooltip = (order.items || []).map(i => `${i.name} × ${i.quantity} (₹${(i.price || 0) * (i.quantity || 1)})`).join('\n');
+      
+      const timeStr = order.created_at
+        ? new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : 'Just now';
+
+      let quickActionHtml = '';
+      if (rawStatus === 'order placed' || rawStatus === 'placed') {
+        quickActionHtml = `<button class="btn-primary" style="padding:4px 9px;font-size:11px;font-weight:700;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Confirmed')" title="Confirm order">Confirm →</button>`;
+      } else if (rawStatus === 'confirmed') {
+        quickActionHtml = `<button class="btn-primary" style="padding:4px 9px;font-size:11px;font-weight:700;background:#D97706;border-color:#D97706;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Preparing')" title="Start kitchen preparation">Start Prep →</button>`;
+      } else if (rawStatus === 'preparing') {
+        quickActionHtml = `<button class="btn-primary" style="padding:4px 9px;font-size:11px;font-weight:700;background:#10B981;border-color:#10B981;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Ready for Pickup')" title="Mark ready for student pickup">Ready →</button>`;
+      } else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') {
+        quickActionHtml = `<button class="btn-primary" style="padding:4px 9px;font-size:11px;font-weight:700;background:#059669;border-color:#059669;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Completed')" title="Hand over tray and complete">Complete ✓</button>`;
+      } else {
+        quickActionHtml = `<span style="font-size:11px;font-weight:700;color:#059669;">✓ Fulfilled</span>`;
+      }
+
+      const isPaid = (order.payment_status || 'Paid').toLowerCase().includes('paid');
+
+      return `
+        <tr>
+          <td>
+            <span class="order-token-pill">#${order.id}</span>
+          </td>
+          <td>
+            <strong style="color:#0F172A;font-size:13px;">${order.customer_name || 'Campus Student'}</strong>
+            <div style="font-size:11px;color:#64748B;">${order.customer_phone || 'Student'} • Counter ${order.pickup_counter || 2}</div>
+          </td>
+          <td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${itemsTooltip}">
+            <span style="font-size:12px;color:#334155;">${itemsList}</span>
+          </td>
+          <td>
+            <strong style="font-size:13px;color:#0F172A;">₹${order.total_amount}</strong>
+          </td>
+          <td>
+            <span class="payment-method-pill ${isPaid ? 'paid' : 'pending'}">
+              ${order.payment_method || 'UPI'}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge-saas ${statusClass}">${order.order_status}</span>
+          </td>
+          <td>
+            <span style="font-size:12px;color:#64748B;">${timeStr}</span>
+          </td>
+          <td style="text-align:right;">
+            ${quickActionHtml}
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
   async loadOrders() {
     try {
       const data = await window.api.getOrders();
       if (data && data.orders) {
         this.orders = data.orders;
         this.renderOrders();
+        this.renderRecentOrdersTable();
       }
     } catch (e) {
       console.warn("Orders fetch error:", e);
