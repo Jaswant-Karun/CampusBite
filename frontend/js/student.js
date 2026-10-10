@@ -297,15 +297,22 @@ const StudentApp = {
       });
     });
 
-    // Real-Time Cross-Window & In-Page Live Order Tracking Sync
+    const handleLiveOrderUpdate = (orderId) => {
+      if (!orderId) return;
+      if (this.currentTrackOrderId === orderId || !this.currentTrackOrderId) {
+        this.renderTracking(orderId);
+      }
+      if (typeof this.loadActiveOrders === 'function') {
+        this.loadActiveOrders();
+      }
+    };
+
     window.addEventListener('storage', (e) => {
       if (e.key === 'campusbite_order_update' && e.newValue) {
         try {
           const update = JSON.parse(e.newValue);
           if (update && update.orderId) {
-            if (this.currentTrackOrderId === update.orderId || !this.currentTrackOrderId) {
-              this.renderTracking(update.orderId);
-            }
+            handleLiveOrderUpdate(update.orderId);
           }
         } catch (err) {}
       }
@@ -313,9 +320,13 @@ const StudentApp = {
 
     window.addEventListener('campusbite:orderStatusChanged', (e) => {
       if (e.detail && e.detail.orderId) {
-        if (this.currentTrackOrderId === e.detail.orderId || !this.currentTrackOrderId) {
-          this.renderTracking(e.detail.orderId);
-        }
+        handleLiveOrderUpdate(e.detail.orderId);
+      }
+    });
+
+    window.addEventListener('campusbite:order_updated', (e) => {
+      if (e.detail && e.detail.orderId) {
+        handleLiveOrderUpdate(e.detail.orderId);
       }
     });
   },
