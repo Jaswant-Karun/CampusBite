@@ -9,7 +9,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 633,
+      "loyalty_points": 701,
       "wallet_balance": 850,
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
@@ -609,6 +609,38 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1062",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "87541 59344",
+      "items": [
+        {
+          "product_id": "p-1791634445177",
+          "name": "Campus Smash Burger",
+          "price": 85,
+          "quantity": 8,
+          "image_emoji": "CB"
+        }
+      ],
+      "subtotal": 680,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 680,
+      "payment_method": "UPI",
+      "payment_status": "PAID",
+      "upi_id": "student@okaxis",
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Completed",
+      "estimated_prep_time": "~8–10 mins",
+      "pickup_slot": "12:45 PM - 01:00 PM",
+      "pickup_counter": 3,
+      "special_instructions": "",
+      "created_at": "2026-10-10T12:14:05.269Z",
+      "updated_at": "2026-10-10T12:14:05.366Z",
+      "loyalty_points_earned": 68
+    },
     {
       "id": "CB1061",
       "user_id": "u-101",
@@ -1797,6 +1829,14 @@
   ],
   "loyalty_transactions": [
     {
+      "id": "lt-1791634445270",
+      "user_id": "u-101",
+      "points": 68,
+      "type": "earned",
+      "description": "Order #CB1062 purchase reward",
+      "date": "2026-10-10T12:14:05.269Z"
+    },
+    {
       "id": "lt-1791633245974",
       "user_id": "u-101",
       "points": 16,
@@ -2086,8 +2126,8 @@
     }
   ],
   "analytics": {
-    "today_revenue": 14782,
-    "today_orders": 215,
+    "today_revenue": 15462,
+    "today_orders": 216,
     "total_customers": 142,
     "pending_orders": 40,
     "avg_rating": 4.9,
@@ -2236,6 +2276,219 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif_1791634445449_35lb",
+      "title": "Menu Item Removed",
+      "message": "Campus Smash Burger was removed from the canteen menu",
+      "type": "product_deleted",
+      "target": "all",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "productId": "p-1791634445177"
+      },
+      "created_at": "2026-10-10T12:14:05.449Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445425_15ch",
+      "title": "Menu Catalog Updated",
+      "message": "Campus Smash Burger details were updated",
+      "type": "product_updated",
+      "target": "all",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "productId": "p-1791634445177",
+        "newPrice": 85,
+        "stock": 20,
+        "is_available": true,
+        "category": "Snacks",
+        "product": {
+          "id": "p-1791634445177",
+          "name": "Campus Smash Burger",
+          "description": "Juicy patty with cheddar, caramelized onions, house sauce",
+          "price": 85,
+          "category": "Snacks",
+          "image": "",
+          "image_url": "",
+          "image_emoji": "CB",
+          "stock": 20,
+          "is_available": true,
+          "availability": true,
+          "rating": 5,
+          "prep_time": "5-8 mins",
+          "is_veg": false,
+          "popular": false,
+          "calories": "320 kcal"
+        }
+      },
+      "created_at": "2026-10-10T12:14:05.425Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445391_yw7b",
+      "title": "Order Completed: #CB1062",
+      "message": "Order #CB1062 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "CB1062",
+        "status": "Completed",
+        "order_status": "Completed",
+        "counter": 3,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1062",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "87541 59344",
+          "items": [
+            {
+              "product_id": "p-1791634445177",
+              "name": "Campus Smash Burger",
+              "price": 85,
+              "quantity": 8,
+              "image_emoji": "CB"
+            }
+          ],
+          "subtotal": 680,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 680,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:45 PM - 01:00 PM",
+          "pickup_counter": 3,
+          "special_instructions": "",
+          "created_at": "2026-10-10T12:14:05.269Z",
+          "updated_at": "2026-10-10T12:14:05.366Z",
+          "loyalty_points_earned": 68
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T12:14:05.391Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445339_gfww",
+      "title": "Low Stock Alert: Campus Smash Burger",
+      "message": "Only 0 units remaining in stock. Consider restocking soon.",
+      "type": "LOW_STOCK",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "productId": "p-1791634445177",
+        "stock": 0
+      },
+      "created_at": "2026-10-10T12:14:05.339Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445333_ibmg",
+      "title": "Order Confirmed: #CB1062",
+      "message": "Payment successful! Your order #CB1062 has been confirmed. Routed to Counter 3. Slot: 12:45 PM - 01:00 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1062",
+        "token": "CB1062",
+        "counter": 3,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-10T12:14:05.333Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445328_4b7x",
+      "title": "New Order #CB1062 Placed!",
+      "message": "Jaswant Karun placed an order for ₹680 (1 items). Routed to Counter 3.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1062",
+        "order": {
+          "id": "CB1062",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "87541 59344",
+          "items": [
+            {
+              "product_id": "p-1791634445177",
+              "name": "Campus Smash Burger",
+              "price": 85,
+              "quantity": 8,
+              "image_emoji": "CB"
+            }
+          ],
+          "subtotal": 680,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 680,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:45 PM - 01:00 PM",
+          "pickup_counter": 3,
+          "special_instructions": "",
+          "created_at": "2026-10-10T12:14:05.269Z",
+          "updated_at": "2026-10-10T12:14:05.366Z",
+          "loyalty_points_earned": 68
+        },
+        "counter": 3
+      },
+      "created_at": "2026-10-10T12:14:05.328Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791634445244_337j",
+      "title": "New Dish on Menu: Campus Smash Burger",
+      "message": "Campus Smash Burger is now available at ₹85",
+      "type": "product_added",
+      "target": "all",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "productId": "p-1791634445177",
+        "price": 85,
+        "product": {
+          "id": "p-1791634445177",
+          "name": "Campus Smash Burger",
+          "description": "Juicy patty with cheddar, caramelized onions, house sauce",
+          "price": 85,
+          "category": "Snacks",
+          "image": "",
+          "image_url": "",
+          "image_emoji": "CB",
+          "stock": 0,
+          "is_available": false,
+          "availability": false,
+          "rating": 5,
+          "prep_time": "5-8 mins",
+          "is_veg": false,
+          "popular": false,
+          "calories": "320 kcal"
+        }
+      },
+      "created_at": "2026-10-10T12:14:05.244Z",
+      "read": false
+    },
     {
       "id": "notif_1791633844647_v769",
       "title": "Menu Item Removed",
