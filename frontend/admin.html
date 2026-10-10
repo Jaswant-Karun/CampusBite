@@ -367,29 +367,121 @@
       </div>
 
       <!-- ====================================================================
-           TAB 2: ORDERS (LIVE KANBAN QUEUE)
+           TAB 2: ORDERS (STEP 19 ADMIN ORDER MANAGEMENT)
            ==================================================================== -->
       <div id="admin-tab-orders" class="admin-tab-panel">
-        <div class="orders-filter-bar">
-          <div class="orders-filter-chips">
-            <button class="order-filter-btn active" data-status="All">All Orders</button>
-            <button class="order-filter-btn" data-status="Order Placed">Order Placed</button>
-            <button class="order-filter-btn" data-status="Confirmed">Confirmed</button>
-            <button class="order-filter-btn" data-status="Preparing">Preparing</button>
-            <button class="order-filter-btn" data-status="Ready for Pickup">Ready for Pickup</button>
-            <button class="order-filter-btn" data-status="Completed">Completed</button>
+        
+        <!-- Search & Filter Controls Panel -->
+        <div class="orders-management-panel">
+          <div class="orders-filter-grid">
+            <!-- 1. Search Order ID -->
+            <div class="orders-search-input-wrapper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="order-search-id" placeholder="Filter by Order ID (e.g. CB1024)..." oninput="AdminApp.handleOrderFilterChange()">
+            </div>
+
+            <!-- 2. Search Customer -->
+            <div class="orders-search-input-wrapper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input type="text" id="order-search-customer" placeholder="Search Customer Name or Phone..." oninput="AdminApp.handleOrderFilterChange()">
+            </div>
+
+            <!-- 3. Status Filter Dropdown -->
+            <div>
+              <select id="order-filter-status" class="orders-filter-select" onchange="AdminApp.handleOrderFilterChange()">
+                <option value="All">All Order Statuses</option>
+                <option value="Order Placed">PENDING (Order Placed)</option>
+                <option value="Confirmed">CONFIRMED</option>
+                <option value="Preparing">PREPARING</option>
+                <option value="Ready for Pickup">READY (For Pickup)</option>
+                <option value="Completed">COMPLETED</option>
+                <option value="Cancelled">CANCELLED</option>
+              </select>
+            </div>
+
+            <!-- 4. Date Filter -->
+            <div>
+              <input type="date" id="order-filter-date" class="orders-filter-date" onchange="AdminApp.handleOrderFilterChange()" title="Filter orders by date">
+            </div>
+
+            <!-- 5. Reset Filters -->
+            <div>
+              <button type="button" class="reset-btn" onclick="AdminApp.clearOrderFilters()" style="height:38px;padding:0 14px;white-space:nowrap;" title="Clear search and filter criteria">
+                Clear Filters
+              </button>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <button class="btn-primary" onclick="AdminApp.openQrScannerModal()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
-              Scan Token QR
-            </button>
-            <button class="reset-btn" onclick="AdminApp.loadOrders()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> Refresh</button>
+
+          <!-- Bottom Row: Status Filter Chips & View Mode Switcher -->
+          <div class="orders-chips-row">
+            <div class="orders-status-chips-list">
+              <button class="order-filter-btn active" data-status="All">All</button>
+              <button class="order-filter-btn" data-status="Order Placed">Pending</button>
+              <button class="order-filter-btn" data-status="Confirmed">Confirmed</button>
+              <button class="order-filter-btn" data-status="Preparing">Preparing</button>
+              <button class="order-filter-btn" data-status="Ready for Pickup">Ready</button>
+              <button class="order-filter-btn" data-status="Completed">Completed</button>
+              <button class="order-filter-btn" data-status="Cancelled" style="color:#DC2626;">Cancelled</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+              <!-- View Switcher: Table vs Kanban Cards -->
+              <div class="orders-view-toggle">
+                <button type="button" class="orders-view-btn active" id="btn-view-table" onclick="AdminApp.switchOrdersView('table')" title="SaaS Data Table View">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg> Table
+                </button>
+                <button type="button" class="orders-view-btn" id="btn-view-cards" onclick="AdminApp.switchOrdersView('cards')" title="Kitchen Cards View">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Cards
+                </button>
+              </div>
+
+              <button class="btn-primary" onclick="AdminApp.openQrScannerModal()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
+                Scan Token QR
+              </button>
+              <button class="reset-btn" onclick="AdminApp.loadOrders()" style="height:34px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> Refresh
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="orders-grid-cards" id="admin-orders-grid">
-          <!-- Rendered via JS -->
+        <!-- Orders Summary Count & Volume Bar -->
+        <div class="orders-summary-bar">
+          <span id="orders-matching-count-tag">Showing <strong>0</strong> matching orders</span>
+          <span id="orders-matching-volume-tag">Filtered Volume: <strong>₹0</strong></span>
         </div>
+
+        <!-- View 1: SaaS Data Table View (Step 19 Primary View) -->
+        <div id="admin-orders-table-view" class="saas-table-card">
+          <div class="saas-table-container">
+            <table class="saas-data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Pickup Slot</th>
+                  <th>Status</th>
+                  <th>Created Time</th>
+                  <th style="text-align:right;">Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <!-- Rendered dynamically via AdminApp.renderOrdersTable() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- View 2: Kitchen Cards Grid View -->
+        <div id="admin-orders-cards-view" style="display:none;">
+          <div class="orders-grid-cards" id="admin-orders-grid">
+            <!-- Rendered dynamically via AdminApp.renderOrdersCards() -->
+          </div>
+        </div>
+
       </div>
 
       <!-- ====================================================================
