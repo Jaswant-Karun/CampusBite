@@ -128,18 +128,28 @@ router.post('/', async (req, res) => {
     if (!product) {
       return res.status(400).json({ success: false, message: `Product ${item.product_id} not found` });
     }
-    if (product.stock < item.quantity) {
+
+    // Step 21 Requirement: Prevent users from ordering more than available stock
+    if (product.is_available === false || product.stock <= 0) {
       return res.status(400).json({ 
         success: false, 
-        message: `Insufficient stock for ${product.name}. Only ${product.stock} available.` 
+        message: `${product.name} is currently out of stock and unavailable.` 
       });
     }
 
-    // Deduct stock
+    if (product.stock < item.quantity) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Cannot order ${item.quantity} units of ${product.name}. Only ${product.stock} available in stock.` 
+      });
+    }
+
+    // Deduct stock (Step 21 Requirement: When stock reaches 0, auto mark unavailable)
     product.stock -= item.quantity;
     if (product.stock <= 0) {
       product.stock = 0;
       product.is_available = false;
+      product.availability = false;
     }
 
     const itemTotal = product.price * item.quantity;
