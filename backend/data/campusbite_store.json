@@ -9,7 +9,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 601,
+      "loyalty_points": 617,
       "wallet_balance": 850,
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
@@ -610,6 +610,38 @@
   ],
   "orders": [
     {
+      "id": "CB1060",
+      "user_id": "u-101",
+      "customer_name": "Test Student",
+      "customer_phone": "9876543210",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 2,
+          "image_emoji": "🍔"
+        }
+      ],
+      "subtotal": 160,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 160,
+      "payment_method": "UPI",
+      "payment_status": "PAID",
+      "upi_id": "student@okaxis",
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Cancelled",
+      "estimated_prep_time": "Cancelled",
+      "pickup_slot": "12:30 PM - 12:45 PM",
+      "pickup_counter": 1,
+      "special_instructions": "",
+      "created_at": "2026-10-10T11:53:33.743Z",
+      "updated_at": "2026-10-10T11:53:33.785Z",
+      "loyalty_points_earned": 16
+    },
+    {
       "id": "CB1058",
       "user_id": "u-101",
       "customer_name": "Jaswant Karun",
@@ -958,7 +990,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:21:26.558Z",
       "updated_at": "2026-10-09T05:21:26.558Z",
-      "loyalty_points_earned": 7
+      "loyalty_points_earned": 7,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1046",
@@ -989,7 +1022,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:21:26.479Z",
       "updated_at": "2026-10-09T05:21:26.479Z",
-      "loyalty_points_earned": 6
+      "loyalty_points_earned": 6,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1045",
@@ -1020,7 +1054,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:21:25.598Z",
       "updated_at": "2026-10-09T05:21:25.598Z",
-      "loyalty_points_earned": 8
+      "loyalty_points_earned": 8,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1044",
@@ -1051,7 +1086,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:08:36.930Z",
       "updated_at": "2026-10-09T05:08:36.930Z",
-      "loyalty_points_earned": 7
+      "loyalty_points_earned": 7,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1043",
@@ -1082,7 +1118,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:08:36.851Z",
       "updated_at": "2026-10-09T05:08:36.851Z",
-      "loyalty_points_earned": 6
+      "loyalty_points_earned": 6,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1042",
@@ -1113,7 +1150,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:08:35.889Z",
       "updated_at": "2026-10-09T05:08:35.889Z",
-      "loyalty_points_earned": 8
+      "loyalty_points_earned": 8,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1041",
@@ -1144,7 +1182,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:07:25.983Z",
       "updated_at": "2026-10-09T05:07:25.983Z",
-      "loyalty_points_earned": 7
+      "loyalty_points_earned": 7,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1040",
@@ -1175,7 +1214,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:07:25.906Z",
       "updated_at": "2026-10-09T05:07:25.906Z",
-      "loyalty_points_earned": 6
+      "loyalty_points_earned": 6,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1039",
@@ -1206,7 +1246,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:07:25.086Z",
       "updated_at": "2026-10-09T05:07:25.086Z",
-      "loyalty_points_earned": 8
+      "loyalty_points_earned": 8,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1038",
@@ -1237,7 +1278,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:06:36.453Z",
       "updated_at": "2026-10-09T05:06:36.453Z",
-      "loyalty_points_earned": 7
+      "loyalty_points_earned": 7,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1037",
@@ -1268,7 +1310,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:06:26.356Z",
       "updated_at": "2026-10-09T05:06:26.356Z",
-      "loyalty_points_earned": 6
+      "loyalty_points_earned": 6,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1036",
@@ -1299,7 +1342,8 @@
       "special_instructions": "",
       "created_at": "2026-10-09T05:06:00.069Z",
       "updated_at": "2026-10-09T05:06:00.069Z",
-      "loyalty_points_earned": 8
+      "loyalty_points_earned": 8,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1035",
@@ -1326,7 +1370,8 @@
       "pickup_counter": 3,
       "created_at": "2026-10-08T13:46:15.394Z",
       "updated_at": "2026-10-08T13:46:15.485Z",
-      "loyalty_points_earned": 8
+      "loyalty_points_earned": 8,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1034",
@@ -1360,7 +1405,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-01T15:41:30.499Z",
       "updated_at": "2026-10-01T15:41:43.401Z",
-      "loyalty_points_earned": 12
+      "loyalty_points_earned": 12,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1033",
@@ -1387,7 +1433,8 @@
       "pickup_counter": 1,
       "created_at": "2026-10-01T13:44:25.719Z",
       "updated_at": "2026-10-01T13:45:24.719Z",
-      "loyalty_points_earned": 7
+      "loyalty_points_earned": 7,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1032",
@@ -1421,7 +1468,8 @@
       "pickup_counter": 3,
       "created_at": "2026-10-01T13:18:33.971Z",
       "updated_at": "2026-10-01T13:56:50.440Z",
-      "loyalty_points_earned": 9
+      "loyalty_points_earned": 9,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1031",
@@ -1455,7 +1503,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-01T07:16:56.706Z",
       "updated_at": "2026-10-01T13:57:04.621Z",
-      "loyalty_points_earned": 9
+      "loyalty_points_earned": 9,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1024",
@@ -1487,7 +1536,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-01T04:22:10.031Z",
       "updated_at": "2026-10-01T13:56:59.542Z",
-      "loyalty_points_earned": 18
+      "loyalty_points_earned": 18,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1025",
@@ -1519,7 +1569,8 @@
       "pickup_counter": 1,
       "created_at": "2026-10-01T04:12:10.032Z",
       "updated_at": "2026-10-01T13:56:57.603Z",
-      "loyalty_points_earned": 14
+      "loyalty_points_earned": 14,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1026",
@@ -1545,7 +1596,8 @@
       "pickup_counter": 3,
       "created_at": "2026-10-01T04:02:10.032Z",
       "updated_at": "2026-10-01T13:56:55.610Z",
-      "loyalty_points_earned": 22
+      "loyalty_points_earned": 22,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1020",
@@ -1577,7 +1629,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-01T02:37:10.032Z",
       "updated_at": "2026-10-01T03:02:10.032Z",
-      "loyalty_points_earned": 15
+      "loyalty_points_earned": 15,
+      "estimated_prep_time": "~10–12 mins"
     },
     {
       "id": "cb-test-comp-1791540817965",
@@ -1593,7 +1646,8 @@
         }
       ],
       "total_amount": 100,
-      "created_at": "2026-10-09T10:13:37.965Z"
+      "created_at": "2026-10-09T10:13:37.965Z",
+      "estimated_prep_time": "~10–12 mins"
     },
     {
       "id": "cb-test-comp-1791556172481",
@@ -1609,7 +1663,9 @@
         }
       ],
       "total_amount": 100,
-      "created_at": "2026-10-09T14:29:32.482Z"
+      "created_at": "2026-10-09T14:29:32.482Z",
+      "estimated_prep_time": "Fulfilled",
+      "updated_at": "2026-10-10T11:53:33.818Z"
     }
   ],
   "reviews": [
@@ -1700,6 +1756,14 @@
     }
   ],
   "loyalty_transactions": [
+    {
+      "id": "lt-1791633213744",
+      "user_id": "u-101",
+      "points": 16,
+      "type": "earned",
+      "description": "Order #CB1060 purchase reward",
+      "date": "2026-10-10T11:53:33.743Z"
+    },
     {
       "id": "lt-1791556128993",
       "user_id": "u-101",
@@ -1974,10 +2038,10 @@
     }
   ],
   "analytics": {
-    "today_revenue": 14462,
-    "today_orders": 213,
+    "today_revenue": 14622,
+    "today_orders": 214,
     "total_customers": 142,
-    "pending_orders": 42,
+    "pending_orders": 41,
     "avg_rating": 4.9,
     "ratings_breakdown": {
       "food_quality": 4.6,
@@ -2124,6 +2188,373 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif_1791633213825_y9zw",
+      "title": "Order Completed: #cb-test-comp-1791556172481",
+      "message": "Order #cb-test-comp-1791556172481 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Completed",
+        "order_status": "Completed",
+        "estimated_prep_time": "Fulfilled",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.825Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213808_e8hr",
+      "title": "Order Ready: #cb-test-comp-1791556172481",
+      "message": "Order #cb-test-comp-1791556172481 is READY FOR PICKUP at Counter undefined! Please show your token #cb-test-comp-1791556172481.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "estimated_prep_time": "0 mins (Ready for Pickup)",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.808Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213793_l584",
+      "title": "Order Cancelled: #CB1060",
+      "message": "Order #CB1060 was cancelled. Refund credited to CampusPay wallet.",
+      "type": "ORDER_CANCELLED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "CANCELLED",
+      "data": {
+        "orderId": "CB1060",
+        "status": "Cancelled",
+        "order_status": "Cancelled",
+        "counter": 1,
+        "estimated_prep_time": "Cancelled",
+        "order": {
+          "id": "CB1060",
+          "user_id": "u-101",
+          "customer_name": "Test Student",
+          "customer_phone": "9876543210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 2,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 160,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 160,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Cancelled",
+          "estimated_prep_time": "Cancelled",
+          "pickup_slot": "12:30 PM - 12:45 PM",
+          "pickup_counter": 1,
+          "special_instructions": "",
+          "created_at": "2026-10-10T11:53:33.743Z",
+          "updated_at": "2026-10-10T11:53:33.785Z",
+          "loyalty_points_earned": 16
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.793Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213771_zj7x",
+      "title": "Order Confirmed: #CB1060",
+      "message": "Payment successful! Your order #CB1060 has been confirmed. Routed to Counter 1. Slot: 12:30 PM - 12:45 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1060",
+        "token": "CB1060",
+        "counter": 1,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-10T11:53:33.771Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213769_bwpb",
+      "title": "New Order #CB1060 Placed!",
+      "message": "Test Student placed an order for ₹160 (1 items). Routed to Counter 1.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1060",
+        "order": {
+          "id": "CB1060",
+          "user_id": "u-101",
+          "customer_name": "Test Student",
+          "customer_phone": "9876543210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 2,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 160,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 160,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Cancelled",
+          "estimated_prep_time": "Cancelled",
+          "pickup_slot": "12:30 PM - 12:45 PM",
+          "pickup_counter": 1,
+          "special_instructions": "",
+          "created_at": "2026-10-10T11:53:33.743Z",
+          "updated_at": "2026-10-10T11:53:33.785Z",
+          "loyalty_points_earned": 16
+        },
+        "counter": 1
+      },
+      "created_at": "2026-10-10T11:53:33.769Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213726_eix7",
+      "title": "Order Completed: #cb-test-comp-1791556172481",
+      "message": "Order #cb-test-comp-1791556172481 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Completed",
+        "order_status": "Completed",
+        "estimated_prep_time": "Fulfilled",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.726Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213699_8xhx",
+      "title": "Order Ready: #cb-test-comp-1791556172481",
+      "message": "Order #cb-test-comp-1791556172481 is READY FOR PICKUP at Counter undefined! Please show your token #cb-test-comp-1791556172481.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "estimated_prep_time": "0 mins (Ready for Pickup)",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.699Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213675_admo",
+      "title": "Order Being Prepared: #cb-test-comp-1791556172481",
+      "message": "Kitchen is actively preparing your order #cb-test-comp-1791556172481 at Counter undefined.",
+      "type": "ORDER_PREPARING",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Preparing",
+        "order_status": "Preparing",
+        "estimated_prep_time": "~4–6 mins (In Kitchen Prep)",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.675Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213645_s8am",
+      "title": "Order Confirmed: #cb-test-comp-1791556172481",
+      "message": "Your order #cb-test-comp-1791556172481 is confirmed. Kitchen has queued preparation.",
+      "type": "ORDER_CONFIRMED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Confirmed",
+        "order_status": "Confirmed",
+        "estimated_prep_time": "~10–12 mins",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.645Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791633213607_ukjm",
+      "title": "Order Placed: #cb-test-comp-1791556172481",
+      "message": "Order #cb-test-comp-1791556172481 has been placed and received by canteen staff.",
+      "type": "ORDER_PLACED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PLACED",
+      "data": {
+        "orderId": "cb-test-comp-1791556172481",
+        "status": "Order Placed",
+        "order_status": "Order Placed",
+        "estimated_prep_time": "~10–12 mins",
+        "order": {
+          "id": "cb-test-comp-1791556172481",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "order_status": "Completed",
+          "items": [
+            {
+              "product_id": "p-2",
+              "name": "Cheese Burger Deluxe",
+              "price": 100,
+              "quantity": 1
+            }
+          ],
+          "total_amount": 100,
+          "created_at": "2026-10-09T14:29:32.482Z",
+          "estimated_prep_time": "Fulfilled",
+          "updated_at": "2026-10-10T11:53:33.818Z"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-10T11:53:33.607Z",
+      "read": false
+    },
     {
       "id": "notif_1791556129200_sq3p",
       "title": "Coupon Available: TESTOFFER9197",
