@@ -2815,7 +2815,10 @@ const StudentApp = {
         let displayPrepTime = o.estimated_prep_time || '~8–12 mins';
         let displayStatusMsg = 'Kitchen is actively preparing your meal';
 
-        if (currentIdx === 0) {
+        if (rawStatus === 'cancelled') {
+          displayPrepTime = 'Order Cancelled';
+          displayStatusMsg = 'This order was cancelled by canteen administration. Inventory restored.';
+        } else if (currentIdx === 0) {
           displayPrepTime = o.estimated_prep_time || '~10–12 mins';
           displayStatusMsg = 'Order logged in canteen database & awaiting chef acceptance';
         } else if (currentIdx === 1) {
@@ -2862,14 +2865,20 @@ const StudentApp = {
 
           if (stepEl) {
             stepEl.classList.remove('completed', 'current', 'pending');
-            if (isDone) stepEl.classList.add('completed');
-            else if (isCurrent) stepEl.classList.add('current');
-            else stepEl.classList.add('pending');
+            if (rawStatus === 'cancelled') {
+              stepEl.classList.add('pending');
+            } else if (isDone) {
+              stepEl.classList.add('completed');
+            } else if (isCurrent) {
+              stepEl.classList.add('current');
+            } else {
+              stepEl.classList.add('pending');
+            }
           }
 
           // Use database status rather than hardcoded progress:
-          // Reached steps show ✓, Pending steps show ○
-          const mark = isReached ? '✓' : '○';
+          // Reached steps show ✓, Pending steps show ○, Cancelled shows ✕
+          const mark = rawStatus === 'cancelled' ? '✕' : (isReached ? '✓' : '○');
 
           if (circleEl) {
             circleEl.textContent = mark;
@@ -2878,17 +2887,27 @@ const StudentApp = {
             symbolEl.textContent = mark;
           }
           if (descEl && stage.desc) {
-            descEl.textContent = stage.desc;
+            descEl.textContent = rawStatus === 'cancelled' ? 'Order was cancelled' : stage.desc;
           }
         });
 
         // 5. Ready Alert Banner
         const readyAlert = document.getElementById('order-ready-banner-alert');
         if (readyAlert) {
-          const isReady = currentIdx === 3;
-          readyAlert.style.display = isReady ? 'block' : 'none';
-          if (isReady) {
+          const isReady = currentIdx === 3 && rawStatus !== 'cancelled';
+          const isCancelled = rawStatus === 'cancelled';
+          if (isCancelled) {
+            readyAlert.style.display = 'block';
+            readyAlert.style.backgroundColor = '#EF4444';
+            readyAlert.style.color = '#FFFFFF';
+            readyAlert.textContent = `ORDER #${o.id} HAS BEEN CANCELLED BY CANTEEN`;
+          } else if (isReady) {
+            readyAlert.style.display = 'block';
+            readyAlert.style.backgroundColor = '';
+            readyAlert.style.color = '';
             readyAlert.textContent = `ORDER READY FOR PICKUP AT COUNTER ${o.pickup_counter || 1}! SHOW TOKEN #${o.id}`;
+          } else {
+            readyAlert.style.display = 'none';
           }
         }
 
