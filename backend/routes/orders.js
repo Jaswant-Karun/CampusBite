@@ -40,11 +40,15 @@ router.get('/', (req, res) => {
   // Sort latest first
   orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-  // Ensure every order has estimated_prep_time
+  // Ensure every order has estimated_prep_time and required display fields
   orders.forEach(o => {
     if (!o.estimated_prep_time) {
       o.estimated_prep_time = calculateEstimatedPrepTime(o);
     }
+    if (!o.payment_method) o.payment_method = 'UPI';
+    if (!o.payment_status) o.payment_status = 'Paid';
+    if (!o.pickup_slot) o.pickup_slot = '12:30 PM - 12:45 PM';
+    if (!o.pickup_counter) o.pickup_counter = 1;
   });
 
   res.json({
@@ -63,6 +67,10 @@ router.get('/:id', (req, res) => {
   if (!order.estimated_prep_time) {
     order.estimated_prep_time = calculateEstimatedPrepTime(order);
   }
+  if (!order.payment_method) order.payment_method = 'UPI';
+  if (!order.payment_status) order.payment_status = 'Paid';
+  if (!order.pickup_slot) order.pickup_slot = '12:30 PM - 12:45 PM';
+  if (!order.pickup_counter) order.pickup_counter = 1;
   res.json({ success: true, order });
 });
 
