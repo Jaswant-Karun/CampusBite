@@ -2303,6 +2303,23 @@ const StudentApp = {
       return;
     }
 
+    // Step 21 Requirement: Prevent users from ordering more than available stock
+    for (const item of this.cart) {
+      const p = this.products.find(prod => prod.id === item.productId);
+      if (p) {
+        if (!p.is_available || (p.stock !== undefined && p.stock <= 0)) {
+          App.showToast(`"${p.name}" is now out of stock. Please remove it from your tray.`, 'warning');
+          this.navigateTo('cart');
+          return;
+        }
+        if (p.stock !== undefined && item.quantity > p.stock) {
+          App.showToast(`Cannot order ${item.quantity} × "${p.name}". Only ${p.stock} units available in stock.`, 'warning');
+          this.navigateTo('cart');
+          return;
+        }
+      }
+    }
+
     // Step 10 Requirement: Do not create duplicate orders
     if (this.isPlacingOrder) {
       App.showToast('Your order is already being processed. Please wait...', 'info');
