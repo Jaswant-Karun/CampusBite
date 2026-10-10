@@ -1140,3 +1140,160 @@
 .status-badge-saas.ready { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
 .status-badge-saas.completed { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
 .status-badge-saas.cancelled { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+/* ==========================================================================
+   STEP 19: ADMIN ORDERS MANAGEMENT STYLING
+   ========================================================================== */
+.orders-management-panel {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.orders-filter-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+  .orders-filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .orders-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orders-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.orders-search-input-wrapper svg {
+  position: absolute;
+  left: 12px;
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.orders-search-input-wrapper input {
+  padding-left: 36px;
+  width: 100%;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #CBD5E1;
+  font-size: 13px;
+  color: #0F172A;
+  background: #FFFFFF;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.orders-search-input-wrapper input:focus {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.orders-filter-select, .orders-filter-date {
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #CBD5E1;
+  font-size: 13px;
+  color: #0F172A;
+  background: #FFFFFF;
+  padding: 0 12px;
+  outline: none;
+  width: 100%;
+}
+
+.orders-filter-select:focus, .orders-filter-date:focus {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.orders-chips-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.orders-status-chips-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.orders-view-toggle {
+  display: inline-flex;
+  background: #F1F5F9;
+  padding: 3px;
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.orders-view-btn {
+  border: none;
+  background: transparent;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.orders-view-btn.active {
+  background: #FFFFFF;
+  color: #0F172A;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+.btn-cancel-destructive {
+  background: rgba(239, 68, 68, 0.08);
+  color: #DC2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-cancel-destructive:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #DC2626;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
+}
+
+.orders-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: #64748B;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
