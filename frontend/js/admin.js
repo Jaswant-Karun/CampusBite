@@ -1102,81 +1102,189 @@ const AdminApp = {
     const tbody = document.getElementById('admin-inventory-tbody');
     if (!tbody) return;
 
+    // 1. Calculate & Update KPI Stat Badges
+    const totalCount = this.products.length;
+    const lowCount = this.products.filter(p => p.stock > 0 && p.stock <= 10).length;
+    const outCount = this.products.filter(p => p.stock <= 0).length;
+    const optimalCount = this.products.filter(p => p.stock > 10).length;
+
+    const elTotal = document.getElementById('inv-stat-total');
+    const elLow = document.getElementById('inv-stat-low');
+    const elOut = document.getElementById('inv-stat-out');
+    const elOptimal = document.getElementById('inv-stat-optimal');
+    if (elTotal) elTotal.textContent = totalCount;
+    if (elLow) elLow.textContent = lowCount;
+    if (elOut) elOut.textContent = outCount;
+    if (elOptimal) elOptimal.textContent = optimalCount;
+
+    // 2. Render Low-Stock Warning Alert Banner (Step 21 Requirement)
+    this.renderInventoryLowStockWarning();
+
+    // 3. Render Table Rows
+    if (!this.products.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align:center;padding:40px;color:#94A3B8;">
+            No inventory items registered in canteen.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     tbody.innerHTML = this.products.map(p => {
+      const isZero = p.stock <= 0;
+      const isLow = p.stock > 0 && p.stock <= 10;
+      
       let badgeClass = 'available';
-      let badgeText = 'Available';
-      if (p.stock <= 2) {
+      let badgeText = 'IN STOCK';
+      if (isZero) {
         badgeClass = 'critical';
-        badgeText = 'Critical';
-      } else if (p.stock <= 10) {
+        badgeText = 'OUT OF STOCK';
+      } else if (isLow) {
         badgeClass = 'low';
-        badgeText = 'Low Stock';
+        badgeText = 'LOW STOCK';
       }
+
+      const photoSrc = p.image || p.image_url || '';
 
       return `
         <tr>
+          <!-- 1. Product -->
           <td>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="avatar-monogram sm" style="width:24px;height:24px;font-size:10px;">${p.name.substring(0, 2).toUpperCase()}</span>
+            <div style="display:flex;align-items:center;gap:12px;">
+              ${photoSrc ? `
+                <img src="${photoSrc}" alt="${p.name}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;border:1px solid #CBD5E1;flex-shrink:0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <span class="avatar-monogram sm" style="display:none;width:36px;height:36px;font-size:11px;flex-shrink:0;">${p.name.substring(0, 2).toUpperCase()}</span>
+              ` : `
+                <span class="avatar-monogram sm" style="width:36px;height:36px;font-size:11px;flex-shrink:0;">${p.name.substring(0, 2).toUpperCase()}</span>
+              `}
               <div>
-                <strong style="color:var(--text-primary);font-size:13.5px;">${p.name}</strong>
-                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ${p.prep_time || '5-8 mins'} ${p.is_veg ? '• Vegetarian' : '• Non-Vegetarian'}</div>
+                <strong style="color:var(--text-primary);font-size:13.5px;display:block;">${p.name}</strong>
+                <div style="font-size:11px;color:var(--text-muted);">${p.category} • ₹${p.price} ${p.is_veg ? '• Pure Veg' : '• Non-Veg'}</div>
               </div>
             </div>
           </td>
+
+          <!-- 2. Current Stock -->
           <td>
-            <!-- Interactive Quick Price Edit -->
-            <div style="display:inline-flex;align-items:center;gap:4px;background:var(--bg-elevated, #F8FAFC);padding:3px 6px;border-radius:8px;border:1px solid #CBD5E1;">
-              <span style="font-weight:700;color:var(--text-secondary);font-size:13px;">₹</span>
-              <input 
-                type="number" 
-                min="1" 
-                max="9999" 
-                value="${p.price}" 
-                id="price-input-${p.id}"
-                style="width:58px;padding:3px 5px;border:1px solid #CBD5E1;border-radius:6px;font-weight:800;font-size:13px;color:#0F172A;background:#FFFFFF;outline:none;"
-                title="Enter new price and click Save or press Enter"
-                onkeydown="if(event.key==='Enter') AdminApp.saveInlinePrice('${p.id}')"
-              />
-              <button 
-                class="btn-primary" 
-                onclick="AdminApp.saveInlinePrice('${p.id}')" 
-                title="Save new price immediately"
-                style="padding:3px 8px;font-size:11px;font-weight:700;border-radius:6px;min-width:auto;height:auto;"
-              >
-                Save
-              </button>
+            <div style="display:inline-flex;align-items:center;gap:6px;">
+              <button class="stock-ctrl-btn" onclick="AdminApp.adjustStock('${p.id}', -1)" title="Decrease stock by 1">-</button>
+              <strong class="stock-count-number" style="font-size:14px;min-width:36px;text-align:center;color:${isZero ? '#DC2626' : (isLow ? '#D97706' : '#0F172A')};">
+                ${p.stock}
+              </strong>
+              <button class="stock-ctrl-btn" onclick="AdminApp.adjustStock('${p.id}', 1)" title="Increase stock by 1">+</button>
+              <span style="font-size:11px;color:#64748B;">units</span>
             </div>
           </td>
+
+          <!-- 3. Low-Stock Status (Example: Burger | Stock: 8 | Status: LOW STOCK) -->
           <td>
-            <div class="stock-adjust-controls">
-              <button class="stock-ctrl-btn" onclick="AdminApp.adjustStock('${p.id}', -1)">-</button>
-              <span class="stock-count-number">${p.stock}</span>
-              <button class="stock-ctrl-btn" onclick="AdminApp.adjustStock('${p.id}', 1)">+</button>
-            </div>
+            <span class="stock-badge-pill ${badgeClass}">
+              ${isZero ? '🚫' : (isLow ? '⚠️' : '✓')} ${badgeText}
+            </span>
           </td>
+
+          <!-- 4. Availability (Auto-marked unavailable when stock is 0) -->
           <td>
-            <span class="stock-badge-pill ${badgeClass}">${badgeText}</span>
+            ${isZero ? `
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:3px 8px;border-radius:6px;border:1px solid #FECACA;">
+                <span>✕</span> Unavailable (Stock 0)
+              </span>
+            ` : `
+              <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;">
+                <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)" style="accent-color:#10B981;cursor:pointer;">
+                <span style="font-weight:700;font-size:11.5px;color:${p.is_available ? '#059669' : '#94A3B8'};">
+                  ${p.is_available ? '● Available' : '○ Disabled'}
+                </span>
+              </label>
+            `}
           </td>
-          <td>
-            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;">
-              <input type="checkbox" ${p.is_available ? 'checked' : ''} onchange="AdminApp.toggleAvailability('${p.id}', this.checked)">
-              <span style="font-weight:600;">${p.is_available ? 'Active' : 'Disabled'}</span>
-            </label>
-          </td>
+
+          <!-- 5. Actions (Quick Restock & Edit) -->
           <td style="text-align:right;">
             <div style="display:inline-flex;gap:6px;">
-              <button class="btn-outline" onclick="AdminApp.openEditProductModal('${p.id}')" style="padding:4px 10px;font-size:11.5px;border-radius:6px;font-weight:600;" title="Full Dish & Price Details">
-                Edit
+              <button class="btn-primary" onclick="AdminApp.adjustStock('${p.id}', 10)" style="padding:4px 10px;font-size:11px;font-weight:700;background:#0EA5E9;border-color:#0EA5E9;" title="Quick restock 10 units">
+                +10 Restock
               </button>
-              <button class="btn-outline" onclick="AdminApp.deleteProduct('${p.id}')" style="padding:4px 8px;font-size:11.5px;border-radius:6px;color:#DC2626;border-color:rgba(220,38,38,0.3);" title="Remove Dish">
-                Delete
+              <button class="btn-outline" onclick="AdminApp.openEditProductModal('${p.id}')" style="padding:4px 10px;font-size:11.5px;border-radius:6px;font-weight:600;" title="Edit Product Details">
+                Edit
               </button>
             </div>
           </td>
         </tr>
       `;
     }).join('');
+  },
+
+  /* Low-Stock Warning Alert Banner (Step 21 Requirement) */
+  renderInventoryLowStockWarning() {
+    const container = document.getElementById('inventory-low-stock-alert-container');
+    if (!container) return;
+
+    const lowStockItems = this.products.filter(p => p.stock <= 10);
+    if (!lowStockItems.length) {
+      container.innerHTML = `
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:#047857;font-size:13px;font-weight:600;">
+          <span style="font-size:18px;">✓</span>
+          <span>All canteen inventory levels are healthy. Zero items below threshold.</span>
+        </div>
+      `;
+      return;
+    }
+
+    const itemsSummary = lowStockItems.map(p => {
+      const statusLabel = p.stock === 0 ? 'OUT OF STOCK' : 'LOW STOCK';
+      const color = p.stock === 0 ? '#DC2626' : '#B45309';
+      return `<strong style="color:${color};">${p.name}</strong> (Stock: ${p.stock} • ${statusLabel})`;
+    }).join(', ');
+
+    container.innerHTML = `
+      <div class="inventory-low-stock-banner" style="background:#FFFBEB;border:1.5px solid #F59E0B;border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 2px 8px rgba(245,158,11,0.1);">
+        <span style="font-size:24px;line-height:1;margin-top:2px;">⚠️</span>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <strong style="color:#B45309;font-size:14px;text-transform:uppercase;letter-spacing:0.3px;">LOW STOCK WARNING</strong>
+            <span style="font-size:11.5px;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:999px;font-weight:700;">${lowStockItems.length} Items At Risk</span>
+          </div>
+          <p style="margin:5px 0 10px;font-size:12.5px;color:#92400E;line-height:1.5;">
+            The following dishes are running critically low on inventory: ${itemsSummary}. Items reaching 0 stock are automatically marked unavailable in the student catalogue.
+          </p>
+          <div style="display:flex;gap:8px;">
+            <button type="button" class="btn-primary" onclick="AdminApp.restockAllLowItems(10)" style="padding:5px 14px;font-size:11.5px;font-weight:700;background:#D97706;border-color:#D97706;">
+              ⚡ Restock All (${lowStockItems.length} items) +10 Units
+            </button>
+            <button type="button" class="btn-outline" onclick="AdminApp.loadProducts()" style="padding:5px 12px;font-size:11.5px;border-color:#F59E0B;color:#B45309;">
+              Refresh Inventory
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  /* Bulk Restock All Low-Stock Items */
+  async restockAllLowItems(units = 10) {
+    const lowStockItems = this.products.filter(p => p.stock <= 10);
+    if (!lowStockItems.length) {
+      App.showToast('No items currently need restocking!', 'info');
+      return;
+    }
+
+    try {
+      for (const item of lowStockItems) {
+        await window.api.updateProduct(item.id, {
+          stock: item.stock + units,
+          is_available: true
+        });
+      }
+      App.showToast(`Restocked ${lowStockItems.length} low-stock dishes (+${units} units each)!`, 'success');
+      await this.loadProducts();
+      await this.loadKPIsAndAnalytics();
+      this.notifyProductCatalogChange('all', 'bulk_restocked');
+    } catch (e) {
+      App.showToast('Failed to complete bulk restock', 'error');
+    }
   },
 
   /* 1-Click Inline Price Save */
