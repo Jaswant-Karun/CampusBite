@@ -296,6 +296,28 @@ const StudentApp = {
         this.selectedPaymentMethod = card.dataset.method;
       });
     });
+
+    // Real-Time Cross-Window & In-Page Live Order Tracking Sync
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'campusbite_order_update' && e.newValue) {
+        try {
+          const update = JSON.parse(e.newValue);
+          if (update && update.orderId) {
+            if (this.currentTrackOrderId === update.orderId || !this.currentTrackOrderId) {
+              this.renderTracking(update.orderId);
+            }
+          }
+        } catch (err) {}
+      }
+    });
+
+    window.addEventListener('campusbite:orderStatusChanged', (e) => {
+      if (e.detail && e.detail.orderId) {
+        if (this.currentTrackOrderId === e.detail.orderId || !this.currentTrackOrderId) {
+          this.renderTracking(e.detail.orderId);
+        }
+      }
+    });
   },
 
   filterDiet(dietType) {
