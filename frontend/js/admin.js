@@ -440,30 +440,288 @@ const AdminApp = {
     }
   },
 
-  renderOrders() {
-    const container = document.getElementById('admin-orders-grid');
-    if (!container) return;
+  switchOrdersView(mode) {
+    this.ordersViewMode = mode;
+    const tableBtn = document.getElementById('btn-view-table');
+    const cardsBtn = document.getElementById('btn-view-cards');
+    const tableView = document.getElementById('admin-orders-table-view');
+    const cardsView = document.getElementById('admin-orders-cards-view');
 
-    let filtered = [...this.orders];
-    if (this.activeOrderFilter !== 'All') {
-      const targetFilter = this.activeOrderFilter.toLowerCase();
-      filtered = filtered.filter(o => {
+    if (tableBtn) tableBtn.classList.toggle('active', mode === 'table');
+    if (cardsBtn) cardsBtn.classList.toggle('active', mode === 'cards');
+
+    if (tableView) tableView.style.display = mode === 'table' ? 'block' : 'none';
+    if (cardsView) cardsView.style.display = mode === 'cards' ? 'block' : 'none';
+  },
+
+  handleOrderFilterChange() {
+    const idInput = document.getElementById('order-search-id');
+    const custInput = document.getElementById('order-search-customer');
+    const statusSelect = document.getElementById('order-filter-status');
+    const dateInput = document.getElementById('order-filter-date');
+
+    this.searchOrderId = idInput ? idInput.value.trim() : '';
+    this.searchCustomer = custInput ? custInput.value.trim() : '';
+    this.searchStatus = statusSelect ? statusSelect.value : 'All';
+    this.activeOrderFilter = this.searchStatus;
+    this.searchDate = dateInput ? dateInput.value : '';
+
+    // Synchronize chips active state
+    document.querySelectorAll('.order-filter-btn').forEach(b => {
+      const bStatus = (b.dataset.status || '').toLowerCase();
+      const sStatus = (this.searchStatus || '').toLowerCase();
+      if (bStatus === sStatus || (sStatus === 'all' && bStatus === 'all')) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+
+    this.renderOrders();
+  },
+
+  clearOrderFilters() {
+    const idInput = document.getElementById('order-search-id');
+    const custInput = document.getElementById('order-search-customer');
+    const statusSelect = document.getElementById('order-filter-status');
+    const dateInput = document.getElementById('order-filter-date');
+
+    if (idInput) idInput.value = '';
+    if (custInput) custInput.value = '';
+    if (statusSelect) statusSelect.value = 'All';
+    if (dateInput) dateInput.value = '';
+
+    this.searchOrderId = '';
+    this.searchCustomer = '';
+    this.searchStatus = 'All';
+    this.activeOrderFilter = 'All';
+    this.searchDate = '';
+
+    document.querySelectorAll('.order-filter-btn').forEach(b => {
+      b.classList.toggle('active', (b.dataset.status || '').toLowerCase() === 'all');
+    });
+
+    this.renderOrders();
+  },
+
+  getFilteredOrders() {
+    let list = [...this.orders];
+
+    // Filter by Order ID
+    if (this.searchOrderId) {
+      const qId = this.searchOrderId.toLowerCase().replace('#', '');
+      list = list.filter(o => (o.id || '').toLowerCase().includes(qId));
+    }
+
+    // Filter by Customer
+    if (this.searchCustomer) {
+      const qCust = this.searchCustomer.toLowerCase();
+      list = list.filter(o => 
+        (o.customer_name || '').toLowerCase().includes(qCust) ||
+        (o.customer_phone || '').toLowerCase().includes(qCust) ||
+        (o.user_id || '').toLowerCase().includes(qCust)
+      );
+    }
+
+    // Filter by Status
+    if (this.searchStatus && this.searchStatus !== 'All') {
+      const targetStatus = this.searchStatus.toLowerCase();
+      list = list.filter(o => {
         const os = (o.order_status || '').toLowerCase();
-        if (targetFilter === 'order placed' || targetFilter === 'placed') {
-          return os === 'order placed' || os === 'placed';
+        if (targetStatus === 'order placed' || targetStatus === 'placed' || targetStatus === 'pending') {
+          return os === 'order placed' || os === 'placed' || os === 'pending';
         }
-        if (targetFilter === 'ready for pickup' || targetFilter === 'ready') {
+        if (targetStatus === 'ready for pickup' || targetStatus === 'ready') {
           return os === 'ready for pickup' || os === 'ready';
         }
-        return os === targetFilter;
+        return os === targetStatus;
       });
     }
+
+    // Filter by Date
+    if (this.searchDate) {
+      list = list.filter(o => {
+        if (!o.created_at) return false;
+        try {
+          const orderDateStr = new Date(o.created_at).toISOString().slice(0, 10);
+          return orderDateStr === this.searchDate;
+        } catch (e) {
+          return false;
+        }
+      });
+    }
+
+    return list;
+  },
+
+  renderOrders() {
+    const filtered = this.getFilteredOrders();
+
+    // Update summary counts & volume tags
+    const countTag = document.getElementById('orders-matching-count-tag');
+    if (countTag) {
+      countTag.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${this.orders.length}</strong> orders`;
+    }
+
+    const volumeTag = document.getElementById('orders-matching-volume-tag');
+    if (volumeTag) {
+      const totalVolume = filtered.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+      volumeTag.innerHTML = `Filtered Volume: <strong>₹${totalVolume.toLocaleString()}</strong>`;
+    }
+
+    // Render Table View (Step 19 Primary View)
+    this.renderOrdersTable(filtered);
+
+    // Render Cards View
+    this.renderOrdersCards(filtered);
+  },
+
+  renderOrdersTable(filtered) {
+    const tbody = document.getElementById('admin-orders-tbody');
+    if (!tbody) return;
+
+    if (!filtered.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center;padding:48px 20px;color:#94A3B8;">
+            <div style="font-size:32px;margin-bottom:8px;">📋</div>
+            <strong style="font-size:14px;color:#334155;display:block;">No orders matching search & filter criteria</strong>
+            <p style="font-size:12px;margin:4px 0 12px;color:#64748B;">Try clearing search terms or selecting a different status/date.</p>
+            <button type="button" class="btn-outline" onclick="AdminApp.clearOrderFilters()" style="padding:5px 14px;font-size:12px;">Clear All Filters</button>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(order => {
+      const rawStatus = (order.order_status || 'Order Placed').toLowerCase();
+      let statusClass = 'placed';
+      if (rawStatus === 'confirmed') statusClass = 'confirmed';
+      else if (rawStatus === 'preparing') statusClass = 'preparing';
+      else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') statusClass = 'ready';
+      else if (rawStatus === 'completed') statusClass = 'completed';
+      else if (rawStatus === 'cancelled') statusClass = 'cancelled';
+
+      const isPlaced = rawStatus === 'placed' || rawStatus === 'order placed' || rawStatus === 'pending';
+      const isConfirmed = rawStatus === 'confirmed';
+      const isPreparing = rawStatus === 'preparing';
+      const isReady = rawStatus === 'ready' || rawStatus === 'ready for pickup';
+      const isCompleted = rawStatus === 'completed';
+      const isCancelled = rawStatus === 'cancelled';
+
+      const itemsList = (order.items || []).map(i => `${i.name} × ${i.quantity}`).join(', ') || 'Canteen Meal';
+      const itemsTooltip = (order.items || []).map(i => `${i.name} × ${i.quantity} (₹${(i.price || 0) * (i.quantity || 1)})`).join('\n');
+
+      const isPaid = (order.payment_status || 'Paid').toLowerCase().includes('paid');
+
+      const dateObj = order.created_at ? new Date(order.created_at) : new Date();
+      const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+
+      // Stage progression button (PENDING → CONFIRMED → PREPARING → READY → COMPLETED)
+      let stageAdvanceBtn = '';
+      if (isPlaced) {
+        stageAdvanceBtn = `
+          <button class="btn-primary" style="padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Confirmed')" title="Advance order to Confirmed">
+            Confirm →
+          </button>
+        `;
+      } else if (isConfirmed) {
+        stageAdvanceBtn = `
+          <button class="btn-primary" style="padding:4px 10px;font-size:11px;font-weight:700;background:#D97706;border-color:#D97706;white-space:nowrap;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Preparing')" title="Advance order to Preparing in Kitchen">
+            Start Prep →
+          </button>
+        `;
+      } else if (isPreparing) {
+        stageAdvanceBtn = `
+          <button class="btn-primary" style="padding:4px 10px;font-size:11px;font-weight:700;background:#10B981;border-color:#10B981;white-space:nowrap;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Ready for Pickup')" title="Advance order to Ready for Pickup">
+            Mark Ready →
+          </button>
+        `;
+      } else if (isReady) {
+        stageAdvanceBtn = `
+          <button class="btn-primary" style="padding:4px 10px;font-size:11px;font-weight:700;background:#059669;border-color:#059669;white-space:nowrap;" onclick="AdminApp.advanceOrderStatus('${order.id}', 'Completed')" title="Complete order handover to student">
+            Complete ✓
+          </button>
+        `;
+      } else if (isCompleted) {
+        stageAdvanceBtn = `<span style="font-size:11px;font-weight:700;color:#059669;background:#ECFDF5;padding:3px 8px;border-radius:999px;">✓ Fulfilled</span>`;
+      } else if (isCancelled) {
+        stageAdvanceBtn = `<span style="font-size:11px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:3px 8px;border-radius:999px;">✗ Cancelled</span>`;
+      }
+
+      // Status dropdown allowing direct selection
+      const statusSelect = `
+        <select class="admin-status-dropdown" onchange="AdminApp.handleStatusSelectChange('${order.id}', this.value, '${order.customer_name ? order.customer_name.replace(/'/g, "\\'") : 'Customer'}')" style="padding:3px 6px;font-size:11px;font-weight:700;border-radius:6px;border:1px solid #CBD5E1;background:white;color:#0F172A;cursor:pointer;">
+          <option value="Order Placed" ${isPlaced ? 'selected' : ''}>1. PENDING</option>
+          <option value="Confirmed" ${isConfirmed ? 'selected' : ''}>2. CONFIRMED</option>
+          <option value="Preparing" ${isPreparing ? 'selected' : ''}>3. PREPARING</option>
+          <option value="Ready for Pickup" ${isReady ? 'selected' : ''}>4. READY</option>
+          <option value="Completed" ${isCompleted ? 'selected' : ''}>5. COMPLETED</option>
+          <option value="Cancelled" ${isCancelled ? 'selected' : ''}>6. CANCELLED</option>
+        </select>
+      `;
+
+      // Cancel button with confirmation (destructive action requirement)
+      const cancelBtn = (!isCompleted && !isCancelled) ? `
+        <button class="btn-cancel-destructive" onclick="AdminApp.confirmCancelOrder('${order.id}', '${order.customer_name ? order.customer_name.replace(/'/g, "\\'") : 'Student'}')" title="Cancel Order #${order.id}">
+          Cancel
+        </button>
+      ` : '';
+
+      return `
+        <tr>
+          <td>
+            <span class="order-token-pill">#${order.id}</span>
+          </td>
+          <td>
+            <strong style="color:#0F172A;font-size:13px;">${order.customer_name || 'Campus Student'}</strong>
+            <div style="font-size:11px;color:#64748B;">${order.customer_phone || 'Student'}</div>
+          </td>
+          <td style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${itemsTooltip}">
+            <span style="font-size:12px;color:#334155;">${itemsList}</span>
+          </td>
+          <td>
+            <strong style="font-size:13.5px;color:#0F172A;">₹${order.total_amount}</strong>
+          </td>
+          <td>
+            <span class="payment-method-pill ${isPaid ? 'paid' : 'pending'}">
+              ${order.payment_method || 'UPI'} • ${order.payment_status || 'Paid'}
+            </span>
+          </td>
+          <td>
+            <strong style="font-size:12px;color:#334155;">${order.pickup_slot || 'Express'}</strong>
+            <div style="font-size:11px;color:#64748B;">Counter ${order.pickup_counter || 1}</div>
+          </td>
+          <td>
+            <span class="status-badge-saas ${statusClass}">${order.order_status}</span>
+          </td>
+          <td>
+            <span style="font-size:12px;color:#334155;font-weight:600;">${timeStr}</span>
+            <div style="font-size:10.5px;color:#64748B;">${dateStr}</div>
+          </td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end;">
+              ${statusSelect}
+              ${stageAdvanceBtn}
+              ${cancelBtn}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  renderOrdersCards(filtered) {
+    const container = document.getElementById('admin-orders-grid');
+    if (!container) return;
 
     if (!filtered.length) {
       container.innerHTML = `
         <div style="grid-column: 1/-1; text-align:center; padding:50px; background:var(--bg-card); border-radius:16px; border:1px solid var(--border-subtle); color:var(--text-muted);">
           <div style="margin-bottom:10px;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
-          <h4>No orders in "${this.activeOrderFilter}" status</h4>
+          <h4>No orders matching search & filter criteria</h4>
         </div>
       `;
       return;
@@ -476,6 +734,16 @@ const AdminApp = {
       else if (rawStatus === 'preparing') statusClass = 'preparing';
       else if (rawStatus === 'ready' || rawStatus === 'ready for pickup') statusClass = 'ready';
       else if (rawStatus === 'completed') statusClass = 'completed';
+      else if (rawStatus === 'cancelled') statusClass = 'cancelled';
+
+      const isCompleted = rawStatus === 'completed';
+      const isCancelled = rawStatus === 'cancelled';
+
+      const cancelBtn = (!isCompleted && !isCancelled) ? `
+        <button class="btn-cancel-destructive" onclick="AdminApp.confirmCancelOrder('${order.id}', '${order.customer_name ? order.customer_name.replace(/'/g, "\\'") : 'Student'}')" title="Cancel Order">
+          Cancel
+        </button>
+      ` : '';
 
       return `
         <div class="admin-order-card">
@@ -486,28 +754,28 @@ const AdminApp = {
                 <span class="order-status-badge ${statusClass}">${order.order_status}</span>
               </div>
               <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-                ${new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                ${new Date(order.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • ${new Date(order.created_at || Date.now()).toLocaleDateString([], { month: 'short', day: 'numeric' })}
               </div>
             </div>
             <div style="text-align:right;">
               <span style="font-size:15px;font-weight:800;color:var(--primary);">₹${order.total_amount}</span>
-              <div style="font-size:10px;color:var(--text-muted);">${order.payment_method}</div>
+              <div style="font-size:10px;color:var(--text-muted);">${order.payment_method || 'UPI'} • ${order.payment_status || 'Paid'}</div>
             </div>
           </div>
 
           <div class="order-meta-info">
             <div><strong>${order.customer_name}</strong> (${order.customer_phone || 'Student'})</div>
-            <div>Pickup: <strong>Counter ${order.pickup_counter}</strong> • Slot: <strong>${order.pickup_slot}</strong></div>
+            <div>Pickup: <strong>Counter ${order.pickup_counter || 1}</strong> • Slot: <strong>${order.pickup_slot || 'Express'}</strong></div>
             <div style="margin-top:4px;color:var(--primary);font-weight:600;font-size:11.5px;">
               ⏱ Est. Prep: <strong>${order.estimated_prep_time || '10–12 mins'}</strong>
             </div>
           </div>
 
           <div class="order-items-box">
-            ${order.items.map(item => `
+            ${(order.items || []).map(item => `
               <div class="order-item-line">
                 <span>${item.name} × ${item.quantity}</span>
-                <span>₹${item.price * item.quantity}</span>
+                <span>₹${(item.price || 0) * (item.quantity || 1)}</span>
               </div>
             `).join('')}
           </div>
@@ -516,6 +784,7 @@ const AdminApp = {
             <span style="font-size:11.5px;color:var(--text-muted);">Status:</span>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
               ${this.renderOrderActionButtons(order)}
+              ${cancelBtn}
             </div>
           </div>
         </div>
@@ -525,11 +794,12 @@ const AdminApp = {
 
   renderOrderActionButtons(order) {
     const rawStatus = (order.order_status || '').toLowerCase();
-    const isPlaced = rawStatus === 'placed' || rawStatus === 'order placed';
+    const isPlaced = rawStatus === 'placed' || rawStatus === 'order placed' || rawStatus === 'pending';
     const isConfirmed = rawStatus === 'confirmed';
     const isPreparing = rawStatus === 'preparing';
     const isReady = rawStatus === 'ready' || rawStatus === 'ready for pickup';
     const isCompleted = rawStatus === 'completed';
+    const isCancelled = rawStatus === 'cancelled';
 
     let advanceBtn = '';
     if (isPlaced) {
@@ -556,17 +826,20 @@ const AdminApp = {
           Complete Pickup ✓
         </button>
       `;
-    } else {
+    } else if (isCompleted) {
       advanceBtn = `<span style="font-size:11px;font-weight:700;color:var(--accent-emerald);background:#DCFCE7;padding:3px 8px;border-radius:999px;">✓ Fulfilled</span>`;
+    } else if (isCancelled) {
+      advanceBtn = `<span style="font-size:11px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:3px 8px;border-radius:999px;">✗ Cancelled</span>`;
     }
 
     const selectDropdown = `
-      <select class="admin-status-dropdown" onchange="AdminApp.advanceOrderStatus('${order.id}', this.value)" style="padding:4px 8px;font-size:11.5px;font-weight:700;border-radius:8px;border:1px solid #CBD5E1;background:white;color:#1E293B;cursor:pointer;">
-        <option value="Order Placed" ${isPlaced ? 'selected' : ''}>1. Order Placed</option>
-        <option value="Confirmed" ${isConfirmed ? 'selected' : ''}>2. Confirmed</option>
-        <option value="Preparing" ${isPreparing ? 'selected' : ''}>3. Preparing</option>
-        <option value="Ready for Pickup" ${isReady ? 'selected' : ''}>4. Ready for Pickup</option>
-        <option value="Completed" ${isCompleted ? 'selected' : ''}>5. Completed</option>
+      <select class="admin-status-dropdown" onchange="AdminApp.handleStatusSelectChange('${order.id}', this.value, '${order.customer_name ? order.customer_name.replace(/'/g, "\\'") : 'Customer'}')" style="padding:4px 8px;font-size:11.5px;font-weight:700;border-radius:8px;border:1px solid #CBD5E1;background:white;color:#1E293B;cursor:pointer;">
+        <option value="Order Placed" ${isPlaced ? 'selected' : ''}>1. PENDING</option>
+        <option value="Confirmed" ${isConfirmed ? 'selected' : ''}>2. CONFIRMED</option>
+        <option value="Preparing" ${isPreparing ? 'selected' : ''}>3. PREPARING</option>
+        <option value="Ready for Pickup" ${isReady ? 'selected' : ''}>4. READY</option>
+        <option value="Completed" ${isCompleted ? 'selected' : ''}>5. COMPLETED</option>
+        <option value="Cancelled" ${isCancelled ? 'selected' : ''}>6. CANCELLED</option>
       </select>
     `;
 
@@ -578,13 +851,52 @@ const AdminApp = {
     `;
   },
 
+  async handleStatusSelectChange(orderId, newStatus, customerName) {
+    if (newStatus === 'Cancelled') {
+      this.confirmCancelOrder(orderId, customerName);
+      return;
+    }
+    if (newStatus === 'Completed') {
+      if (!confirm(`Mark Order #${orderId} for ${customerName} as COMPLETED and fulfilled?`)) {
+        await this.loadOrders();
+        return;
+      }
+    }
+    await this.advanceOrderStatus(orderId, newStatus);
+  },
+
+  async confirmCancelOrder(orderId, customerName) {
+    const isConfirmed = confirm(
+      `⚠️ CANCEL ORDER #${orderId}\n\n` +
+      `Are you sure you want to cancel the order for ${customerName}?\n\n` +
+      `This will mark the dining token Cancelled, restock the items to canteen inventory, and alert the customer.`
+    );
+    if (!isConfirmed) {
+      await this.loadOrders();
+      return;
+    }
+    await this.advanceOrderStatus(orderId, 'Cancelled');
+  },
+
   async advanceOrderStatus(orderId, newStatus) {
     try {
       const res = await window.api.updateOrderStatus(orderId, newStatus);
-      if (res.success) {
-        App.showToast(`Order #${orderId} marked as ${newStatus}!`, 'success');
-        await this.loadOrders();
-        await this.loadKPIsAndAnalytics();
+      if (res && res.success) {
+        if (window.App && typeof window.App.showToast === 'function') {
+          window.App.showToast(`Order #${orderId} marked as ${newStatus}!`, 'success');
+        }
+
+        // Cross-window and real-time student tracking sync (Requirement: student's order tracking must update)
+        try {
+          localStorage.setItem('campusbite_order_update', JSON.stringify({
+            orderId,
+            status: newStatus,
+            timestamp: Date.now()
+          }));
+          window.dispatchEvent(new CustomEvent('campusbite:order_updated', {
+            detail: { orderId, status: newStatus }
+          }));
+        } catch (e) {}
 
         // If student is tracking this order or student view is loaded, trigger immediate live tracking refresh
         if (window.StudentApp) {
@@ -598,11 +910,22 @@ const AdminApp = {
             window.StudentApp.loadActiveOrders();
           }
         }
+
+        await this.loadOrders();
+        await this.loadKPIsAndAnalytics();
       } else {
-        App.showToast(res.message || 'Failed to update order status', 'error');
+        if (window.App && typeof window.App.showToast === 'function') {
+          window.App.showToast(res?.message || 'Failed to update order status', 'error');
+        } else {
+          alert(res?.message || 'Failed to update order status');
+        }
       }
     } catch (e) {
-      App.showToast('Failed to update order status: ' + (e.message || ''), 'error');
+      if (window.App && typeof window.App.showToast === 'function') {
+        window.App.showToast('Failed to update order status: ' + (e.message || ''), 'error');
+      } else {
+        alert('Failed to update order status: ' + (e.message || ''));
+      }
     }
   },
 
