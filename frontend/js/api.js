@@ -209,3 +209,24 @@ const api = {
 };
 
 window.api = api;
+
+window.promptServerUrl = function() {
+  const current = window.api.getServerHost();
+  const input = prompt("CampusBite Canteen Server Address:\n\n(Default: http://192.168.1.36:3000)", current);
+  if (input !== null) {
+    if (input.trim()) {
+      window.api.setServerUrl(input.trim());
+      if (typeof App !== 'undefined' && App.showToast) {
+        App.showToast("Backend updated: " + input.trim(), "success");
+      }
+      setTimeout(() => window.location.reload(), 400);
+    } else {
+      window.api.setServerUrl('');
+      if (typeof App !== 'undefined' && App.showToast) {
+        App.showToast("Reset to default connection", "info");
+      }
+      setTimeout(() => window.location.reload(), 400);
+    }
+  }
+};
+
