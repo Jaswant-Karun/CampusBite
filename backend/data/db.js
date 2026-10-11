@@ -18,14 +18,14 @@ const INITIAL_DATA = {
       alternate_email: "24cb023@kpriet.ac.in",
       secondary_email: "jksam37@gmail.com",
       phone: "87541 59344",
-      role: "admin",
+      role: "student",
       studentId: "CB-2024-2028",
       department: "Computer Science & Business Systems",
       loyalty_points: 420,
       wallet_balance: 850,
       avatar: "JK",
       profile_image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
-      account_status: "Active Verified Administrator",
+      account_status: "Active Verified Student",
       joined_date: "2024-08-16"
     },
     {
