@@ -1336,6 +1336,163 @@
         </button>
       </div>
 
+  <!-- ====================================================================
+       CREATE COUPON MODAL (STEP 23)
+       ==================================================================== -->
+  <div class="modal-overlay" id="create-coupon-modal">
+    <div class="modal-window" style="max-width:540px;">
+      <button class="modal-close-btn">&times;</button>
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Promotional Coupon</h3>
+      </div>
+      <form id="create-coupon-form" onsubmit="AdminApp.handleCreateCouponSubmit(event)">
+        <!-- 1. Code & Discount Type -->
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Coupon Code *</label>
+            <input type="text" class="form-input" id="create-c-code" placeholder="e.g. CAMPUS20" required style="text-transform:uppercase;font-weight:700;letter-spacing:0.5px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discount Type *</label>
+            <select class="form-input" id="create-c-type" onchange="AdminApp.handleCreateCouponTypeChange()">
+              <option value="percentage">Percentage (%)</option>
+              <option value="flat">Flat Amount (₹)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 2. Discount Value, Minimum Order, Maximum Discount -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label" id="create-c-val-label">Discount (%) *</label>
+            <input type="number" class="form-input" id="create-c-val" placeholder="e.g. 20" min="1" max="100" required style="font-weight:700;color:#4F46E5;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Min Order (₹) *</label>
+            <input type="number" class="form-input" id="create-c-min" placeholder="e.g. 200" value="200" min="0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Discount (₹) *</label>
+            <input type="number" class="form-input" id="create-c-max" placeholder="e.g. 50" value="50" min="1" required>
+          </div>
+        </div>
+
+        <!-- 3. Expiry Date & Badge -->
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Expiry Date *</label>
+            <input type="date" class="form-input" id="create-c-expiry" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Badge Tag</label>
+            <input type="text" class="form-input" id="create-c-badge" placeholder="e.g. Student Favorite" value="Flash Deal">
+          </div>
+        </div>
+
+        <!-- 4. Description -->
+        <div class="form-group">
+          <label class="form-label">Campaign Description</label>
+          <textarea class="form-input" id="create-c-desc" rows="2" placeholder="e.g. 20% OFF on campus meals up to ₹50"></textarea>
+        </div>
+
+        <!-- 5. Status Toggle -->
+        <div class="form-group" style="display:flex;align-items:center;margin-top:10px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;font-size:13px;color:#0F172A;">
+            <input type="checkbox" id="create-c-active" checked style="width:17px;height:17px;accent-color:#4F46E5;">
+            <span>Activate coupon immediately for student ordering</span>
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button type="submit" class="btn-primary" style="flex:1;padding:10px;font-weight:700;">
+            Publish Coupon to Student App
+          </button>
+          <button type="button" class="btn-outline" onclick="App.closeModal('create-coupon-modal')">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       EDIT COUPON MODAL (STEP 23)
+       ==================================================================== -->
+  <div class="modal-overlay" id="edit-coupon-modal">
+    <div class="modal-window" style="max-width:540px;">
+      <button class="modal-close-btn">&times;</button>
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Coupon & Discount Rules</h3>
+      </div>
+      <form id="edit-coupon-form" onsubmit="AdminApp.handleEditCouponSubmit(event)">
+        <input type="hidden" id="edit-c-id">
+
+        <!-- 1. Code & Discount Type -->
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Coupon Code *</label>
+            <input type="text" class="form-input" id="edit-c-code" required style="text-transform:uppercase;font-weight:700;letter-spacing:0.5px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discount Type *</label>
+            <select class="form-input" id="edit-c-type" onchange="AdminApp.handleEditCouponTypeChange()">
+              <option value="percentage">Percentage (%)</option>
+              <option value="flat">Flat Amount (₹)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 2. Discount Value, Minimum Order, Maximum Discount -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label" id="edit-c-val-label">Discount Value *</label>
+            <input type="number" class="form-input" id="edit-c-val" min="1" required style="font-weight:700;color:#4F46E5;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Min Order (₹) *</label>
+            <input type="number" class="form-input" id="edit-c-min" min="0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Discount (₹) *</label>
+            <input type="number" class="form-input" id="edit-c-max" min="1" required>
+          </div>
+        </div>
+
+        <!-- 3. Expiry Date & Badge -->
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Expiry Date *</label>
+            <input type="date" class="form-input" id="edit-c-expiry" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Badge Tag</label>
+            <input type="text" class="form-input" id="edit-c-badge">
+          </div>
+        </div>
+
+        <!-- 4. Description -->
+        <div class="form-group">
+          <label class="form-label">Campaign Description</label>
+          <textarea class="form-input" id="edit-c-desc" rows="2"></textarea>
+        </div>
+
+        <!-- 5. Active Status Toggle -->
+        <div class="form-group" style="display:flex;align-items:center;margin-top:10px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;font-size:13px;color:#0F172A;">
+            <input type="checkbox" id="edit-c-active" style="width:17px;height:17px;accent-color:#4F46E5;">
+            <span>Coupon is Active & Eligible on Student Checkout</span>
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button type="submit" class="btn-primary" style="flex:1;padding:10px;font-weight:700;">
+            Save Coupon Changes
+          </button>
+          <button type="button" class="btn-outline" onclick="App.closeModal('edit-coupon-modal')">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
