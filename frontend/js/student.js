@@ -411,7 +411,11 @@ const StudentApp = {
       }
     }
 
-    if (screenId === 'cart') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (screenId === 'home') {
+      this.checkActiveOrder();
+    } else if (screenId === 'cart') {
       this.renderCart();
     } else if (screenId === 'checkout') {
       this.renderCheckout();
