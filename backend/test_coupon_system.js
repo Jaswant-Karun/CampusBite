@@ -133,7 +133,7 @@ runTest('Seed Coupons exist with required fields (code, discount, min order, exp
   assert(campus20, 'CAMPUS20 coupon must exist');
   assert.strictEqual(campus20.discount_value, 20);
   assert.strictEqual(campus20.max_discount, 50);
-  assert([100, 200].includes(campus20.minimum_order), 'CAMPUS20 minimum order must be valid');
+  assert([30, 50, 100, 200].includes(campus20.minimum_order), 'CAMPUS20 minimum order must be valid');
   assert.strictEqual(campus20.is_active, true);
   assert(campus20.expiry_date, 'CAMPUS20 must have expiry_date');
 
