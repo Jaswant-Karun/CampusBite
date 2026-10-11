@@ -262,6 +262,18 @@ class MongoManager {
       if (userCount === 0 && seedData.users) {
         console.log(` [MongoDB] Seeding initial users collection...`);
         await User.insertMany(seedData.users);
+      } else {
+        // Ensure u-admin and u-101 are updated to Jaswant Karun, and remove legacy Ramesh records
+        await User.deleteMany({ $or: [{ name: /Ramesh/i }, { email: /ramesh/i }] });
+        await User.updateOne(
+          { id: 'u-admin' },
+          { $set: { name: 'Jaswant Karun', email: 'jksam37@gmail.com', alternate_email: 'admin@campusbite.com', role: 'admin' } },
+          { upsert: true }
+        );
+        await User.updateOne(
+          { id: 'u-101' },
+          { $set: { name: 'Jaswant Karun', email: 'jaswant@campus.edu', secondary_email: 'jksam37@gmail.com', role: 'admin' } }
+        );
       }
 
       // 4. Orders & Order Items
