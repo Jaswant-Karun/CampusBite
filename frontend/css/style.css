@@ -251,6 +251,36 @@ button {
   display: flex;
   align-items: center;
   gap: 5px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+}
+
+.master-nav-links::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .master-header {
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .brand-section {
+    order: 1;
+  }
+  .header-actions {
+    order: 2;
+  }
+  .master-nav-links {
+    order: 3;
+    width: 100%;
+    max-width: 100vw;
+  }
 }
 
 .master-nav-links .desktop-nav-btn {
