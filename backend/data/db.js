@@ -281,7 +281,7 @@ const INITIAL_DATA = {
       description: "20% OFF on Canteen Combo & Meals",
       discount_type: "percentage",
       discount_value: 20,
-      minimum_order: 200,
+      minimum_order: 50,
       max_discount: 50,
       expiry_date: "2026-12-31",
       is_active: true,
