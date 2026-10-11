@@ -1138,7 +1138,109 @@
       </div>
 
       <!-- ====================================================================
-           TAB 9: CANTEEN SYSTEM SETTINGS
+           TAB 9: SMART DEMAND INSIGHT (Step 25 Innovation Feature)
+           ==================================================================== -->
+      <div id="admin-tab-smart-demand" class="admin-tab-panel">
+        
+        <!-- Header & Innovation Disclaimer Banner -->
+        <div class="sdi-header-card">
+          <div class="sdi-header-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:800;color:#0F172A;margin:0;">
+                  Smart Demand Insight
+                </h2>
+                <span class="sdi-innovation-pill">
+                  💡 Innovation Decision Support System
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#059669;background:#ECFDF5;border:1px solid #A7F3D0;padding:3px 10px;border-radius:999px;">
+                  <span class="live-pulse-dot"></span> Rule-Based Statistical Engine
+                </span>
+              </div>
+              <p style="font-size:13px;color:#64748B;margin:6px 0 0 0;">
+                Analyzes historical product orders, day of the week, time windows, and order volume patterns to guide canteen management decisions.
+              </p>
+            </div>
+
+            <button type="button" class="sdi-refresh-btn" onclick="AdminApp.loadSmartDemandInsights()" title="Re-run statistical analysis on current order database">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              <span>Refresh Insights</span>
+            </button>
+          </div>
+
+          <!-- Transparent Methodology Note (Honest Attribution) -->
+          <div class="sdi-methodology-note">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <span style="font-size:16px;">📊</span>
+              <div>
+                <strong style="color:#1E293B;font-size:12.5px;">Transparent Methodology:</strong>
+                <span style="color:#475569;font-size:12.5px;margin-left:4px;">
+                  This feature uses a <strong>transparent rule-based statistical approach</strong> (historical moving averages, weekday velocity multipliers, and peak-hour clustering) rather than a complex black-box model. It is designed to empower human canteen staff with actionable decision support across <strong>kitchen preparation</strong>, <strong>inventory buffers</strong>, <strong>counter staffing</strong>, and <strong>food waste prevention</strong>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Summary KPI Metric Strips -->
+        <div class="sdi-summary-grid">
+          
+          <div class="sdi-summary-card">
+            <span class="sdi-summary-label">Total Smart Insights</span>
+            <div class="sdi-summary-val" id="sdi-stat-total">5</div>
+            <span class="sdi-summary-sub">Synthesized from historical orders</span>
+          </div>
+
+          <div class="sdi-summary-card" style="border-left:4px solid #EF4444;">
+            <span class="sdi-summary-label">High Demand Alerts</span>
+            <div class="sdi-summary-val" style="color:#DC2626;" id="sdi-stat-high">2</div>
+            <span class="sdi-summary-sub">Pre-prep batching recommended</span>
+          </div>
+
+          <div class="sdi-summary-card" style="border-left:4px solid #F59E0B;">
+            <span class="sdi-summary-label">Medium Demand Steady</span>
+            <div class="sdi-summary-val" style="color:#D97706;" id="sdi-stat-medium">2</div>
+            <span class="sdi-summary-sub">Normal prep & buffer inventory</span>
+          </div>
+
+          <div class="sdi-summary-card" style="border-left:4px solid #10B981;">
+            <span class="sdi-summary-label">Low Demand Waste Cutoffs</span>
+            <div class="sdi-summary-val" style="color:#059669;" id="sdi-stat-low">1</div>
+            <span class="sdi-summary-sub">Halts overcooking (Waste reduced)</span>
+          </div>
+
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="sdi-controls-toolbar">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:12.5px;font-weight:700;color:#0F172A;">Filter Demand Level:</span>
+            <div class="sdi-filter-btn-group" id="sdi-level-filter-group">
+              <button type="button" class="sdi-filter-btn active" data-level="All" onclick="AdminApp.filterDemandInsights('All')">All Insights</button>
+              <button type="button" class="sdi-filter-btn" data-level="HIGH DEMAND" onclick="AdminApp.filterDemandInsights('HIGH DEMAND')">🔴 HIGH DEMAND</button>
+              <button type="button" class="sdi-filter-btn" data-level="MEDIUM DEMAND" onclick="AdminApp.filterDemandInsights('MEDIUM DEMAND')">🟡 MEDIUM DEMAND</button>
+              <button type="button" class="sdi-filter-btn" data-level="LOW DEMAND" onclick="AdminApp.filterDemandInsights('LOW DEMAND')">🟢 LOW DEMAND</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#64748B;">
+            <span>Target Decision Pillars:</span>
+            <span class="sdi-pillar-tag">👨‍🍳 Preparation</span>
+            <span class="sdi-pillar-tag">📦 Inventory</span>
+            <span class="sdi-pillar-tag">👥 Staffing</span>
+            <span class="sdi-pillar-tag">♻️ Waste</span>
+          </div>
+        </div>
+
+        <!-- Insights Container Grid -->
+        <div class="sdi-insights-grid" id="smart-demand-insights-grid">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+      </div>
+
+      <!-- ====================================================================
+           TAB 10: CANTEEN SYSTEM SETTINGS
            ==================================================================== -->
       <div id="admin-tab-settings" class="admin-tab-panel">
         <div class="saas-panel-card" style="margin-bottom:20px;">
