@@ -130,10 +130,14 @@ const api = {
   simulatePayment: (data) => api.post('/orders/simulate-payment', data),
 
   // Coupons
+  // Coupons (Step 23)
   getCoupons: () => api.get('/coupons'),
+  getCoupon: (id) => api.get(`/coupons/${id}`),
   applyCoupon: (code, subtotal, already_applied_code) => api.post('/coupons/apply', { code, subtotal, already_applied_code }),
   createCoupon: (data) => api.post('/coupons', data),
+  updateCoupon: (id, data) => api.put(`/coupons/${id}`, data),
   toggleCoupon: (id, is_active) => api.put(`/coupons/${id}`, { is_active }),
+  deleteCoupon: (id) => api.delete(`/coupons/${id}`),
 
   // Loyalty
   getLoyalty: (userId) => api.get(`/loyalty/${userId}`),
