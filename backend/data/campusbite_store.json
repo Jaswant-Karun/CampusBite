@@ -9,7 +9,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 722,
+      "loyalty_points": 730,
       "wallet_balance": 850,
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
@@ -120,7 +120,7 @@
       "price": 80,
       "category": "Snacks",
       "image_emoji": "🍔",
-      "stock": 9,
+      "stock": 8,
       "is_available": true,
       "rating": 4.8,
       "prep_time": "8 mins",
@@ -476,6 +476,18 @@
   ],
   "coupons": [
     {
+      "id": "c-1791719295832",
+      "code": "TESTOFFER5829",
+      "description": "Exclusive 25% test discount",
+      "discount_type": "percentage",
+      "discount_value": 25,
+      "minimum_order": 60,
+      "max_discount": 50,
+      "expiry_date": "2026-12-31",
+      "is_active": true,
+      "badge": "Promotional Offer"
+    },
+    {
       "id": "c-1791719142183",
       "code": "TESTOFFER2182",
       "description": "Exclusive 25% test discount",
@@ -645,6 +657,38 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1070",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 1,
+          "image_emoji": "🍔"
+        }
+      ],
+      "subtotal": 80,
+      "discount": 0,
+      "coupon_code": null,
+      "total_amount": 80,
+      "payment_method": "UPI",
+      "payment_status": "PAID",
+      "upi_id": "student@okaxis",
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Completed",
+      "estimated_prep_time": "~8–10 mins",
+      "pickup_slot": "12:30 PM – 12:45 PM",
+      "pickup_counter": 2,
+      "special_instructions": "",
+      "created_at": "2026-10-11T11:48:15.715Z",
+      "updated_at": "2026-10-11T11:48:15.816Z",
+      "loyalty_points_earned": 8
+    },
     {
       "id": "CB1069",
       "user_id": "u-101",
@@ -1996,9 +2040,40 @@
       "payment_status": "Paid",
       "pickup_slot": "12:30 PM - 12:45 PM",
       "pickup_counter": 1
+    },
+    {
+      "id": "cb-test-comp-1791719415223",
+      "user_id": "u-101",
+      "customer_name": "Jaswant Karun",
+      "order_status": "Completed",
+      "items": [
+        {
+          "product_id": "p-2",
+          "name": "Cheese Burger Deluxe",
+          "price": 100,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 100,
+      "created_at": "2026-10-11T11:50:15.223Z"
     }
   ],
   "reviews": [
+    {
+      "id": "r-1791719415224",
+      "order_id": "cb-test-comp-1791719415223",
+      "user_id": "u-101",
+      "user_name": "Jaswant Karun (Updated)",
+      "user_avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+      "product_id": null,
+      "product_name": "Cheese Burger Deluxe",
+      "rating": 5,
+      "food_quality": 5,
+      "service_speed": 5,
+      "app_experience": 5,
+      "comment": "Burger was piping hot, freshly grilled, and ready right at Counter 2!",
+      "created_at": "2026-10-11T11:50:15.224Z"
+    },
     {
       "id": "r-1791556172483",
       "order_id": "cb-test-comp-1791556172481",
@@ -2086,6 +2161,14 @@
     }
   ],
   "loyalty_transactions": [
+    {
+      "id": "lt-1791719295716",
+      "user_id": "u-101",
+      "points": 8,
+      "type": "earned",
+      "description": "Order #CB1070 purchase reward",
+      "date": "2026-10-11T11:48:15.715Z"
+    },
     {
       "id": "lt-1791719141288",
       "user_id": "u-101",
@@ -2416,8 +2499,8 @@
     }
   ],
   "analytics": {
-    "today_revenue": 15672,
-    "today_orders": 219,
+    "today_revenue": 15752,
+    "today_orders": 220,
     "total_customers": 142,
     "pending_orders": 41,
     "avg_rating": 4.9,
@@ -2566,6 +2649,492 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif_1791719295834_o3jv",
+      "title": "Coupon Available: TESTOFFER5829",
+      "message": "Exclusive 25% test discount Use code TESTOFFER5829 to get 25% OFF!",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": null,
+      "icon": "COUPON",
+      "data": {
+        "coupon": {
+          "id": "c-1791719295832",
+          "code": "TESTOFFER5829",
+          "description": "Exclusive 25% test discount",
+          "discount_type": "percentage",
+          "discount_value": 25,
+          "minimum_order": 60,
+          "max_discount": 50,
+          "expiry_date": "2026-12-31",
+          "is_active": true,
+          "badge": "Promotional Offer"
+        },
+        "legacyType": "NEW_OFFER"
+      },
+      "created_at": "2026-10-11T11:48:15.835Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295834_o3jv",
+      "title": "Coupon Available: TESTOFFER5829",
+      "message": "Exclusive 25% test discount Use code TESTOFFER5829 to get 25% OFF!",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": null,
+      "icon": "COUPON",
+      "data": {
+        "coupon": {
+          "id": "c-1791719295832",
+          "code": "TESTOFFER5829",
+          "description": "Exclusive 25% test discount",
+          "discount_type": "percentage",
+          "discount_value": 25,
+          "minimum_order": 60,
+          "max_discount": 50,
+          "expiry_date": "2026-12-31",
+          "is_active": true,
+          "badge": "Promotional Offer"
+        },
+        "legacyType": "NEW_OFFER"
+      },
+      "created_at": "2026-10-11T11:48:15.835Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295821_atie",
+      "title": "Order Completed: #CB1070",
+      "message": "Order #CB1070 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Completed",
+        "order_status": "Completed",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.821Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295821_atie",
+      "title": "Order Completed: #CB1070",
+      "message": "Order #CB1070 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Completed",
+        "order_status": "Completed",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.821Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295808_m4j1",
+      "title": "Order Ready: #CB1070",
+      "message": "Order #CB1070 is READY FOR PICKUP at Counter 2! Please show your token #CB1070.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.808Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295808_m4j1",
+      "title": "Order Ready: #CB1070",
+      "message": "Order #CB1070 is READY FOR PICKUP at Counter 2! Please show your token #CB1070.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.808Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295791_bfif",
+      "title": "Order Being Prepared: #CB1070",
+      "message": "Kitchen is actively preparing your order #CB1070 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Preparing",
+        "order_status": "Preparing",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.791Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295791_bfif",
+      "title": "Order Being Prepared: #CB1070",
+      "message": "Kitchen is actively preparing your order #CB1070 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Preparing",
+        "order_status": "Preparing",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T11:48:15.791Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295770_pj6l",
+      "title": "Order Confirmed: #CB1070",
+      "message": "Payment successful! Your order #CB1070 has been confirmed. Routed to Counter 2. Slot: 12:30 PM – 12:45 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1070",
+        "token": "CB1070",
+        "counter": 2,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-11T11:48:15.770Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295770_pj6l",
+      "title": "Order Confirmed: #CB1070",
+      "message": "Payment successful! Your order #CB1070 has been confirmed. Routed to Counter 2. Slot: 12:30 PM – 12:45 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1070",
+        "token": "CB1070",
+        "counter": 2,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-11T11:48:15.770Z",
+      "read": true
+    },
+    {
+      "id": "notif_1791719295767_jmbp",
+      "title": "New Order #CB1070 Placed!",
+      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 2.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1070",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "counter": 2
+      },
+      "created_at": "2026-10-11T11:48:15.767Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791719295767_jmbp",
+      "title": "New Order #CB1070 Placed!",
+      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 2.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1070",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:48:15.715Z",
+          "updated_at": "2026-10-11T11:48:15.816Z",
+          "loyalty_points_earned": 8
+        },
+        "counter": 2
+      },
+      "created_at": "2026-10-11T11:48:15.767Z",
+      "read": false
+    },
     {
       "id": "notif_1791719142185_9jwm",
       "title": "Coupon Available: TESTOFFER2182",
@@ -6828,217 +7397,6 @@
       "read": true
     },
     {
-      "id": "notif_1791633213675_admo",
-      "title": "Order Being Prepared: #cb-test-comp-1791556172481",
-      "message": "Kitchen is actively preparing your order #cb-test-comp-1791556172481 at Counter undefined.",
-      "type": "ORDER_PREPARING",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "PREPARING",
-      "data": {
-        "orderId": "cb-test-comp-1791556172481",
-        "status": "Preparing",
-        "order_status": "Preparing",
-        "estimated_prep_time": "~4–6 mins (In Kitchen Prep)",
-        "order": {
-          "id": "cb-test-comp-1791556172481",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "order_status": "Completed",
-          "items": [
-            {
-              "product_id": "p-2",
-              "name": "Cheese Burger Deluxe",
-              "price": 100,
-              "quantity": 1
-            }
-          ],
-          "total_amount": 100,
-          "created_at": "2026-10-09T14:29:32.482Z",
-          "estimated_prep_time": "Fulfilled",
-          "updated_at": "2026-10-10T11:53:33.818Z"
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-10T11:53:33.675Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791633213645_s8am",
-      "title": "Order Confirmed: #cb-test-comp-1791556172481",
-      "message": "Your order #cb-test-comp-1791556172481 is confirmed. Kitchen has queued preparation.",
-      "type": "ORDER_CONFIRMED",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "CONFIRMED",
-      "data": {
-        "orderId": "cb-test-comp-1791556172481",
-        "status": "Confirmed",
-        "order_status": "Confirmed",
-        "estimated_prep_time": "~10–12 mins",
-        "order": {
-          "id": "cb-test-comp-1791556172481",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "order_status": "Completed",
-          "items": [
-            {
-              "product_id": "p-2",
-              "name": "Cheese Burger Deluxe",
-              "price": 100,
-              "quantity": 1
-            }
-          ],
-          "total_amount": 100,
-          "created_at": "2026-10-09T14:29:32.482Z",
-          "estimated_prep_time": "Fulfilled",
-          "updated_at": "2026-10-10T11:53:33.818Z"
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-10T11:53:33.645Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791633213607_ukjm",
-      "title": "Order Placed: #cb-test-comp-1791556172481",
-      "message": "Order #cb-test-comp-1791556172481 has been placed and received by canteen staff.",
-      "type": "ORDER_PLACED",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "PLACED",
-      "data": {
-        "orderId": "cb-test-comp-1791556172481",
-        "status": "Order Placed",
-        "order_status": "Order Placed",
-        "estimated_prep_time": "~10–12 mins",
-        "order": {
-          "id": "cb-test-comp-1791556172481",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "order_status": "Completed",
-          "items": [
-            {
-              "product_id": "p-2",
-              "name": "Cheese Burger Deluxe",
-              "price": 100,
-              "quantity": 1
-            }
-          ],
-          "total_amount": 100,
-          "created_at": "2026-10-09T14:29:32.482Z",
-          "estimated_prep_time": "Fulfilled",
-          "updated_at": "2026-10-10T11:53:33.818Z"
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-10T11:53:33.607Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791556129200_sq3p",
-      "title": "Coupon Available: TESTOFFER9197",
-      "message": "Exclusive 25% test discount Use code TESTOFFER9197 to get 25% OFF!",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": null,
-      "icon": "COUPON",
-      "data": {
-        "coupon": {
-          "id": "c-1791556129199",
-          "code": "TESTOFFER9197",
-          "description": "Exclusive 25% test discount",
-          "discount_type": "percentage",
-          "discount_value": 25,
-          "minimum_order": 60,
-          "max_discount": 50,
-          "expiry_date": "2026-12-31",
-          "is_active": true,
-          "badge": "Flash Deal"
-        },
-        "legacyType": "NEW_OFFER"
-      },
-      "created_at": "2026-10-09T14:28:49.200Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791556129200_sq3p",
-      "title": "Coupon Available: TESTOFFER9197",
-      "message": "Exclusive 25% test discount Use code TESTOFFER9197 to get 25% OFF!",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": null,
-      "icon": "COUPON",
-      "data": {
-        "coupon": {
-          "id": "c-1791556129199",
-          "code": "TESTOFFER9197",
-          "description": "Exclusive 25% test discount",
-          "discount_type": "percentage",
-          "discount_value": 25,
-          "minimum_order": 60,
-          "max_discount": 50,
-          "expiry_date": "2026-12-31",
-          "is_active": true,
-          "badge": "Flash Deal"
-        },
-        "legacyType": "NEW_OFFER"
-      },
-      "created_at": "2026-10-09T14:28:49.200Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791556129189_r3vt",
-      "title": "Order Completed: #CB1058",
-      "message": "Order #CB1058 has been picked up. Thank you for dining with CampusBite!",
-      "type": "ORDER_COMPLETED",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "COMPLETED",
-      "data": {
-        "orderId": "CB1058",
-        "status": "Completed",
-        "order_status": "Completed",
-        "counter": 2,
-        "estimated_prep_time": "Fulfilled",
-        "order": {
-          "id": "CB1058",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 98765 43210",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "Fulfilled",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 2,
-          "special_instructions": "",
-          "created_at": "2026-10-09T14:28:48.993Z",
-          "updated_at": "2026-10-09T14:28:49.185Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-09T14:28:49.189Z",
-      "read": true
-    },
-    {
       "id": "notif-seed-1",
       "title": "Order Confirmed: #CB1024",
       "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
@@ -7047,7 +7405,7 @@
       "userId": "u-101",
       "icon": "CONFIRMED",
       "read": false,
-      "created_at": "2026-10-11T11:17:13.380Z"
+      "created_at": "2026-10-11T11:19:31.809Z"
     },
     {
       "id": "notif-seed-2",
@@ -7058,7 +7416,7 @@
       "userId": "u-101",
       "icon": "PREPARING",
       "read": false,
-      "created_at": "2026-10-11T11:32:13.380Z"
+      "created_at": "2026-10-11T11:34:31.809Z"
     },
     {
       "id": "notif-seed-3",
@@ -7069,7 +7427,7 @@
       "userId": "u-101",
       "icon": "READY",
       "read": false,
-      "created_at": "2026-10-11T11:02:13.380Z"
+      "created_at": "2026-10-11T11:04:31.809Z"
     },
     {
       "id": "notif-seed-4",
@@ -7080,7 +7438,7 @@
       "userId": "u-101",
       "icon": "COMPLETED",
       "read": true,
-      "created_at": "2026-10-11T08:47:13.380Z"
+      "created_at": "2026-10-11T08:49:31.809Z"
     },
     {
       "id": "notif-seed-5",
@@ -7091,7 +7449,7 @@
       "userId": "u-101",
       "icon": "COUPON",
       "read": false,
-      "created_at": "2026-10-11T05:47:13.380Z"
+      "created_at": "2026-10-11T05:49:31.809Z"
     },
     {
       "id": "notif-seed-6",
@@ -7102,7 +7460,7 @@
       "userId": null,
       "icon": "SYSTEM",
       "read": true,
-      "created_at": "2026-10-10T23:47:13.380Z"
+      "created_at": "2026-10-10T23:49:31.809Z"
     }
   ]
 }
