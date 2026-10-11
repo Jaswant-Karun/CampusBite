@@ -398,20 +398,155 @@
           <!-- Rendered dynamically from real DB /api/coupons -->
         </div>
 
-        <!-- Quick Action Feature Banners -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 12px;">
-          <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('crowd-meter')">
-            <span style="font-size:22px;">📊</span>
-            <div>
-              <strong style="font-size:11.5px;color:#0F172A;">Crowding Radar</strong>
-              <div style="font-size:10px;color:#10B981;">3 min wait • Low</div>
+        <!-- Campus Smart Services & Innovation Hub (Full Parity Mobile & Web) -->
+        <div class="campus-smart-hub-section" style="padding:0 18px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <strong style="font-size:13.5px;font-weight:800;color:var(--text-primary);letter-spacing:0.3px;">Campus Smart Services & Hub</strong>
+              <span style="font-size:10px;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:999px;font-weight:800;">14 SERVICES</span>
             </div>
+            <span style="font-size:11px;color:var(--text-muted);font-weight:600;">1-Tap Access</span>
           </div>
-          <div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px;" onclick="StudentApp.navigateTo('wallet')">
-            <span style="font-size:22px;">💳</span>
-            <div>
-              <strong style="font-size:11.5px;color:#0F172A;">CampusPay Wallet</strong>
-              <div style="font-size:10px;color:var(--primary);" id="home-wallet-pill">₹850 Balance</div>
+
+          <div class="mob-smart-hub-grid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:9px;">
+            <!-- 1. Menu & Order -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('menu')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🍔</span>
+                <span style="font-size:9.5px;background:#DCFCE7;color:#166534;padding:1px 6px;border-radius:999px;font-weight:800;">ORDER</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Menu & Order</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">17 Fresh Dishes</span>
+            </div>
+
+            <!-- 2. Rush Radar -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('crowd-meter')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">⏱️</span>
+                <span style="font-size:9.5px;background:#DCFCE7;color:#166534;padding:1px 6px;border-radius:999px;font-weight:800;">~3 MINS</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Rush Radar</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Live Queue Wait</span>
+            </div>
+
+            <!-- 3. CampusPay -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('wallet')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">💳</span>
+                <span style="font-size:9.5px;background:#EEF2FF;color:#4F46E5;padding:1px 6px;border-radius:999px;font-weight:800;" id="mob-hub-wallet-badge">₹850</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">CampusPay</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Digital Dining Card</span>
+            </div>
+
+            <!-- 4. Track Order -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('tracking')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">📍</span>
+                <span style="font-size:9.5px;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:999px;font-weight:800;">LIVE</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Track Order</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Kitchen Status</span>
+            </div>
+
+            <!-- 5. Order History -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('order-history')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">📋</span>
+                <span style="font-size:9.5px;background:#F1F5F9;color:#475569;padding:1px 6px;border-radius:999px;font-weight:800;">PAST</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Order History</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Receipts & Reorder</span>
+            </div>
+
+            <!-- 6. Notifications -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('notifications')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🔔</span>
+                <span style="font-size:9.5px;background:#FEE2E2;color:#DC2626;padding:1px 6px;border-radius:999px;font-weight:800;" id="mob-hub-notif-badge">LIVE</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Notifications</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Dispatch Center</span>
+            </div>
+
+            <!-- 7. Profile & Loyalty -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('profile')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">👤</span>
+                <span style="font-size:9.5px;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:999px;font-weight:800;">GOLD</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Profile & Pass</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Student ID & Tier</span>
+            </div>
+
+            <!-- 8. Rewards & Vouchers -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('rewards')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🎁</span>
+                <span style="font-size:9.5px;background:#EEF2FF;color:#4F46E5;padding:1px 6px;border-radius:999px;font-weight:800;">420 PTS</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Rewards Store</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Redeem Vouchers</span>
+            </div>
+
+            <!-- 9. Student Feedback -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('feedback')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">⭐</span>
+                <span style="font-size:9.5px;background:#FEF3C7;color:#D97706;padding:1px 6px;border-radius:999px;font-weight:800;">4.8 ★</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Diner Feedback</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Reviews & Ratings</span>
+            </div>
+
+            <!-- 10. Eco Tracker -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('sustainability')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🌱</span>
+                <span style="font-size:9.5px;background:#DCFCE7;color:#166534;padding:1px 6px;border-radius:999px;font-weight:800;">420 KG</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Eco Tracker</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Zero Waste Stats</span>
+            </div>
+
+            <!-- 11. Nutrition & Calories -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('nutrition')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🥗</span>
+                <span style="font-size:9.5px;background:#E0F2FE;color:#0284C7;padding:1px 6px;border-radius:999px;font-weight:800;">FITNESS</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Nutrition Hub</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Macros & Calories</span>
+            </div>
+
+            <!-- 12. Voice AI Ordering -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('voice')" style="background:var(--bg-card);border:1px solid rgba(45,212,191,0.3);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🎙️</span>
+                <span style="font-size:9.5px;background:#CCFBF1;color:#0F766E;padding:1px 6px;border-radius:999px;font-weight:800;">VOICE</span>
+              </div>
+              <strong style="font-size:12px;color:#0D9488;">Voice AI Station</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Multilingual Speech</span>
+            </div>
+
+            <!-- 13. Bell Sync -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('timetable')" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🔔</span>
+                <span style="font-size:9.5px;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:999px;font-weight:800;">12:30 PM</span>
+              </div>
+              <strong style="font-size:12px;color:var(--text-primary);">Bell Break Sync</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Lecture Timetable</span>
+            </div>
+
+            <!-- 14. Daily Lucky Spin -->
+            <div class="smart-hub-card" onclick="StudentApp.navigateTo('spin-wheel')" style="background:var(--bg-card);border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card);transition:all 0.2s;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:20px;">🎡</span>
+                <span style="font-size:9.5px;background:#FEF3C7;color:#D97706;padding:1px 6px;border-radius:999px;font-weight:800;">SPIN</span>
+              </div>
+              <strong style="font-size:12px;color:#D97706;">Daily Lucky Spin</strong>
+              <span style="font-size:10.5px;color:var(--text-muted);">Win Vouchers</span>
             </div>
           </div>
         </div>
