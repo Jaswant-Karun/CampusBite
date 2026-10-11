@@ -81,10 +81,22 @@ const CampusVoice = {
     this.updateModalUI(false, 'Mic paused');
   },
 
+  toggleListening() {
+    if (this.isListening) {
+      this.stopListening();
+    } else {
+      this.startListening();
+    }
+  },
+
   handleTranscript(transcript) {
     const textEl = document.getElementById('voice-recognized-text');
     if (textEl) {
       textEl.textContent = `"${transcript}"`;
+    }
+    const pageBox = document.getElementById('voice-screen-transcript-box');
+    if (pageBox) {
+      pageBox.textContent = `"${transcript}"`;
     }
 
     const parsedResults = this.parseSpeech(transcript, this.currentLang);

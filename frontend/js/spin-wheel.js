@@ -24,8 +24,8 @@ const CampusWheel = {
     setTimeout(() => this.drawWheel(), 100);
   },
 
-  drawWheel() {
-    const canvas = document.getElementById('spin-wheel-canvas');
+  drawWheel(canvasId = 'spin-wheel-canvas') {
+    const canvas = document.getElementById(canvasId) || document.getElementById('spin-wheel-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
@@ -75,15 +75,18 @@ const CampusWheel = {
     ctx.fillText("SPIN", width / 2, height / 2);
   },
 
-  spin() {
+  spin(canvasId = 'spin-wheel-canvas', resultId = 'wheel-result-display', btnId = 'spin-wheel-btn') {
     if (this.isSpinning) return;
     this.isSpinning = true;
+    this.activeCanvasId = canvasId;
+    this.activeResultId = resultId;
+    this.activeBtnId = btnId;
 
     const spinTimeTotal = 4000;
     const spinAngleStart = Math.random() * 10 + 25;
     let spinTime = 0;
 
-    const btn = document.getElementById('spin-wheel-btn');
+    const btn = document.getElementById(btnId) || document.getElementById('spin-wheel-btn');
     if (btn) btn.disabled = true;
 
     const rotateWheel = () => {
@@ -94,7 +97,7 @@ const CampusWheel = {
       }
       const spinAngle = spinAngleStart - this.easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
       this.startAngle += (spinAngle * Math.PI / 180);
-      this.drawWheel();
+      this.drawWheel(this.activeCanvasId || 'spin-wheel-canvas');
       requestAnimationFrame(rotateWheel);
     };
 
@@ -103,7 +106,7 @@ const CampusWheel = {
 
   stopRotateWheel() {
     this.isSpinning = false;
-    const btn = document.getElementById('spin-wheel-btn');
+    const btn = document.getElementById(this.activeBtnId) || document.getElementById('spin-wheel-btn');
     if (btn) btn.disabled = false;
 
     // Calculate winning sector at Top Pointer (270 degrees = 3*PI/2)
@@ -112,7 +115,7 @@ const CampusWheel = {
     const index = Math.floor((360 - degrees % 360) / arcd) % this.prizes.length;
     const winner = this.prizes[index];
 
-    const resultBox = document.getElementById('wheel-result-display');
+    const resultBox = document.getElementById(this.activeResultId) || document.getElementById('wheel-result-display');
     if (resultBox) {
       resultBox.innerHTML = `
         <div style="background:linear-gradient(135deg,#0F766E,#047857);color:white;padding:12px;border-radius:12px;text-align:center;">
@@ -127,6 +130,9 @@ const CampusWheel = {
     } else if (winner.points && window.StudentApp) {
       window.StudentApp.currentUser.loyalty_points += winner.points;
       window.StudentApp.updateUserInterfaceDetails();
+      if (typeof window.StudentApp.renderRewardsScreen === 'function') {
+        window.StudentApp.renderRewardsScreen();
+      }
     }
 
     App.showToast(`Reward Unlocked: ${winner.label}`, 'success');
