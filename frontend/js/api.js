@@ -148,8 +148,8 @@ const api = {
   checkOrderReview: (orderId) => api.get(`/reviews/check/${orderId}`),
   submitReview: (data) => api.post('/reviews', data),
 
-  // Analytics & BI
-  getAnalytics: () => api.get('/analytics'),
+  // Analytics & BI (Step 24)
+  getAnalytics: (params) => api.get('/analytics', params),
 
   // Customers (Step 22)
   getCustomers: (params) => api.get('/customers', params),
