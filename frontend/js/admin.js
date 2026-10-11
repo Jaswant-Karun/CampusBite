@@ -13,6 +13,11 @@ const AdminApp = {
   orders: [],
   products: [],
   customers: [],
+  customerSearchQuery: '',
+  customerRoleFilter: 'All',
+  customerActivityFilter: 'All',
+  customerSortFilter: 'spend_desc',
+  selectedCustomer: null,
   analyticsData: null,
   demandData: null,
   activeOrderFilter: 'All',
@@ -169,6 +174,7 @@ const AdminApp = {
       this.loadKPIsAndAnalytics(),
       this.loadOrders(),
       this.loadProducts(),
+      this.loadCustomers(),
       this.loadDemandPredictions()
     ]);
   },
