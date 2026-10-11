@@ -2805,12 +2805,73 @@ const StudentApp = {
   },
 
   async renderTracking(orderId) {
-    const targetId = orderId || this.currentTrackOrderId || 'CB1024';
+    let targetId = orderId || this.currentTrackOrderId;
+    if (!targetId) {
+      try {
+        const userId = this.currentUser ? this.currentUser.id : 'u-101';
+        const ordersRes = await window.api.getOrders({ user_id: userId });
+        if (ordersRes && ordersRes.orders && ordersRes.orders.length > 0) {
+          const activeOrder = ordersRes.orders.find(o => !['completed', 'cancelled'].includes((o.order_status || '').toLowerCase()));
+          targetId = activeOrder ? activeOrder.id : ordersRes.orders[0].id;
+          this.currentTrackOrderId = targetId;
+        }
+      } catch (err) {
+        console.warn('Could not auto-fetch user order for tracking:', err);
+      }
+    }
+    if (!targetId) {
+      targetId = 'CB1024';
+    }
+
     try {
       const res = await window.api.getOrder(targetId);
-      if (res.success && res.order) {
-        const o = res.order;
-        this.currentTrackOrderId = o.id;
+      const screen = document.getElementById('screen-tracking');
+
+      if (!res || !res.success || !res.order) {
+        if (screen) {
+          let emptyCard = document.getElementById('tracking-empty-state-card');
+          if (!emptyCard) {
+            emptyCard = document.createElement('div');
+            emptyCard.id = 'tracking-empty-state-card';
+            screen.appendChild(emptyCard);
+          }
+          emptyCard.style.display = 'block';
+          emptyCard.innerHTML = `
+            <div style="text-align:center;padding:48px 20px;background:var(--bg-card);border-radius:18px;border:1px dashed var(--border-strong);margin:16px auto;max-width:540px;">
+              <div style="font-size:42px;margin-bottom:12px;">🕒</div>
+              <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 6px;">No Active Order to Track</h3>
+              <p style="font-size:13px;color:var(--text-secondary);margin:0 0 20px;line-height:1.5;">
+                You don't have any meals in the kitchen pipeline right now. Pre-order from the canteen menu to watch real-time prep stages and collect your order with zero queue wait.
+              </p>
+              <button type="button" class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="padding:10px 22px;border-radius:12px;font-weight:700;cursor:pointer;">
+                🍽 Browse Canteen Menu
+              </button>
+            </div>
+          `;
+          const trackingCard = screen.querySelector('.tracking-header-card');
+          if (trackingCard) trackingCard.style.display = 'none';
+          const prepCard = document.getElementById('track-prep-time-card');
+          if (prepCard) prepCard.style.display = 'none';
+          const stepper = document.getElementById('tracking-stepper-container');
+          if (stepper) stepper.style.display = 'none';
+        }
+        return;
+      }
+
+      // Hide empty state card if order is present
+      const emptyCard = document.getElementById('tracking-empty-state-card');
+      if (emptyCard) emptyCard.style.display = 'none';
+      if (screen) {
+        const trackingCard = screen.querySelector('.tracking-header-card');
+        if (trackingCard) trackingCard.style.display = 'block';
+        const prepCard = document.getElementById('track-prep-time-card');
+        if (prepCard) prepCard.style.display = 'block';
+        const stepper = document.getElementById('tracking-stepper-container');
+        if (stepper) stepper.style.display = 'block';
+      }
+
+      const o = res.order;
+      this.currentTrackOrderId = o.id;
 
         // 1. Order ID Badges & Header Data
         const badge = document.getElementById('track-order-id-badge');
