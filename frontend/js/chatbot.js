@@ -257,7 +257,10 @@ const BiteBot = {
       : { name: 'Jaswant Karun', loyalty_points: 420, wallet_balance: 850 };
 
     try {
-      const response = await fetch('/api/chatbot', {
+      const chatUrl = (window.api && typeof window.api.getServerHost === 'function') 
+        ? (window.api.getServerHost() + '/api/chatbot') 
+        : '/api/chatbot';
+      const response = await fetch(chatUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, userContext })

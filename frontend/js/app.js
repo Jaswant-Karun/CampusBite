@@ -11,7 +11,9 @@ const App = {
 
     // Initialize sub-controllers
     if (window.StudentApp) window.StudentApp.init();
-    if (window.AdminApp) window.AdminApp.init();
+    if (window.AdminApp && (document.querySelector('.admin-sidebar') || window.location.pathname.startsWith('/admin'))) {
+      window.AdminApp.init();
+    }
 
     console.log("CampusBite E-Business Platform Initialized");
   },

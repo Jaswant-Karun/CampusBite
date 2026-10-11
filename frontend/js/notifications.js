@@ -56,12 +56,17 @@ class CampusNotificationManager {
     }
   }
 
+  getServerUrl(path) {
+    const host = (window.api && typeof window.api.getServerHost === 'function') ? window.api.getServerHost() : '';
+    return host + path;
+  }
+
   connectSSE() {
     if (this.eventSource) {
       this.eventSource.close();
     }
 
-    const sseUrl = `/api/notifications/stream?role=${encodeURIComponent(this.role)}&userId=${encodeURIComponent(this.userId)}`;
+    const sseUrl = this.getServerUrl(`/api/notifications/stream?role=${encodeURIComponent(this.role)}&userId=${encodeURIComponent(this.userId)}`);
     
     try {
       this.eventSource = new EventSource(sseUrl);
@@ -88,22 +93,24 @@ class CampusNotificationManager {
         this.eventSource.close();
         this.eventSource = null;
 
-        // Fallback polling every 10s until SSE recovers
+        // Fallback polling with backoff (every 20s) until SSE recovers
         if (!this.pollInterval) {
-          this.pollInterval = setInterval(() => this.fetchHistory(true), 10000);
+          this.pollInterval = setInterval(() => this.fetchHistory(true), 20000);
         }
 
-        // Try reconnecting SSE in 5 seconds
+        // Try reconnecting SSE in 10 seconds
         if (!this.reconnectTimer) {
           this.reconnectTimer = setTimeout(() => {
             this.reconnectTimer = null;
             this.connectSSE();
-          }, 5000);
+          }, 10000);
         }
       };
     } catch (e) {
       console.warn("EventSource unsupported or failed, using fallback polling", e);
-      this.pollInterval = setInterval(() => this.fetchHistory(true), 10000);
+      if (!this.pollInterval) {
+        this.pollInterval = setInterval(() => this.fetchHistory(true), 20000);
+      }
     }
   }
 
@@ -180,7 +187,7 @@ class CampusNotificationManager {
 
   async fetchHistory(silent = false) {
     try {
-      const res = await fetch(`/api/notifications?role=${encodeURIComponent(this.role)}&userId=${encodeURIComponent(this.userId)}`);
+      const res = await fetch(this.getServerUrl(`/api/notifications?role=${encodeURIComponent(this.role)}&userId=${encodeURIComponent(this.userId)}`));
       const data = await res.json();
       if (data.success) {
         this.notifications = data.notifications || [];
@@ -533,7 +540,7 @@ class CampusNotificationManager {
 
   async markAllRead() {
     try {
-      await fetch('/api/notifications/read-all', {
+      await fetch(this.getServerUrl('/api/notifications/read-all'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role: this.role, userId: this.userId })
@@ -555,7 +562,7 @@ class CampusNotificationManager {
       this.updateBadge();
       this.renderList();
       try {
-        await fetch(`/api/notifications/read/${id}`, { method: 'POST' });
+        await fetch(this.getServerUrl(`/api/notifications/read/${id}`), { method: 'POST' });
       } catch (e) {}
     }
   }
@@ -691,7 +698,7 @@ class CampusNotificationManager {
     }
 
     try {
-      await fetch('/api/notifications', {
+      await fetch(this.getServerUrl('/api/notifications'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

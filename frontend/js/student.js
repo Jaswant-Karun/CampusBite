@@ -27,7 +27,20 @@ const StudentApp = {
   selectedPaymentMethod: "UPI",
   isPlacingOrder: false,
   currentTrackOrderId: "CB1024",
-  products: [],
+  products: [
+    { id: "p-1", name: "Classic Veg Burger", description: "Crispy herb potato patty, fresh lettuce, tomato, creamy mayo.", price: 80, category: "Snacks", is_veg: true, popular: true, rating: 4.8, prep_time: "8 mins", calories: "380 kcal", stock: 25 },
+    { id: "p-2", name: "Cheese Burger Deluxe", description: "Double melted cheddar, grilled patty, caramelised onions & tangy pickle relish.", price: 100, category: "Snacks", is_veg: false, popular: true, rating: 4.9, prep_time: "10 mins", calories: "450 kcal", stock: 18 },
+    { id: "p-3", name: "Veg Grilled Sandwich", description: "Crispy grilled bread layered with cucumber, capsicum, mint chutney and spiced cheese.", price: 60, category: "Snacks", is_veg: true, popular: true, rating: 4.6, prep_time: "6 mins", calories: "280 kcal", stock: 8 },
+    { id: "p-4", name: "Paneer Tikka Roll", description: "Char-grilled spicy paneer cubes rolled in flaky paratha with crunchy onion salad.", price: 90, category: "Snacks", is_veg: true, popular: false, rating: 4.7, prep_time: "9 mins", calories: "340 kcal", stock: 15 },
+    { id: "p-5", name: "Fresh Lemon Juice", description: "Chilled zesty lemonade with black salt and fresh mint leaves. Instant refresher!", price: 40, category: "Drinks", is_veg: true, popular: true, rating: 4.5, prep_time: "3 mins", calories: "90 kcal", stock: 20 },
+    { id: "p-6", name: "Cold Coffee with Ice Cream", description: "Rich blended espresso, velvety chilled milk topped with a vanilla bean scoop.", price: 70, category: "Drinks", is_veg: true, popular: true, rating: 4.9, prep_time: "4 mins", calories: "260 kcal", stock: 40 },
+    { id: "p-7", name: "Special Masala Chai", description: "Aromatic campus kadak chai brewed with crushed ginger, cardamom and clove.", price: 20, category: "Drinks", is_veg: true, popular: true, rating: 4.7, prep_time: "2 mins", calories: "75 kcal", stock: 65 },
+    { id: "p-8", name: "South Indian Special Thali", description: "Steamed Basmati Rice, Sambar, Rasam, 2 Poriyals, Appalam, Curd & Sweet.", price: 110, category: "Meals", is_veg: true, popular: true, rating: 4.8, prep_time: "5 mins", calories: "620 kcal", stock: 25 },
+    { id: "p-9", name: "Hyderabadi Chicken Biryani", description: "Dum-cooked fragrant basmati rice with marinated chicken pieces and rich spices.", price: 140, category: "Meals", is_veg: false, popular: true, rating: 4.9, prep_time: "5 mins", calories: "680 kcal", stock: 30 },
+    { id: "p-10", name: "Veg Hakka Noodles & Manchurian", description: "Wok-tossed stir fry noodles paired with savory vegetable Manchurian gravy.", price: 120, category: "Meals", is_veg: true, popular: false, rating: 4.6, prep_time: "8 mins", calories: "510 kcal", stock: 16 },
+    { id: "p-11", name: "Warm Choco Lava Cake", description: "Molten dark chocolate center that oozes with pure cocoa bliss.", price: 65, category: "Desserts", is_veg: true, popular: true, rating: 4.9, prep_time: "4 mins", calories: "320 kcal", stock: 14 },
+    { id: "p-12", name: "Hot Gulab Jamun (2 Pcs)", description: "Golden fried khoya dumplings soaked in saffron rose cardamom sugar syrup.", price: 45, category: "Desserts", is_veg: true, popular: false, rating: 4.7, prep_time: "2 mins", calories: "290 kcal", stock: 22 }
+  ],
   customizingProduct: null,
   currentDetailProduct: null,
   currentDetailQty: 1,
@@ -130,9 +143,21 @@ const StudentApp = {
       }
     } catch (e) {}
 
+    // Restore cached catalog for instant 0ms startup
+    this.restoreCachedData();
+
     this.loadCartFromSession();
     this.bindEvents();
-    this.loadProducts();
+
+    // Render immediately (Instant shell - 0ms wait)
+    this.renderCategoryChips();
+    this.renderFeaturedItems();
+    this.renderPopularItems();
+    this.renderMobilePopularGrid();
+    this.renderOffersSection();
+    this.renderMenuList(this.products);
+    this.checkActiveOrder();
+
     this.updateCartBadge();
     this.updateCartShortcutBanner();
     this.refreshUserLoyalty();
@@ -140,6 +165,9 @@ const StudentApp = {
     this.updateUserInterfaceDetails();
     this.renderDesktopCart();
     this.initKineticTypography();
+
+    // Non-blocking background sync with live database
+    this.loadProducts();
   },
 
   initTheme() {
@@ -823,49 +851,68 @@ const StudentApp = {
     this.updateCartBadge();
   },
 
-  // ==========================================
-  // Product Catalog & Customization
-  // ==========================================
+  restoreCachedData() {
+    try {
+      const cachedProds = localStorage.getItem('cb_cache_/products');
+      if (cachedProds) {
+        const parsed = JSON.parse(cachedProds);
+        if (parsed && Array.isArray(parsed.products) && parsed.products.length > 0) {
+          this.products = parsed.products;
+        }
+      }
+      const cachedCats = localStorage.getItem('cb_cache_/categories');
+      if (cachedCats) {
+        const parsed = JSON.parse(cachedCats);
+        if (parsed && Array.isArray(parsed.categories) && parsed.categories.length > 0) {
+          this.categories = parsed.categories;
+        }
+      }
+      const cachedCoups = localStorage.getItem('cb_cache_/coupons');
+      if (cachedCoups) {
+        const parsed = JSON.parse(cachedCoups);
+        if (parsed && Array.isArray(parsed.coupons) && parsed.coupons.length > 0) {
+          this.coupons = parsed.coupons;
+        }
+      }
+    } catch (e) {}
+  },
+
   async loadProducts() {
     try {
-      // 1. Load Categories from Real DB
-      try {
-        const catRes = await window.api.getCategories();
-        if (catRes && catRes.categories) {
-          this.categories = catRes.categories;
-        }
-      } catch (e) {
-        console.warn("Categories fetch fallback:", e);
+      const [catResult, coupResult, prodResult] = await Promise.allSettled([
+        window.api.getCategories(),
+        window.api.getCoupons(),
+        window.api.getProducts()
+      ]);
+
+      let changed = false;
+
+      if (catResult.status === 'fulfilled' && catResult.value && catResult.value.categories) {
+        this.categories = catResult.value.categories;
+        changed = true;
+      }
+      if (coupResult.status === 'fulfilled' && coupResult.value && coupResult.value.coupons) {
+        this.coupons = coupResult.value.coupons;
+        changed = true;
+      }
+      if (prodResult.status === 'fulfilled' && prodResult.value && prodResult.value.products) {
+        this.products = prodResult.value.products;
+        changed = true;
       }
 
-      // 2. Load Coupons from Real DB
-      try {
-        const coupRes = await window.api.getCoupons();
-        if (coupRes && coupRes.coupons) {
-          this.coupons = coupRes.coupons;
-        }
-      } catch (e) {
-        console.warn("Coupons fetch fallback:", e);
-      }
-
-      // 3. Load Products from Real DB
-      const data = await window.api.getProducts();
-      if (data && data.products) {
-        this.products = data.products;
+      if (changed) {
+        this.renderCategoryChips();
+        this.renderFeaturedItems();
+        this.renderPopularItems();
+        this.renderMobilePopularGrid();
+        this.renderOffersSection();
+        this.renderMenuList(this.products);
+        this.checkActiveOrder();
+        this.updateCartShortcutBanner();
       }
     } catch (e) {
-      console.warn("Using cached products", e);
+      console.warn("Background catalog synchronization notice:", e);
     }
-
-    // Render all elements
-    this.renderCategoryChips();
-    this.renderFeaturedItems();
-    this.renderPopularItems();
-    this.renderMobilePopularGrid();
-    this.renderOffersSection();
-    this.renderMenuList(this.products);
-    this.checkActiveOrder();
-    this.updateCartShortcutBanner();
   },
 
   renderCategoryChips() {

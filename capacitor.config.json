@@ -4,7 +4,7 @@
   "webDir": "frontend",
   "server": {
     "cleartext": true,
-    "androidScheme": "https"
+    "androidScheme": "http"
   },
   "android": {
     "allowMixedContent": true
