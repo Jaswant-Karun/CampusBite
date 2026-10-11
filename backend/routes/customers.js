@@ -6,6 +6,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
+const { authenticateToken, requireRole } = require('../middleware/auth');
+
+// Protect entire customer directory and profiles for admin & staff roles only
+router.use(authenticateToken, requireRole(['admin', 'staff']));
 
 // Helper: Normalize phone for loose matching
 function cleanPhone(phone) {
