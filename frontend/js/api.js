@@ -155,9 +155,10 @@ const api = {
   getCustomers: (params) => api.get('/customers', params),
   getCustomerDetails: (id) => api.get(`/customers/${id}`),
 
-  // AI Demand Prediction
-  getDemandPrediction: () => api.get('/demand-prediction'),
-  applyDemandPrep: (productId, prepAmount) => api.post('/demand-prediction/apply-prep', { productId, prepAmount }),
+  // Smart Demand Insight (Step 25)
+  getSmartDemandInsights: () => api.get('/smart-demand'),
+  getDemandPrediction: () => api.get('/smart-demand'),
+  applyDemandPrep: (productId, prepAmount) => api.post('/smart-demand/apply-prep', { productId, prepAmount }),
 
   // Demo Reset
   resetDemo: () => api.post('/reset-demo')
