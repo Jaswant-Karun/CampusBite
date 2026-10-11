@@ -3479,6 +3479,12 @@ const StudentApp = {
     const mobStatUsed = document.getElementById('mob-loyalty-stat-used');
     if (mobStatUsed) mobStatUsed.textContent = `-${ptsUsed}`;
 
+    // Server status label
+    const serverLabel = document.getElementById('profile-server-status-label');
+    if (serverLabel && window.api) {
+      serverLabel.textContent = window.api.getServerHost();
+    }
+
     // 5. Render Loyalty Transaction History
     this.renderLoyaltyHistory('all');
   },
