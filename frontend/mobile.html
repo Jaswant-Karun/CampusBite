@@ -1567,6 +1567,312 @@
         </div>
       </div>
 
+      <!-- ====================================================================
+           SCREEN: SUSTAINABILITY & ZERO WASTE TRACKER (MOBILE)
+           ==================================================================== -->
+      <div id="screen-sustainability" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Campus Sustainability & ESG</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Zero food waste initiative</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px;">
+          <div class="eco-impact-banner" style="background:linear-gradient(135deg,#065F46 0%,#047857 50%,#10B981 100%);color:white;border-radius:18px;padding:20px;margin-bottom:14px;box-shadow:0 8px 24px rgba(16,185,129,0.25);">
+            <span style="font-size:11px;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:999px;font-weight:700;">AI SUSTAINABILITY</span>
+            <h2 style="font-size:24px;font-weight:900;margin:6px 0;">420 kg Food Saved</h2>
+            <p style="font-size:12px;opacity:0.9;line-height:1.4;">Pre-ordering lets our kitchen cook exact portions, eliminating unsold food waste.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:900;color:#059669;">840</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Meals Preserved</div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:900;color:#2563EB;">610 kg</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">CO₂ Reduced</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: CAMPUS NUTRITION & FITNESS TRACKER (MOBILE)
+           ==================================================================== -->
+      <div id="screen-nutrition" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Campus Nutrition & Wellness</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Track macros & calories between classes</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:16px;margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;">Daily Energy Budget</span>
+                <div style="font-family:var(--font-heading);font-size:22px;font-weight:900;color:var(--text-primary);margin-top:2px;">
+                  1,280 <span style="font-size:13px;font-weight:600;color:var(--text-muted);">/ 2,100 kcal</span>
+                </div>
+              </div>
+              <div style="background:linear-gradient(135deg,#10B981,#059669);color:white;padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:800;">
+                61% Met
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;margin-bottom:3px;">
+                  <span style="color:#4F46E5;">Protein: 48g / 75g Target</span>
+                  <span style="color:var(--text-muted);">64%</span>
+                </div>
+                <div style="height:6px;background:rgba(79,70,229,0.12);border-radius:999px;overflow:hidden;">
+                  <div style="width:64%;height:100%;background:#4F46E5;border-radius:999px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;margin-bottom:3px;">
+                  <span style="color:#0284C7;">Carbs: 145g / 250g Target</span>
+                  <span style="color:var(--text-muted);">58%</span>
+                </div>
+                <div style="height:6px;background:rgba(2,132,199,0.12);border-radius:999px;overflow:hidden;">
+                  <div style="width:58%;height:100%;background:#0284C7;border-radius:999px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <strong style="font-size:12.5px;color:var(--text-primary);">Whey Protein Peanut Shake</strong>
+              <div style="font-size:11px;color:#4F46E5;font-weight:700;">30g Protein • 340 kcal</div>
+            </div>
+            <button class="btn-primary" onclick="StudentApp.addToCart('p-13'); App.showToast('Added Protein Shake to Cart!', 'success');" style="padding:6px 12px;font-size:11.5px;border-radius:8px;">
+              + Add ₹85
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: CAMPUS REWARDS & VOUCHER STORE (MOBILE)
+           ==================================================================== -->
+      <div id="screen-rewards" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Campus Rewards Store</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Redeem points for dining discounts</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;">
+          <div style="background:linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);color:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 8px 24px rgba(79,70,229,0.25);">
+            <span style="font-size:10.5px;font-weight:800;color:#A5B4FC;letter-spacing:1px;text-transform:uppercase;">AVAILABLE BALANCE</span>
+            <div style="font-family:var(--font-heading);font-size:28px;font-weight:900;margin:4px 0 6px;" id="mob-rewards-screen-points-val">
+              420 <span style="font-size:14px;font-weight:600;color:#C7D2FE;">Pts</span>
+            </div>
+            <div style="font-size:11.5px;color:#E0E7FF;">★ GOLD DINER • 1 Pts = ₹0.10 Credit</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <strong style="font-size:13px;color:var(--text-primary);display:block;">₹20 Flat Snack Discount</strong>
+                <span style="font-size:11px;color:var(--text-secondary);">Burgers & rolls at Counter 1</span>
+              </div>
+              <button class="btn-primary" onclick="StudentApp.claimRewardVoucher(180, 'SNACK20', 20)" style="padding:7px 12px;font-size:11.5px;border-radius:8px;">
+                180 Pts
+              </button>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <strong style="font-size:13px;color:var(--text-primary);display:block;">Free Cold Beverage Voucher</strong>
+                <span style="font-size:11px;color:var(--text-secondary);">Fresh lemonade at Counter 3</span>
+              </div>
+              <button class="btn-primary" onclick="StudentApp.claimRewardVoucher(150, 'FREEBEV', 35)" style="padding:7px 12px;font-size:11.5px;border-radius:8px;">
+                150 Pts
+              </button>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <strong style="font-size:13px;color:var(--text-primary);display:block;">₹50 Executive Lunch Voucher</strong>
+                <span style="font-size:11px;color:var(--text-secondary);">Valid on orders above ₹180</span>
+              </div>
+              <button class="btn-primary" onclick="StudentApp.claimRewardVoucher(350, 'MEGA50', 50)" style="padding:7px 12px;font-size:11.5px;border-radius:8px;">
+                350 Pts
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: STUDENT FEEDBACK & REVIEWS (MOBILE)
+           ==================================================================== -->
+      <div id="screen-feedback" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Canteen Feedback & Reviews</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Verified student ratings & reviews</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:16px;margin-bottom:14px;text-align:center;">
+            <div style="font-size:32px;font-weight:900;color:#F59E0B;line-height:1;">4.8 ★</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">128 Verified Ratings • 96% Quality Score</div>
+          </div>
+
+          <!-- Write Review Card -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:16px;margin-bottom:14px;">
+            <strong style="font-size:13px;color:var(--text-primary);display:block;margin-bottom:8px;">Rate Your Meal:</strong>
+            <textarea id="page-review-comment" placeholder="Tell the chef how your food tasted..." style="width:100%;height:65px;padding:8px 10px;border:1px solid var(--border-subtle);border-radius:10px;font-size:12px;background:var(--input-bg);color:var(--text-primary);box-sizing:border-box;margin-bottom:10px;"></textarea>
+            <button class="btn-primary" onclick="StudentApp.submitReviewFromPage()" style="width:100%;padding:10px;font-size:12.5px;font-weight:700;border-radius:10px;">
+              Submit Review
+            </button>
+          </div>
+
+          <!-- Feedback Reviews List Container -->
+          <div id="page-feedback-reviews-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: BITEBOT VOICE ORDERING AI (MOBILE)
+           ==================================================================== -->
+      <div id="screen-voice" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">BiteBot Voice AI Station</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Hands-free speech ordering</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;text-align:center;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:24px 16px;margin-bottom:14px;">
+            <button type="button" onclick="CampusVoice.toggleListening()" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#6366F1);border:none;color:white;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 20px rgba(79,70,229,0.35);margin-bottom:12px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            <h4 style="font-size:15px;font-weight:800;color:var(--text-primary);margin:0 0 4px;" id="voice-screen-status">Tap Mic & Speak Order</h4>
+            <div id="voice-screen-transcript-box" style="background:var(--bg-elevated);border-radius:10px;padding:10px;font-size:12px;color:var(--text-primary);margin-top:10px;font-weight:600;">
+              "Add 2 Cheese Burgers Deluxe"
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn-secondary" onclick="CampusVoice.simulateSample('Order 2 Cheese Burgers Deluxe', 'en-IN')" style="padding:10px;font-size:12px;text-align:left;border-radius:10px;">
+              🗣️ Simulate: "Order 2 Cheese Burgers Deluxe"
+            </button>
+            <button class="btn-secondary" onclick="CampusVoice.simulateSample('Add Fresh Lemonade Juice to my cart', 'en-IN')" style="padding:10px;font-size:12px;text-align:left;border-radius:10px;">
+              🗣️ Simulate: "Add Fresh Lemonade Juice"
+            </button>
+            <button class="btn-primary" onclick="StudentApp.navigateTo('cart')" style="padding:12px;font-size:13px;font-weight:800;border-radius:12px;margin-top:6px;">
+              🛒 View Meal Tray & Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: CAMPUS TIMETABLE & BELL BREAK SYNC (MOBILE)
+           ==================================================================== -->
+      <div id="screen-timetable" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Lecture Bell Break Sync</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Synchronize food pickup with breaks</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;">
+          <div style="background:linear-gradient(135deg, #065F46 0%, #047857 50%, #10B981 100%);color:white;border-radius:18px;padding:18px;margin-bottom:14px;">
+            <span style="font-size:10.5px;font-weight:800;text-transform:uppercase;color:#A7F3D0;">NEXT CLASS BREAK IN:</span>
+            <div style="font-family:var(--font-heading);font-size:26px;font-weight:900;margin:4px 0;">
+              ~18 Mins <span style="font-size:13px;font-weight:600;color:#D1FAE5;">(12:30 PM Lunch)</span>
+            </div>
+            <p style="font-size:11.5px;color:#E6FFFA;margin:0 0 10px;">Food will be kept ready at Counter 2 right when the class bell rings.</p>
+            <button class="btn-primary" onclick="StudentApp.navigateTo('menu')" style="background:white;color:#065F46;border:none;padding:8px 16px;font-size:12px;font-weight:800;border-radius:8px;">
+              🍽 Pre-Order for 12:30 PM Break
+            </button>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+            <div style="padding:10px;background:var(--bg-elevated);border-radius:8px;font-size:12px;">
+              <strong>10:30 AM – 10:45 AM</strong>: Morning Snack Window (Passed)
+            </div>
+            <div style="padding:10px;background:#DCFCE7;border-radius:8px;font-size:12px;color:#166534;font-weight:700;">
+              <strong>12:30 PM – 01:15 PM</strong>: Main Lunch Interval (Active Window)
+            </div>
+            <div style="padding:10px;background:var(--bg-elevated);border-radius:8px;font-size:12px;">
+              <strong>03:15 PM – 03:30 PM</strong>: Kadak Chai & Samosa Break
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SCREEN: DAILY LUCKY SPIN WHEEL (MOBILE)
+           ==================================================================== -->
+      <div id="screen-spin-wheel" class="mob-screen">
+        <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div class="user-greeting">
+            <h3 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0;">Daily Spin to Win</h3>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;">Spin daily for discounts & bonus points</p>
+          </div>
+          <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
+            ← Back to Home
+          </button>
+        </div>
+
+        <div style="padding:0 16px 20px;text-align:center;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:20px 14px;margin-bottom:14px;">
+            <div class="spin-wheel-wrapper" style="margin:0 auto 14px;">
+              <div class="spin-wheel-pointer"></div>
+              <canvas id="page-spin-wheel-canvas" width="280" height="280"></canvas>
+            </div>
+
+            <div id="page-wheel-result-display" style="min-height:40px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--text-primary);">
+              Tap below to spin the Campus Wheel!
+            </div>
+
+            <button class="btn-primary" id="page-spin-btn" onclick="CampusWheel.spin('page-spin-wheel-canvas', 'page-wheel-result-display', 'page-spin-btn')" style="width:100%;padding:12px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#EC4899,#8B5CF6);border-color:#EC4899;border-radius:12px;">
+              🎡 Spin Wheel Now
+            </button>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="text-align:left;">
+              <strong style="font-size:12.5px;color:var(--text-primary);">3-Day Login Streak Active 🔥</strong>
+              <div style="font-size:11px;color:var(--text-secondary);">Spin tomorrow to unlock 2X points!</div>
+            </div>
+            <span style="font-size:11px;font-weight:800;color:#F59E0B;background:#FEF3C7;padding:3px 8px;border-radius:999px;">STREAK ×3</span>
+          </div>
+        </div>
+      </div>
+
     </div> <!-- End .mobile-screens-container -->
 
     <!-- Mobile Bottom Navigation Bar -->
@@ -2125,6 +2431,8 @@
   <script src="js/charts.js"></script>
   <script src="js/notifications.js"></script>
   <script src="js/upi-payment.js"></script>
+  <script src="js/voice-order.js"></script>
+  <script src="js/spin-wheel.js"></script>
   <script src="js/student.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/app.js"></script>
