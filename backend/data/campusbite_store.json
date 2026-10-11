@@ -2423,6 +2423,32 @@
   ],
   "notifications": [
     {
+      "id": "notif_1791708983352_pgrc",
+      "title": "Coupon Available: TESTSAVE30_1791708983277",
+      "message": "30% OFF campus exam snack box Use code TESTSAVE30_1791708983277 to get 30% OFF!",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": null,
+      "icon": "COUPON",
+      "data": {
+        "coupon": {
+          "id": "c-1791708983350",
+          "code": "TESTSAVE30_1791708983277",
+          "description": "Updated 35% OFF special",
+          "discount_type": "percentage",
+          "discount_value": 35,
+          "minimum_order": 180,
+          "max_discount": 75,
+          "expiry_date": "2028-06-30",
+          "is_active": false,
+          "badge": "Special Test"
+        },
+        "legacyType": "NEW_OFFER"
+      },
+      "created_at": "2026-10-11T08:56:23.352Z",
+      "read": false
+    },
+    {
       "id": "notif_1791708022963_33h7",
       "title": "Coupon Available: TESTSAVE30_1791708022858",
       "message": "30% OFF campus exam snack box Use code TESTSAVE30_1791708022858 to get 30% OFF!",
