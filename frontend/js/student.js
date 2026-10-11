@@ -108,15 +108,15 @@ const StudentApp = {
     },
     {
       id: "u-admin",
-      name: "Ramesh Canteen Manager",
-      email: "admin@campusbite.com",
-      phone: "+91 98765 00000",
+      name: "Jaswant Karun",
+      email: "jksam37@gmail.com",
+      phone: "+91 87541 59344",
       role: "admin",
       studentId: "ADM-001",
-      department: "Campus Hospitality & Dining",
+      department: "Campus Hospitality & Operations Management",
       loyalty_points: 2500,
       wallet_balance: 5000,
-      avatar: "RC"
+      avatar: "JK"
     }
   ],
 
@@ -488,13 +488,13 @@ const StudentApp = {
       btn.classList.toggle('active', btn.dataset.role === role);
     });
 
-    const emailInput = document.getElementById('auth-email-input');
+    const emailInput = document.getElementById('auth-email-input') || document.getElementById('auth-email');
     if (role === 'student' && emailInput) {
       emailInput.value = 'jaswant@campus.edu';
     } else if (role === 'staff' && emailInput) {
       emailInput.value = 'kitchen@campusbite.com';
     } else if (role === 'admin' && emailInput) {
-      emailInput.value = 'admin@campusbite.com';
+      emailInput.value = 'jksam37@gmail.com';
     }
   },
 
@@ -512,7 +512,10 @@ const StudentApp = {
     }
   },
 
-  async handleAuthSubmit() {
+  async handleAuthSubmit(event) {
+    if (event && typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
     const emailInput = document.getElementById('auth-email-input') || document.getElementById('auth-email');
     const email = (emailInput?.value || '').trim();
     const pwdInput = document.getElementById('auth-password-input') || document.getElementById('auth-password');
@@ -618,7 +621,7 @@ const StudentApp = {
         this.updateUserInterfaceDetails();
 
         if (role === 'admin') {
-          App.showToast('Logged in as Ramesh (Canteen Manager)', 'success');
+          App.showToast('Logged in as Jaswant Karun (Admin Operations)', 'success');
           App.switchViewMode('admin');
         } else {
           App.showToast(`Logged in as ${res.user.name} (${role.toUpperCase()})`, 'success');
