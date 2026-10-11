@@ -1070,6 +1070,11 @@
   #screen-nutrition,
   #screen-order-history,
   #screen-notifications,
+  #screen-rewards,
+  #screen-feedback,
+  #screen-voice,
+  #screen-timetable,
+  #screen-spin-wheel,
   #screen-menu {
     padding: 18px 14px;
     margin: 10px 10px 20px;

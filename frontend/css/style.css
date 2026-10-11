@@ -167,7 +167,7 @@ button {
   text-decoration: none !important;
 }
 
-.desktop-nav-btn, .nav-item, .cat-chip, .stall-pill-btn, .sidebar-item-btn, .view-all-link, .upi-app-chip, .detail-success-continue-btn, .detail-success-view-tray-btn {
+.desktop-nav-btn, .desktop-nav-btn *, .nav-item, .nav-item *, .cat-chip, .cat-chip *, .stall-pill-btn, .sidebar-item-btn, .view-all-link, .upi-app-chip, .detail-success-continue-btn, .detail-success-view-tray-btn, button, a {
   text-decoration: none !important;
 }
 
