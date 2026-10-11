@@ -26,6 +26,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
+const { authenticateToken, requireRole } = require('../middleware/auth');
+
+// Protect Smart Demand predictions and preparation plans for admin & staff only
+router.use(authenticateToken, requireRole(['admin', 'staff']));
 
 // Helper to analyze historical orders and generate Smart Demand Insights
 function generateSmartDemandInsights() {
