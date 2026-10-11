@@ -657,7 +657,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-11T06:50:19.286Z",
       "updated_at": "2026-10-11T07:10:19.286Z",
-      "loyalty_points_earned": 16
+      "loyalty_points_earned": 16,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1071",
@@ -684,7 +685,8 @@
       "pickup_counter": 3,
       "created_at": "2026-10-11T07:20:19.286Z",
       "updated_at": "2026-10-11T07:40:19.286Z",
-      "loyalty_points_earned": 20
+      "loyalty_points_earned": 20,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1072",
@@ -713,12 +715,13 @@
       "total_amount": 190,
       "payment_method": "UPI",
       "payment_status": "PAID",
-      "order_status": "Preparing",
+      "order_status": "Completed",
       "pickup_slot": "01:15 PM - 01:30 PM",
       "pickup_counter": 1,
       "created_at": "2026-10-11T08:05:19.286Z",
-      "updated_at": "2026-10-11T08:30:19.286Z",
-      "loyalty_points_earned": 19
+      "updated_at": "2026-10-11T10:41:00.937Z",
+      "loyalty_points_earned": 19,
+      "estimated_prep_time": "~8–10 mins"
     },
     {
       "id": "CB1073",
@@ -745,7 +748,8 @@
       "pickup_counter": 2,
       "created_at": "2026-10-11T08:25:19.286Z",
       "updated_at": "2026-10-11T08:35:19.286Z",
-      "loyalty_points_earned": 0
+      "loyalty_points_earned": 0,
+      "estimated_prep_time": "~10–12 mins"
     },
     {
       "id": "CB1062",
@@ -2275,7 +2279,7 @@
     "today_revenue": 15462,
     "today_orders": 216,
     "total_customers": 142,
-    "pending_orders": 40,
+    "pending_orders": 39,
     "avg_rating": 4.9,
     "ratings_breakdown": {
       "food_quality": 4.6,
@@ -2422,6 +2426,222 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif_1791715260956_l1rf",
+      "title": "Order Completed: #CB1072",
+      "message": "Order #CB1072 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-103",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "CB1072",
+        "status": "Completed",
+        "order_status": "Completed",
+        "counter": 1,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1072",
+          "user_id": "u-103",
+          "customer_name": "Karthik Raman",
+          "customer_phone": "97911 55667",
+          "items": [
+            {
+              "product_id": "p-3",
+              "name": "Veg Grilled Sandwich",
+              "price": 60,
+              "quantity": 2,
+              "image_emoji": "🥪"
+            },
+            {
+              "product_id": "p-6",
+              "name": "Cold Coffee with Ice Cream",
+              "price": 70,
+              "quantity": 1,
+              "image_emoji": "☕"
+            }
+          ],
+          "subtotal": 190,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 190,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "order_status": "Completed",
+          "pickup_slot": "01:15 PM - 01:30 PM",
+          "pickup_counter": 1,
+          "created_at": "2026-10-11T08:05:19.286Z",
+          "updated_at": "2026-10-11T10:41:00.937Z",
+          "loyalty_points_earned": 19,
+          "estimated_prep_time": "~8–10 mins"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T10:41:00.956Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791715260956_l1rf",
+      "title": "Order Completed: #CB1072",
+      "message": "Order #CB1072 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "all",
+      "userId": "u-103",
+      "icon": "COMPLETED",
+      "data": {
+        "orderId": "CB1072",
+        "status": "Completed",
+        "order_status": "Completed",
+        "counter": 1,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1072",
+          "user_id": "u-103",
+          "customer_name": "Karthik Raman",
+          "customer_phone": "97911 55667",
+          "items": [
+            {
+              "product_id": "p-3",
+              "name": "Veg Grilled Sandwich",
+              "price": 60,
+              "quantity": 2,
+              "image_emoji": "🥪"
+            },
+            {
+              "product_id": "p-6",
+              "name": "Cold Coffee with Ice Cream",
+              "price": 70,
+              "quantity": 1,
+              "image_emoji": "☕"
+            }
+          ],
+          "subtotal": 190,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 190,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "order_status": "Completed",
+          "pickup_slot": "01:15 PM - 01:30 PM",
+          "pickup_counter": 1,
+          "created_at": "2026-10-11T08:05:19.286Z",
+          "updated_at": "2026-10-11T10:41:00.937Z",
+          "loyalty_points_earned": 19,
+          "estimated_prep_time": "~8–10 mins"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T10:41:00.956Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791715258621_xgo1",
+      "title": "Order Ready: #CB1072",
+      "message": "Order #CB1072 is READY FOR PICKUP at Counter 1! Please show your token #CB1072.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-103",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1072",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 1,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1072",
+          "user_id": "u-103",
+          "customer_name": "Karthik Raman",
+          "customer_phone": "97911 55667",
+          "items": [
+            {
+              "product_id": "p-3",
+              "name": "Veg Grilled Sandwich",
+              "price": 60,
+              "quantity": 2,
+              "image_emoji": "🥪"
+            },
+            {
+              "product_id": "p-6",
+              "name": "Cold Coffee with Ice Cream",
+              "price": 70,
+              "quantity": 1,
+              "image_emoji": "☕"
+            }
+          ],
+          "subtotal": 190,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 190,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "order_status": "Completed",
+          "pickup_slot": "01:15 PM - 01:30 PM",
+          "pickup_counter": 1,
+          "created_at": "2026-10-11T08:05:19.286Z",
+          "updated_at": "2026-10-11T10:41:00.937Z",
+          "loyalty_points_earned": 19,
+          "estimated_prep_time": "~8–10 mins"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T10:40:58.621Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791715258621_xgo1",
+      "title": "Order Ready: #CB1072",
+      "message": "Order #CB1072 is READY FOR PICKUP at Counter 1! Please show your token #CB1072.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-103",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1072",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 1,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1072",
+          "user_id": "u-103",
+          "customer_name": "Karthik Raman",
+          "customer_phone": "97911 55667",
+          "items": [
+            {
+              "product_id": "p-3",
+              "name": "Veg Grilled Sandwich",
+              "price": 60,
+              "quantity": 2,
+              "image_emoji": "🥪"
+            },
+            {
+              "product_id": "p-6",
+              "name": "Cold Coffee with Ice Cream",
+              "price": 70,
+              "quantity": 1,
+              "image_emoji": "☕"
+            }
+          ],
+          "subtotal": 190,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 190,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "order_status": "Completed",
+          "pickup_slot": "01:15 PM - 01:30 PM",
+          "pickup_counter": 1,
+          "created_at": "2026-10-11T08:05:19.286Z",
+          "updated_at": "2026-10-11T10:41:00.937Z",
+          "loyalty_points_earned": 19,
+          "estimated_prep_time": "~8–10 mins"
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T10:40:58.621Z",
+      "read": false
+    },
     {
       "id": "notif_1791708983352_pgrc",
       "title": "Coupon Available: TESTSAVE30_1791708983277",
