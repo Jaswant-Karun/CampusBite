@@ -16,15 +16,16 @@ const INITIAL_DATA = {
       name: "Jaswant Karun",
       email: "jaswant@campus.edu",
       alternate_email: "24cb023@kpriet.ac.in",
+      secondary_email: "jksam37@gmail.com",
       phone: "87541 59344",
-      role: "student",
+      role: "admin",
       studentId: "CB-2024-2028",
       department: "Computer Science & Business Systems",
       loyalty_points: 420,
       wallet_balance: 850,
       avatar: "JK",
       profile_image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
-      account_status: "Active Verified Student",
+      account_status: "Active Verified Administrator",
       joined_date: "2024-08-16"
     },
     {
@@ -53,15 +54,19 @@ const INITIAL_DATA = {
     },
     {
       id: "u-admin",
-      name: "Ramesh Canteen Manager",
-      email: "admin@campusbite.com",
-      phone: "+91 98765 00000",
+      name: "Jaswant Karun",
+      email: "jksam37@gmail.com",
+      alternate_email: "admin@campusbite.com",
+      phone: "+91 87541 59344",
       role: "admin",
       studentId: "ADM-001",
-      department: "Campus Hospitality & Dining",
+      department: "Campus Hospitality & Operations Management",
       loyalty_points: 2500,
       wallet_balance: 5000,
-      avatar: "RC"
+      avatar: "JK",
+      profile_image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80",
+      account_status: "Active Verified Administrator",
+      joined_date: "2024-08-16"
     },
     {
       id: "u-staff",
