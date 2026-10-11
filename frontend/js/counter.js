@@ -105,7 +105,8 @@ const KdsApp = {
 
   async loadOrders() {
     try {
-      const res = await fetch('/api/orders');
+      const url = (window.api && typeof window.api.getServerHost === 'function' ? window.api.getServerHost() : '') + '/api/orders';
+      const res = await fetch(url);
       const data = await res.json();
       if (data && data.orders) {
         this.orders = data.orders;
@@ -220,7 +221,8 @@ const KdsApp = {
 
   async markReady(orderId) {
     try {
-      const res = await fetch(`/api/orders/${orderId}/status`, {
+      const url = (window.api && typeof window.api.getServerHost === 'function' ? window.api.getServerHost() : '') + `/api/orders/${orderId}/status`;
+      const res = await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Ready' })
@@ -237,7 +239,8 @@ const KdsApp = {
 
   async markComplete(orderId) {
     try {
-      const res = await fetch(`/api/orders/${orderId}/status`, {
+      const url = (window.api && typeof window.api.getServerHost === 'function' ? window.api.getServerHost() : '') + `/api/orders/${orderId}/status`;
+      const res = await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Completed' })

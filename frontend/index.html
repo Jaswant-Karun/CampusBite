@@ -2393,6 +2393,20 @@
                 </button>
               </div>
 
+              <!-- Canteen Server Connection (For Mobile APK & Campus WiFi) -->
+              <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 14px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-card);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="font-size:18px;">🌐</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:700;color:var(--text-primary);">Canteen Server Link</div>
+                    <div id="profile-server-status-label" style="font-size:11px;color:var(--text-muted);font-family:monospace;">http://192.168.1.36:3000</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-outline" style="padding:5px 12px;font-size:11px;border-radius:8px;font-weight:700;" onclick="window.promptServerUrl()">
+                  ⚙ Change IP
+                </button>
+              </div>
+
               <!-- Past Orders / Reorder Section (Backward compatibility) -->
               <div id="profile-order-history-list" style="display:none;"></div>
             </div>
