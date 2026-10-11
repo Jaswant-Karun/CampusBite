@@ -2427,6 +2427,58 @@
   ],
   "notifications": [
     {
+      "id": "notif_1791717161037_92u2",
+      "title": "Offer Re-activated: TESTOFFER9197",
+      "message": "Exclusive 25% test discount Use code TESTOFFER9197 on your next order!",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": null,
+      "icon": "COUPON",
+      "data": {
+        "coupon": {
+          "id": "c-1791556129199",
+          "code": "TESTOFFER9197",
+          "description": "Exclusive 25% test discount",
+          "discount_type": "percentage",
+          "discount_value": 25,
+          "minimum_order": 60,
+          "max_discount": 50,
+          "expiry_date": "2026-12-31",
+          "is_active": true,
+          "badge": "Flash Deal"
+        },
+        "legacyType": "NEW_OFFER"
+      },
+      "created_at": "2026-10-11T11:12:41.037Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791717161037_92u2",
+      "title": "Offer Re-activated: TESTOFFER9197",
+      "message": "Exclusive 25% test discount Use code TESTOFFER9197 on your next order!",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": null,
+      "icon": "COUPON",
+      "data": {
+        "coupon": {
+          "id": "c-1791556129199",
+          "code": "TESTOFFER9197",
+          "description": "Exclusive 25% test discount",
+          "discount_type": "percentage",
+          "discount_value": 25,
+          "minimum_order": 60,
+          "max_discount": 50,
+          "expiry_date": "2026-12-31",
+          "is_active": true,
+          "badge": "Flash Deal"
+        },
+        "legacyType": "NEW_OFFER"
+      },
+      "created_at": "2026-10-11T11:12:41.037Z",
+      "read": false
+    },
+    {
       "id": "notif_1791715260956_l1rf",
       "title": "Order Completed: #CB1072",
       "message": "Order #CB1072 has been picked up. Thank you for dining with CampusBite!",
