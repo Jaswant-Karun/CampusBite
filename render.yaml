@@ -1,7 +1,7 @@
 services:
   - type: web
     name: campusbite
-    env: node
+    runtime: node
     plan: free
     buildCommand: npm install
     startCommand: node backend/server.js
