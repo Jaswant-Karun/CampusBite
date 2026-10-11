@@ -146,7 +146,10 @@ const api = {
 
   // Analytics & BI
   getAnalytics: () => api.get('/analytics'),
-  getCustomers: () => api.get('/analytics/customers'),
+
+  // Customers (Step 22)
+  getCustomers: (params) => api.get('/customers', params),
+  getCustomerDetails: (id) => api.get(`/customers/${id}`),
 
   // AI Demand Prediction
   getDemandPrediction: () => api.get('/demand-prediction'),
