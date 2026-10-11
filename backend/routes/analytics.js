@@ -166,23 +166,43 @@ router.get('/customers', (req, res) => {
   const orders = db.data.orders || [];
 
   const customerStats = users.map(user => {
-    const userOrders = orders.filter(o => o.user_id === user.id);
-    const totalSpent = userOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+    const userOrders = orders.filter(o => 
+      o.user_id === user.id ||
+      (user.phone && o.customer_phone && o.customer_phone.replace(/\D/g,'').endsWith(user.phone.replace(/\D/g,'').slice(-10))) ||
+      (user.name && o.customer_name && o.customer_name.trim().toLowerCase() === user.name.trim().toLowerCase())
+    );
+    userOrders.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+    const totalSpent = userOrders.reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
     const lastOrder = userOrders[0] || null;
+
+    const points = Number(user.loyalty_points) || 0;
+    let loyaltyTier = 'Bronze';
+    if (points >= 1000) loyaltyTier = 'Platinum';
+    else if (points >= 500) loyaltyTier = 'Gold';
+    else if (points >= 200) loyaltyTier = 'Silver';
 
     return {
       id: user.id,
       name: user.name,
       email: user.email,
-      phone: user.phone || '+91 98765 43210',
+      phone: user.phone || '',
       role: user.role,
-      department: user.department || 'CSBS',
-      student_id: user.student_id || user.id.toUpperCase(),
-      loyalty_points: user.loyalty_points || 0,
-      wallet_balance: user.wallet_balance || 0,
+      department: user.department || 'Computer Science & Engineering',
+      student_id: user.studentId || user.student_id || user.id.toUpperCase(),
+      loyalty_points: points,
+      loyalty_tier: loyaltyTier,
+      wallet_balance: Number(user.wallet_balance) || 0,
       total_orders: userOrders.length,
-      total_spent: totalSpent,
-      last_order_date: lastOrder ? lastOrder.created_at : user.joined_date || '2024-08-16',
+      total_spent: Math.round(totalSpent),
+      total_spending: Math.round(totalSpent),
+      last_order: lastOrder ? {
+        id: lastOrder.id,
+        created_at: lastOrder.created_at,
+        total_amount: lastOrder.total_amount,
+        order_status: lastOrder.order_status
+      } : null,
+      last_order_date: lastOrder ? lastOrder.created_at : null,
       status: user.account_status || 'Active Verified'
     };
   });

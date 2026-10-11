@@ -30,6 +30,7 @@ const analyticsRoutes = require('./routes/analytics');
 const demandPredictionRoutes = require('./routes/demandPrediction');
 const chatbotRoutes = require('./routes/chatbot');
 const notificationsRoutes = require('./routes/notifications');
+const customersRoutes = require('./routes/customers');
 const db = require('./data/db');
 const { 
   mongoManager, 
@@ -68,6 +69,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/demand-prediction', demandPredictionRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/customers', customersRoutes);
 
 // Health check & System Info
 app.get('/api/health', (req, res) => {
