@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
 const eventBus = require('../services/eventBus');
+const { authenticateToken, requireRole } = require('../middleware/auth');
 
 // Helper: Get today's date in YYYY-MM-DD
 function getTodayStr() {
@@ -124,7 +125,7 @@ router.post('/apply', (req, res) => {
 });
 
 // POST create new coupon (Admin Coupon Management)
-router.post('/', (req, res) => {
+router.post('/', authenticateToken, requireRole(['admin', 'staff']), (req, res) => {
   const { 
     code, 
     description, 
@@ -203,7 +204,7 @@ router.post('/', (req, res) => {
 });
 
 // PUT update / edit coupon details (Admin Coupon Management)
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticateToken, requireRole(['admin', 'staff']), (req, res) => {
   const coupon = (db.data.coupons || []).find(c => c.id === req.params.id);
   if (!coupon) {
     return res.status(404).json({ success: false, message: 'Coupon not found' });
@@ -312,7 +313,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE remove coupon (Admin)
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticateToken, requireRole(['admin', 'staff']), (req, res) => {
   const index = (db.data.coupons || []).findIndex(c => c.id === req.params.id);
   if (index === -1) {
     return res.status(404).json({ success: false, message: 'Coupon not found' });
