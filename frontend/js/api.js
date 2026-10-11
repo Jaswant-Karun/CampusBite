@@ -5,6 +5,42 @@
 const API_BASE = '/api';
 
 const api = {
+  getBaseUrl() {
+    const saved = localStorage.getItem('campusbite_backend_url');
+    if (saved && saved.trim()) {
+      return saved.trim().replace(/\/+$/, '') + '/api';
+    }
+    const isNative = window.location.protocol === 'capacitor:' || 
+                     window.location.protocol === 'file:' || 
+                     (window.location.hostname === 'localhost' && window.location.port !== '3000' && window.location.port !== '');
+    if (isNative) {
+      return 'http://192.168.1.36:3000/api';
+    }
+    return '/api';
+  },
+
+  getServerHost() {
+    const saved = localStorage.getItem('campusbite_backend_url');
+    if (saved && saved.trim()) {
+      return saved.trim().replace(/\/+$/, '');
+    }
+    const isNative = window.location.protocol === 'capacitor:' || 
+                     window.location.protocol === 'file:' || 
+                     (window.location.hostname === 'localhost' && window.location.port !== '3000' && window.location.port !== '');
+    if (isNative) {
+      return 'http://192.168.1.36:3000';
+    }
+    return window.location.origin;
+  },
+
+  setServerUrl(url) {
+    if (url && url.trim()) {
+      localStorage.setItem('campusbite_backend_url', url.trim());
+    } else {
+      localStorage.removeItem('campusbite_backend_url');
+    }
+  },
+
   getHeaders() {
     const headers = { 'Content-Type': 'application/json' };
     try {
@@ -18,13 +54,15 @@ const api = {
 
   async get(endpoint, params = {}) {
     try {
-      const url = new URL(API_BASE + endpoint, window.location.origin);
+      const base = this.getBaseUrl();
+      const host = this.getServerHost();
+      const url = base.startsWith('http') ? new URL(base + endpoint) : new URL(base + endpoint, host);
       Object.keys(params).forEach(key => {
         if (params[key] !== undefined && params[key] !== null) {
           url.searchParams.append(key, params[key]);
         }
       });
-      const res = await fetch(url, {
+      const res = await fetch(url.toString(), {
         headers: this.getHeaders()
       });
       const data = await res.json().catch(() => ({}));
@@ -43,7 +81,9 @@ const api = {
 
   async post(endpoint, data = {}) {
     try {
-      const res = await fetch(API_BASE + endpoint, {
+      const base = this.getBaseUrl();
+      const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
+      const res = await fetch(fullUrl, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify(data)
@@ -64,7 +104,9 @@ const api = {
 
   async put(endpoint, data = {}) {
     try {
-      const res = await fetch(API_BASE + endpoint, {
+      const base = this.getBaseUrl();
+      const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
+      const res = await fetch(fullUrl, {
         method: 'PUT',
         headers: this.getHeaders(),
         body: JSON.stringify(data)
@@ -85,7 +127,9 @@ const api = {
 
   async delete(endpoint) {
     try {
-      const res = await fetch(API_BASE + endpoint, {
+      const base = this.getBaseUrl();
+      const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
+      const res = await fetch(fullUrl, {
         method: 'DELETE',
         headers: this.getHeaders()
       });
