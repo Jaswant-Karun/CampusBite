@@ -24,6 +24,9 @@ const AdminApp = {
   couponTypeFilter: 'All',
   analyticsData: null,
   analyticsRange: 'today',
+  smartDemandData: null,
+  smartDemandInsights: [],
+  smartDemandFilterLevel: 'All',
   demandData: null,
   activeOrderFilter: 'All',
 
@@ -145,6 +148,7 @@ const AdminApp = {
       coupons: { title: "Digital Marketing & Coupon Offers", sub: "Publish discounts, monitor campaigns & active promotions" },
       reviews: { title: "Customer Reviews & Quality Ratings", sub: "Verified post-pickup feedback on food quality, speed & service" },
       analytics: { title: "Sales & Business Intelligence Analytics", sub: "Revenue velocity, peak rush traffic & bestsellers analysis" },
+      'smart-demand': { title: "Smart Demand Insight & Decision Support", sub: "Statistical order analysis to optimize prep, inventory buffers, staffing shifts & waste reduction" },
       settings: { title: "Canteen Operational Settings", sub: "Express pickup counters, database status & diagnostics" }
     };
     if (tabHeaders[tabId]) {
@@ -171,6 +175,8 @@ const AdminApp = {
       this.loadReviews();
     } else if (tabId === 'analytics') {
       this.loadAnalytics();
+    } else if (tabId === 'smart-demand') {
+      this.loadSmartDemandInsights();
     }
   },
 
@@ -181,6 +187,7 @@ const AdminApp = {
       this.loadProducts(),
       this.loadCustomers(),
       this.loadCoupons(),
+      this.loadSmartDemandInsights(),
       this.loadDemandPredictions()
     ]);
   },
@@ -1710,7 +1717,182 @@ const AdminApp = {
     this.renderAnalyticsPage();
   },
 
-  // AI Demand Prediction Engine (Core Innovation)
+  // =========================================================================
+  // STEP 25: SMART DEMAND INSIGHT & DECISION SUPPORT (INNOVATION FEATURE)
+  // =========================================================================
+
+  async loadSmartDemandInsights() {
+    try {
+      const res = await window.api.getSmartDemandInsights();
+      if (res && res.success) {
+        this.smartDemandData = res;
+        this.smartDemandInsights = res.insights || [];
+        this.demandData = res; // sync for prep predictions
+
+        // Update Summary KPI Strips
+        const summary = res.summary || {};
+        const elTotal = document.getElementById('sdi-stat-total');
+        const elHigh = document.getElementById('sdi-stat-high');
+        const elMed = document.getElementById('sdi-stat-medium');
+        const elLow = document.getElementById('sdi-stat-low');
+
+        if (elTotal) elTotal.textContent = summary.total_insights || this.smartDemandInsights.length;
+        if (elHigh) elHigh.textContent = summary.high_demand_count || this.smartDemandInsights.filter(i => i.demand_level === 'HIGH DEMAND').length;
+        if (elMed) elMed.textContent = summary.medium_demand_count || this.smartDemandInsights.filter(i => i.demand_level === 'MEDIUM DEMAND').length;
+        if (elLow) elLow.textContent = summary.low_demand_count || this.smartDemandInsights.filter(i => i.demand_level === 'LOW DEMAND').length;
+
+        this.renderSmartDemandInsights();
+      }
+    } catch (err) {
+      console.error('Failed to load Smart Demand Insights:', err);
+    }
+  },
+
+  filterDemandInsights(level) {
+    this.smartDemandFilterLevel = level;
+    const filterBtns = document.querySelectorAll('#sdi-level-filter-group .sdi-filter-btn');
+    filterBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.level === level);
+    });
+    this.renderSmartDemandInsights();
+  },
+
+  renderSmartDemandInsights() {
+    const container = document.getElementById('smart-demand-insights-grid');
+    if (!container) return;
+
+    const allInsights = this.smartDemandInsights || [];
+    const filter = this.smartDemandFilterLevel || 'All';
+
+    const filtered = filter === 'All' 
+      ? allInsights 
+      : allInsights.filter(i => i.demand_level === filter);
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="background:#FFFFFF;border:1px dashed #CBD5E1;border-radius:14px;padding:40px;text-align:center;color:#64748B;">
+          <p style="font-size:14px;font-weight:600;margin:0 0 6px 0;">No ${filter} insights currently recorded</p>
+          <button type="button" class="sdi-filter-btn" style="background:#4F46E5;color:#FFFFFF;padding:6px 14px;" onclick="AdminApp.filterDemandInsights('All')">View All Insights</button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(ins => {
+      const levelClass = ins.demand_level_raw || (ins.demand_level === 'HIGH DEMAND' ? 'high' : (ins.demand_level === 'MEDIUM DEMAND' ? 'medium' : 'low'));
+      const basis = ins.historical_basis || {};
+      const dec = ins.decision_support || {};
+
+      return `
+        <div class="sdi-insight-card level-${levelClass}">
+          
+          <!-- Top Row: Target & Demand Level Badge -->
+          <div class="sdi-card-top-row">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:12px;font-weight:700;color:#64748B;">Product:</span>
+              <strong style="color:#0F172A;font-size:13px;">${ins.target_product}</strong>
+              <span style="font-size:11px;background:#F1F5F9;color:#475569;padding:2px 8px;border-radius:6px;font-weight:600;">⏱️ ${ins.time_slot}</span>
+            </div>
+
+            <!-- Prominent Demand Level Badge (HIGH DEMAND, MEDIUM DEMAND, LOW DEMAND) -->
+            <span class="sdi-demand-badge ${levelClass}">
+              ● ${ins.demand_level}
+            </span>
+          </div>
+
+          <!-- Main Insight Title -->
+          <h3 class="sdi-insight-title">${ins.title}</h3>
+
+          <!-- Historical Basis Analysis Matrix -->
+          <div class="sdi-basis-grid">
+            <div class="sdi-basis-item">
+              <span class="sdi-basis-label">📦 Product Orders</span>
+              <span class="sdi-basis-val">${basis.product_orders || 'Historical order volume'}</span>
+            </div>
+            <div class="sdi-basis-item">
+              <span class="sdi-basis-label">📅 Day of Week</span>
+              <span class="sdi-basis-val">${basis.day || ins.day_focus || 'Mon–Fri'}</span>
+            </div>
+            <div class="sdi-basis-item">
+              <span class="sdi-basis-label">⏰ Time Window</span>
+              <span class="sdi-basis-val">${basis.time || ins.time_slot}</span>
+            </div>
+            <div class="sdi-basis-item">
+              <span class="sdi-basis-label">📊 Order Volume</span>
+              <span class="sdi-basis-val">${basis.order_volume || 'Concentrated rush hour'}</span>
+            </div>
+          </div>
+
+          <!-- Why This Insight Was Generated (Transparent Statistical Explanation) -->
+          <div class="sdi-explanation-box">
+            <strong style="display:block;margin-bottom:4px;">🔍 Why this insight was generated:</strong>
+            ${ins.explanation}
+          </div>
+
+          <!-- 4 Canteen Manager Decision Support Pillars -->
+          <div class="sdi-decision-grid">
+            
+            <!-- Pillar 1: Preparation -->
+            <div class="sdi-decision-col">
+              <div class="sdi-decision-header">
+                <span>👨‍🍳</span>
+                <span>Preparation</span>
+              </div>
+              <p class="sdi-decision-text">${dec.preparation || 'Optimize batch cook sizing'}</p>
+            </div>
+
+            <!-- Pillar 2: Inventory -->
+            <div class="sdi-decision-col">
+              <div class="sdi-decision-header">
+                <span>📦</span>
+                <span>Inventory</span>
+              </div>
+              <p class="sdi-decision-text">${dec.inventory || 'Maintain buffer raw ingredients'}</p>
+            </div>
+
+            <!-- Pillar 3: Staffing -->
+            <div class="sdi-decision-col">
+              <div class="sdi-decision-header">
+                <span>👥</span>
+                <span>Staffing</span>
+              </div>
+              <p class="sdi-decision-text">${dec.staffing || 'Allocate counter staff'}</p>
+            </div>
+
+            <!-- Pillar 4: Reducing Food Waste -->
+            <div class="sdi-decision-col">
+              <div class="sdi-decision-header">
+                <span>♻️</span>
+                <span>Food Waste</span>
+              </div>
+              <p class="sdi-decision-text">${dec.food_waste || 'Prevent overproduction and spoilage'}</p>
+            </div>
+
+          </div>
+
+          <!-- Action Recommended Row -->
+          <div class="sdi-action-row">
+            <div style="font-size:12px;color:#334155;">
+              <strong>Decision Action:</strong> <span style="color:#4F46E5;font-weight:600;">${ins.action_recommended}</span>
+            </div>
+
+            ${ins.product_id && ins.product_id !== 'all-meals' ? `
+              <button type="button" class="sdi-action-btn" onclick="AdminApp.applyDemandPrepPlan('${ins.product_id}', 20)">
+                <span>Accept & Prep (+20 units)</span>
+              </button>
+            ` : `
+              <button type="button" class="sdi-action-btn" style="background:#10B981;" onclick="App.showToast('Insight acknowledged! Kitchen prep sheet marked.', 'success')">
+                <span>Acknowledge Insight</span>
+              </button>
+            `}
+          </div>
+
+        </div>
+      `;
+    }).join('');
+  },
+
+  // Backward compatibility alias for demand predictions
   async loadDemandPredictions() {
     try {
       const res = await window.api.getDemandPrediction();
