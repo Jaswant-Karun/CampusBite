@@ -179,6 +179,7 @@ const AdminApp = {
       this.loadOrders(),
       this.loadProducts(),
       this.loadCustomers(),
+      this.loadCoupons(),
       this.loadDemandPredictions()
     ]);
   },
