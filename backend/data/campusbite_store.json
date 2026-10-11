@@ -157,7 +157,7 @@
       "price": 80,
       "category": "Snacks",
       "image_emoji": "🍔",
-      "stock": 33,
+      "stock": 32,
       "is_available": true,
       "rating": 4.8,
       "prep_time": "8 mins",
@@ -673,6 +673,38 @@
     }
   ],
   "orders": [
+    {
+      "id": "CB1070",
+      "user_id": "u-101",
+      "customer_name": "Student",
+      "customer_phone": "+91 98765 43210",
+      "items": [
+        {
+          "product_id": "p-1",
+          "name": "Classic Burger",
+          "price": 80,
+          "quantity": 1,
+          "image_emoji": "🍔"
+        }
+      ],
+      "subtotal": 80,
+      "discount": 16,
+      "coupon_code": "CAMPUS20",
+      "total_amount": 64,
+      "payment_method": "UPI",
+      "payment_status": "PAID",
+      "upi_id": "jaswant@okhdfcbank",
+      "card_masked": null,
+      "card_brand": null,
+      "order_status": "Ready for Pickup",
+      "estimated_prep_time": "~8–10 mins",
+      "pickup_slot": "12:00 PM - 12:15 PM",
+      "pickup_counter": 2,
+      "special_instructions": "",
+      "created_at": "2026-10-11T13:28:38.941Z",
+      "updated_at": "2026-10-11T13:28:39.040Z",
+      "loyalty_points_earned": 6
+    },
     {
       "id": "CB1069",
       "user_id": "u-101",
@@ -2483,10 +2515,10 @@
     }
   ],
   "analytics": {
-    "today_revenue": 15814,
-    "today_orders": 219,
+    "today_revenue": 15878,
+    "today_orders": 220,
     "total_customers": 142,
-    "pending_orders": 39,
+    "pending_orders": 40,
     "avg_rating": 4.9,
     "ratings_breakdown": {
       "food_quality": 4.6,
@@ -2634,6 +2666,338 @@
   ],
   "notifications": [
     {
+      "id": "notif_1791725319048_345g",
+      "title": "Order Ready: #CB1070",
+      "message": "Order #CB1070 is READY FOR PICKUP at Counter 2! Please show your token #CB1070.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T13:28:39.048Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725319048_345g",
+      "title": "Order Ready: #CB1070",
+      "message": "Order #CB1070 is READY FOR PICKUP at Counter 2! Please show your token #CB1070.",
+      "type": "ORDER_READY",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "READY",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Ready for Pickup",
+        "order_status": "Ready for Pickup",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T13:28:39.048Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725319028_0kfp",
+      "title": "Order Being Prepared: #CB1070",
+      "message": "Kitchen is actively preparing your order #CB1070 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Preparing",
+        "order_status": "Preparing",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T13:28:39.028Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725319028_0kfp",
+      "title": "Order Being Prepared: #CB1070",
+      "message": "Kitchen is actively preparing your order #CB1070 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "all",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "data": {
+        "orderId": "CB1070",
+        "status": "Preparing",
+        "order_status": "Preparing",
+        "counter": 2,
+        "estimated_prep_time": "~8–10 mins",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "legacyType": "ORDER_STATUS_CHANGED"
+      },
+      "created_at": "2026-10-11T13:28:39.028Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725318984_wycn",
+      "title": "Order Confirmed: #CB1070",
+      "message": "Payment successful! Your order #CB1070 has been confirmed. Routed to Counter 2. Slot: 12:00 PM - 12:15 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1070",
+        "token": "CB1070",
+        "counter": 2,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-11T13:28:38.984Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725318984_wycn",
+      "title": "Order Confirmed: #CB1070",
+      "message": "Payment successful! Your order #CB1070 has been confirmed. Routed to Counter 2. Slot: 12:00 PM - 12:15 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1070",
+        "token": "CB1070",
+        "counter": 2,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-11T13:28:38.984Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725318979_md13",
+      "title": "New Order #CB1070 Placed!",
+      "message": "Student placed an order for ₹64 (1 items). Routed to Counter 2.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1070",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "counter": 2
+      },
+      "created_at": "2026-10-11T13:28:38.979Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791725318979_md13",
+      "title": "New Order #CB1070 Placed!",
+      "message": "Student placed an order for ₹64 (1 items). Routed to Counter 2.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1070",
+        "order": {
+          "id": "CB1070",
+          "user_id": "u-101",
+          "customer_name": "Student",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 16,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 64,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "jaswant@okhdfcbank",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Ready for Pickup",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM - 12:15 PM",
+          "pickup_counter": 2,
+          "special_instructions": "",
+          "created_at": "2026-10-11T13:28:38.941Z",
+          "updated_at": "2026-10-11T13:28:39.040Z",
+          "loyalty_points_earned": 6
+        },
+        "counter": 2
+      },
+      "created_at": "2026-10-11T13:28:38.979Z",
+      "read": false
+    },
+    {
       "id": "notif_1791719892629_s2tu",
       "title": "Coupon Available: FLASH2626",
       "message": "Special 15% flash campus discount Use code FLASH2626 to get 15% OFF!",
@@ -6806,156 +7170,6 @@
       },
       "created_at": "2026-10-11T11:38:44.097Z",
       "read": true
-    },
-    {
-      "id": "notif_1791718724081_7oma",
-      "title": "Menu Catalog Updated",
-      "message": "Classic Burger details were updated",
-      "type": "product_updated",
-      "target": "all",
-      "userId": null,
-      "icon": "",
-      "data": {
-        "productId": "p-1",
-        "newPrice": 80,
-        "stock": 25,
-        "is_available": true,
-        "category": "Snacks",
-        "product": {
-          "id": "p-1",
-          "name": "Classic Burger",
-          "description": "Crispy patty, fresh lettuce, sliced tomatoes, house sauce in a toasted sesame bun.",
-          "price": 80,
-          "category": "Snacks",
-          "image_emoji": "🍔",
-          "stock": 25,
-          "is_available": true,
-          "rating": 4.8,
-          "prep_time": "8 mins",
-          "is_veg": false,
-          "popular": true,
-          "calories": "380 kcal",
-          "protein_g": 16,
-          "carbs_g": 44,
-          "fat_g": 14,
-          "health_tag": "⚡ Quick Energy",
-          "stall_id": "stall_main",
-          "stall_name": "Main Food Court",
-          "availability": true,
-          "image": "",
-          "image_url": ""
-        }
-      },
-      "created_at": "2026-10-11T11:38:44.081Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791718724081_7oma",
-      "title": "Menu Catalog Updated",
-      "message": "Classic Burger details were updated",
-      "type": "product_updated",
-      "target": "all",
-      "userId": null,
-      "icon": "",
-      "data": {
-        "productId": "p-1",
-        "newPrice": 80,
-        "stock": 25,
-        "is_available": true,
-        "category": "Snacks",
-        "product": {
-          "id": "p-1",
-          "name": "Classic Burger",
-          "description": "Crispy patty, fresh lettuce, sliced tomatoes, house sauce in a toasted sesame bun.",
-          "price": 80,
-          "category": "Snacks",
-          "image_emoji": "🍔",
-          "stock": 25,
-          "is_available": true,
-          "rating": 4.8,
-          "prep_time": "8 mins",
-          "is_veg": false,
-          "popular": true,
-          "calories": "380 kcal",
-          "protein_g": 16,
-          "carbs_g": 44,
-          "fat_g": 14,
-          "health_tag": "⚡ Quick Energy",
-          "stall_id": "stall_main",
-          "stall_name": "Main Food Court",
-          "availability": true,
-          "image": "",
-          "image_url": ""
-        }
-      },
-      "created_at": "2026-10-11T11:38:44.081Z",
-      "read": true
-    },
-    {
-      "id": "notif-seed-1",
-      "title": "Order Confirmed: #CB1024",
-      "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
-      "type": "ORDER_CONFIRMED",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "CONFIRMED",
-      "read": false,
-      "created_at": "2026-10-11T11:28:48.986Z"
-    },
-    {
-      "id": "notif-seed-2",
-      "title": "Order Being Prepared: #CB1025",
-      "message": "Kitchen is actively preparing your order #CB1025 at Counter 2.",
-      "type": "ORDER_PREPARING",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "PREPARING",
-      "read": false,
-      "created_at": "2026-10-11T11:43:48.986Z"
-    },
-    {
-      "id": "notif-seed-3",
-      "title": "Order Ready for Pickup: #CB1020",
-      "message": "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
-      "type": "ORDER_READY",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "READY",
-      "read": false,
-      "created_at": "2026-10-11T11:13:48.986Z"
-    },
-    {
-      "id": "notif-seed-4",
-      "title": "Order Completed: #CB1018",
-      "message": "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
-      "type": "ORDER_COMPLETED",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "COMPLETED",
-      "read": true,
-      "created_at": "2026-10-11T08:58:48.986Z"
-    },
-    {
-      "id": "notif-seed-5",
-      "title": "Coupon Available: CAMPUS20",
-      "message": "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "COUPON",
-      "read": false,
-      "created_at": "2026-10-11T05:58:48.986Z"
-    },
-    {
-      "id": "notif-seed-6",
-      "title": "Welcome to CampusBite",
-      "message": "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
-      "type": "SYSTEM",
-      "target": "all",
-      "userId": null,
-      "icon": "SYSTEM",
-      "read": true,
-      "created_at": "2026-10-10T23:58:48.986Z"
     }
   ]
 }
