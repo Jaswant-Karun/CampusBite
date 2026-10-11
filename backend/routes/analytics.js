@@ -16,6 +16,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../data/db');
+const { authenticateToken, requireRole } = require('../middleware/auth');
+
+// Protect executive business analytics for admin & staff only
+router.use(authenticateToken, requireRole(['admin', 'staff']));
 
 // Helper to format ISO date to local hour string (e.g., "12 PM")
 function getHourLabel(dateObj) {
