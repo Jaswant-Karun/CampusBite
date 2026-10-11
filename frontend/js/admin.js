@@ -23,6 +23,7 @@ const AdminApp = {
   couponStatusFilter: 'All',
   couponTypeFilter: 'All',
   analyticsData: null,
+  analyticsRange: 'today',
   demandData: null,
   activeOrderFilter: 'All',
 
@@ -169,7 +170,7 @@ const AdminApp = {
     } else if (tabId === 'reviews') {
       this.loadReviews();
     } else if (tabId === 'analytics') {
-      this.renderAnalyticsCharts();
+      this.loadAnalytics();
     }
   },
 
