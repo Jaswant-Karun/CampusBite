@@ -230,7 +230,7 @@ async function runTestSuite() {
     // Invalid coupon: minimum order deficit
     const minOrderFail = await request('/api/coupons/apply', {
       method: 'POST',
-      body: { code: 'CAMPUS20', subtotal: 50 }
+      body: { code: 'CAMPUS20', subtotal: 20 }
     });
     assert(minOrderFail.status === 400 && !minOrderFail.data.success, 'Minimum order deficit rejected with 400');
 
