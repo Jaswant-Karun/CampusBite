@@ -3026,7 +3026,6 @@ const StudentApp = {
           }
         }
 
-        // 6. Contactless QR Code Token
         if (window.CampusQR) {
           window.CampusQR.renderTo(
             'tracking-qr-container',
@@ -3034,7 +3033,6 @@ const StudentApp = {
             150
           );
         }
-      }
     } catch (e) {
       console.warn("Could not load tracking order", e);
     }
