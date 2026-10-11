@@ -3,7 +3,7 @@
  * Fast caching & offline resilience for campus Wi-Fi environments
  */
 
-const CACHE_NAME = 'campusbite-v2';
+const CACHE_NAME = 'campusbite-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
