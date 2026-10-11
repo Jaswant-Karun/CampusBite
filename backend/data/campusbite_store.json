@@ -89,6 +89,22 @@
       "wallet_balance": 500,
       "password": "password123",
       "avatar": "AA"
+    },
+    {
+      "id": "u-1791707266749",
+      "name": "Aakash Varma",
+      "email": "test_student_1791707266651@campus.edu",
+      "phone": "91234 56789",
+      "role": "student",
+      "studentId": "CB-2024-9988",
+      "department": "Computer Science & Engineering",
+      "loyalty_points": 50,
+      "wallet_balance": 500,
+      "password": "password123",
+      "avatar": "AA",
+      "profile_image": "",
+      "account_status": "Active Verified",
+      "joined_date": "2026-10-11T08:27:46.749Z"
     }
   ],
   "products": [
@@ -1828,6 +1844,14 @@
     }
   ],
   "loyalty_transactions": [
+    {
+      "id": "lt-1791707266749",
+      "user_id": "u-1791707266749",
+      "points": 50,
+      "type": "earned",
+      "description": "Welcome to CampusBite Onboarding Bonus",
+      "date": "2026-10-11T08:27:46.749Z"
+    },
     {
       "id": "lt-1791634445270",
       "user_id": "u-101",
