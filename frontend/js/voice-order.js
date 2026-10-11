@@ -220,6 +220,8 @@ const CampusVoice = {
     this.setLanguage(lang);
     const textEl = document.getElementById('voice-recognized-text');
     if (textEl) textEl.textContent = `"${phrase}"`;
+    const pageBox = document.getElementById('voice-screen-transcript-box');
+    if (pageBox) pageBox.textContent = `"${phrase}"`;
     const parsed = this.parseSpeech(phrase, lang);
     this.processParsedOrder(parsed, phrase);
   },
@@ -228,9 +230,11 @@ const CampusVoice = {
     const pulseEl = document.getElementById('voice-pulse-ring');
     const statusEl = document.getElementById('voice-status-text');
     const startBtn = document.getElementById('voice-start-btn');
+    const pageStatus = document.getElementById('voice-screen-status');
 
     if (pulseEl) pulseEl.classList.toggle('active', isListening);
     if (statusEl) statusEl.textContent = statusText;
+    if (pageStatus) pageStatus.textContent = statusText;
     if (startBtn) {
       startBtn.innerHTML = isListening ? 'Stop Listening' : 'Start Speaking';
       startBtn.onclick = () => isListening ? this.stopListening() : this.startListening();

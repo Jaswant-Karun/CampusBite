@@ -362,6 +362,8 @@ const StudentApp = {
   },
 
   navigateTo(screenId) {
+    if (screenId === 'rewards-store') screenId = 'rewards';
+
     document.querySelectorAll('.mob-screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(`screen-${screenId}`);
     if (target) {
@@ -436,6 +438,21 @@ const StudentApp = {
       if (window.CampusNotifications) {
         window.CampusNotifications.renderScreen();
       }
+    } else if (screenId === 'rewards') {
+      this.stopTrackingLivePolling();
+      this.renderRewardsScreen();
+    } else if (screenId === 'feedback') {
+      this.stopTrackingLivePolling();
+      this.renderFeedbackScreen();
+    } else if (screenId === 'voice') {
+      this.stopTrackingLivePolling();
+      this.renderVoiceScreen();
+    } else if (screenId === 'timetable') {
+      this.stopTrackingLivePolling();
+      this.renderTimetableScreen();
+    } else if (screenId === 'spin-wheel') {
+      this.stopTrackingLivePolling();
+      this.renderSpinWheelScreen();
     } else {
       this.stopTrackingLivePolling();
     }
