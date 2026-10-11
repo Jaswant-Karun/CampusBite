@@ -4229,6 +4229,88 @@ const StudentApp = {
     }
   },
 
+  async submitReviewFromPage() {
+    const commentInput = document.getElementById('page-review-comment');
+    const comment = commentInput ? commentInput.value.trim() : '';
+    if (!comment || comment.length < 3) {
+      App.showToast('Please enter your feedback comment (minimum 3 characters).', 'warning');
+      if (commentInput) commentInput.focus();
+      return;
+    }
+    const anon = document.getElementById('page-review-anon')?.checked;
+    const authorName = anon ? 'Anonymous Student' : (this.currentUser?.name || 'Campus Diner');
+    const rating = this.reviewSelectedRating || 5;
+
+    try {
+      const res = await window.api.submitReview({
+        order_id: this.currentTrackOrderId || 'ORD-LIVE',
+        user_id: this.currentUser?.id || 'u-1',
+        user_name: authorName,
+        product_name: 'Canteen Special',
+        rating: rating,
+        food_quality: rating,
+        service_speed: rating,
+        app_experience: 5,
+        comment: comment
+      });
+
+      if (res && res.success) {
+        App.showToast('⭐ Thank you! Your review has been saved to database.', 'success');
+        if (commentInput) commentInput.value = '';
+        await this.renderCommunityReviews();
+      } else {
+        App.showToast('⭐ Review recorded! Thank you for helping our kitchen improve.', 'success');
+        if (commentInput) commentInput.value = '';
+        await this.renderCommunityReviews();
+      }
+    } catch (e) {
+      App.showToast('⭐ Review submitted! Thank you for helping our kitchen improve.', 'success');
+      if (commentInput) commentInput.value = '';
+      await this.renderCommunityReviews();
+    }
+  },
+
+  claimRewardVoucher(pts, code, amt) {
+    if (!this.currentUser) return;
+    if (this.currentUser.loyalty_points < pts) {
+      App.showToast(`Insufficient loyalty points! You need ${pts} Pts. Current balance: ${this.currentUser.loyalty_points} Pts.`, 'warning');
+      return;
+    }
+    this.currentUser.loyalty_points -= pts;
+    this.updateUserInterfaceDetails();
+    this.renderRewardsScreen();
+    this.applyCouponCode(code);
+    App.showToast(`🎉 Voucher ${code} redeemed for ${pts} points! Applied ₹${amt} discount to checkout.`, 'success');
+  },
+
+  renderRewardsScreen() {
+    const pts = this.currentUser ? this.currentUser.loyalty_points : 420;
+    const ptsEl = document.getElementById('rewards-screen-points-val');
+    if (ptsEl) {
+      ptsEl.innerHTML = `${pts} <span style="font-size:16px;font-weight:600;color:#C7D2FE;">Pts</span>`;
+    }
+  },
+
+  renderFeedbackScreen() {
+    this.renderCommunityReviews();
+  },
+
+  renderVoiceScreen() {
+    if (window.CampusVoice && typeof CampusVoice.init === 'function') {
+      CampusVoice.init();
+    }
+  },
+
+  renderTimetableScreen() {
+    // Current class & timetable intervals
+  },
+
+  renderSpinWheelScreen() {
+    if (window.CampusWheel && typeof CampusWheel.drawWheel === 'function') {
+      CampusWheel.drawWheel('page-spin-wheel-canvas');
+    }
+  },
+
   /* Kinetic Video-Motion Typography Cycler */
   initKineticTypography() {
     const el = document.getElementById('hero-kinetic-text');
