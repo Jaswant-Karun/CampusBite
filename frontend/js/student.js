@@ -60,7 +60,8 @@ const StudentApp = {
     'p-13': 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=320&q=80',
     'p-14': 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=320&q=80',
     'p-15': 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=320&q=80',
-    'p-16': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=320&q=80'
+    'p-16': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=320&q=80',
+    'p-17': 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=320&q=80'
   },
   groupPoolMembers: [
     { name: "Jaswant Karun (You • Host)", avatar: "JK", item: "Classic Veg Burger", price: 80 },
@@ -853,6 +854,7 @@ const StudentApp = {
     this.renderCategoryChips();
     this.renderFeaturedItems();
     this.renderPopularItems();
+    this.renderMobilePopularGrid();
     this.renderOffersSection();
     this.renderMenuList(this.products);
     this.checkActiveOrder();
@@ -973,6 +975,85 @@ const StudentApp = {
     }).join('');
   },
 
+  renderMobilePopularGrid(itemsToRender) {
+    const container = document.getElementById('mobile-home-popular-grid');
+    if (!container) return;
+
+    let items = itemsToRender;
+    if (!items || !items.length) {
+      items = this.products;
+    }
+
+    if (!items.length) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align:center; padding:28px 10px; color:var(--text-muted); font-size:12.5px;">
+          No popular food items match your filter.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = items.map(item => {
+      const isOutOfStock = item.is_available === false || (item.stock !== undefined && item.stock <= 0);
+      const photoUrl = this.productPhotos[item.id] || item.image_url;
+      const inCart = this.cart.find(c => c.productId === item.id);
+      const qty = inCart ? inCart.quantity : 0;
+      const rating = item.rating || 4.8;
+
+      return `
+        <div class="mob-food-card" onclick="StudentApp.openProductDetails('${item.id}')" data-product-id="${item.id}">
+          <div class="mob-food-img-container">
+            ${photoUrl ? `
+              <img src="${photoUrl}" alt="${item.name}" class="mob-food-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="food-emoji-fallback" style="display:none;font-size:32px;align-items:center;justify-content:center;height:100%;background:#F1F5F9;">${item.image_emoji || '🍱'}</div>
+            ` : `
+              <div class="food-emoji-fallback" style="display:flex;font-size:32px;align-items:center;justify-content:center;height:100%;background:#F1F5F9;">${item.image_emoji || '🍱'}</div>
+            `}
+            <span class="${item.is_veg ? 'mob-badge-veg' : 'mob-badge-nonveg'}" title="${item.is_veg ? 'Pure Veg' : 'Non-Veg'}"></span>
+            ${rating ? `
+              <span class="mob-badge-rating">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FBBF24" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span>${rating}</span>
+              </span>
+            ` : ''}
+          </div>
+
+          <div class="mob-food-card-body">
+            <h3 class="mob-food-name" title="${item.name}">${item.name}</h3>
+            <p class="mob-food-desc">${item.description || ''}</p>
+            
+            <div style="margin-top:auto; padding-top:6px;">
+              <div style="font-size:10px; margin-bottom:5px;">
+                ${isOutOfStock ? `
+                  <span class="stock-badge out-of-stock" style="padding:1px 6px; font-size:9.5px;">✕ Sold Out</span>
+                ` : `
+                  <span class="stock-badge in-stock" style="padding:1px 6px; font-size:9.5px;">● In Stock</span>
+                `}
+              </div>
+
+              <div class="mob-food-pricing-row">
+                <span class="mob-food-price">₹${item.price}</span>
+                <div class="mob-food-action" onclick="event.stopPropagation();">
+                  ${isOutOfStock ? `
+                    <button class="mob-add-btn sold-out" disabled>Sold Out</button>
+                  ` : (qty > 0 ? `
+                    <div style="display:flex; align-items:center; gap:4px;">
+                      <button class="stepper-btn" style="width:24px; height:24px; font-size:12px;" onclick="StudentApp.decrementCart('${item.id}')">-</button>
+                      <span style="font-size:12px; font-weight:800; color:var(--primary); min-width:14px; text-align:center;">${qty}</span>
+                      <button class="stepper-btn" style="width:24px; height:24px; font-size:12px;" onclick="StudentApp.addToCart('${item.id}')">+</button>
+                    </div>
+                  ` : `
+                    <button class="mob-add-btn" onclick="StudentApp.addToCart('${item.id}')">+ Add</button>
+                  `)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
   renderOffersSection() {
     const container = document.getElementById('home-offers-container');
     if (!container) return;
@@ -1010,7 +1091,32 @@ const StudentApp = {
 
   async checkActiveOrder() {
     const banner = document.getElementById('home-active-order-banner');
-    if (!banner) return;
+    const mobBanner = document.getElementById('mob-home-active-order');
+
+    const updateDisplay = (id, status, slot) => {
+      const orderIdEl = document.getElementById('home-active-order-id');
+      const statusEl = document.getElementById('home-active-order-status');
+      const slotEl = document.getElementById('home-active-order-slot');
+      if (orderIdEl) orderIdEl.textContent = `Order #${id}`;
+      if (statusEl) {
+        statusEl.textContent = status;
+        statusEl.className = 'stock-badge in-stock';
+      }
+      if (slotEl) slotEl.textContent = `Pickup Window: ${slot} (Counter 2)`;
+
+      const mobOrderId = document.getElementById('mob-active-order-id');
+      const mobStatus = document.getElementById('mob-active-order-status');
+      const mobSlot = document.getElementById('mob-active-order-slot');
+      if (mobOrderId) mobOrderId.textContent = `Order #${id}`;
+      if (mobStatus) {
+        mobStatus.textContent = status;
+        mobStatus.className = 'stock-badge in-stock';
+      }
+      if (mobSlot) mobSlot.textContent = `Window: ${slot} (Counter 2)`;
+
+      if (banner) banner.style.display = 'flex';
+      if (mobBanner) mobBanner.style.display = 'flex';
+    };
 
     try {
       const ordersRes = await window.api.getOrders();
@@ -1022,19 +1128,7 @@ const StudentApp = {
 
         if (activeOrder) {
           this.currentTrackOrderId = activeOrder.id;
-          const orderIdEl = document.getElementById('home-active-order-id');
-          const statusEl = document.getElementById('home-active-order-status');
-          const slotEl = document.getElementById('home-active-order-slot');
-
-          if (orderIdEl) orderIdEl.textContent = `Order #${activeOrder.id}`;
-          if (statusEl) {
-            statusEl.textContent = activeOrder.order_status || activeOrder.status || 'Preparing';
-            statusEl.className = 'stock-badge in-stock';
-          }
-          if (slotEl) {
-            slotEl.textContent = `Pickup Window: ${activeOrder.pickup_slot || '12:30 PM – 12:40 PM'} (Counter 2)`;
-          }
-          banner.style.display = 'flex';
+          updateDisplay(activeOrder.id, activeOrder.order_status || activeOrder.status || 'Preparing', activeOrder.pickup_slot || '12:30 PM – 12:40 PM');
           return;
         }
       }
@@ -1043,9 +1137,10 @@ const StudentApp = {
     }
 
     if (this.currentTrackOrderId === 'CB1024') {
-      banner.style.display = 'flex';
+      updateDisplay('CB1024', 'Preparing', '12:30 PM – 12:40 PM');
     } else {
-      banner.style.display = 'none';
+      if (banner) banner.style.display = 'none';
+      if (mobBanner) mobBanner.style.display = 'none';
     }
   },
 
@@ -1191,22 +1286,28 @@ const StudentApp = {
       );
     }
     this.renderMenuList(list);
+    this.renderMobilePopularGrid(list);
   },
 
   filterProducts(category, btn) {
     this.currentCategory = category || 'All';
     document.querySelectorAll('.cat-chip').forEach(c => {
-      c.classList.toggle('active', c.dataset.category.toLowerCase() === this.currentCategory.toLowerCase());
+      c.classList.toggle('active', (c.dataset.category || '').toLowerCase() === this.currentCategory.toLowerCase());
+    });
+    document.querySelectorAll('.mob-cat-chip').forEach(c => {
+      c.classList.toggle('active', (c.dataset.category || '').toLowerCase() === this.currentCategory.toLowerCase());
     });
     this.applyCombinedFilters();
   },
 
   searchProducts(query) {
     const studentInput = document.getElementById('student-search-input');
+    const mobInput = document.getElementById('mobile-search-input');
     const menuInput = document.getElementById('menu-search-input');
     const desktopInput = document.getElementById('desktop-search-input');
 
     if (studentInput && studentInput.value !== query) studentInput.value = query || '';
+    if (mobInput && mobInput.value !== query) mobInput.value = query || '';
     if (menuInput && menuInput.value !== query) menuInput.value = query || '';
     if (desktopInput && desktopInput.value !== query) desktopInput.value = query || '';
 
@@ -1753,10 +1854,47 @@ const StudentApp = {
 
   updateCartBadge() {
     const totalCount = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+    let billTotal = 0;
+    try {
+      if (this.calculateCartBill) {
+        const res = this.calculateCartBill();
+        billTotal = res ? res.total : 0;
+      }
+    } catch (e) {
+      billTotal = this.cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+    }
+
+    // 1. Mobile Header Tray Badge
+    const headerBadge = document.getElementById('mob-header-cart-badge');
+    if (headerBadge) {
+      headerBadge.textContent = totalCount;
+      headerBadge.style.display = totalCount > 0 ? 'flex' : 'none';
+    }
+
+    // 2. Mobile Bottom Nav Tray Badge (if present)
     const badge = document.getElementById('mob-cart-badge');
     if (badge) {
       badge.textContent = totalCount;
       badge.style.display = totalCount > 0 ? 'flex' : 'none';
+    }
+
+    // 3. Mobile Floating Cart Bar
+    const floatingBar = document.getElementById('mobile-floating-cart-bar');
+    if (floatingBar) {
+      const activeScreenEl = document.querySelector('.mob-screen.active');
+      const activeScreen = activeScreenEl ? activeScreenEl.id.replace('screen-', '') : 'home';
+      const hideScreens = ['cart', 'checkout', 'confirmation', 'login', 'motion-splash'];
+      if (totalCount > 0 && !hideScreens.includes(activeScreen) && window.innerWidth <= 768) {
+        floatingBar.style.display = 'flex';
+        const countBadge = document.getElementById('mob-floating-cart-count');
+        const summaryText = document.getElementById('mob-floating-cart-summary');
+        const totalPrice = document.getElementById('mob-floating-cart-total');
+        if (countBadge) countBadge.textContent = totalCount;
+        if (summaryText) summaryText.textContent = `${totalCount} Item${totalCount === 1 ? '' : 's'} in Tray`;
+        if (totalPrice) totalPrice.textContent = `Total: ₹${billTotal}`;
+      } else {
+        floatingBar.style.display = 'none';
+      }
     }
   },
 
