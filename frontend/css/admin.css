@@ -1297,3 +1297,49 @@
   padding: 0 4px;
 }
 
+/* ==========================================================================
+   STEP 22: CUSTOMER MANAGEMENT & DINERS CRM STYLING
+   ========================================================================== */
+.customer-table th {
+  white-space: nowrap;
+}
+
+.customer-table tr:hover {
+  background: #F8FAFC !important;
+}
+
+.customer-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.customer-tier-badge.platinum {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.customer-tier-badge.gold {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.customer-tier-badge.silver {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+}
+
+.customer-tier-badge.bronze {
+  background: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FFEDD5;
+}
+
+
