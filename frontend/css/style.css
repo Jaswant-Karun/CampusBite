@@ -152,6 +152,25 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-weight: 700; }
 h2 { font-weight: 600; }
 
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+a:hover, a:focus {
+  text-decoration: none !important;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none !important;
+}
+
+.desktop-nav-btn, .nav-item, .cat-chip, .stall-pill-btn, .sidebar-item-btn, .view-all-link, .upi-app-chip, .detail-success-continue-btn, .detail-success-view-tray-btn {
+  text-decoration: none !important;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
