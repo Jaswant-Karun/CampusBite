@@ -489,12 +489,19 @@ const StudentApp = {
     });
 
     const emailInput = document.getElementById('auth-email-input') || document.getElementById('auth-email');
-    if (role === 'student' && emailInput) {
-      emailInput.value = 'jaswant@campus.edu';
-    } else if (role === 'staff' && emailInput) {
-      emailInput.value = 'kitchen@campusbite.com';
-    } else if (role === 'admin' && emailInput) {
-      emailInput.value = 'jksam37@gmail.com';
+    const pwdInput = document.getElementById('auth-password-input') || document.getElementById('auth-password');
+    if (role === 'student') {
+      if (emailInput) emailInput.value = 'jaswant@campus.edu';
+      if (pwdInput) pwdInput.value = 'student123';
+    } else if (role === 'staff') {
+      if (emailInput) emailInput.value = 'kitchen@campusbite.com';
+      if (pwdInput) pwdInput.value = 'staff123';
+    } else if (role === 'faculty') {
+      if (emailInput) emailInput.value = 'priya.sundaram@campus.edu';
+      if (pwdInput) pwdInput.value = 'faculty123';
+    } else if (role === 'admin') {
+      if (emailInput) emailInput.value = 'jksam37@gmail.com';
+      if (pwdInput) pwdInput.value = 'admin123';
     }
   },
 
@@ -580,7 +587,11 @@ const StudentApp = {
         App.showToast(`Welcome, ${res.user.name}! Signed in successfully.`, 'success');
 
         if (res.user.role === 'admin' || this.selectedAuthRole === 'admin') {
-          App.switchViewMode('admin');
+          if (typeof App !== 'undefined' && App.switchViewMode && document.getElementById('admin-app-root')) {
+            App.switchViewMode('admin');
+          } else {
+            setTimeout(() => { window.location.href = '/admin'; }, 400);
+          }
         } else {
           this.navigateTo('home');
         }
@@ -620,9 +631,13 @@ const StudentApp = {
         try { localStorage.setItem('campusbite_user', JSON.stringify(this.currentUser)); } catch (e) {}
         this.updateUserInterfaceDetails();
 
-        if (role === 'admin') {
+        if (role === 'admin' || res.user.role === 'admin') {
           App.showToast('Logged in as Jaswant Karun (Admin Operations)', 'success');
-          App.switchViewMode('admin');
+          if (typeof App !== 'undefined' && App.switchViewMode && document.getElementById('admin-app-root')) {
+            App.switchViewMode('admin');
+          } else {
+            setTimeout(() => { window.location.href = '/admin'; }, 400);
+          }
         } else {
           App.showToast(`Logged in as ${res.user.name} (${role.toUpperCase()})`, 'success');
           this.navigateTo('home');
