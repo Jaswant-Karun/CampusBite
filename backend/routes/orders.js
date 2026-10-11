@@ -85,6 +85,9 @@ router.post('/', async (req, res) => {
     payment_method, 
     pickup_slot,
     redeem_loyalty_points,
+    special_instructions
+  } = req.body;
+
   // Security & Privacy: Scrub sensitive cardholder verification data immediately
   delete req.body.cvv;
   delete req.body.cvc;
