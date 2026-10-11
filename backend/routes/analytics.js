@@ -333,6 +333,8 @@ router.get('/', (req, res) => {
     },
     // Top-Level Legacy & Dashboard Compatibility
     kpis: {
+      total_sales: totalSales,
+      total_orders: totalOrders,
       today_revenue: totalSales,
       today_sales: totalSales,
       today_orders: totalOrders,
@@ -343,6 +345,7 @@ router.get('/', (req, res) => {
       avg_rating: realAvgRating,
       total_reviews: reviews.length
     },
+    top_products: topSellingList,
     order_status_overview: {
       'Order Placed': filteredOrders.filter(o => ['placed', 'order placed'].includes((o.order_status||'').toLowerCase())).length,
       'Confirmed': filteredOrders.filter(o => (o.order_status||'').toLowerCase() === 'confirmed').length,

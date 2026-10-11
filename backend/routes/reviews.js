@@ -66,6 +66,7 @@ router.get('/', (req, res) => {
     success: true,
     avg_rating: stats.avg_rating,
     count: stats.count,
+    stats: stats,
     rating_breakdown: stats.breakdown,
     sub_averages: stats.sub_averages,
     recent_reviews: reviews.slice(0, 6),
