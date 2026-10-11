@@ -19,6 +19,9 @@
   "author": "Jaswant Karun",
   "license": "ISC",
   "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mongoose": "^9.10.3"
