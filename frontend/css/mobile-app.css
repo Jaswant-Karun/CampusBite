@@ -1,0 +1,816 @@
+/* ==========================================================================
+   CampusBite - Native Mobile App Experience Stylesheet (Android & Mobile-First)
+   Colors: Primary Indigo #4F46E5 | Deep Navy #172554 | Teal #14B8A6 | Slate #F8FAFC
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESKTOP VS MOBILE VISIBILITY GATES
+   -------------------------------------------------------------------------- */
+@media (min-width: 769px) {
+  /* On desktop/laptop: Hide mobile-only components */
+  .mobile-app-header,
+  .mobile-bottom-nav,
+  .mobile-floating-cart-bar,
+  .mobile-home-view {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* On mobile: Hide desktop-sized navigation and giant desktop hero */
+  .master-header.desktop-nav-header,
+  .desktop-hero-banner {
+    display: none !important;
+  }
+
+  /* Reset outer viewport wrapper to 100% phone screen width */
+  .student-viewport-wrapper {
+    padding: 0 0 80px 0 !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: var(--bg-main, #F8FAFC) !important;
+  }
+
+  .website-content-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .mobile-screens-container {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .mob-screen {
+    padding: 0 0 90px 0 !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     2. NATIVE MOBILE APP HEADER
+     -------------------------------------------------------------------------- */
+  .mobile-app-header {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 16px 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  [data-theme="dark"] .mobile-app-header {
+    background: #0F172A;
+    border-color: #1E293B;
+  }
+
+  .mobile-app-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .mobile-app-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .mobile-app-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4F46E5, #172554);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+  }
+
+  .mobile-app-title-group h2 {
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-primary, #0F172A);
+    letter-spacing: 0.5px;
+  }
+
+  .mobile-canteen-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #14B8A6;
+    font-weight: 600;
+    margin-top: 1px;
+  }
+
+  .mobile-header-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mob-tool-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease;
+  }
+
+  [data-theme="dark"] .mob-tool-icon-btn {
+    background: #1E293B;
+    border-color: #334155;
+    color: #94A3B8;
+  }
+
+  .mob-avatar-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+    cursor: pointer;
+  }
+
+  /* Greeting Section */
+  .mobile-user-greeting {
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+
+  .mobile-greeting-heading {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text-primary, #0F172A);
+    margin: 0 0 2px 0;
+  }
+
+  .mobile-greeting-sub {
+    font-size: 12px;
+    color: var(--text-muted, #64748B);
+    margin: 0;
+  }
+
+  /* Full-width Search Bar */
+  .mobile-search-bar {
+    position: relative;
+    width: 100%;
+  }
+
+  .mobile-search-input {
+    width: 100%;
+    height: 42px;
+    border-radius: 12px;
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    padding: 0 14px 0 40px;
+    font-size: 13.5px;
+    color: var(--text-primary, #0F172A);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  [data-theme="dark"] .mobile-search-input {
+    background: #1E293B;
+    border-color: #334155;
+    color: #F8FAFC;
+  }
+
+  .mobile-search-input:focus {
+    border-color: #4F46E5;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+
+  [data-theme="dark"] .mobile-search-input:focus {
+    background: #0F172A;
+  }
+
+  .mobile-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  /* --------------------------------------------------------------------------
+     3. MOBILE PROMOTIONAL BANNER
+     -------------------------------------------------------------------------- */
+  .mobile-promo-banner-card {
+    margin: 14px 16px;
+    background: linear-gradient(135deg, #172554 0%, #1E3A8A 50%, #4F46E5 100%);
+    border-radius: 16px;
+    padding: 16px 18px;
+    color: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px -4px rgba(23, 37, 84, 0.35);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-promo-text {
+    flex: 1;
+    z-index: 2;
+  }
+
+  .mobile-promo-tag {
+    display: inline-block;
+    background: rgba(20, 184, 166, 0.25);
+    border: 1px solid #14B8A6;
+    color: #2DD4BF;
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .mobile-promo-heading {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 4px 0;
+    color: #FFFFFF;
+  }
+
+  .mobile-promo-sub {
+    font-size: 11px;
+    color: #CBD5E1;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+  }
+
+  .mobile-promo-btn {
+    background: #14B8A6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3);
+    transition: transform 0.15s ease;
+  }
+
+  .mobile-promo-btn:active {
+    transform: scale(0.96);
+  }
+
+  .mobile-promo-thumb {
+    width: 85px;
+    height: 85px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+  }
+
+  /* --------------------------------------------------------------------------
+     4. HORIZONTALLY SCROLLABLE CATEGORY CHIPS
+     -------------------------------------------------------------------------- */
+  .mobile-categories-wrapper {
+    padding: 0 16px 12px;
+  }
+
+  .mobile-categories-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .mobile-section-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--text-primary, #0F172A);
+    margin: 0;
+  }
+
+  .mobile-section-link {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #4F46E5;
+    cursor: pointer;
+  }
+
+  .mobile-category-chips-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .mobile-category-chips-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mob-cat-chip {
+    flex-shrink: 0;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 999px;
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary, #475569);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: all 0.15s ease;
+  }
+
+  [data-theme="dark"] .mob-cat-chip {
+    background: #1E293B;
+    border-color: #334155;
+    color: #CBD5E1;
+  }
+
+  .mob-cat-chip.active {
+    background: #4F46E5;
+    color: #FFFFFF;
+    border-color: #4F46E5;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
+
+  .mob-cat-chip-icon {
+    font-size: 14px;
+  }
+
+  /* --------------------------------------------------------------------------
+     5. MOBILE PRODUCT CARDS (2-COLUMN GRID)
+     -------------------------------------------------------------------------- */
+  .mobile-products-section {
+    padding: 0 16px 20px;
+  }
+
+  .mobile-food-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 340px) {
+    .mobile-food-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .mob-food-card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    border: 1px solid #E2E8F0;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  [data-theme="dark"] .mob-food-card {
+    background: #1E293B;
+    border-color: #334155;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .mob-food-card:active {
+    transform: scale(0.98);
+  }
+
+  .mob-food-img-container {
+    width: 100%;
+    height: 115px;
+    position: relative;
+    overflow: hidden;
+    background: #F1F5F9;
+  }
+
+  .mob-food-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .mob-badge-veg {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #16A34A;
+    background: #FFFFFF;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .mob-badge-veg::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #16A34A;
+  }
+
+  .mob-badge-nonveg {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #DC2626;
+    background: #FFFFFF;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .mob-badge-nonveg::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #DC2626;
+  }
+
+  .mob-badge-rating {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    color: #FBBF24;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mob-food-card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .mob-food-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary, #0F172A);
+    line-height: 1.3;
+    margin: 0 0 3px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mob-food-desc {
+    font-size: 10.5px;
+    color: var(--text-muted, #64748B);
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mob-food-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4px;
+  }
+
+  .mob-food-price {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-primary, #0F172A);
+  }
+
+  .mob-add-btn {
+    background: #4F46E5;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 32px;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .mob-add-btn:active {
+    transform: scale(0.94);
+  }
+
+  .mob-qty-stepper-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #EEF2FF;
+    border: 1px solid #C7D2FE;
+    border-radius: 8px;
+    padding: 2px 6px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #4F46E5;
+    gap: 6px;
+  }
+
+  .mob-qty-btn {
+    background: none;
+    border: none;
+    color: #4F46E5;
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+
+  /* --------------------------------------------------------------------------
+     6. FIXED BOTTOM NAVIGATION BAR (5 DESTINATIONS)
+     -------------------------------------------------------------------------- */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #E2E8F0;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 6px max(env(safe-area-inset-bottom, 0px), 6px);
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  [data-theme="dark"] .mobile-bottom-nav {
+    background: rgba(15, 23, 42, 0.96);
+    border-color: #1E293B;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .mob-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    color: #64748B;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    min-width: 52px;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+
+  .mob-nav-item .mob-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mob-nav-item.active {
+    color: #4F46E5;
+    font-weight: 800;
+  }
+
+  [data-theme="dark"] .mob-nav-item.active {
+    color: #818CF8;
+  }
+
+  .mob-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    width: 14px;
+    height: 2.5px;
+    background: #4F46E5;
+    border-radius: 999px;
+  }
+
+  /* --------------------------------------------------------------------------
+     7. FLOATING QUICK CART ACCESS BAR
+     -------------------------------------------------------------------------- */
+  .mobile-floating-cart-bar {
+    position: fixed;
+    bottom: 70px;
+    left: 14px;
+    right: 14px;
+    background: linear-gradient(135deg, #172554, #1E3A8A);
+    color: #FFFFFF;
+    border-radius: 14px;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 25px -4px rgba(23, 37, 84, 0.45);
+    z-index: 990;
+    cursor: pointer;
+    animation: slideUpFloatCart 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes slideUpFloatCart {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mob-float-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mob-float-cart-icon {
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mob-float-cart-count {
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .mob-float-cart-total {
+    font-size: 11px;
+    color: #93C5FD;
+  }
+
+  .mob-float-cart-action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #FFFFFF;
+    background: #4F46E5;
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  /* --------------------------------------------------------------------------
+     8. POLISHED MOBILE PRODUCT DETAILS BOTTOM SHEET / SCREEN
+     -------------------------------------------------------------------------- */
+  .mob-product-sheet {
+    background: #FFFFFF;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+  }
+
+  [data-theme="dark"] .mob-product-sheet {
+    background: #0F172A;
+  }
+
+  .mob-product-sheet-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .mob-product-sheet-body {
+    padding: 16px 18px 24px;
+    overflow-y: auto;
+  }
+
+  /* --------------------------------------------------------------------------
+     9. MOBILE CART & CHECKOUT POLISH
+     -------------------------------------------------------------------------- */
+  .mob-cart-item-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  [data-theme="dark"] .mob-cart-item-card {
+    background: #1E293B;
+    border-color: #334155;
+  }
+
+  .mob-cart-item-thumb {
+    width: 54px;
+    height: 54px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .mob-cart-item-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mob-cart-item-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary, #0F172A);
+    margin: 0 0 2px 0;
+  }
+
+  .mob-cart-item-price {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #4F46E5;
+  }
+
+  /* Full-width sticky checkout CTA bar */
+  .mob-sticky-checkout-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-top: 1px solid #E2E8F0;
+    padding: 12px 16px max(env(safe-area-inset-bottom, 0px), 12px);
+    z-index: 100;
+    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  [data-theme="dark"] .mob-sticky-checkout-bar {
+    background: #0F172A;
+    border-color: #1E293B;
+  }
+}
