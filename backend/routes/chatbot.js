@@ -130,7 +130,7 @@ router.post('/', (req, res) => {
 
     // 12. HELPDESK & FEEDBACK
     else if (q.includes('help') || q.includes('contact') || q.includes('support') || q.includes('manager') || q.includes('call') || q.includes('feedback') || q.includes('issue') || q.includes('canteen')) {
-      reply = `**Campus Canteen Helpdesk & Staff Contact**:\n- **Canteen Manager**: Ramesh Kumar (+91 98401 23456)\n- **Kitchen Operations**: Counter 1 & 2 Helpdesk\n- **Email**: canteen-support@campusbite.edu\n- **Location**: Student Activity Center, Ground Floor\n\nYou can also submit instant ratings and remarks via our customer feedback portal!`;
+      reply = `**Campus Canteen Helpdesk & Staff Contact**:\n- **Canteen Operations Administrator**: Jaswant Karun (+91 87541 59344)\n- **Admin Email**: jksam37@gmail.com\n- **Kitchen Operations**: Counter 1 & 2 Helpdesk\n- **Email**: canteen-support@campusbite.edu\n- **Location**: Student Activity Center, Ground Floor\n\nYou can also submit instant ratings and remarks via our customer feedback portal!`;
       action = { type: "openModal", modal: "feedback" };
       quickReplies = ["Submit Feedback", "View Canteen Radar", "Browse Menu"];
     }
