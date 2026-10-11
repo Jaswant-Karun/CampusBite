@@ -85,10 +85,12 @@ router.post('/', async (req, res) => {
     payment_method, 
     pickup_slot,
     redeem_loyalty_points,
-    special_instructions
-  } = req.body;
+  // Security & Privacy: Scrub sensitive cardholder verification data immediately
+  delete req.body.cvv;
+  delete req.body.cvc;
+  delete req.body.security_code;
 
-  if (!items || !items.length) {
+  if (!items || !Array.isArray(items) || !items.length) {
     return res.status(400).json({ success: false, message: 'Cart items cannot be empty' });
   }
 
@@ -293,6 +295,8 @@ router.post('/', async (req, res) => {
     maskedCard = `•••• •••• •••• ${last4}`;
     cardBrand = digitsOnly.startsWith('4') ? 'Visa' : (digitsOnly.startsWith('5') ? 'Mastercard' : 'RuPay');
   }
+  // Ensure unmasked card number is scrubbed from request memory
+  delete req.body.card_number;
 
   const newOrder = {
     id: orderNumber,
@@ -550,7 +554,12 @@ router.put('/:id/status', async (req, res) => {
 
 // POST /api/orders/simulate-payment (Step 11 Requirement: Simulated Payment API)
 router.post('/simulate-payment', (req, res) => {
-  const { payment_method, upi_id, card_number, expiry, cvv, simulate_failure, amount } = req.body;
+  // Security & Privacy: Immediately scrub CVV/security code from memory
+  delete req.body.cvv;
+  delete req.body.cvc;
+  delete req.body.security_code;
+
+  const { payment_method, upi_id, card_number, expiry, simulate_failure, amount } = req.body;
 
   if (simulate_failure) {
     return res.status(400).json({
