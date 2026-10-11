@@ -594,35 +594,137 @@
       </div>
 
       <!-- ====================================================================
-           TAB 5: CUSTOMERS (VERIFIED CAMPUS DINERS CRM)
+           TAB 5: CUSTOMERS (STEP 22 CUSTOMER MANAGEMENT CRM)
            ==================================================================== -->
       <div id="admin-tab-customers" class="admin-tab-panel">
+        
+        <!-- Header & Action Bar -->
         <div class="orders-filter-bar">
           <div>
-            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Campus Customers & Diners Directory</h3>
-            <p style="font-size:12px;color:var(--text-muted);margin:0;">Registered students, dining spend metrics, loyalty balances & account status</p>
+            <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 4px;">Campus Customers & Diners CRM</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin:0;">Real-time student and faculty diner profiles, dining spend metrics, loyalty points & order histories</p>
           </div>
-          <button class="reset-btn" onclick="AdminApp.loadCustomers()" style="padding:7px 14px;font-size:12.5px;">⟳ Refresh Customers</button>
+          <div style="display:flex;gap:10px;">
+            <button class="reset-btn" onclick="AdminApp.loadCustomers()" style="padding:7px 14px;font-size:12.5px;display:flex;align-items:center;gap:6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              Refresh Customers
+            </button>
+          </div>
         </div>
 
+        <!-- Customer Summary KPI Stat Cards -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;margin-bottom:16px;">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11.5px;color:#64748B;font-weight:600;text-transform:uppercase;">Registered Diners</div>
+              <strong style="font-size:18px;color:#0F172A;" id="cust-stat-total">0</strong>
+            </div>
+            <span style="font-size:22px;">👥</span>
+          </div>
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11.5px;color:#047857;font-weight:700;text-transform:uppercase;">Active Diners (With Orders)</div>
+              <strong style="font-size:18px;color:#065F46;" id="cust-stat-active">0</strong>
+            </div>
+            <span style="font-size:22px;">🛍️</span>
+          </div>
+          <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11.5px;color:#6D28D9;font-weight:700;text-transform:uppercase;">Total Dining Spending</div>
+              <strong style="font-size:18px;color:#5B21B6;" id="cust-stat-spend">₹0</strong>
+            </div>
+            <span style="font-size:22px;">₹</span>
+          </div>
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11.5px;color:#B45309;font-weight:700;text-transform:uppercase;">Average Spend / Diner</div>
+              <strong style="font-size:18px;color:#92400E;" id="cust-stat-avg">₹0</strong>
+            </div>
+            <span style="font-size:22px;">📊</span>
+          </div>
+        </div>
+
+        <!-- Customer Search & Filter Bar -->
+        <div class="orders-filter-bar" style="margin-bottom:12px;padding:14px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;width:100%;">
+            <!-- 1. Text Search Input -->
+            <div style="flex:1;min-width:240px;position:relative;">
+              <input 
+                type="text" 
+                id="customer-search-input" 
+                class="form-input" 
+                placeholder="Search diner by name, email, phone, ID..." 
+                oninput="AdminApp.handleCustomerSearch(event)"
+                style="height:38px;padding-left:34px;"
+              />
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="position:absolute;left:11px;top:12px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+
+            <!-- 2. Role Filter -->
+            <div style="min-width:140px;">
+              <select id="customer-role-filter" class="form-input" onchange="AdminApp.handleCustomerFilterChange()" style="height:38px;">
+                <option value="All">All Roles</option>
+                <option value="student">Students</option>
+                <option value="faculty">Faculty</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <!-- 3. Activity / Spending Filter -->
+            <div style="min-width:170px;">
+              <select id="customer-activity-filter" class="form-input" onchange="AdminApp.handleCustomerFilterChange()" style="height:38px;">
+                <option value="All">All Diners</option>
+                <option value="active">Active (Placed Orders)</option>
+                <option value="vip">VIP High Spenders (≥ ₹200)</option>
+                <option value="zero">Zero Orders Yet</option>
+              </select>
+            </div>
+
+            <!-- 4. Sort By Filter -->
+            <div style="min-width:190px;">
+              <select id="customer-sort-filter" class="form-input" onchange="AdminApp.handleCustomerFilterChange()" style="height:38px;">
+                <option value="spend_desc">Sort: Highest Spending</option>
+                <option value="orders_desc">Sort: Most Orders</option>
+                <option value="points_desc">Sort: Loyalty Points</option>
+                <option value="recent_order">Sort: Recently Ordered</option>
+                <option value="name_asc">Sort: Name (A to Z)</option>
+              </select>
+            </div>
+
+            <!-- 5. Clear Filters Button -->
+            <div>
+              <button type="button" class="reset-btn" id="customer-reset-btn" onclick="AdminApp.clearCustomerFilters()" style="height:38px;padding:0 14px;white-space:nowrap;" title="Clear search and filters">
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Count Summary Bar -->
+        <div class="orders-summary-bar">
+          <span id="customers-matching-count-tag">Showing <strong>0</strong> matching customers</span>
+          <span id="customers-matching-volume-tag">Cumulative Spend: <strong>₹0</strong></span>
+        </div>
+
+        <!-- SaaS Customer Data Table (Step 22) -->
         <div class="saas-table-card">
           <div class="saas-table-container">
-            <table class="saas-data-table">
+            <table class="saas-data-table customer-table">
               <thead>
                 <tr>
-                  <th>Student / ID</th>
-                  <th>Name</th>
-                  <th>Contact Details</th>
-                  <th>Department</th>
-                  <th>Wallet Balance</th>
-                  <th>Loyalty Points</th>
-                  <th>Orders Placed</th>
-                  <th>Total Spent</th>
-                  <th>Account Status</th>
+                  <th>Customer</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Total orders</th>
+                  <th>Total spending</th>
+                  <th>Loyalty points</th>
+                  <th>Last order</th>
+                  <th style="text-align:right;">Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-customers-tbody">
-                <!-- Rendered dynamically via AdminApp.loadCustomers() -->
+                <!-- Rendered dynamically via AdminApp.renderCustomersTable() -->
               </tbody>
             </table>
           </div>
@@ -1043,6 +1145,108 @@
           Hand Over Tray & Complete Order
         </button>
       </div>
+    </div>
+  <!-- ====================================================================
+       CUSTOMER DETAILS & ORDER HISTORY MODAL (STEP 22)
+       ==================================================================== -->
+  <div class="modal-overlay" id="customer-details-modal">
+    <div class="modal-window" style="max-width:720px;max-height:90vh;display:flex;flex-direction:column;">
+      <button class="modal-close-btn">&times;</button>
+      
+      <!-- Modal Header: Diner Bio & Avatar -->
+      <div class="modal-header" style="border-bottom:1px solid #E2E8F0;padding-bottom:16px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div id="cust-modal-avatar" style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg, #4F46E5, #3730A3);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;box-shadow:0 4px 12px rgba(79,70,229,0.25);overflow:hidden;flex-shrink:0;">
+            JK
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <h3 class="modal-title" id="cust-modal-name" style="margin:0;font-size:18px;">Customer Name</h3>
+              <span id="cust-modal-role-badge" style="background:#EEF2FF;color:#4F46E5;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;text-transform:uppercase;">Student</span>
+              <span id="cust-modal-status-badge" style="background:#F0FDF4;color:#047857;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;">Verified</span>
+            </div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px;">
+              <span id="cust-modal-id">ID: CB-2024-2028</span> • <span id="cust-modal-dept">Computer Science & Engineering</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Scrollable Content Area -->
+      <div style="flex:1;overflow-y:auto;padding-right:4px;">
+        
+        <!-- Contact & Dining Account Information Cards -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:18px;">
+          
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 14px;">
+            <div style="font-size:11px;color:#64748B;font-weight:600;text-transform:uppercase;">Email Address</div>
+            <div id="cust-modal-email" style="font-size:13px;font-weight:700;color:#0F172A;word-break:break-all;margin-top:2px;">—</div>
+          </div>
+
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 14px;">
+            <div style="font-size:11px;color:#64748B;font-weight:600;text-transform:uppercase;">Phone Number</div>
+            <div id="cust-modal-phone" style="font-size:13px;font-weight:700;color:#0F172A;margin-top:2px;">—</div>
+          </div>
+
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;">
+            <div style="font-size:11px;color:#B45309;font-weight:700;text-transform:uppercase;">Loyalty Tier & Balance</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
+              <span style="font-size:15px;">🪙</span>
+              <strong id="cust-modal-points" style="font-size:14px;color:#B45309;">0 pts</strong>
+              <span id="cust-modal-tier" style="font-size:11px;background:#FEF3C7;color:#92400E;padding:2px 6px;border-radius:6px;font-weight:700;">Bronze</span>
+            </div>
+          </div>
+
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 14px;">
+            <div style="font-size:11px;color:#047857;font-weight:700;text-transform:uppercase;">Canteen Wallet Balance</div>
+            <div id="cust-modal-wallet" style="font-size:14px;font-weight:800;color:#065F46;margin-top:2px;">₹0</div>
+          </div>
+        </div>
+
+        <!-- Lifetime Dining Activity Stats -->
+        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:20px;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:12px;padding:12px 14px;">
+          <div>
+            <div style="font-size:11px;color:#64748B;font-weight:600;">Total Orders</div>
+            <strong id="cust-modal-stat-orders" style="font-size:16px;color:#0F172A;">0</strong>
+          </div>
+          <div>
+            <div style="font-size:11px;color:#64748B;font-weight:600;">Total Spending</div>
+            <strong id="cust-modal-stat-spent" style="font-size:16px;color:#4F46E5;">₹0</strong>
+          </div>
+          <div>
+            <div style="font-size:11px;color:#64748B;font-weight:600;">Avg Order Value</div>
+            <strong id="cust-modal-stat-aov" style="font-size:16px;color:#059669;">₹0</strong>
+          </div>
+          <div>
+            <div style="font-size:11px;color:#64748B;font-weight:600;">Last Order</div>
+            <strong id="cust-modal-stat-last" style="font-size:13px;color:#0F172A;white-space:nowrap;">Never</strong>
+          </div>
+        </div>
+
+        <!-- Customer Order History Heading -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <h4 style="margin:0;font-size:15px;font-weight:700;color:#0F172A;display:flex;align-items:center;gap:6px;">
+            <span>📋 Customer Order History</span>
+            <span id="cust-modal-orders-count" style="font-size:12px;font-weight:700;background:#E2E8F0;color:#475569;padding:2px 8px;border-radius:999px;">0</span>
+          </h4>
+          <span style="font-size:11.5px;color:#64748B;">Pulled live from CampusBite database</span>
+        </div>
+
+        <!-- Customer Order History Items Container -->
+        <div id="cust-modal-orders-container" style="display:flex;flex-direction:column;gap:10px;min-height:120px;">
+          <!-- Rendered dynamically via AdminApp.renderCustomerOrderHistory() -->
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="border-top:1px solid #E2E8F0;padding-top:14px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:#94A3B8;">Customer account verified • Campus ID sync active</span>
+        <button type="button" class="btn-outline" onclick="App.closeModal('customer-details-modal')" style="padding:6px 18px;font-weight:600;">
+          Close
+        </button>
+      </div>
+
     </div>
   </div>
 
