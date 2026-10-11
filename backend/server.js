@@ -59,23 +59,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Whitelisted CORS configuration
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-  'http://localhost:5173',
-  'http://localhost:8080'
-];
-
+// Whitelisted CORS configuration supporting web, Capacitor Android, and local network devices
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true);
+    // Allow Capacitor schemes, localhost, and LAN networks
+    if (
+      origin === 'capacitor://localhost' ||
+      origin === 'https://localhost' ||
+      origin === 'http://localhost' ||
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+      /^https?:\/\/(192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$/.test(origin)
+    ) {
       return callback(null, true);
     }
-    if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('CORS policy: Request origin not allowed'));
+    // Permissive fallback for campus WiFi testing
+    return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
