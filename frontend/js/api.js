@@ -1,20 +1,28 @@
 /**
  * CampusBite API Client Service
+ * High-performance, resilient networking layer with native Capacitor detection,
+ * configurable timeout abort controllers, and offline Stale-While-Revalidate caching.
  */
 
-const API_BASE = '/api';
+const DEFAULT_LAN_SERVER = 'http://192.168.1.36:3000';
 
 const api = {
+  isNativeApp() {
+    if (typeof window === 'undefined') return false;
+    if (window.Capacitor !== undefined) return true;
+    if (window.location.protocol === 'capacitor:' || window.location.protocol === 'file:') return true;
+    // Android Capacitor WebView serves from localhost with no port or arbitrary port
+    if (window.location.hostname === 'localhost' && window.location.port !== '3000') return true;
+    return false;
+  },
+
   getBaseUrl() {
     const saved = localStorage.getItem('campusbite_backend_url');
     if (saved && saved.trim()) {
       return saved.trim().replace(/\/+$/, '') + '/api';
     }
-    const isNative = window.location.protocol === 'capacitor:' || 
-                     window.location.protocol === 'file:' || 
-                     (window.location.hostname === 'localhost' && window.location.port !== '3000' && window.location.port !== '');
-    if (isNative) {
-      return 'http://192.168.1.36:3000/api';
+    if (this.isNativeApp()) {
+      return DEFAULT_LAN_SERVER + '/api';
     }
     return '/api';
   },
@@ -24,11 +32,8 @@ const api = {
     if (saved && saved.trim()) {
       return saved.trim().replace(/\/+$/, '');
     }
-    const isNative = window.location.protocol === 'capacitor:' || 
-                     window.location.protocol === 'file:' || 
-                     (window.location.hostname === 'localhost' && window.location.port !== '3000' && window.location.port !== '');
-    if (isNative) {
-      return 'http://192.168.1.36:3000';
+    if (this.isNativeApp()) {
+      return DEFAULT_LAN_SERVER;
     }
     return window.location.origin;
   },
@@ -52,7 +57,30 @@ const api = {
     return headers;
   },
 
-  async get(endpoint, params = {}) {
+  async fetchWithTimeout(url, options = {}, timeoutMs = 3800) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      return res;
+    } catch (err) {
+      clearTimeout(timer);
+      if (err.name === 'AbortError') {
+        const timeoutErr = new Error(`Request timed out (${timeoutMs}ms)`);
+        timeoutErr.isTimeout = true;
+        throw timeoutErr;
+      }
+      throw err;
+    }
+  },
+
+  async get(endpoint, params = {}, options = {}) {
+    const cacheKey = 'cb_cache_' + endpoint;
+    const timeoutMs = options.timeout || 3800;
     try {
       const base = this.getBaseUrl();
       const host = this.getServerHost();
@@ -62,9 +90,11 @@ const api = {
           url.searchParams.append(key, params[key]);
         }
       });
-      const res = await fetch(url.toString(), {
+
+      const res = await this.fetchWithTimeout(url.toString(), {
         headers: this.getHeaders()
-      });
+      }, timeoutMs);
+
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         const error = new Error(data.message || `GET ${endpoint} failed (${res.status})`);
@@ -72,22 +102,39 @@ const api = {
         error.data = data;
         throw error;
       }
+
+      // Cache successful response for fast offline rendering
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+      } catch (e) {}
+
       return data;
     } catch (err) {
-      console.error(`GET ${endpoint} failed:`, err);
+      // Check cache fallback
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          console.warn(`[Network Fallback] Serving cached data for GET ${endpoint}:`, err.message);
+          return JSON.parse(cached);
+        }
+      } catch (cacheErr) {}
+
+      console.warn(`GET ${endpoint} network call failed:`, err.message);
       throw err;
     }
   },
 
-  async post(endpoint, data = {}) {
+  async post(endpoint, data = {}, options = {}) {
+    const timeoutMs = options.timeout || 6500;
     try {
       const base = this.getBaseUrl();
       const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
-      const res = await fetch(fullUrl, {
+      const res = await this.fetchWithTimeout(fullUrl, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify(data)
-      });
+      }, timeoutMs);
+
       const resData = await res.json().catch(() => ({}));
       if (!res.ok) {
         const error = new Error(resData.message || `POST ${endpoint} failed (${res.status})`);
@@ -97,20 +144,22 @@ const api = {
       }
       return resData;
     } catch (err) {
-      console.error(`POST ${endpoint} failed:`, err);
+      console.warn(`POST ${endpoint} failed:`, err.message);
       throw err;
     }
   },
 
-  async put(endpoint, data = {}) {
+  async put(endpoint, data = {}, options = {}) {
+    const timeoutMs = options.timeout || 6500;
     try {
       const base = this.getBaseUrl();
       const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
-      const res = await fetch(fullUrl, {
+      const res = await this.fetchWithTimeout(fullUrl, {
         method: 'PUT',
         headers: this.getHeaders(),
         body: JSON.stringify(data)
-      });
+      }, timeoutMs);
+
       const resData = await res.json().catch(() => ({}));
       if (!res.ok) {
         const error = new Error(resData.message || `PUT ${endpoint} failed (${res.status})`);
@@ -120,19 +169,21 @@ const api = {
       }
       return resData;
     } catch (err) {
-      console.error(`PUT ${endpoint} failed:`, err);
+      console.warn(`PUT ${endpoint} failed:`, err.message);
       throw err;
     }
   },
 
-  async delete(endpoint) {
+  async delete(endpoint, options = {}) {
+    const timeoutMs = options.timeout || 6500;
     try {
       const base = this.getBaseUrl();
       const fullUrl = base.startsWith('http') ? (base + endpoint) : (this.getServerHost() + base + endpoint);
-      const res = await fetch(fullUrl, {
+      const res = await this.fetchWithTimeout(fullUrl, {
         method: 'DELETE',
         headers: this.getHeaders()
-      });
+      }, timeoutMs);
+
       const resData = await res.json().catch(() => ({}));
       if (!res.ok) {
         const error = new Error(resData.message || `DELETE ${endpoint} failed (${res.status})`);
@@ -142,7 +193,7 @@ const api = {
       }
       return resData;
     } catch (err) {
-      console.error(`DELETE ${endpoint} failed:`, err);
+      console.warn(`DELETE ${endpoint} failed:`, err.message);
       throw err;
     }
   },
@@ -173,7 +224,6 @@ const api = {
   updateOrderStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
   simulatePayment: (data) => api.post('/orders/simulate-payment', data),
 
-  // Coupons
   // Coupons (Step 23)
   getCoupons: () => api.get('/coupons'),
   getCoupon: (id) => api.get(`/coupons/${id}`),
@@ -193,7 +243,7 @@ const api = {
   submitReview: (data) => api.post('/reviews', data),
 
   // Analytics & BI (Step 24)
-  getAnalytics: (params) => api.get('/analytics', params),
+  getAnalytics: (params) => api.get('/analytics'),
 
   // Customers (Step 22)
   getCustomers: (params) => api.get('/customers', params),
@@ -212,21 +262,20 @@ window.api = api;
 
 window.promptServerUrl = function() {
   const current = window.api.getServerHost();
-  const input = prompt("CampusBite Canteen Server Address:\n\n(Default: http://192.168.1.36:3000)", current);
+  const input = prompt("CampusBite Canteen Server Address:\n\nDefault: " + DEFAULT_LAN_SERVER + "\n(Enter your PC's Wi-Fi IP if different):", current);
   if (input !== null) {
     if (input.trim()) {
       window.api.setServerUrl(input.trim());
       if (typeof App !== 'undefined' && App.showToast) {
-        App.showToast("Backend updated: " + input.trim(), "success");
+        App.showToast("Backend connection updated: " + input.trim(), "success");
       }
       setTimeout(() => window.location.reload(), 400);
     } else {
       window.api.setServerUrl('');
       if (typeof App !== 'undefined' && App.showToast) {
-        App.showToast("Reset to default connection", "info");
+        App.showToast("Reset to default connection (" + DEFAULT_LAN_SERVER + ")", "info");
       }
       setTimeout(() => window.location.reload(), 400);
     }
   }
 };
-
