@@ -563,7 +563,7 @@
                   <div style="font-size:11px;color:#64748B;" id="home-active-order-slot">Pickup Window: 12:30 PM – 12:40 PM (Counter 2)</div>
                 </div>
               </div>
-              <button class="btn-primary" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:999px;">
+              <button class="btn-primary" onclick="StudentApp.navigateTo('tracking')" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:999px;">
                 Track Live →
               </button>
             </div>
@@ -862,11 +862,14 @@
                SCREEN 5: LIVE CANTEEN CROWDING METER & WAIT RADAR SCREEN
                ---------------------------------------------------------------- -->
           <div id="screen-crowd-meter" class="mob-screen">
-            <div class="home-top-bar">
+            <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;">
               <div class="user-greeting">
                 <h3>Live Counter Traffic Monitor</h3>
                 <p>Real-time queue & table occupancy</p>
               </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
+                ← Back to Home
+              </button>
             </div>
 
             <!-- Gauge Card -->
@@ -924,11 +927,14 @@
                SCREEN 6: DIGITAL CAMPUSPAY WALLET SCREEN
                ---------------------------------------------------------------- -->
           <div id="screen-wallet" class="mob-screen">
-            <div class="home-top-bar">
+            <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;">
               <div class="user-greeting">
                 <h3>CampusPay Digital Balance</h3>
                 <p>Contactless student dining pass</p>
               </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
+                ← Back to Home
+              </button>
             </div>
 
             <!-- Digital Holographic Card -->
@@ -990,11 +996,14 @@
                SCREEN 7: GREEN SUSTAINABILITY & ZERO WASTE TRACKER
                ---------------------------------------------------------------- -->
           <div id="screen-sustainability" class="mob-screen">
-            <div class="home-top-bar">
+            <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;">
               <div class="user-greeting">
                 <h3>Campus Sustainability & ESG</h3>
                 <p>Zero food waste initiative</p>
               </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
+                ← Back to Home
+              </button>
             </div>
 
             <div class="eco-impact-banner">
@@ -1021,11 +1030,14 @@
                SCREEN 7.5: CAMPUS NUTRITION & STUDENT FITNESS TRACKER
                ---------------------------------------------------------------- -->
           <div id="screen-nutrition" class="mob-screen">
-            <div class="home-top-bar">
+            <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;">
               <div class="user-greeting">
                 <h3>Campus Nutrition & Wellness</h3>
                 <p>Track macros & eat healthy between classes</p>
               </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
+                ← Back to Home
+              </button>
             </div>
 
             <!-- Daily Macro Meter Card -->
@@ -1767,11 +1779,14 @@
                SCREEN 11: LIVE ORDER TRACKING
                ---------------------------------------------------------------- -->
           <div id="screen-tracking" class="mob-screen">
-            <div class="home-top-bar">
+            <div class="home-top-bar" style="display:flex;align-items:center;justify-content:space-between;">
               <div class="user-greeting">
                 <h3>Live Order Tracking</h3>
                 <p>Real-time canteen prep status</p>
               </div>
+              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
+                ← Back to Home
+              </button>
             </div>
 
             <div id="order-ready-banner-alert" style="display:none;margin:0 18px 12px;background:#DCFCE7;border:1px solid #86EFAC;color:#166534;padding:12px;border-radius:12px;font-size:12.5px;font-weight:700;text-align:center;">
@@ -1905,7 +1920,7 @@
                   <div class="profile-avatar-wrapper" onclick="StudentApp.openEditProfileModal()" title="Click to change profile picture" style="cursor:pointer;">
                     <img id="profile-avatar-img" class="profile-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Student Profile Avatar" style="display:block;">
                     <div id="profile-avatar-display" class="profile-avatar-initials" style="display:none;">JK</div>
-                    <button type="button" class="profile-avatar-edit-btn" title="Change Avatar Photo">📷</button>
+                    <button type="button" class="profile-avatar-edit-btn" onclick="StudentApp.openEditProfileModal()" title="Change Avatar Photo">📷</button>
                   </div>
                   <div class="profile-hero-meta">
                     <h2>
