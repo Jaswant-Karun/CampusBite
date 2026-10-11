@@ -14,7 +14,8 @@
       "avatar": "👨🎓",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       "account_status": "Active Verified Student",
-      "joined_date": "2024-08-16"
+      "joined_date": "2024-08-16",
+      "password": "pbkdf2:10000:20a4d60acfbebb49baaf2b1bf8e9831b:066579d241449261ed0a06d7b879279047b1658564f3f722a9302b96b4ae165b69713baf27e19de56f4cc082fc93b858233d7e45bd5def4d0e1251d4cd91ecfa"
     },
     {
       "id": "u-102",
@@ -26,7 +27,8 @@
       "department": "School of Management & Business",
       "loyalty_points": 890,
       "wallet_balance": 1450,
-      "avatar": "👩🏫"
+      "avatar": "👩🏫",
+      "password": "pbkdf2:10000:8ad47f919b041341221b55f2ea9ddf58:e84c1b05090f9cd3514dc8736d20fbc0f39330730d5ba10ff42cdfe3a489141ad55af0ebe0f5bbe20d7ffa5cab76db3815ca6ef976a03cc7f01686a5612150d6"
     },
     {
       "id": "u-103",
@@ -38,7 +40,8 @@
       "department": "Central Library & Lab Administration",
       "loyalty_points": 180,
       "wallet_balance": 320,
-      "avatar": "🧑💼"
+      "avatar": "🧑💼",
+      "password": "pbkdf2:10000:025ebca9712cf8d4d931b315f13abfa7:26da8f045d41179fc7fe4185e75fa10a4363cd0ae5eebc76cfe1d9977cda72dc0c9ba548287d6cdfe758ad5429f1c43f1ba91c67708352c89379f09bb2ff594e"
     },
     {
       "id": "u-admin",
@@ -50,7 +53,8 @@
       "department": "Campus Hospitality & Dining",
       "loyalty_points": 2519,
       "wallet_balance": 5000,
-      "avatar": "👨💼"
+      "avatar": "👨💼",
+      "password": "pbkdf2:10000:405e63e4dc5fa3340f947081705b3f66:c834195eb3aac07b96bb4e29f9a48ae7eccdaddcd455459daf9b11b347f28f8b89c018cf0356bb82195b98851b0426486093ee77e6fb17913ee1518c50b47bfe"
     },
     {
       "id": "u-staff",
@@ -62,7 +66,8 @@
       "department": "Main Kitchen & Prep Operations",
       "loyalty_points": 650,
       "wallet_balance": 450,
-      "avatar": "👨🍳"
+      "avatar": "👨🍳",
+      "password": "pbkdf2:10000:92397ed965a251bc30ca6eb4a2537388:414943aa6ab73b0866c56a5b7fb9f357608428e38a5ad02c096c02d3d9e2d19a636da6a37d6cfb1e6951257af0deb02f9e9241cad8fe5885f5aa924ad7d51dba"
     },
     {
       "id": "u-1791468999980",
@@ -74,7 +79,7 @@
       "department": "Computer Science & Engineering",
       "loyalty_points": 50,
       "wallet_balance": 500,
-      "password": "password123",
+      "password": "pbkdf2:10000:8b30a9f2d00525391f402267420c7034:36eab0feea053f6372e21316dc891d2f12724acec32b304b9af51c473dc2ea0a3d494b3db7fc2b01f962187507c7ff0ce5857430a5183bfc3586a2433ff0bbb3",
       "avatar": "AA"
     },
     {
@@ -87,7 +92,7 @@
       "department": "Computer Science & Engineering",
       "loyalty_points": 50,
       "wallet_balance": 500,
-      "password": "password123",
+      "password": "pbkdf2:10000:ade7562495f255319f82e3dcf367ceed:9f90755fe78619ca83b8ab0f1a6d17c075ad157ca860236bcbd2f723ddb27f3c1f793f42b3be75f09edef17cd2595a93deb2232f290b47eeca6b640cf2c5a94a",
       "avatar": "AA"
     },
     {
@@ -100,7 +105,7 @@
       "department": "Computer Science & Engineering",
       "loyalty_points": 50,
       "wallet_balance": 500,
-      "password": "password123",
+      "password": "pbkdf2:10000:4db34776b8dc7bd467b7716bb09733df:1ac698b8f72a83453909bc1f523a3f6b166294d2267dbc91b47a210f21babb6e0ce93965d53b555203c9777ccc2837165d30c36983f62e378f2e4e7ca6d6c54d",
       "avatar": "AA",
       "profile_image": "",
       "account_status": "Active Verified",
@@ -6452,6 +6457,72 @@
       },
       "created_at": "2026-10-09T14:28:49.178Z",
       "read": true
+    },
+    {
+      "id": "notif-seed-1",
+      "title": "Order Confirmed: #CB1024",
+      "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "read": false,
+      "created_at": "2026-10-11T11:11:18.000Z"
+    },
+    {
+      "id": "notif-seed-2",
+      "title": "Order Being Prepared: #CB1025",
+      "message": "Kitchen is actively preparing your order #CB1025 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "read": false,
+      "created_at": "2026-10-11T11:26:18.000Z"
+    },
+    {
+      "id": "notif-seed-3",
+      "title": "Order Ready for Pickup: #CB1020",
+      "message": "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
+      "type": "ORDER_READY",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "READY",
+      "read": false,
+      "created_at": "2026-10-11T10:56:18.000Z"
+    },
+    {
+      "id": "notif-seed-4",
+      "title": "Order Completed: #CB1018",
+      "message": "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "read": true,
+      "created_at": "2026-10-11T08:41:18.000Z"
+    },
+    {
+      "id": "notif-seed-5",
+      "title": "Coupon Available: CAMPUS20",
+      "message": "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COUPON",
+      "read": false,
+      "created_at": "2026-10-11T05:41:18.000Z"
+    },
+    {
+      "id": "notif-seed-6",
+      "title": "Welcome to CampusBite",
+      "message": "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
+      "type": "SYSTEM",
+      "target": "all",
+      "userId": null,
+      "icon": "SYSTEM",
+      "read": true,
+      "created_at": "2026-10-10T23:41:18.000Z"
     }
   ]
 }
