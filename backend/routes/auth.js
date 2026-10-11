@@ -27,19 +27,28 @@ router.post('/login', async (req, res) => {
   const cleanInput = email.trim().toLowerCase();
   const digitsOnly = cleanInput.replace(/\D/g, '');
 
+  const targetRole = (req.body.role || '').toLowerCase();
   let user = db.data.users.find(u => {
-    if (u.email && u.email.toLowerCase() === cleanInput) return true;
-    if (u.alternate_email && u.alternate_email.toLowerCase() === cleanInput) return true;
-    if (u.secondary_email && u.secondary_email.toLowerCase() === cleanInput) return true;
-    if (cleanInput === 'jksam37@gmail.com' && (u.id === 'u-admin' || u.id === 'u-101')) return true;
-    if (u.studentId && u.studentId.toLowerCase() === cleanInput) return true;
-    if (u.phone) {
-      const uDigits = u.phone.replace(/\D/g, '');
-      if (digitsOnly && (uDigits.endsWith(digitsOnly) || digitsOnly.endsWith(uDigits))) return true;
-    }
-    if (u.id === 'u-101' && digitsOnly && (digitsOnly === '8754159344' || digitsOnly.endsWith('59344'))) return true;
+    const isExactEmail = (u.email && u.email.toLowerCase() === cleanInput);
+    if (isExactEmail && (!targetRole || u.role === targetRole)) return true;
     return false;
   });
+
+  if (!user) {
+    user = db.data.users.find(u => {
+      if (u.email && u.email.toLowerCase() === cleanInput) return true;
+      if (cleanInput === 'jksam37@gmail.com' && u.id === 'u-admin') return true;
+      if (u.alternate_email && u.alternate_email.toLowerCase() === cleanInput) return true;
+      if (u.secondary_email && u.secondary_email.toLowerCase() === cleanInput) return true;
+      if (u.studentId && u.studentId.toLowerCase() === cleanInput) return true;
+      if (u.phone) {
+        const uDigits = u.phone.replace(/\D/g, '');
+        if (digitsOnly && (uDigits.endsWith(digitsOnly) || digitsOnly.endsWith(uDigits))) return true;
+      }
+      if (u.id === 'u-101' && digitsOnly && (digitsOnly === '8754159344' || digitsOnly.endsWith('59344'))) return true;
+      return false;
+    });
+  }
 
   // If user not found, return 401 Invalid Credentials
   if (!user) {

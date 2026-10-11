@@ -16,7 +16,6 @@ const INITIAL_DATA = {
       name: "Jaswant Karun",
       email: "jaswant@campus.edu",
       alternate_email: "24cb023@kpriet.ac.in",
-      secondary_email: "jksam37@gmail.com",
       phone: "87541 59344",
       role: "student",
       studentId: "CB-2024-2028",
