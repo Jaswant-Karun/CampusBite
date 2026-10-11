@@ -239,7 +239,8 @@ router.get('/:id', (req, res) => {
       order_history: userOrders,
       loyalty_history: customerLoyalty,
       reviews: customerReviews
-    }
+    },
+    orders: userOrders
   });
 });
 
