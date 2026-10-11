@@ -119,9 +119,10 @@ app.post('/api/reset-demo', async (req, res) => {
   res.json({ success: true, message: 'Database reset to default demo scenario state', state: fresh });
 });
 
-// Serve frontend static files
+// Serve frontend static files (both root and /frontend mount points)
 const frontendPath = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
+app.use('/frontend', express.static(frontendPath));
 
 // Dedicated View Routes
 app.get('/mobile', (req, res) => {
@@ -144,8 +145,14 @@ app.get('/kds', (req, res) => {
   res.sendFile(path.join(frontendPath, 'counter.html'));
 });
 
-// Fallback to index.html for SPA routing
-app.get('*', (req, res) => {
+// Fallback to index.html for SPA routing (only for HTML page routes, not assets or APIs)
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
+  if (path.extname(req.path)) {
+    return res.status(404).send('Asset not found');
+  }
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
