@@ -892,44 +892,240 @@
       </div>
 
       <!-- ====================================================================
-           TAB 8: SALES & BUSINESS ANALYTICS
+           TAB 8: SALES & BUSINESS ANALYTICS (Step 24)
            ==================================================================== -->
       <div id="admin-tab-analytics" class="admin-tab-panel">
-        <div class="analytics-grid-two-col">
+        
+        <!-- Analytics Header & Date Range Toolbar -->
+        <div class="analytics-toolbar-card">
+          <div class="analytics-toolbar-left">
+            <div class="analytics-toolbar-title-wrap">
+              <h2 class="analytics-main-title">CampusBite Executive Analytics</h2>
+              <span class="analytics-live-feed-badge">
+                <span class="live-pulse-dot"></span> Real-time Database Information
+              </span>
+            </div>
+            <p class="analytics-toolbar-subtitle">Live financial performance, order velocity, rush-hour peak, product demand & customer insights</p>
+          </div>
+
+          <!-- Date Filtering Segmented Control (Today, 7 Days, 30 Days) -->
+          <div class="analytics-filter-group" id="analytics-date-filters">
+            <button type="button" class="analytics-date-btn active" data-range="today" onclick="AdminApp.setAnalyticsRange('today')">
+              Today
+            </button>
+            <button type="button" class="analytics-date-btn" data-range="7days" onclick="AdminApp.setAnalyticsRange('7days')">
+              7 Days
+            </button>
+            <button type="button" class="analytics-date-btn" data-range="30days" onclick="AdminApp.setAnalyticsRange('30days')">
+              30 Days
+            </button>
+            <button type="button" class="analytics-date-btn" data-range="all" onclick="AdminApp.setAnalyticsRange('all')">
+              All Time
+            </button>
+            <button type="button" class="analytics-refresh-btn" onclick="AdminApp.loadAnalytics()" title="Refresh Analytics Data">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 8 Core Business Analytics KPI Cards Grid -->
+        <div class="analytics-kpi-grid">
+          
+          <!-- 1. Total Sales -->
+          <div class="analytics-kpi-card" id="card-kpi-sales">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Total Sales</span>
+              <div class="kpi-card-icon icon-emerald">₹</div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-sales">₹0</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-sales-sub">Non-cancelled revenue in period</div>
+          </div>
+
+          <!-- 2. Number of Orders -->
+          <div class="analytics-kpi-card" id="card-kpi-orders">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Number of Orders</span>
+              <div class="kpi-card-icon icon-indigo">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              </div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-orders">0</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-orders-sub">Total student meal orders placed</div>
+          </div>
+
+          <!-- 3. Average Order Value -->
+          <div class="analytics-kpi-card" id="card-kpi-aov">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Avg Order Value (AOV)</span>
+              <div class="kpi-card-icon icon-teal">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-aov">₹0</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-aov-sub">Average spend per ticket</div>
+          </div>
+
+          <!-- 4. Most Ordered Products -->
+          <div class="analytics-kpi-card" id="card-kpi-top-product">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Most Ordered Product</span>
+              <div class="kpi-card-icon icon-amber">⭐</div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-top-product" style="font-size:17px;font-weight:800;">Classic Burger</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-top-product-sub">0 units sold in period</div>
+          </div>
+
+          <!-- 5. Peak Ordering Period -->
+          <div class="analytics-kpi-card" id="card-kpi-peak-hour">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Peak Ordering Period</span>
+              <div class="kpi-card-icon icon-rose">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-peak-hour" style="font-size:16.5px;color:#DC2626;">12:00 – 1:30 PM</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-peak-hour-sub">Peak rush hour with maximum tokens</div>
+          </div>
+
+          <!-- 6. Customer Growth -->
+          <div class="analytics-kpi-card" id="card-kpi-customers">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Customer Diners</span>
+              <div class="kpi-card-icon icon-blue">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-customers">0 Diners</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-customers-sub">+18.5% dining base growth</div>
+          </div>
+
+          <!-- 7. Coupon Usage -->
+          <div class="analytics-kpi-card" id="card-kpi-coupons">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Coupon Usage</span>
+              <div class="kpi-card-icon icon-purple">🏷️</div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-coupons">0 Redeemed</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-coupons-sub">₹0 saved by campus students</div>
+          </div>
+
+          <!-- 8. Completed vs Cancelled -->
+          <div class="analytics-kpi-card" id="card-kpi-fulfillment">
+            <div class="kpi-card-header">
+              <span class="kpi-card-label">Fulfillment Rate</span>
+              <div class="kpi-card-icon icon-emerald">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+            </div>
+            <div class="kpi-card-value" id="analytics-kpi-fulfillment" style="color:#10B981;">100%</div>
+            <div class="kpi-card-subtext" id="analytics-kpi-fulfillment-sub">0 completed vs 0 cancelled</div>
+          </div>
+
+        </div>
+
+        <!-- Charts Grid Row 1: Sales Velocity & Most Ordered Products -->
+        <div class="analytics-grid-two-col" style="margin-bottom:20px;">
+          
+          <!-- Chart 1: Revenue Velocity Trend -->
           <div class="chart-card">
             <div class="chart-header">
               <div>
-                <div class="chart-title">Weekly Revenue Trends</div>
-                <div style="font-size:12px;color:var(--text-muted);">Total revenue generated per day (Mon - Sun)</div>
+                <div class="chart-title">Sales & Revenue Velocity</div>
+                <div style="font-size:12px;color:var(--text-muted);" id="analytics-revenue-subtitle">Revenue volume per period</div>
               </div>
-              <span style="font-size:12px;font-weight:700;color:#14B8A6;" id="analytics-weekly-total-tag">₹64,600 Total Week</span>
+              <span style="font-size:12px;font-weight:700;color:#10B981;background:#ECFDF5;padding:3px 10px;border-radius:999px;" id="analytics-weekly-total-tag">₹0 Total</span>
             </div>
-            <div class="chart-canvas-wrapper" id="weekly-revenue-chart-canvas"></div>
+            <div class="chart-canvas-wrapper" id="analytics-revenue-trend-canvas"></div>
+            <!-- Backward compatibility hook -->
+            <div id="weekly-revenue-chart-canvas" style="display:none;"></div>
           </div>
 
+          <!-- Chart 2: Most Ordered Products (Leaderboard) -->
           <div class="chart-card">
             <div class="chart-header">
-              <div class="chart-title">Top Selling Items</div>
-              <span style="font-size:11px;color:var(--text-muted);">Units Sold</span>
+              <div>
+                <div class="chart-title">Most Ordered Products</div>
+                <div style="font-size:12px;color:var(--text-muted);">Bestsellers ranked by units sold & total revenue</div>
+              </div>
+              <span style="font-size:11px;font-weight:700;color:#4F46E5;background:#EEF2FF;padding:3px 8px;border-radius:999px;">Top Demand</span>
             </div>
             <div class="top-selling-list" id="admin-top-selling-list">
               <!-- Rendered via JS -->
             </div>
           </div>
+
         </div>
 
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Peak Rush Hour Traffic Analysis (9 AM – 3 PM)</div>
-              <div style="font-size:12px;color:var(--text-muted);">Order volume distribution to plan kitchen staffing</div>
+        <!-- Charts Grid Row 2: Peak Rush Hour & Fulfillment Donut -->
+        <div class="analytics-grid-two-col" style="margin-bottom:20px;">
+          
+          <!-- Chart 3: Peak Rush Hour Traffic Analysis -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Peak Rush Hour Traffic Analysis (8 AM – 5 PM)</div>
+                <div style="font-size:12px;color:var(--text-muted);">Order volume distribution to optimize kitchen prep line</div>
+              </div>
+              <span style="font-size:11px;background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:999px;font-weight:800;" id="analytics-peak-badge">
+                Peak: 12:00 PM – 1:30 PM
+              </span>
             </div>
-            <span style="font-size:12px;background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:999px;font-weight:700;">
-              Peak: 12:00 PM – 1:30 PM (180+ orders)
-            </span>
+            <div class="chart-canvas-wrapper" id="hourly-demand-chart-canvas"></div>
           </div>
-          <div class="chart-canvas-wrapper" id="hourly-demand-chart-canvas"></div>
+
+          <!-- Chart 4: Completed vs Cancelled Orders Fulfillment Breakdown -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Completed vs Cancelled Orders</div>
+                <div style="font-size:12px;color:var(--text-muted);">Order fulfillment reliability & kitchen service delivery</div>
+              </div>
+              <span style="font-size:11px;font-weight:700;color:#10B981;background:#ECFDF5;padding:3px 10px;border-radius:999px;" id="analytics-fulfillment-badge">
+                95%+ Target
+              </span>
+            </div>
+            <div style="padding:14px 0;" id="fulfillment-donut-canvas">
+              <!-- Rendered via JS SVG Donut -->
+            </div>
+          </div>
+
         </div>
+
+        <!-- Charts Grid Row 3: Customer Growth & Coupon Performance -->
+        <div class="analytics-grid-two-col">
+          
+          <!-- Chart 5: Customer Growth -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Customer Dining Growth</div>
+                <div style="font-size:12px;color:var(--text-muted);">Active verified campus students ordering meals</div>
+              </div>
+              <span style="font-size:11px;font-weight:700;color:#059669;background:#D1FAE5;padding:3px 10px;border-radius:999px;">
+                +18.5% MoM
+              </span>
+            </div>
+            <div class="chart-canvas-wrapper" id="customer-growth-chart-canvas"></div>
+          </div>
+
+          <!-- Chart 6: Coupon Usage & Promotional Savings -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Coupon Usage & Campaign Savings</div>
+                <div style="font-size:12px;color:var(--text-muted);">Vouchers redeemed & student savings generated</div>
+              </div>
+              <span style="font-size:11px;font-weight:700;color:#6366F1;background:#EEF2FF;padding:3px 10px;border-radius:999px;" id="analytics-coupon-rate-badge">
+                Promo Savings
+              </span>
+            </div>
+            <div id="coupon-breakdown-canvas" style="padding:10px 0;">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
       <!-- ====================================================================
