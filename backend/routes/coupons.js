@@ -47,7 +47,7 @@ router.get('/:id', (req, res) => {
 
 // POST validate and apply coupon (Student Cart & Checkout)
 router.post('/apply', (req, res) => {
-  const { code, subtotal, already_applied_code } = req.body;
+  const { code, subtotal, order_amount, already_applied_code } = req.body;
 
   if (!code || !code.trim()) {
     return res.status(400).json({ success: false, message: 'Please enter a coupon code' });
@@ -80,7 +80,8 @@ router.post('/apply', (req, res) => {
     }
   }
 
-  const orderAmount = Number(subtotal) || 0;
+  const rawSubtotal = subtotal !== undefined ? subtotal : (order_amount !== undefined ? order_amount : 0);
+  const orderAmount = Number(rawSubtotal) || 0;
 
   // Validate minimum order requirement
   const minOrder = Number(coupon.minimum_order) || 0;
@@ -116,6 +117,7 @@ router.post('/apply', (req, res) => {
     success: true,
     message: `Promo code ${coupon.code} applied! Saved ₹${discount}`,
     discount: discount,
+    discount_amount: discount,
     final_total: Math.max(0, orderAmount - discount),
     coupon: coupon
   });
