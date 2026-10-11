@@ -371,10 +371,17 @@ const StudentApp = {
       target.classList.add('active');
     }
 
+    if (screenId === 'home') {
+      this.renderMobilePopularGrid();
+    }
+
     if (screenId === 'menu') {
       this.renderMenuList(this.products);
       this.renderCategoryChips();
     }
+
+    // Refresh cart badge and floating cart bar visibility on screen change
+    this.updateCartBadge();
 
     // Update bottom nav highlighting (mobile)
     document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
