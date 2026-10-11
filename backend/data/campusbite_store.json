@@ -1726,8 +1726,8 @@
     {
       "id": "CB1034",
       "user_id": "u-admin",
-      "customer_name": "Ramesh Canteen Manager",
-      "customer_phone": "+91 98765 00000",
+      "customer_name": "Jaswant Karun (Operations)",
+      "customer_phone": "+91 87541 59344",
       "items": [
         {
           "product_id": "p-6",
@@ -1761,8 +1761,8 @@
     {
       "id": "CB1033",
       "user_id": "u-admin",
-      "customer_name": "Ramesh Canteen Manager",
-      "customer_phone": "+91 98765 00000",
+      "customer_name": "Jaswant Karun (Operations)",
+      "customer_phone": "+91 87541 59344",
       "items": [
         {
           "product_id": "p-6",
@@ -2086,7 +2086,7 @@
     {
       "id": "r-1790863046190",
       "order_id": "CB1024",
-      "user_name": "Ramesh Canteen Manager",
+      "user_name": "Jaswant Karun",
       "rating": 5,
       "food_quality": 5,
       "service_speed": 5,
