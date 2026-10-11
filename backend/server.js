@@ -67,6 +67,7 @@ app.use('/api/loyalty', loyaltyRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/demand-prediction', demandPredictionRoutes);
+app.use('/api/smart-demand', demandPredictionRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/customers', customersRoutes);
