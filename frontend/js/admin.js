@@ -1690,6 +1690,453 @@ const AdminApp = {
     }
   },
 
+  // =========================================================================
+  // STEP 22: CUSTOMER MANAGEMENT (CAMPUS DINERS CRM)
+  // =========================================================================
+
+  async loadCustomers() {
+    try {
+      const res = await window.api.getCustomers();
+      if (res && res.success) {
+        this.customers = res.customers || [];
+
+        // Update Customer Top KPI Stat Badges
+        const kpis = res.kpis || {};
+        const elTotal = document.getElementById('cust-stat-total');
+        const elActive = document.getElementById('cust-stat-active');
+        const elSpend = document.getElementById('cust-stat-spend');
+        const elAvg = document.getElementById('cust-stat-avg');
+
+        if (elTotal) elTotal.textContent = kpis.total_customers !== undefined ? kpis.total_customers : this.customers.length;
+        if (elActive) elActive.textContent = kpis.active_customers !== undefined ? kpis.active_customers : this.customers.filter(c => c.total_orders > 0).length;
+        if (elSpend) elSpend.textContent = `₹${(kpis.total_spending || 0).toLocaleString()}`;
+        if (elAvg) elAvg.textContent = `₹${(kpis.avg_spending || 0).toLocaleString()}`;
+
+        this.renderCustomersTable();
+      }
+    } catch (err) {
+      console.error('Failed to load customers:', err);
+      const tbody = document.getElementById('admin-customers-tbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align:center;padding:36px;color:#EF4444;">
+              Failed to load campus customers from database. Please click Refresh Customers.
+            </td>
+          </tr>
+        `;
+      }
+    }
+  },
+
+  handleCustomerSearch(event) {
+    this.customerSearchQuery = event ? event.target.value.trim().toLowerCase() : '';
+    this.renderCustomersTable();
+  },
+
+  handleCustomerFilterChange() {
+    const roleEl = document.getElementById('customer-role-filter');
+    const actEl = document.getElementById('customer-activity-filter');
+    const sortEl = document.getElementById('customer-sort-filter');
+
+    if (roleEl) this.customerRoleFilter = roleEl.value;
+    if (actEl) this.customerActivityFilter = actEl.value;
+    if (sortEl) this.customerSortFilter = sortEl.value;
+
+    this.renderCustomersTable();
+  },
+
+  clearCustomerFilters() {
+    this.customerSearchQuery = '';
+    this.customerRoleFilter = 'All';
+    this.customerActivityFilter = 'All';
+    this.customerSortFilter = 'spend_desc';
+
+    const searchInput = document.getElementById('customer-search-input');
+    const roleSelect = document.getElementById('customer-role-filter');
+    const actSelect = document.getElementById('customer-activity-filter');
+    const sortSelect = document.getElementById('customer-sort-filter');
+
+    if (searchInput) searchInput.value = '';
+    if (roleSelect) roleSelect.value = 'All';
+    if (actSelect) actSelect.value = 'All';
+    if (sortSelect) sortSelect.value = 'spend_desc';
+
+    this.renderCustomersTable();
+  },
+
+  renderCustomersTable() {
+    const tbody = document.getElementById('admin-customers-tbody');
+    if (!tbody) return;
+
+    let filtered = [...(this.customers || [])];
+
+    // 1. Text Search Filter (name, email, phone, ID, department)
+    if (this.customerSearchQuery) {
+      const q = this.customerSearchQuery;
+      filtered = filtered.filter(c => 
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.email && c.email.toLowerCase().includes(q)) ||
+        (c.phone && c.phone.toLowerCase().includes(q)) ||
+        (c.student_id && c.student_id.toLowerCase().includes(q)) ||
+        (c.department && c.department.toLowerCase().includes(q))
+      );
+    }
+
+    // 2. Role Filter
+    if (this.customerRoleFilter && this.customerRoleFilter !== 'All') {
+      filtered = filtered.filter(c => (c.role || '').toLowerCase() === this.customerRoleFilter.toLowerCase());
+    }
+
+    // 3. Activity / Spending Filter
+    if (this.customerActivityFilter && this.customerActivityFilter !== 'All') {
+      if (this.customerActivityFilter === 'active') {
+        filtered = filtered.filter(c => (c.total_orders || 0) > 0);
+      } else if (this.customerActivityFilter === 'vip') {
+        filtered = filtered.filter(c => (c.total_spending || 0) >= 200);
+      } else if (this.customerActivityFilter === 'zero') {
+        filtered = filtered.filter(c => (c.total_orders || 0) === 0);
+      }
+    }
+
+    // 4. Sorting
+    const sortMode = this.customerSortFilter || 'spend_desc';
+    if (sortMode === 'spend_desc') {
+      filtered.sort((a, b) => (b.total_spending || 0) - (a.total_spending || 0));
+    } else if (sortMode === 'orders_desc') {
+      filtered.sort((a, b) => (b.total_orders || 0) - (a.total_orders || 0));
+    } else if (sortMode === 'points_desc') {
+      filtered.sort((a, b) => (b.loyalty_points || 0) - (a.loyalty_points || 0));
+    } else if (sortMode === 'recent_order') {
+      filtered.sort((a, b) => new Date(b.last_order_date || 0) - new Date(a.last_order_date || 0));
+    } else if (sortMode === 'name_asc') {
+      filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    }
+
+    // 5. Update summary tags
+    const countTag = document.getElementById('customers-matching-count-tag');
+    const spendTag = document.getElementById('customers-matching-volume-tag');
+    const totalFilteredSpend = filtered.reduce((sum, c) => sum + (c.total_spending || 0), 0);
+
+    if (countTag) {
+      countTag.innerHTML = `Showing <strong>${filtered.length}</strong> of ${this.customers.length} registered diners`;
+    }
+    if (spendTag) {
+      spendTag.innerHTML = `Cumulative Filtered Spend: <strong>₹${totalFilteredSpend.toLocaleString()}</strong>`;
+    }
+
+    // 6. Render Table Rows
+    if (!filtered.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:48px 20px;color:#94A3B8;">
+            <div style="font-size:36px;margin-bottom:8px;">🔍</div>
+            <strong style="font-size:15px;color:#475569;display:block;">No matching customers found</strong>
+            <p style="font-size:12.5px;color:#94A3B8;margin:4px 0 12px;">Try adjusting your search criteria or resetting filters.</p>
+            <button class="btn-outline" onclick="AdminApp.clearCustomerFilters()" style="padding:5px 14px;font-size:12px;">Clear All Filters</button>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(c => {
+      // Role badge colors
+      let roleBg = '#EEF2FF';
+      let roleColor = '#4F46E5';
+      const roleLower = (c.role || '').toLowerCase();
+      if (roleLower === 'faculty') {
+        roleBg = '#FDF4FF';
+        roleColor = '#A21CAF';
+      } else if (roleLower === 'staff') {
+        roleBg = '#F0FDF4';
+        roleColor = '#15803D';
+      } else if (roleLower === 'admin') {
+        roleBg = '#FEF2F2';
+        roleColor = '#B91C1C';
+      }
+
+      // Format phone
+      const phoneDisplay = c.phone ? `
+        <a href="tel:${c.phone.replace(/\s+/g, '')}" style="color:#0F172A;font-weight:600;font-size:12.5px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Call diner">
+          <span>📞</span> ${c.phone}
+        </a>
+      ` : `
+        <span style="font-size:11.5px;color:#94A3B8;font-style:italic;">Not Available</span>
+      `;
+
+      // Format Last Order
+      let lastOrderDisplay = '<span style="font-size:12px;color:#94A3B8;">— No orders yet</span>';
+      if (c.last_order && c.last_order.created_at) {
+        const orderDate = new Date(c.last_order.created_at);
+        const formattedDate = orderDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        const formattedTime = orderDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        lastOrderDisplay = `
+          <div>
+            <strong style="color:#0F172A;font-size:12.5px;">#${c.last_order.id}</strong>
+            <div style="font-size:11px;color:#64748B;">${formattedDate} • ${formattedTime}</div>
+          </div>
+        `;
+      } else if (c.last_order_date) {
+        const orderDate = new Date(c.last_order_date);
+        const formattedDate = orderDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        lastOrderDisplay = `<span style="font-size:12px;color:#475569;">${formattedDate}</span>`;
+      }
+
+      // Avatar
+      const avatarLetters = (c.avatar || c.name.substring(0, 2)).toUpperCase();
+
+      return `
+        <tr style="transition:background 0.15s ease;">
+          <!-- 1. Customer -->
+          <td>
+            <div style="display:flex;align-items:center;gap:12px;">
+              ${c.profile_image ? `
+                <img src="${c.profile_image}" alt="${c.name}" style="width:38px;height:38px;border-radius:10px;object-fit:cover;border:1px solid #CBD5E1;flex-shrink:0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="avatar-monogram sm" style="display:none;width:38px;height:38px;font-size:12px;border-radius:10px;background:linear-gradient(135deg,#4F46E5,#6366F1);color:#FFF;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">${avatarLetters}</div>
+              ` : `
+                <div class="avatar-monogram sm" style="width:38px;height:38px;font-size:12px;border-radius:10px;background:linear-gradient(135deg,#4F46E5,#6366F1);color:#FFF;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">${avatarLetters}</div>
+              `}
+              <div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                  <strong style="color:var(--text-primary);font-size:13.5px;">${c.name}</strong>
+                  <span style="background:${roleBg};color:${roleColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;text-transform:uppercase;">${c.role}</span>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:1px;">
+                  ${c.student_id ? `<span style="font-weight:600;">${c.student_id}</span> • ` : ''}${c.department || 'Campus Diner'}
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <!-- 2. Email -->
+          <td>
+            <a href="mailto:${c.email}" style="color:#2563EB;font-size:12.5px;font-weight:600;text-decoration:none;word-break:break-all;" title="Email diner">
+              ${c.email}
+            </a>
+          </td>
+
+          <!-- 3. Phone if available -->
+          <td>
+            ${phoneDisplay}
+          </td>
+
+          <!-- 4. Total orders -->
+          <td>
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:${c.total_orders > 0 ? '#EEF2FF' : '#F1F5F9'};color:${c.total_orders > 0 ? '#4F46E5' : '#64748B'};">
+              <span>🛍️</span> ${c.total_orders} ${c.total_orders === 1 ? 'order' : 'orders'}
+            </span>
+          </td>
+
+          <!-- 5. Total spending -->
+          <td>
+            <strong style="font-size:14px;color:#0F172A;font-weight:800;">
+              ₹${(c.total_spending || 0).toLocaleString()}
+            </strong>
+          </td>
+
+          <!-- 6. Loyalty points -->
+          <td>
+            <div style="display:inline-flex;align-items:center;gap:5px;background:#FFFBEB;border:1px solid #FDE68A;padding:3px 8px;border-radius:6px;">
+              <span style="font-size:13px;">🪙</span>
+              <strong style="font-size:12px;color:#B45309;">${c.loyalty_points || 0}</strong>
+              <span style="font-size:10px;color:#92400E;font-weight:600;">pts (${c.loyalty_tier || 'Bronze'})</span>
+            </div>
+          </td>
+
+          <!-- 7. Last order -->
+          <td>
+            ${lastOrderDisplay}
+          </td>
+
+          <!-- 8. Actions -->
+          <td style="text-align:right;">
+            <button 
+              type="button" 
+              class="btn-primary" 
+              onclick="AdminApp.openCustomerDetails('${c.id}')"
+              style="padding:5px 12px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"
+              title="View full customer profile and order history"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Details
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  /* Open Customer Details View & Order History Modal */
+  async openCustomerDetails(customerId) {
+    try {
+      const res = await window.api.getCustomerDetails(customerId);
+      if (!res || !res.success || !res.customer) {
+        App.showToast('Failed to load customer profile details', 'error');
+        return;
+      }
+
+      const customer = res.customer;
+      this.selectedCustomer = customer;
+
+      // Populate Header
+      const elName = document.getElementById('cust-modal-name');
+      const elAvatar = document.getElementById('cust-modal-avatar');
+      const elRole = document.getElementById('cust-modal-role-badge');
+      const elStatus = document.getElementById('cust-modal-status-badge');
+      const elId = document.getElementById('cust-modal-id');
+      const elDept = document.getElementById('cust-modal-dept');
+
+      if (elName) elName.textContent = customer.name;
+      if (elRole) {
+        elRole.textContent = (customer.role || 'student').toUpperCase();
+        elRole.style.background = customer.role === 'faculty' ? '#FDF4FF' : (customer.role === 'staff' ? '#F0FDF4' : '#EEF2FF');
+        elRole.style.color = customer.role === 'faculty' ? '#A21CAF' : (customer.role === 'staff' ? '#15803D' : '#4F46E5');
+      }
+      if (elStatus) elStatus.textContent = customer.account_status || 'Verified Diner';
+      if (elId) elId.textContent = `ID: ${customer.student_id || customer.id.toUpperCase()}`;
+      if (elDept) elDept.textContent = customer.department || 'Computer Science & Engineering';
+
+      if (elAvatar) {
+        if (customer.profile_image) {
+          elAvatar.innerHTML = `<img src="${customer.profile_image}" alt="${customer.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.textContent='${customer.name.substring(0,2).toUpperCase()}';" />`;
+        } else {
+          elAvatar.textContent = (customer.avatar || customer.name.substring(0, 2)).toUpperCase();
+        }
+      }
+
+      // Populate Contact & Accounts Info
+      const elEmail = document.getElementById('cust-modal-email');
+      const elPhone = document.getElementById('cust-modal-phone');
+      const elPoints = document.getElementById('cust-modal-points');
+      const elTier = document.getElementById('cust-modal-tier');
+      const elWallet = document.getElementById('cust-modal-wallet');
+
+      if (elEmail) elEmail.innerHTML = `<a href="mailto:${customer.email}" style="color:#2563EB;text-decoration:none;">${customer.email}</a>`;
+      if (elPhone) {
+        elPhone.innerHTML = customer.phone 
+          ? `<a href="tel:${customer.phone.replace(/\s+/g,'')}" style="color:#0F172A;text-decoration:none;">${customer.phone}</a>`
+          : `<span style="color:#94A3B8;font-style:italic;">Not provided</span>`;
+      }
+      if (elPoints) elPoints.textContent = `${customer.loyalty_points || 0} pts`;
+      if (elTier) elTier.textContent = customer.loyalty_tier || 'Bronze';
+      if (elWallet) elWallet.textContent = `₹${(customer.wallet_balance || 0).toLocaleString()}`;
+
+      // Populate Lifetime Activity Stats
+      const stats = customer.stats || {};
+      const elStatOrders = document.getElementById('cust-modal-stat-orders');
+      const elStatSpent = document.getElementById('cust-modal-stat-spent');
+      const elStatAov = document.getElementById('cust-modal-stat-aov');
+      const elStatLast = document.getElementById('cust-modal-stat-last');
+
+      if (elStatOrders) elStatOrders.textContent = stats.total_orders || 0;
+      if (elStatSpent) elStatSpent.textContent = `₹${(stats.total_spending || 0).toLocaleString()}`;
+      if (elStatAov) elStatAov.textContent = `₹${(stats.avg_order_value || 0).toLocaleString()}`;
+      if (elStatLast) {
+        if (stats.last_order_date) {
+          const d = new Date(stats.last_order_date);
+          elStatLast.textContent = d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+        } else {
+          elStatLast.textContent = 'Never';
+        }
+      }
+
+      // Render Customer Order History
+      const orderHistory = customer.order_history || [];
+      const elOrdersCount = document.getElementById('cust-modal-orders-count');
+      if (elOrdersCount) elOrdersCount.textContent = orderHistory.length;
+
+      this.renderCustomerOrderHistory(orderHistory);
+
+      // Open Modal
+      App.openModal('customer-details-modal');
+    } catch (err) {
+      console.error('Error fetching customer details:', err);
+      App.showToast('Failed to open customer details', 'error');
+    }
+  },
+
+  /* Render List of Orders inside Customer Details Modal */
+  renderCustomerOrderHistory(orders) {
+    const container = document.getElementById('cust-modal-orders-container');
+    if (!container) return;
+
+    if (!orders || !orders.length) {
+      container.innerHTML = `
+        <div style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:12px;padding:36px;text-align:center;color:#94A3B8;">
+          <div style="font-size:32px;margin-bottom:8px;">🍽️</div>
+          <strong style="color:#475569;font-size:14px;display:block;">No Orders Placed Yet</strong>
+          <p style="font-size:12px;margin:4px 0 0;color:#94A3B8;">This customer has registered an account but has not yet placed any food orders at the canteen.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = orders.map(order => {
+      // Status Pill colors
+      let statusBg = '#EFF6FF';
+      let statusColor = '#1D4ED8';
+      const st = order.order_status || 'Pending';
+      if (st === 'Completed') {
+        statusBg = '#F0FDF4';
+        statusColor = '#15803D';
+      } else if (st === 'Ready' || st === 'Ready for Pickup') {
+        statusBg = '#ECFDF5';
+        statusColor = '#047857';
+      } else if (st === 'Preparing') {
+        statusBg = '#FFFBEB';
+        statusColor = '#B45309';
+      } else if (st === 'Cancelled') {
+        statusBg = '#FEF2F2';
+        statusColor = '#DC2626';
+      }
+
+      // Date string
+      let dateStr = 'Recent';
+      if (order.created_at) {
+        const d = new Date(order.created_at);
+        dateStr = d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + 
+                  d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      }
+
+      // Items list formatted
+      const itemsList = (order.items || []).map(i => {
+        return `<span style="color:#0F172A;font-weight:600;">${i.quantity || 1}× ${i.name}</span> <span style="color:#64748B;font-size:11px;">(₹${i.price})</span>`;
+      }).join(' • ');
+
+      return `
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.02);display:flex;flex-direction:column;gap:6px;">
+          <!-- Top Row: Order ID, Status, Date -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <strong style="color:#4F46E5;font-size:13.5px;letter-spacing:0.3px;">#${order.id}</strong>
+              <span style="background:${statusBg};color:${statusColor};font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;">${st}</span>
+              <span style="font-size:11px;color:#64748B;">${order.payment_method || 'UPI'} • ${order.payment_status || 'Paid'}</span>
+            </div>
+            <span style="font-size:11.5px;color:#64748B;">${dateStr}</span>
+          </div>
+
+          <!-- Items Row -->
+          <div style="font-size:12.5px;color:#334155;line-height:1.4;background:#F8FAFC;padding:6px 10px;border-radius:6px;border:1px solid #F1F5F9;">
+            ${itemsList || '<span style="color:#94A3B8;">Dish details</span>'}
+          </div>
+
+          <!-- Bottom Row: Pickup Slot & Amount -->
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-top:2px;">
+            <span style="color:#64748B;">
+              ${order.pickup_slot ? `Pickup: <strong style="color:#0F172A;">${order.pickup_slot}</strong> (Counter ${order.pickup_counter || 1})` : ''}
+              ${order.coupon_code ? ` • Coupon: <strong style="color:#059669;">${order.coupon_code}</strong>` : ''}
+            </span>
+            <div style="text-align:right;">
+              <span style="font-size:11.5px;color:#64748B;">Total: </span>
+              <strong style="font-size:14px;color:#0F172A;font-weight:800;">₹${order.total_amount || 0}</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
   // Marketing & Coupons
   async loadCoupons() {
     try {
