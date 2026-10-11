@@ -27,20 +27,15 @@ const App = {
       });
     });
 
-    // Close modal on click outside or close button
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('open');
-        }
-      });
-    });
-
-    document.querySelectorAll('.modal-close-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const modal = btn.closest('.modal-overlay');
+    // Global delegated modal close handler (handles both static and dynamically inserted elements)
+    document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('.modal-close-btn');
+      if (closeBtn) {
+        const modal = closeBtn.closest('.modal-overlay');
         if (modal) modal.classList.remove('open');
-      });
+      } else if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('open');
+      }
     });
 
     // Hash change handler for direct links (#student, #admin)

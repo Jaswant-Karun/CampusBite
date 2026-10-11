@@ -367,7 +367,7 @@
               <div style="font-size:11px;color:#64748B;" id="home-active-order-slot">Pickup Window: 12:30 PM – 12:40 PM</div>
             </div>
           </div>
-          <button class="btn-primary" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:999px;">
+          <button class="btn-primary" onclick="StudentApp.navigateTo('tracking')" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:999px;">
             Track Live →
           </button>
         </div>
@@ -1146,7 +1146,7 @@
               <div class="profile-avatar-wrapper" onclick="StudentApp.openEditProfileModal()" style="width:64px;height:64px;cursor:pointer;">
                 <img id="mob-profile-avatar-img" class="profile-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Avatar" style="width:64px;height:64px;display:block;">
                 <div id="mob-profile-avatar-display" class="profile-avatar-initials" style="width:64px;height:64px;font-size:22px;display:none;">JK</div>
-                <button type="button" class="profile-avatar-edit-btn" style="width:24px;height:24px;font-size:11px;">📷</button>
+                <button type="button" class="profile-avatar-edit-btn" onclick="StudentApp.openEditProfileModal()" style="width:24px;height:24px;font-size:11px;" title="Edit Avatar">📷</button>
               </div>
               <div class="profile-hero-meta">
                 <h2 style="font-size:17px;margin:0 0 2px;">
