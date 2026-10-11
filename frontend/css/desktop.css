@@ -952,7 +952,7 @@
   transform: scale(0.96);
 }
 
-/* Non-menu pages centered layout (Crowd, Wallet, Tracking, Profile, Sustainability, Nutrition, Order History, Notifications, Cart, Checkout) */
+/* Non-menu pages centered layout (Crowd, Wallet, Tracking, Profile, Sustainability, Nutrition, Order History, Notifications, Rewards, Feedback, Voice, Timetable, Spin Wheel) */
 #screen-crowd-meter,
 #screen-wallet,
 #screen-tracking,
@@ -961,11 +961,16 @@
 #screen-nutrition,
 #screen-order-history,
 #screen-notifications,
+#screen-rewards,
+#screen-feedback,
+#screen-voice,
+#screen-timetable,
+#screen-spin-wheel,
 #screen-menu {
   max-width: 920px;
   margin: 24px auto 40px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--border-subtle, #E2E8F0);
   border-radius: 16px;
   padding: 28px 32px;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
