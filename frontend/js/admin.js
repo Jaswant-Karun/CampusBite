@@ -39,6 +39,11 @@ const AdminApp = {
   },
 
   async checkAccess() {
+    // Only check access if on the admin dashboard page
+    if (!document.querySelector('.admin-sidebar') && !window.location.pathname.startsWith('/admin')) {
+      return false;
+    }
+
     let user = null;
     try {
       user = JSON.parse(localStorage.getItem('campusbite_user') || 'null');
@@ -47,7 +52,7 @@ const AdminApp = {
 
     // 1. Client-side role check
     if (!user || (user.role !== 'admin' && user.role !== 'staff') || !token) {
-      alert('Access Denied: You must be logged in as an Admin or Kitchen Staff to view the Admin Operations Hub.');
+      console.warn("Admin access required; redirecting to login.");
       window.location.href = '/#login';
       return false;
     }
@@ -56,7 +61,7 @@ const AdminApp = {
     try {
       const res = await window.api.checkAdmin();
       if (!res || !res.success) {
-        alert('Access Denied: Admin session invalid or expired.');
+        console.warn("Admin session expired; redirecting to login.");
         window.location.href = '/#login';
         return false;
       }
@@ -64,7 +69,6 @@ const AdminApp = {
       return true;
     } catch (err) {
       console.warn("Admin backend verification failed:", err);
-      alert('Access Denied: Admin privileges required.');
       window.location.href = '/#login';
       return false;
     }

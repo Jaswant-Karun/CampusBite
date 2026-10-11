@@ -52,7 +52,6 @@ const App = {
       let user = null;
       try { user = JSON.parse(localStorage.getItem('campusbite_user') || 'null'); } catch (e) {}
       if (!user || (user.role !== 'admin' && user.role !== 'staff')) {
-        this.showToast('Access Denied: Admin privileges required to view Admin Dashboard.', 'error');
         if (window.StudentApp) window.StudentApp.navigateTo('login');
         return;
       }
@@ -73,7 +72,7 @@ const App = {
       const token = localStorage.getItem('campusbite_token');
 
       if (!user || (user.role !== 'admin' && user.role !== 'staff') || !token) {
-        this.showToast('Access Denied: Admin credentials required. Please log in as Canteen Admin.', 'error');
+        this.showToast('Please log in with Canteen Admin credentials.', 'info');
         if (window.StudentApp) {
           window.StudentApp.navigateTo('login');
           window.StudentApp.selectAuthRole('admin');
