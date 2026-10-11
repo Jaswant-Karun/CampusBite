@@ -163,24 +163,61 @@ router.post('/', async (req, res) => {
     });
   }
 
-  // Calculate Coupon Discount
+  // Step 23 Requirement: Student checkout uses the exact same database coupon rules
   let discount = 0;
   let appliedCoupon = null;
 
-  if (coupon_code) {
-    const coupon = db.data.coupons.find(c => 
-      c.code.toUpperCase() === coupon_code.toUpperCase() && c.is_active
-    );
-    if (coupon) {
-      if (subtotal >= coupon.minimum_order) {
-        if (coupon.discount_type === 'percentage') {
-          discount = Math.min(Math.round((subtotal * coupon.discount_value) / 100), coupon.max_discount || 100);
-        } else {
-          discount = Math.min(coupon.discount_value, subtotal);
-        }
-        appliedCoupon = coupon.code;
+  if (coupon_code && coupon_code.trim()) {
+    const cleanCouponCode = coupon_code.trim().toUpperCase();
+    const coupon = (db.data.coupons || []).find(c => c.code.toUpperCase() === cleanCouponCode);
+
+    if (!coupon) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Invalid coupon code "${cleanCouponCode}".` 
+      });
+    }
+
+    if (coupon.is_active === false) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Coupon "${coupon.code}" has been deactivated.` 
+      });
+    }
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (coupon.expiry_date && coupon.expiry_date < todayStr) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Coupon "${coupon.code}" expired on ${coupon.expiry_date}.` 
+      });
+    }
+
+    const minOrder = Number(coupon.minimum_order) || 0;
+    if (subtotal < minOrder) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Minimum order amount of ₹${minOrder} required for code ${coupon.code}. Subtotal is ₹${subtotal}.` 
+      });
+    }
+
+    const discountVal = Number(coupon.discount_value) || 0;
+    const maxDiscount = Number(coupon.max_discount) || 0;
+
+    if (coupon.discount_type === 'percentage') {
+      discount = Math.round((subtotal * discountVal) / 100);
+      if (maxDiscount > 0) {
+        discount = Math.min(discount, maxDiscount);
+      }
+    } else {
+      discount = discountVal;
+      if (maxDiscount > 0) {
+        discount = Math.min(discount, maxDiscount);
       }
     }
+
+    discount = Math.max(0, Math.min(discount, subtotal));
+    appliedCoupon = coupon.code;
   }
 
   // Loyalty Points Discount
