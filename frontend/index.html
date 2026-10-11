@@ -437,9 +437,97 @@
         <div class="mobile-screens-container">
 
           <!-- ----------------------------------------------------------------
+               SCREEN 1: WELCOMING & LOADING PAGE (CAMPUSBITE INTRO)
+               ---------------------------------------------------------------- -->
+          <div id="screen-welcome" class="mob-screen active">
+            <div class="welcome-screen-wrap">
+              <div class="welcome-glow-orb"></div>
+              
+              <div class="welcome-hero-content">
+                <!-- Glowing CB Monogram & Icon -->
+                <div class="welcome-logo-badge">
+                  <div class="welcome-pulse-ring"></div>
+                  <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                    <line x1="6" y1="2" x2="6" y2="5"/>
+                    <line x1="10" y1="2" x2="10" y2="5"/>
+                    <line x1="14" y1="2" x2="14" y2="5"/>
+                  </svg>
+                </div>
+
+                <h1 class="welcome-app-title">CampusBite</h1>
+                <div class="welcome-app-subtitle">SMART CAMPUS CANTEEN PLATFORM</div>
+                <p class="welcome-app-desc">Order fresh meals ahead, avoid crowded queues, and pick up in under 2 minutes.</p>
+
+                <!-- 3 Value Pillars -->
+                <div class="welcome-features-list">
+                  <div class="welcome-feature-card">
+                    <div class="welcome-feature-icon">⚡</div>
+                    <div>
+                      <div class="welcome-feature-title">Zero Waiting Queue</div>
+                      <div class="welcome-feature-sub">Instant pickup token ready at Counter 2</div>
+                    </div>
+                  </div>
+                  <div class="welcome-feature-card">
+                    <div class="welcome-feature-icon">🍔</div>
+                    <div>
+                      <div class="welcome-feature-title">Fresh Chef Meals & Snacks</div>
+                      <div class="welcome-feature-sub">Hot burgers, rolls, thali & fresh drinks</div>
+                    </div>
+                  </div>
+                  <div class="welcome-feature-card">
+                    <div class="welcome-feature-icon">💳</div>
+                    <div>
+                      <div class="welcome-feature-title">CampusPay & UPI Pass</div>
+                      <div class="welcome-feature-sub">1-Tap cashless payment with loyalty perks</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Animated Loading Status Bar -->
+                <div class="welcome-progress-wrap">
+                  <div class="welcome-progress-label" id="welcome-progress-label">
+                    <span class="live-sync-pulse-dot" style="width:7px;height:7px;background:#2DD4BF;"></span>
+                    <span>Connecting to Canteen Kitchen...</span>
+                  </div>
+                  <div class="welcome-progress-bar">
+                    <div class="welcome-progress-fill" id="welcome-progress-fill" style="width:25%;"></div>
+                  </div>
+                </div>
+
+                <!-- Interactive Buttons -->
+                <div class="welcome-action-buttons">
+                  <button type="button" class="welcome-enter-btn" onclick="StudentApp.navigateTo('home')">
+                    <span>Explore Canteen Menu</span>
+                    <span style="font-size:16px;">→</span>
+                  </button>
+                  <button type="button" class="welcome-login-btn" onclick="StudentApp.navigateTo('login')">
+                    Student & Staff Sign In
+                  </button>
+                </div>
+              </div>
+
+              <!-- Footer Branding -->
+              <div style="font-size:11px;color:#64748B;z-index:2;margin-top:16px;">
+                CampusBite • Smart Dining Experience
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------------------------
                SCREEN 2: ATTRACTIVE DEDICATED SIGN IN & SIGN UP PAGE UI
                ---------------------------------------------------------------- -->
           <div id="screen-login" class="mob-screen">
+            <!-- Top Back Button Bar -->
+            <div class="screen-back-nav-bar">
+              <button type="button" class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
+              </button>
+              <span class="screen-back-title">Student & Staff Sign In</span>
+              <div class="screen-back-spacer"></div>
+            </div>
+
             <div class="auth-page-container">
               
               <!-- Header -->
@@ -572,9 +660,16 @@
           <!-- ----------------------------------------------------------------
                SCREEN 3: HOME SCREEN
                ---------------------------------------------------------------- -->
-          <div id="screen-home" class="mob-screen active">
+          <div id="screen-home" class="mob-screen">
             <!-- Native Mobile Home Screen Experience (Mobile Only) -->
             <div class="mobile-home-view">
+              <!-- Universal Back Button (shown if navigated from another page) -->
+              <div id="home-back-bar" style="display:none;padding:8px 0 4px;">
+                <button type="button" class="universal-back-btn" onclick="StudentApp.goBack()">
+                  <span class="back-arrow">←</span> Back
+                </button>
+              </div>
+
               <!-- A. Mobile Greeting -->
               <div class="mobile-user-greeting">
                 <h1 class="mobile-greeting-heading" id="mob-greeting-text">Hey, hungry?</h1>
@@ -1066,8 +1161,8 @@
                 </div>
                 <p id="menu-subtitle-text">Browse freshly prepared campus items, filter categories & diet types, and order ahead</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -1136,8 +1231,8 @@
                 <h3>Live Counter Traffic Monitor</h3>
                 <p>Real-time queue & table occupancy</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -1201,8 +1296,8 @@
                 <h3>CampusPay Digital Balance</h3>
                 <p>Contactless student dining pass</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -1270,8 +1365,8 @@
                 <h3>Campus Sustainability & ESG</h3>
                 <p>Zero food waste initiative</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -1304,8 +1399,8 @@
                 <h3>Campus Nutrition & Wellness</h3>
                 <p>Track macros & eat healthy between classes</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -1430,8 +1525,8 @@
                 <p>Review items, adjust quantities, apply discounts & proceed to checkout</p>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="padding:7px 14px;font-size:12px;border-radius:999px;">
-                  ← Continue Shopping
+                <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                  <span class="back-arrow">←</span> Back
                 </button>
                 <button class="btn-secondary" onclick="StudentApp.clearCart()" id="cart-clear-btn" style="padding:7px 14px;font-size:12px;border-radius:999px;color:#DC2626;border-color:rgba(220,38,38,0.25);">
                   Clear All
@@ -1586,8 +1681,8 @@
                 <p>Confirm pickup time slot, choose payment mode & finalize your meal order</p>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <button class="btn-secondary" onclick="StudentApp.navigateTo('cart')" style="padding:7px 14px;font-size:12px;border-radius:999px;">
-                  ← Back to Cart
+                <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                  <span class="back-arrow">←</span> Back
                 </button>
               </div>
             </div>
@@ -1881,8 +1976,8 @@
                 <p>Your order is tokenized, registered in MongoDB, and dispatched to kitchen</p>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <button class="btn-secondary" onclick="StudentApp.navigateTo('menu')" style="padding:7px 14px;font-size:12px;border-radius:999px;">
-                  ← Back to Menu
+                <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                  <span class="back-arrow">←</span> Back
                 </button>
               </div>
             </div>
@@ -2054,8 +2149,8 @@
                 <h3>Live Order Tracking</h3>
                 <p>Real-time canteen prep status</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
@@ -2178,8 +2273,8 @@
                 <h3 style="font-size:20px;font-weight:800;color:var(--text-primary);margin:0;">Student Profile & Campus Loyalty</h3>
                 <p style="font-size:12.5px;color:var(--text-secondary);margin:2px 0 0;">Manage personal details, membership tier pass, and loyalty points ledger</p>
               </div>
-              <button class="btn-secondary" onclick="StudentApp.navigateTo('home')" style="padding:7px 16px;font-size:12px;border-radius:999px;cursor:pointer;white-space:nowrap;">
-                ← Back to Home
+              <button class="universal-back-btn" onclick="StudentApp.goBack()">
+                <span class="back-arrow">←</span> Back
               </button>
             </div>
 
