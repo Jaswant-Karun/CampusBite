@@ -1342,4 +1342,16 @@
   border: 1px solid #FFEDD5;
 }
 
+/* ==========================================================================
+   STEP 23: ADMIN COUPON MANAGEMENT STYLING
+   ========================================================================== */
+.coupons-table th {
+  white-space: nowrap;
+}
+
+.coupons-table tr:hover {
+  background: #F8FAFC !important;
+}
+
+
 

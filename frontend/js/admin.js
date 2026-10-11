@@ -2142,70 +2142,442 @@ const AdminApp = {
     }).join('');
   },
 
-  // Marketing & Coupons
+  // =========================================================================
+  // STEP 23: ADMIN COUPON MANAGEMENT
+  // =========================================================================
+
   async loadCoupons() {
     try {
       const res = await window.api.getCoupons();
-      const container = document.getElementById('admin-coupons-list');
-      if (container && res.coupons) {
-        container.innerHTML = res.coupons.map(c => `
-          <div style="background:var(--bg-elevated);border-radius:12px;padding:14px;border:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <strong style="color:var(--primary);font-size:15px;">${c.code}</strong>
-                <span style="font-size:10px;background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;">${c.badge}</span>
-              </div>
-              <p style="font-size:12px;color:var(--text-secondary);margin:4px 0;">${c.description}</p>
-              <div style="font-size:11px;color:var(--text-muted);">Min Order: ₹${c.minimum_order} • Valid until: ${c.expiry_date}</div>
-            </div>
-            <label style="cursor:pointer;font-size:12px;display:flex;align-items:center;gap:6px;">
-              <input type="checkbox" ${c.is_active ? 'checked' : ''} onchange="AdminApp.toggleCouponActive('${c.id}', this.checked)">
-              <span>${c.is_active ? 'Active' : 'Paused'}</span>
-            </label>
-          </div>
-        `).join('');
+      if (res && res.success) {
+        this.coupons = res.coupons || [];
+
+        // 1. Calculate KPI Badge Counts
+        const todayStr = new Date().toISOString().split('T')[0];
+        const totalCount = this.coupons.length;
+        const activeCount = this.coupons.filter(c => c.is_active && (!c.expiry_date || c.expiry_date >= todayStr)).length;
+        const expiredCount = this.coupons.filter(c => c.expiry_date && c.expiry_date < todayStr).length;
+        const inactiveCount = this.coupons.filter(c => !c.is_active).length;
+
+        const elTotal = document.getElementById('coupon-stat-total');
+        const elActive = document.getElementById('coupon-stat-active');
+        const elExpired = document.getElementById('coupon-stat-expired');
+        const elInactive = document.getElementById('coupon-stat-inactive');
+
+        if (elTotal) elTotal.textContent = totalCount;
+        if (elActive) elActive.textContent = activeCount;
+        if (elExpired) elExpired.textContent = expiredCount;
+        if (elInactive) elInactive.textContent = inactiveCount;
+
+        // 2. Render Table
+        this.renderCouponsTable();
       }
     } catch (e) {
-      console.warn("Coupons error:", e);
+      console.warn("Failed to load coupons:", e);
+      const tbody = document.getElementById('admin-coupons-tbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center;padding:36px;color:#EF4444;">
+              Failed to load promotional coupons. Please click Refresh Coupons.
+            </td>
+          </tr>
+        `;
+      }
     }
   },
 
-  async createNewCouponCampaign() {
-    const code = document.getElementById('new-coupon-code').value;
-    const discount = document.getElementById('new-coupon-discount').value;
-    const minOrder = document.getElementById('new-coupon-min').value;
-    const desc = document.getElementById('new-coupon-desc').value;
+  handleCouponSearch(event) {
+    this.couponSearchQuery = event ? event.target.value.trim().toLowerCase() : '';
+    this.renderCouponsTable();
+  },
 
-    if (!code || !discount) {
-      App.showToast('Coupon code and discount % are required', 'warning');
+  handleCouponFilterChange() {
+    const statusSelect = document.getElementById('coupon-status-filter');
+    const typeSelect = document.getElementById('coupon-type-filter');
+
+    if (statusSelect) this.couponStatusFilter = statusSelect.value;
+    if (typeSelect) this.couponTypeFilter = typeSelect.value;
+
+    this.renderCouponsTable();
+  },
+
+  clearCouponFilters() {
+    this.couponSearchQuery = '';
+    this.couponStatusFilter = 'All';
+    this.couponTypeFilter = 'All';
+
+    const searchInput = document.getElementById('coupon-search-input');
+    const statusSelect = document.getElementById('coupon-status-filter');
+    const typeSelect = document.getElementById('coupon-type-filter');
+
+    if (searchInput) searchInput.value = '';
+    if (statusSelect) statusSelect.value = 'All';
+    if (typeSelect) typeSelect.value = 'All';
+
+    this.renderCouponsTable();
+  },
+
+  renderCouponsTable() {
+    const tbody = document.getElementById('admin-coupons-tbody');
+    if (!tbody) return;
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    let filtered = [...(this.coupons || [])];
+
+    // 1. Text Search Filter (code, description, badge)
+    if (this.couponSearchQuery) {
+      const q = this.couponSearchQuery;
+      filtered = filtered.filter(c => 
+        (c.code && c.code.toLowerCase().includes(q)) ||
+        (c.description && c.description.toLowerCase().includes(q)) ||
+        (c.badge && c.badge.toLowerCase().includes(q))
+      );
+    }
+
+    // 2. Status Filter
+    if (this.couponStatusFilter && this.couponStatusFilter !== 'All') {
+      if (this.couponStatusFilter === 'active') {
+        filtered = filtered.filter(c => c.is_active && (!c.expiry_date || c.expiry_date >= todayStr));
+      } else if (this.couponStatusFilter === 'expired') {
+        filtered = filtered.filter(c => c.expiry_date && c.expiry_date < todayStr);
+      } else if (this.couponStatusFilter === 'inactive') {
+        filtered = filtered.filter(c => !c.is_active);
+      }
+    }
+
+    // 3. Discount Type Filter
+    if (this.couponTypeFilter && this.couponTypeFilter !== 'All') {
+      filtered = filtered.filter(c => c.discount_type === this.couponTypeFilter);
+    }
+
+    // 4. Update summary bar
+    const countTag = document.getElementById('coupons-matching-count-tag');
+    if (countTag) {
+      const activeCount = filtered.filter(c => c.is_active && (!c.expiry_date || c.expiry_date >= todayStr)).length;
+      const expiredCount = filtered.filter(c => c.expiry_date && c.expiry_date < todayStr).length;
+      countTag.innerHTML = `Showing <strong>${filtered.length}</strong> coupons (${activeCount} Active, ${expiredCount} Expired)`;
+    }
+
+    // 5. Render rows
+    if (!filtered.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center;padding:48px 20px;color:#94A3B8;">
+            <div style="font-size:36px;margin-bottom:8px;">🏷️</div>
+            <strong style="font-size:15px;color:#475569;display:block;">No matching coupons found</strong>
+            <p style="font-size:12.5px;color:#94A3B8;margin:4px 0 12px;">Try adjusting search terms or status filters.</p>
+            <button class="btn-outline" onclick="AdminApp.clearCouponFilters()" style="padding:5px 14px;font-size:12px;">Clear Filters</button>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(c => {
+      const isExpired = c.expiry_date && c.expiry_date < todayStr;
+      const isActive = c.is_active && !isExpired;
+
+      // Status Badge
+      let statusBadgeHtml = '';
+      if (isExpired) {
+        statusBadgeHtml = `
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;background:#FEF2F2;color:#B91C1C;border:1px solid #FECACA;">
+            <span>⏳</span> Expired
+          </span>
+        `;
+      } else if (!c.is_active) {
+        statusBadgeHtml = `
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;background:#FFFBEB;color:#B45309;border:1px solid #FDE68A;">
+            <span>⏸️</span> Deactivated
+          </span>
+        `;
+      } else {
+        statusBadgeHtml = `
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;background:#F0FDF4;color:#047857;border:1px solid #BBF7D0;">
+            <span>●</span> Active
+          </span>
+        `;
+      }
+
+      // Discount format
+      const discountDisplay = c.discount_type === 'flat' 
+        ? `<strong style="font-size:13.5px;color:#0F172A;">₹${c.discount_value} Flat</strong>`
+        : `<strong style="font-size:13.5px;color:#4F46E5;">${c.discount_value}% OFF</strong>`;
+
+      // Expiry format
+      const expiryDisplay = isExpired
+        ? `<span style="color:#DC2626;font-weight:700;font-size:12px;">⚠️ Expired (${c.expiry_date})</span>`
+        : `<span style="color:#334155;font-weight:600;font-size:12px;">${c.expiry_date || 'No Expiry'}</span>`;
+
+      return `
+        <tr style="transition:background 0.15s ease;">
+          <!-- 1. Coupon Code & Badge -->
+          <td>
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <strong style="color:#4F46E5;font-size:14px;letter-spacing:0.5px;background:#EEF2FF;padding:3px 8px;border-radius:6px;border:1px solid #C7D2FE;">${c.code}</strong>
+                ${c.badge ? `<span style="font-size:10.5px;background:#F1F5F9;color:#475569;padding:2px 7px;border-radius:999px;font-weight:700;">${c.badge}</span>` : ''}
+              </div>
+              <p style="margin:2px 0 0;font-size:11.5px;color:#64748B;line-height:1.35;max-width:280px;">${c.description || 'Campus dining promotion'}</p>
+            </div>
+          </td>
+
+          <!-- 2. Discount -->
+          <td>
+            ${discountDisplay}
+          </td>
+
+          <!-- 3. Minimum Order -->
+          <td>
+            <strong style="font-size:13px;color:#0F172A;">₹${c.minimum_order || 0}</strong>
+          </td>
+
+          <!-- 4. Maximum Discount -->
+          <td>
+            <span style="font-size:13px;font-weight:700;color:#047857;">
+              ${c.max_discount ? `₹${c.max_discount}` : (c.discount_type === 'flat' ? `₹${c.discount_value}` : 'No Limit')}
+            </span>
+          </td>
+
+          <!-- 5. Expiry Date -->
+          <td>
+            ${expiryDisplay}
+          </td>
+
+          <!-- 6. Status -->
+          <td>
+            ${statusBadgeHtml}
+          </td>
+
+          <!-- 7. Actions (Edit, Deactivate/Activate, Delete) -->
+          <td style="text-align:right;">
+            <div style="display:inline-flex;gap:6px;align-items:center;">
+              <!-- Edit Button -->
+              <button 
+                type="button" 
+                class="btn-primary" 
+                onclick="AdminApp.openEditCouponModal('${c.id}')"
+                style="padding:4px 10px;font-size:11px;font-weight:700;"
+                title="Edit coupon rules"
+              >
+                Edit
+              </button>
+
+              <!-- Deactivate / Activate Button -->
+              <button 
+                type="button" 
+                class="btn-outline" 
+                onclick="AdminApp.toggleCouponActive('${c.id}', ${!c.is_active})"
+                style="padding:4px 9px;font-size:11px;font-weight:700;color:${c.is_active ? '#D97706' : '#059669'};border-color:${c.is_active ? '#FDE68A' : '#A7F3D0'};"
+                title="${c.is_active ? 'Deactivate coupon' : 'Activate coupon'}"
+              >
+                ${c.is_active ? 'Deactivate' : 'Activate'}
+              </button>
+
+              <!-- Delete Button -->
+              <button 
+                type="button" 
+                class="btn-cancel-destructive" 
+                onclick="AdminApp.deleteCoupon('${c.id}')"
+                style="padding:4px 8px;font-size:11px;"
+                title="Delete coupon"
+              >
+                ✕
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  /* Modal: Open Create Coupon */
+  openCreateCouponModal() {
+    const form = document.getElementById('create-coupon-form');
+    if (form) form.reset();
+
+    // Default expiry date to end of current or next year
+    const expiryInput = document.getElementById('create-c-expiry');
+    if (expiryInput) {
+      const nextYear = new Date();
+      nextYear.setMonth(11);
+      nextYear.setDate(31);
+      expiryInput.value = nextYear.toISOString().split('T')[0];
+    }
+
+    const minInput = document.getElementById('create-c-min');
+    const maxInput = document.getElementById('create-c-max');
+    if (minInput) minInput.value = '200';
+    if (maxInput) maxInput.value = '50';
+
+    App.openModal('create-coupon-modal');
+  },
+
+  handleCreateCouponTypeChange() {
+    const typeSelect = document.getElementById('create-c-type');
+    const label = document.getElementById('create-c-val-label');
+    const valInput = document.getElementById('create-c-val');
+    if (!typeSelect || !label) return;
+
+    if (typeSelect.value === 'flat') {
+      label.textContent = 'Discount Amount (₹) *';
+      if (valInput) valInput.placeholder = 'e.g. 50';
+    } else {
+      label.textContent = 'Discount (%) *';
+      if (valInput) valInput.placeholder = 'e.g. 20';
+    }
+  },
+
+  /* Handle Create Coupon Form Submission */
+  async handleCreateCouponSubmit(event) {
+    if (event) event.preventDefault();
+
+    const code = document.getElementById('create-c-code').value.trim().toUpperCase();
+    const type = document.getElementById('create-c-type').value;
+    const val = Number(document.getElementById('create-c-val').value);
+    const minOrder = Number(document.getElementById('create-c-min').value);
+    const maxDiscount = Number(document.getElementById('create-c-max').value);
+    const expiry = document.getElementById('create-c-expiry').value;
+    const badge = document.getElementById('create-c-badge').value.trim();
+    const desc = document.getElementById('create-c-desc').value.trim();
+    const isActive = document.getElementById('create-c-active').checked;
+
+    if (!code || !val) {
+      App.showToast('Coupon code and discount are required', 'warning');
       return;
     }
 
     try {
       const res = await window.api.createCoupon({
         code,
-        discount_value: Number(discount),
-        minimum_order: Number(minOrder) || 100,
-        description: desc || `${discount}% Campus Discount`
+        discount_type: type,
+        discount_value: val,
+        minimum_order: minOrder,
+        max_discount: maxDiscount,
+        expiry_date: expiry,
+        badge: badge || 'Promotional Offer',
+        description: desc || `${val}${type === 'percentage' ? '%' : '₹'} off campus order!`,
+        is_active: isActive
       });
 
-      if (res.success) {
-        App.showToast(res.message, 'success');
-        document.getElementById('new-coupon-code').value = '';
-        document.getElementById('new-coupon-discount').value = '';
-        this.loadCoupons();
+      if (res && res.success) {
+        App.showToast(`Coupon ${code} published successfully!`, 'success');
+        App.closeModal('create-coupon-modal');
+        await this.loadCoupons();
+      } else {
+        App.showToast(res.message || 'Coupon creation failed', 'error');
       }
     } catch (e) {
-      App.showToast('Coupon creation failed', 'error');
+      App.showToast(e.message || 'Coupon creation failed', 'error');
     }
   },
 
+  /* Modal: Open Edit Coupon */
+  async openEditCouponModal(couponId) {
+    const coupon = (this.coupons || []).find(c => c.id === couponId);
+    if (!coupon) {
+      App.showToast('Coupon not found', 'error');
+      return;
+    }
+
+    document.getElementById('edit-c-id').value = coupon.id;
+    document.getElementById('edit-c-code').value = coupon.code;
+    document.getElementById('edit-c-type').value = coupon.discount_type || 'percentage';
+    document.getElementById('edit-c-val').value = coupon.discount_value;
+    document.getElementById('edit-c-min').value = coupon.minimum_order || 0;
+    document.getElementById('edit-c-max').value = coupon.max_discount || coupon.discount_value;
+    document.getElementById('edit-c-expiry').value = coupon.expiry_date || '';
+    document.getElementById('edit-c-badge').value = coupon.badge || '';
+    document.getElementById('edit-c-desc').value = coupon.description || '';
+    document.getElementById('edit-c-active').checked = coupon.is_active !== false;
+
+    this.handleEditCouponTypeChange();
+    App.openModal('edit-coupon-modal');
+  },
+
+  handleEditCouponTypeChange() {
+    const typeSelect = document.getElementById('edit-c-type');
+    const label = document.getElementById('edit-c-val-label');
+    if (!typeSelect || !label) return;
+
+    if (typeSelect.value === 'flat') {
+      label.textContent = 'Discount Amount (₹) *';
+    } else {
+      label.textContent = 'Discount (%) *';
+    }
+  },
+
+  /* Handle Edit Coupon Form Submission */
+  async handleEditCouponSubmit(event) {
+    if (event) event.preventDefault();
+
+    const id = document.getElementById('edit-c-id').value;
+    const code = document.getElementById('edit-c-code').value.trim().toUpperCase();
+    const type = document.getElementById('edit-c-type').value;
+    const val = Number(document.getElementById('edit-c-val').value);
+    const minOrder = Number(document.getElementById('edit-c-min').value);
+    const maxDiscount = Number(document.getElementById('edit-c-max').value);
+    const expiry = document.getElementById('edit-c-expiry').value;
+    const badge = document.getElementById('edit-c-badge').value.trim();
+    const desc = document.getElementById('edit-c-desc').value.trim();
+    const isActive = document.getElementById('edit-c-active').checked;
+
+    try {
+      const res = await window.api.updateCoupon(id, {
+        code,
+        discount_type: type,
+        discount_value: val,
+        minimum_order: minOrder,
+        max_discount: maxDiscount,
+        expiry_date: expiry,
+        badge,
+        description: desc,
+        is_active: isActive
+      });
+
+      if (res && res.success) {
+        App.showToast(`Coupon ${code} updated successfully!`, 'success');
+        App.closeModal('edit-coupon-modal');
+        await this.loadCoupons();
+      } else {
+        App.showToast(res.message || 'Coupon update failed', 'error');
+      }
+    } catch (e) {
+      App.showToast(e.message || 'Failed to update coupon', 'error');
+    }
+  },
+
+  /* Deactivate / Activate Coupon */
   async toggleCouponActive(id, isActive) {
     try {
-      await window.api.toggleCoupon(id, isActive);
-      App.showToast('Coupon campaign status updated', 'success');
+      const res = await window.api.updateCoupon(id, { is_active: isActive });
+      if (res && res.success) {
+        App.showToast(`Coupon ${isActive ? 'activated' : 'deactivated'} successfully!`, 'success');
+        await this.loadCoupons();
+      }
     } catch (e) {
-      App.showToast('Failed to toggle coupon', 'error');
+      App.showToast('Failed to update coupon status', 'error');
+    }
+  },
+
+  /* Delete Coupon */
+  async deleteCoupon(id) {
+    const coupon = (this.coupons || []).find(c => c.id === id);
+    const codeName = coupon ? coupon.code : 'coupon';
+
+    if (!confirm(`Are you sure you want to delete coupon ${codeName}? This will permanently remove it from the database.`)) {
+      return;
+    }
+
+    try {
+      const res = await window.api.deleteCoupon(id);
+      if (res && res.success) {
+        App.showToast(`Coupon ${codeName} deleted`, 'info');
+        await this.loadCoupons();
+      }
+    } catch (e) {
+      App.showToast('Failed to delete coupon', 'error');
     }
   },
 
