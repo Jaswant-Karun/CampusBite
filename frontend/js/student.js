@@ -20,6 +20,8 @@ const StudentApp = {
 
   selectedAuthRole: 'student',
   currentAuthTab: 'signin',
+  currentScreen: 'welcome',
+  navigationHistory: [],
   cart: [],
   appliedCoupon: null,
   redeemLoyalty: false,
@@ -166,6 +168,10 @@ const StudentApp = {
     this.renderDesktopCart();
     this.initKineticTypography();
 
+    // Show welcoming page on fresh app startup
+    this.navigateTo('welcome', false);
+    this.initWelcomeProgress();
+
     // Non-blocking background sync with live database
     this.loadProducts();
   },
@@ -275,15 +281,27 @@ const StudentApp = {
       });
     });
 
-    // Category chips
-    document.querySelectorAll('#home-category-chips .cat-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('#home-category-chips .cat-chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        const cat = chip.dataset.category;
-        this.filterProducts(cat);
-      });
+    // Universal back button delegated handler
+    document.addEventListener('click', (e) => {
+      const backBtn = e.target.closest('.universal-back-btn, .back-btn');
+      if (backBtn && !backBtn.getAttribute('onclick')) {
+        e.preventDefault();
+        this.goBack();
+      }
     });
+
+    // Android hardware back button integration
+    document.addEventListener('backbutton', () => {
+      this.handleHardwareBack();
+    }, false);
+
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      try {
+        window.Capacitor.Plugins.App.addListener('backButton', () => {
+          this.handleHardwareBack();
+        });
+      } catch (e) {}
+    }
 
     // Search input (Home & Menu Catalogue)
     const searchInput = document.getElementById('student-search-input');
@@ -390,11 +408,75 @@ const StudentApp = {
     if (catRow) catRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
   },
 
-  navigateTo(screenId) {
+  goBack() {
+    if (this.navigationHistory && this.navigationHistory.length > 0) {
+      const prev = this.navigationHistory.pop();
+      if (prev && prev !== this.currentScreen) {
+        this.navigateTo(prev, false);
+        return;
+      }
+    }
+    this.navigateTo('home', false);
+  },
+
+  handleHardwareBack() {
+    const openModal = document.querySelector('.modal-overlay.open');
+    if (openModal) {
+      openModal.classList.remove('open');
+      return;
+    }
+    if (this.currentScreen !== 'home' && this.currentScreen !== 'welcome' && this.currentScreen !== 'motion-splash') {
+      this.goBack();
+    }
+  },
+
+  initWelcomeProgress() {
+    const bar = document.getElementById('welcome-progress-fill');
+    const label = document.getElementById('welcome-progress-label');
+    if (!bar) return;
+
+    let progress = 15;
+    bar.style.width = '15%';
+
+    const interval = setInterval(() => {
+      progress += 28;
+      if (progress >= 100) {
+        progress = 100;
+        bar.style.width = '100%';
+        if (label) label.textContent = 'Welcome! Menu ready';
+        clearInterval(interval);
+
+        // Smooth transition to menu after welcoming animation
+        setTimeout(() => {
+          if (this.currentScreen === 'welcome' || this.currentScreen === 'motion-splash') {
+            this.navigateTo('home', false);
+          }
+        }, 550);
+      } else {
+        bar.style.width = progress + '%';
+        if (label) {
+          if (progress > 60) label.textContent = 'Synchronizing Canteen Kitchen...';
+          else label.textContent = 'Connecting to CampusBite...';
+        }
+      }
+    }, 250);
+  },
+
+  navigateTo(screenId, pushHistory = true) {
     if (screenId === 'rewards-store') screenId = 'rewards';
+    if (screenId === 'motion-splash') screenId = 'welcome';
+
+    if (pushHistory && this.currentScreen && this.currentScreen !== screenId) {
+      this.navigationHistory.push(this.currentScreen);
+      if (this.navigationHistory.length > 30) this.navigationHistory.shift();
+    }
+    this.currentScreen = screenId;
 
     document.querySelectorAll('.mob-screen').forEach(s => s.classList.remove('active'));
-    const target = document.getElementById(`screen-${screenId}`);
+    let target = document.getElementById(`screen-${screenId}`);
+    if (!target && screenId === 'welcome') {
+      target = document.getElementById('screen-motion-splash');
+    }
     if (target) {
       target.classList.add('active');
     }
@@ -424,7 +506,7 @@ const StudentApp = {
     // Bottom nav visibility: ONLY on small/mobile screens, NEVER on desktop website
     const bottomNav = document.querySelector('.mobile-bottom-nav');
     if (bottomNav) {
-      if (['motion-splash', 'login'].includes(screenId)) {
+      if (['motion-splash', 'welcome', 'login'].includes(screenId)) {
         bottomNav.style.display = 'none';
       } else if (window.innerWidth <= 768) {
         bottomNav.style.display = 'flex';
@@ -437,7 +519,7 @@ const StudentApp = {
     const desktopHero = document.querySelector('.desktop-hero-banner');
     const desktopGrid = document.querySelector('.desktop-main-grid');
     if (desktopHero && desktopGrid) {
-      if (['motion-splash', 'login'].includes(screenId)) {
+      if (['motion-splash', 'welcome', 'login'].includes(screenId)) {
         desktopHero.style.display = 'none';
         desktopGrid.style.display = 'none';
       } else if (screenId === 'home') {
