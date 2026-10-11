@@ -485,6 +485,11 @@ const StudentApp = {
       this.renderMobilePopularGrid();
     }
 
+    const homeBackBar = document.getElementById('home-back-bar');
+    if (homeBackBar) {
+      homeBackBar.style.display = (screenId === 'home' && this.navigationHistory && this.navigationHistory.length > 0) ? 'block' : 'none';
+    }
+
     if (screenId === 'menu') {
       this.renderMenuList(this.products);
       this.renderCategoryChips();
@@ -1600,8 +1605,8 @@ const StudentApp = {
             <span>/</span>
             <span style="font-weight:700;color:var(--text-primary);">${item.name}</span>
           </div>
-          <button class="btn-secondary" onclick="${isModal ? "App.closeModal('product-detail-modal')" : "StudentApp.navigateTo('menu')"}" style="padding:6px 14px;font-size:12px;border-radius:999px;">
-            ${isModal ? '✕ Close' : '← Back to Menu'}
+          <button class="universal-back-btn" onclick="${isModal ? "App.closeModal('product-detail-modal')" : "StudentApp.goBack()"}" style="padding:6px 14px;font-size:12px;border-radius:999px;">
+            <span class="back-arrow">←</span> ${isModal ? 'Close' : 'Back'}
           </button>
         </div>
 

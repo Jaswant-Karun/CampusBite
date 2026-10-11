@@ -144,17 +144,29 @@
           </div>
         </div>
 
-        <!-- Action Button that transitions directly to the Login Page -->
-        <button class="motion-proceed-btn" onclick="StudentApp.navigateTo('login')">
-          <span>PROCEED TO SIGN IN</span>
-          <span class="arrow-motion">→</span>
-        </button>
+        <!-- Action Buttons that transition directly to Menu or Login -->
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:10px;">
+          <button class="motion-proceed-btn" onclick="StudentApp.navigateTo('home')" style="background:linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);box-shadow:0 6px 20px rgba(20,184,166,0.35);">
+            <span>EXPLORE CANTEEN MENU</span>
+            <span class="arrow-motion">→</span>
+          </button>
+          <button class="motion-proceed-btn" onclick="StudentApp.navigateTo('login')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);box-shadow:none;">
+            <span>STUDENT & STAFF SIGN IN</span>
+            <span class="arrow-motion">→</span>
+          </button>
+        </div>
       </div>
 
       <!-- ====================================================================
            SCREEN 2: SIGN IN & SIGN UP PAGE UI
            ==================================================================== -->
       <div id="screen-login" class="mob-screen">
+        <div class="screen-back-nav-bar">
+          <button type="button" class="universal-back-btn" onclick="StudentApp.goBack()">
+            <span class="back-arrow">←</span> Back
+          </button>
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted);">CampusBite Sign In</span>
+        </div>
         <div class="auth-page-container">
           
           <!-- Header -->
