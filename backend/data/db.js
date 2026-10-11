@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hashPassword } = require('../utils/security');
 
 const DB_FILE = path.join(__dirname, 'campusbite_store.json');
 
@@ -804,6 +805,13 @@ class Database {
           });
         }
         if (parsed.users) {
+          parsed.users.forEach(u => {
+            if (!u.password || !u.password.startsWith('pbkdf2:')) {
+              const defaultPass = u.role === 'admin' ? 'admin123' : 'password123';
+              u.password = hashPassword(u.password || defaultPass);
+              updated = true;
+            }
+          });
           const u101 = parsed.users.find(u => u.id === 'u-101');
           if (u101) {
             if (!u101.profile_image) {
