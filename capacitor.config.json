@@ -1,0 +1,12 @@
+{
+  "appId": "com.campusbite.app",
+  "appName": "CampusBite",
+  "webDir": "frontend",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
