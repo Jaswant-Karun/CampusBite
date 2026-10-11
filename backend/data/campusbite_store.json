@@ -7037,6 +7037,72 @@
       },
       "created_at": "2026-10-09T14:28:49.189Z",
       "read": true
+    },
+    {
+      "id": "notif-seed-1",
+      "title": "Order Confirmed: #CB1024",
+      "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "read": false,
+      "created_at": "2026-10-11T11:17:13.380Z"
+    },
+    {
+      "id": "notif-seed-2",
+      "title": "Order Being Prepared: #CB1025",
+      "message": "Kitchen is actively preparing your order #CB1025 at Counter 2.",
+      "type": "ORDER_PREPARING",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "PREPARING",
+      "read": false,
+      "created_at": "2026-10-11T11:32:13.380Z"
+    },
+    {
+      "id": "notif-seed-3",
+      "title": "Order Ready for Pickup: #CB1020",
+      "message": "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
+      "type": "ORDER_READY",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "READY",
+      "read": false,
+      "created_at": "2026-10-11T11:02:13.380Z"
+    },
+    {
+      "id": "notif-seed-4",
+      "title": "Order Completed: #CB1018",
+      "message": "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
+      "type": "ORDER_COMPLETED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COMPLETED",
+      "read": true,
+      "created_at": "2026-10-11T08:47:13.380Z"
+    },
+    {
+      "id": "notif-seed-5",
+      "title": "Coupon Available: CAMPUS20",
+      "message": "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
+      "type": "COUPON_AVAILABLE",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "COUPON",
+      "read": false,
+      "created_at": "2026-10-11T05:47:13.380Z"
+    },
+    {
+      "id": "notif-seed-6",
+      "title": "Welcome to CampusBite",
+      "message": "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
+      "type": "SYSTEM",
+      "target": "all",
+      "userId": null,
+      "icon": "SYSTEM",
+      "read": true,
+      "created_at": "2026-10-10T23:47:13.380Z"
     }
   ]
 }

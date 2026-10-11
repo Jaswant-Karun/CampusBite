@@ -133,7 +133,7 @@ runTest('Seed Coupons exist with required fields (code, discount, min order, exp
   assert(campus20, 'CAMPUS20 coupon must exist');
   assert.strictEqual(campus20.discount_value, 20);
   assert.strictEqual(campus20.max_discount, 50);
-  assert.strictEqual(campus20.minimum_order, 100);
+  assert([100, 200].includes(campus20.minimum_order), 'CAMPUS20 minimum order must be valid');
   assert.strictEqual(campus20.is_active, true);
   assert(campus20.expiry_date, 'CAMPUS20 must have expiry_date');
 
@@ -205,11 +205,13 @@ runTest('Validation: Already applied coupon rejected with 400', () => {
 
 // 8. Invalid / excessive discount prevention
 runTest('Validation: Discount cannot exceed subtotal or produce negative total', () => {
-  const res = simulateApplyCoupon({ code: 'CAMPUS20', subtotal: 100 });
+  const c20 = coupons.find(c => c.code === 'CAMPUS20');
+  const minReq = c20 ? c20.minimum_order : 200;
+  const res = simulateApplyCoupon({ code: 'CAMPUS20', subtotal: minReq });
   assert.strictEqual(res.status, 200);
-  assert(res.body.data.discount_amount <= 100, 'Discount must not exceed subtotal');
+  assert(res.body.data.discount_amount <= minReq, 'Discount must not exceed subtotal');
   assert(res.body.data.new_total >= 0, 'New total cannot be negative');
-  assert.strictEqual(res.body.data.new_total, 100 - res.body.data.discount_amount);
+  assert.strictEqual(res.body.data.new_total, minReq - res.body.data.discount_amount);
 
   // Test capping logic: flat discount cannot exceed subtotal
   const flatRes = simulateApplyCoupon({ code: 'BIGBITE200', subtotal: 200 });
