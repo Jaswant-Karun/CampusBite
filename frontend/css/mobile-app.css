@@ -877,4 +877,65 @@
     background: #0F172A;
     border-color: #1E293B;
   }
+
+  /* BiteBot Assistant Mobile Positioning: Compact FAB above bottom nav & cart bar */
+  .bitebot-launcher {
+    bottom: calc(125px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
+    padding: 6px !important;
+    border-radius: 50% !important;
+    width: 46px !important;
+    height: 46px !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4) !important;
+    z-index: 980 !important;
+  }
+  .bitebot-launcher-text,
+  .bitebot-launcher-desc {
+    display: none !important;
+  }
+  .bitebot-launcher-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Ultra-compact screens: 320px - 360px */
+@media (max-width: 360px) {
+  .mob-cat-chip {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+  }
+  .mobile-food-grid {
+    gap: 8px !important;
+  }
+  .mob-food-card-body {
+    padding: 8px !important;
+  }
+  .mob-food-name {
+    font-size: 12px !important;
+  }
+  .mob-food-price {
+    font-size: 13px !important;
+  }
+  .mob-add-btn {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    min-height: 28px !important;
+  }
+  .mobile-floating-cart-bar {
+    left: 8px !important;
+    right: 8px !important;
+    padding: 8px 10px !important;
+  }
+  .mobile-bottom-nav .nav-item,
+  .mob-nav-item {
+    min-width: 46px !important;
+    padding: 4px 6px !important;
+  }
+  .mobile-bottom-nav .nav-item .nav-label,
+  .mob-nav-item .nav-label {
+    font-size: 9px !important;
+  }
 }

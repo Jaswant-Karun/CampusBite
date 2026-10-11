@@ -10,7 +10,7 @@
       "role": "student",
       "studentId": "CB-2024-2028",
       "department": "Computer Science & Engineering",
-      "loyalty_points": 441,
+      "loyalty_points": 442,
       "wallet_balance": 880,
       "avatar": "JK",
       "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
@@ -279,7 +279,7 @@
       "price": 40,
       "category": "Drinks",
       "image_emoji": "🍋",
-      "stock": 14,
+      "stock": 13,
       "is_available": true,
       "rating": 4.5,
       "prep_time": "3 mins",
@@ -548,18 +548,6 @@
   ],
   "coupons": [
     {
-      "id": "c-1791726121699",
-      "code": "TESTOFFER1697",
-      "description": "Exclusive 25% test discount",
-      "discount_type": "percentage",
-      "discount_value": 25,
-      "minimum_order": 60,
-      "max_discount": 50,
-      "expiry_date": "2026-12-31",
-      "is_active": true,
-      "badge": "Promotional Offer"
-    },
-    {
       "id": "c-1791556129199",
       "code": "TESTOFFER9197",
       "description": "Exclusive 25% test discount",
@@ -729,25 +717,32 @@
           "price": 80,
           "quantity": 1,
           "image_emoji": "🍔"
+        },
+        {
+          "product_id": "p-5",
+          "name": "Fresh Lemon Juice",
+          "price": 40,
+          "quantity": 1,
+          "image_emoji": "🍋"
         }
       ],
-      "subtotal": 80,
-      "discount": 0,
-      "coupon_code": null,
-      "total_amount": 80,
+      "subtotal": 120,
+      "discount": 24,
+      "coupon_code": "CAMPUS20",
+      "total_amount": 96,
       "payment_method": "UPI",
       "payment_status": "PAID",
       "upi_id": "student@okaxis",
       "card_masked": null,
       "card_brand": null,
-      "order_status": "Completed",
+      "order_status": "Order Placed",
       "estimated_prep_time": "~8–10 mins",
-      "pickup_slot": "12:30 PM – 12:45 PM",
+      "pickup_slot": "12:00 PM – 12:15 PM",
       "pickup_counter": 3,
       "special_instructions": "",
-      "created_at": "2026-10-11T13:42:01.507Z",
-      "updated_at": "2026-10-11T13:42:01.667Z",
-      "loyalty_points_earned": 8
+      "created_at": "2026-10-11T15:03:58.495Z",
+      "updated_at": "2026-10-11T15:03:58.495Z",
+      "loyalty_points_earned": 9
     },
     {
       "id": "CB1076",
@@ -2460,12 +2455,12 @@
   ],
   "loyalty_transactions": [
     {
-      "id": "lt-1791726121508",
+      "id": "lt-1791731038494",
       "user_id": "u-101",
-      "points": 8,
+      "points": 9,
       "type": "earned",
       "description": "Order #CB1077 purchase reward",
-      "date": "2026-10-11T13:42:01.507Z"
+      "date": "2026-10-11T15:03:58.493Z"
     },
     {
       "id": "lt-1791726086176",
@@ -2885,10 +2880,10 @@
     }
   ],
   "analytics": {
-    "today_revenue": 16630,
+    "today_revenue": 16646,
     "today_orders": 227,
     "total_customers": 142,
-    "pending_orders": 42,
+    "pending_orders": 43,
     "avg_rating": 4.9,
     "ratings_breakdown": {
       "food_quality": 4.6,
@@ -3036,367 +3031,9 @@
   ],
   "notifications": [
     {
-      "id": "notif_1791726121702_eli8",
-      "title": "Coupon Available: TESTOFFER1697",
-      "message": "Exclusive 25% test discount Use code TESTOFFER1697 to get 25% OFF!",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": null,
-      "icon": "COUPON",
-      "data": {
-        "coupon": {
-          "id": "c-1791726121699",
-          "code": "TESTOFFER1697",
-          "description": "Exclusive 25% test discount",
-          "discount_type": "percentage",
-          "discount_value": 25,
-          "minimum_order": 60,
-          "max_discount": 50,
-          "expiry_date": "2026-12-31",
-          "is_active": true,
-          "badge": "Promotional Offer"
-        },
-        "legacyType": "NEW_OFFER"
-      },
-      "created_at": "2026-10-11T13:42:01.702Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121702_eli8",
-      "title": "Coupon Available: TESTOFFER1697",
-      "message": "Exclusive 25% test discount Use code TESTOFFER1697 to get 25% OFF!",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": null,
-      "icon": "COUPON",
-      "data": {
-        "coupon": {
-          "id": "c-1791726121699",
-          "code": "TESTOFFER1697",
-          "description": "Exclusive 25% test discount",
-          "discount_type": "percentage",
-          "discount_value": 25,
-          "minimum_order": 60,
-          "max_discount": 50,
-          "expiry_date": "2026-12-31",
-          "is_active": true,
-          "badge": "Promotional Offer"
-        },
-        "legacyType": "NEW_OFFER"
-      },
-      "created_at": "2026-10-11T13:42:01.702Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121676_pfa3",
-      "title": "Order Completed: #CB1077",
-      "message": "Order #CB1077 has been picked up. Thank you for dining with CampusBite!",
-      "type": "ORDER_COMPLETED",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "COMPLETED",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Completed",
-        "order_status": "Completed",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.676Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121676_pfa3",
-      "title": "Order Completed: #CB1077",
-      "message": "Order #CB1077 has been picked up. Thank you for dining with CampusBite!",
-      "type": "ORDER_COMPLETED",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "COMPLETED",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Completed",
-        "order_status": "Completed",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.676Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121653_2tai",
-      "title": "Order Ready: #CB1077",
-      "message": "Order #CB1077 is READY FOR PICKUP at Counter 3! Please show your token #CB1077.",
-      "type": "ORDER_READY",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "READY",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Ready for Pickup",
-        "order_status": "Ready for Pickup",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.653Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121653_2tai",
-      "title": "Order Ready: #CB1077",
-      "message": "Order #CB1077 is READY FOR PICKUP at Counter 3! Please show your token #CB1077.",
-      "type": "ORDER_READY",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "READY",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Ready for Pickup",
-        "order_status": "Ready for Pickup",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.653Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121632_yz2t",
-      "title": "Order Being Prepared: #CB1077",
-      "message": "Kitchen is actively preparing your order #CB1077 at Counter 3.",
-      "type": "ORDER_PREPARING",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "PREPARING",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Preparing",
-        "order_status": "Preparing",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.632Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121632_yz2t",
-      "title": "Order Being Prepared: #CB1077",
-      "message": "Kitchen is actively preparing your order #CB1077 at Counter 3.",
-      "type": "ORDER_PREPARING",
-      "target": "all",
-      "userId": "u-101",
-      "icon": "PREPARING",
-      "data": {
-        "orderId": "CB1077",
-        "status": "Preparing",
-        "order_status": "Preparing",
-        "counter": 3,
-        "estimated_prep_time": "~8–10 mins",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "legacyType": "ORDER_STATUS_CHANGED"
-      },
-      "created_at": "2026-10-11T13:42:01.632Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121604_8uaz",
+      "id": "notif_1791731038947_y8cb",
       "title": "Order Confirmed: #CB1077",
-      "message": "Payment successful! Your order #CB1077 has been confirmed. Routed to Counter 3. Slot: 12:30 PM – 12:45 PM.",
+      "message": "Payment successful! Your order #CB1077 has been confirmed. Routed to Counter 3. Slot: 12:00 PM – 12:15 PM.",
       "type": "ORDER_CONFIRMED",
       "target": "student",
       "userId": "u-101",
@@ -3407,77 +3044,30 @@
         "counter": 3,
         "legacyType": "ORDER_PLACED"
       },
-      "created_at": "2026-10-11T13:42:01.604Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121604_8uaz",
-      "title": "Order Confirmed: #CB1077",
-      "message": "Payment successful! Your order #CB1077 has been confirmed. Routed to Counter 3. Slot: 12:30 PM – 12:45 PM.",
-      "type": "ORDER_CONFIRMED",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "CONFIRMED",
-      "data": {
-        "orderId": "CB1077",
-        "token": "CB1077",
-        "counter": 3,
-        "legacyType": "ORDER_PLACED"
-      },
-      "created_at": "2026-10-11T13:42:01.604Z",
-      "read": true
-    },
-    {
-      "id": "notif_1791726121600_s31h",
-      "title": "New Order #CB1077 Placed!",
-      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 3.",
-      "type": "NEW_ORDER",
-      "target": "admin",
-      "userId": null,
-      "icon": "",
-      "data": {
-        "orderId": "CB1077",
-        "order": {
-          "id": "CB1077",
-          "user_id": "u-101",
-          "customer_name": "Jaswant Karun",
-          "customer_phone": "+91 87541 59344",
-          "items": [
-            {
-              "product_id": "p-1",
-              "name": "Classic Burger",
-              "price": 80,
-              "quantity": 1,
-              "image_emoji": "🍔"
-            }
-          ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
-          "payment_method": "UPI",
-          "payment_status": "PAID",
-          "upi_id": "student@okaxis",
-          "card_masked": null,
-          "card_brand": null,
-          "order_status": "Completed",
-          "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
-          "pickup_counter": 3,
-          "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
-        },
-        "counter": 3
-      },
-      "created_at": "2026-10-11T13:42:01.600Z",
+      "created_at": "2026-10-11T15:03:58.947Z",
       "read": false
     },
     {
-      "id": "notif_1791726121600_s31h",
+      "id": "notif_1791731038947_y8cb",
+      "title": "Order Confirmed: #CB1077",
+      "message": "Payment successful! Your order #CB1077 has been confirmed. Routed to Counter 3. Slot: 12:00 PM – 12:15 PM.",
+      "type": "ORDER_CONFIRMED",
+      "target": "student",
+      "userId": "u-101",
+      "icon": "CONFIRMED",
+      "data": {
+        "orderId": "CB1077",
+        "token": "CB1077",
+        "counter": 3,
+        "legacyType": "ORDER_PLACED"
+      },
+      "created_at": "2026-10-11T15:03:58.947Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791731038876_0uw3",
       "title": "New Order #CB1077 Placed!",
-      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 3.",
+      "message": "Jaswant Karun placed an order for ₹96 (2 items). Routed to Counter 3.",
       "type": "NEW_ORDER",
       "target": "admin",
       "userId": null,
@@ -3496,29 +3086,90 @@
               "price": 80,
               "quantity": 1,
               "image_emoji": "🍔"
+            },
+            {
+              "product_id": "p-5",
+              "name": "Fresh Lemon Juice",
+              "price": 40,
+              "quantity": 1,
+              "image_emoji": "🍋"
             }
           ],
-          "subtotal": 80,
-          "discount": 0,
-          "coupon_code": null,
-          "total_amount": 80,
+          "subtotal": 120,
+          "discount": 24,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 96,
           "payment_method": "UPI",
           "payment_status": "PAID",
           "upi_id": "student@okaxis",
           "card_masked": null,
           "card_brand": null,
-          "order_status": "Completed",
+          "order_status": "Order Placed",
           "estimated_prep_time": "~8–10 mins",
-          "pickup_slot": "12:30 PM – 12:45 PM",
+          "pickup_slot": "12:00 PM – 12:15 PM",
           "pickup_counter": 3,
           "special_instructions": "",
-          "created_at": "2026-10-11T13:42:01.507Z",
-          "updated_at": "2026-10-11T13:42:01.667Z",
-          "loyalty_points_earned": 8
+          "created_at": "2026-10-11T15:03:58.495Z",
+          "updated_at": "2026-10-11T15:03:58.495Z",
+          "loyalty_points_earned": 9
         },
         "counter": 3
       },
-      "created_at": "2026-10-11T13:42:01.600Z",
+      "created_at": "2026-10-11T15:03:58.876Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791731038876_0uw3",
+      "title": "New Order #CB1077 Placed!",
+      "message": "Jaswant Karun placed an order for ₹96 (2 items). Routed to Counter 3.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1077",
+        "order": {
+          "id": "CB1077",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 87541 59344",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            },
+            {
+              "product_id": "p-5",
+              "name": "Fresh Lemon Juice",
+              "price": 40,
+              "quantity": 1,
+              "image_emoji": "🍋"
+            }
+          ],
+          "subtotal": 120,
+          "discount": 24,
+          "coupon_code": "CAMPUS20",
+          "total_amount": 96,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Order Placed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "12:00 PM – 12:15 PM",
+          "pickup_counter": 3,
+          "special_instructions": "",
+          "created_at": "2026-10-11T15:03:58.495Z",
+          "updated_at": "2026-10-11T15:03:58.495Z",
+          "loyalty_points_earned": 9
+        },
+        "counter": 3
+      },
+      "created_at": "2026-10-11T15:03:58.876Z",
       "read": false
     },
     {
@@ -3545,7 +3196,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T13:41:26.368Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086368_u1dv",
@@ -3571,7 +3222,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T13:41:26.368Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086348_4wko",
@@ -3613,7 +3264,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.348Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086348_4wko",
@@ -3655,7 +3306,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.348Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086335_0ai5",
@@ -3697,7 +3348,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.335Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086335_0ai5",
@@ -3739,7 +3390,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.335Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086319_eok9",
@@ -3781,7 +3432,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.320Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086319_eok9",
@@ -3823,7 +3474,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.320Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086306_ik8u",
@@ -3837,7 +3488,7 @@
         "productId": "p-1791726086272"
       },
       "created_at": "2026-10-11T13:41:26.306Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086306_ik8u",
@@ -3851,7 +3502,7 @@
         "productId": "p-1791726086272"
       },
       "created_at": "2026-10-11T13:41:26.306Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086293_jmv7",
@@ -3887,7 +3538,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.293Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086293_jmv7",
@@ -3923,7 +3574,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.293Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086280_vgt0",
@@ -3956,7 +3607,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.280Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086280_vgt0",
@@ -3989,7 +3640,7 @@
         }
       },
       "created_at": "2026-10-11T13:41:26.280Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086263_cgj1",
@@ -4040,7 +3691,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.263Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086263_cgj1",
@@ -4091,7 +3742,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.263Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086248_ip4i",
@@ -4142,7 +3793,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.248Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086248_ip4i",
@@ -4193,7 +3844,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.248Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086230_zzho",
@@ -4244,7 +3895,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.230Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086230_zzho",
@@ -4295,7 +3946,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.230Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086214_ipjy",
@@ -4346,7 +3997,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.214Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086214_ipjy",
@@ -4397,7 +4048,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:26.214Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086195_rmxx",
@@ -4414,7 +4065,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:41:26.195Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086195_rmxx",
@@ -4431,7 +4082,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:41:26.195Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726086191_e459",
@@ -4576,7 +4227,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:25.915Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726085915_ox3b",
@@ -4627,7 +4278,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:41:25.915Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726085867_e6p5",
@@ -4781,7 +4432,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T13:40:56.210Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056210_aj5f",
@@ -4807,7 +4458,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T13:40:56.210Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056192_uww2",
@@ -4849,7 +4500,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.192Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056192_uww2",
@@ -4891,7 +4542,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.192Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056177_ved4",
@@ -4933,7 +4584,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.177Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056177_ved4",
@@ -4975,7 +4626,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.177Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056160_f8cc",
@@ -5017,7 +4668,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.160Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056160_f8cc",
@@ -5059,7 +4710,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.160Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056140_i4vn",
@@ -5073,7 +4724,7 @@
         "productId": "p-1791726056095"
       },
       "created_at": "2026-10-11T13:40:56.140Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056140_i4vn",
@@ -5087,7 +4738,7 @@
         "productId": "p-1791726056095"
       },
       "created_at": "2026-10-11T13:40:56.140Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056123_vj8z",
@@ -5123,7 +4774,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.123Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056123_vj8z",
@@ -5159,7 +4810,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.123Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056104_nv6y",
@@ -5192,7 +4843,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.104Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056104_nv6y",
@@ -5225,7 +4876,7 @@
         }
       },
       "created_at": "2026-10-11T13:40:56.104Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056086_lmt2",
@@ -5276,7 +4927,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.086Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056086_lmt2",
@@ -5327,7 +4978,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.086Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056069_sxdp",
@@ -5378,7 +5029,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.069Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056069_sxdp",
@@ -5429,7 +5080,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.069Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056054_peye",
@@ -5480,7 +5131,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.054Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056054_peye",
@@ -5531,7 +5182,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.054Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056040_rmr7",
@@ -5582,7 +5233,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.040Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056040_rmr7",
@@ -5633,7 +5284,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:56.040Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056023_hxd2",
@@ -5650,7 +5301,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:40:56.023Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056023_hxd2",
@@ -5667,7 +5318,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:40:56.023Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726056019_h8l3",
@@ -5812,7 +5463,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:55.729Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726055729_wps3",
@@ -5863,7 +5514,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:40:55.729Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791726055694_na77",
@@ -6042,7 +5693,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:33:18.000Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725598000_q70t",
@@ -6093,7 +5744,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:33:18.000Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725597985_4omz",
@@ -6144,7 +5795,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:33:17.985Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725597985_4omz",
@@ -6195,7 +5846,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:33:17.985Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725597948_pzc0",
@@ -6212,7 +5863,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:33:17.948Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725597948_pzc0",
@@ -6229,7 +5880,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:33:17.948Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725597943_gag7",
@@ -6374,7 +6025,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:30:07.304Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407304_mwoj",
@@ -6425,7 +6076,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:30:07.304Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407280_hvwr",
@@ -6476,7 +6127,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:30:07.280Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407280_hvwr",
@@ -6527,7 +6178,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:30:07.280Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407240_yxrx",
@@ -6544,7 +6195,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:30:07.241Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407240_yxrx",
@@ -6561,7 +6212,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:30:07.241Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725407236_6r4o",
@@ -6706,7 +6357,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:28:39.048Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725319048_345g",
@@ -6757,7 +6408,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:28:39.048Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725319028_0kfp",
@@ -6808,7 +6459,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:28:39.028Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725319028_0kfp",
@@ -6859,7 +6510,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T13:28:39.028Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725318984_wycn",
@@ -6876,7 +6527,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:28:38.984Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725318984_wycn",
@@ -6893,7 +6544,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T13:28:38.984Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791725318979_md13",
@@ -7013,7 +6664,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T11:58:12.629Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892629_s2tu",
@@ -7039,7 +6690,7 @@
         "legacyType": "NEW_OFFER"
       },
       "created_at": "2026-10-11T11:58:12.629Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892615_0wmp",
@@ -7081,7 +6732,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.615Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892615_0wmp",
@@ -7123,7 +6774,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.615Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892603_ihyq",
@@ -7165,7 +6816,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.603Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892603_ihyq",
@@ -7207,7 +6858,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.603Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892593_hxwg",
@@ -7249,7 +6900,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.593Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892593_hxwg",
@@ -7291,7 +6942,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.593Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892581_hkzi",
@@ -7305,7 +6956,7 @@
         "productId": "p-1791719892552"
       },
       "created_at": "2026-10-11T11:58:12.582Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892581_hkzi",
@@ -7319,7 +6970,7 @@
         "productId": "p-1791719892552"
       },
       "created_at": "2026-10-11T11:58:12.582Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892568_2h84",
@@ -7355,7 +7006,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.568Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892568_2h84",
@@ -7391,7 +7042,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.568Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892557_hqw1",
@@ -7424,7 +7075,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.557Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892557_hqw1",
@@ -7457,7 +7108,7 @@
         }
       },
       "created_at": "2026-10-11T11:58:12.557Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892546_9lp1",
@@ -7508,7 +7159,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.546Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892546_9lp1",
@@ -7559,7 +7210,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.546Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892533_s30u",
@@ -7610,7 +7261,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.533Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892533_s30u",
@@ -7661,7 +7312,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.533Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892522_n0pu",
@@ -7712,7 +7363,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.522Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892522_n0pu",
@@ -7763,7 +7414,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.522Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892511_t2jg",
@@ -7814,7 +7465,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.511Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892511_t2jg",
@@ -7865,7 +7516,7 @@
         "legacyType": "ORDER_STATUS_CHANGED"
       },
       "created_at": "2026-10-11T11:58:12.511Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892497_g260",
@@ -7882,7 +7533,7 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T11:58:12.497Z",
-      "read": true
+      "read": false
     },
     {
       "id": "notif_1791719892497_g260",
@@ -7899,73 +7550,101 @@
         "legacyType": "ORDER_PLACED"
       },
       "created_at": "2026-10-11T11:58:12.497Z",
-      "read": true
+      "read": false
     },
     {
-      "id": "notif-seed-1",
-      "title": "Order Confirmed: #CB1024",
-      "message": "Your order #CB1024 has been confirmed by kitchen staff. Preparation queued.",
-      "type": "ORDER_CONFIRMED",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "CONFIRMED",
-      "read": false,
-      "created_at": "2026-10-11T13:12:18.160Z"
-    },
-    {
-      "id": "notif-seed-2",
-      "title": "Order Being Prepared: #CB1025",
-      "message": "Kitchen is actively preparing your order #CB1025 at Counter 2.",
-      "type": "ORDER_PREPARING",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "PREPARING",
-      "read": false,
-      "created_at": "2026-10-11T13:27:18.160Z"
-    },
-    {
-      "id": "notif-seed-3",
-      "title": "Order Ready for Pickup: #CB1020",
-      "message": "Your order #CB1020 is READY for pickup at Counter 1! Please show token #CB1020.",
-      "type": "ORDER_READY",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "READY",
-      "read": false,
-      "created_at": "2026-10-11T12:57:18.160Z"
-    },
-    {
-      "id": "notif-seed-4",
-      "title": "Order Completed: #CB1018",
-      "message": "Your order #CB1018 has been picked up. Thank you for dining with CampusBite!",
-      "type": "ORDER_COMPLETED",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "COMPLETED",
-      "read": true,
-      "created_at": "2026-10-11T10:42:18.160Z"
-    },
-    {
-      "id": "notif-seed-5",
-      "title": "Coupon Available: CAMPUS20",
-      "message": "Special 20% discount offer is available on campus orders! Use promo code CAMPUS20.",
-      "type": "COUPON_AVAILABLE",
-      "target": "student",
-      "userId": "u-101",
-      "icon": "COUPON",
-      "read": false,
-      "created_at": "2026-10-11T07:42:18.160Z"
-    },
-    {
-      "id": "notif-seed-6",
-      "title": "Welcome to CampusBite",
-      "message": "Order online to skip long counter queues. Express Counter 1 & 2 are open.",
-      "type": "SYSTEM",
-      "target": "all",
+      "id": "notif_1791719892493_jb1z",
+      "title": "New Order #CB1069 Placed!",
+      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 1.",
+      "type": "NEW_ORDER",
+      "target": "admin",
       "userId": null,
-      "icon": "SYSTEM",
-      "read": true,
-      "created_at": "2026-10-11T01:42:18.160Z"
+      "icon": "",
+      "data": {
+        "orderId": "CB1069",
+        "order": {
+          "id": "CB1069",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "01:00 PM – 01:15 PM",
+          "pickup_counter": 1,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:58:12.483Z",
+          "updated_at": "2026-10-11T11:58:12.540Z",
+          "loyalty_points_earned": 8
+        },
+        "counter": 1
+      },
+      "created_at": "2026-10-11T11:58:12.493Z",
+      "read": false
+    },
+    {
+      "id": "notif_1791719892493_jb1z",
+      "title": "New Order #CB1069 Placed!",
+      "message": "Jaswant Karun placed an order for ₹80 (1 items). Routed to Counter 1.",
+      "type": "NEW_ORDER",
+      "target": "admin",
+      "userId": null,
+      "icon": "",
+      "data": {
+        "orderId": "CB1069",
+        "order": {
+          "id": "CB1069",
+          "user_id": "u-101",
+          "customer_name": "Jaswant Karun",
+          "customer_phone": "+91 98765 43210",
+          "items": [
+            {
+              "product_id": "p-1",
+              "name": "Classic Burger",
+              "price": 80,
+              "quantity": 1,
+              "image_emoji": "🍔"
+            }
+          ],
+          "subtotal": 80,
+          "discount": 0,
+          "coupon_code": null,
+          "total_amount": 80,
+          "payment_method": "UPI",
+          "payment_status": "PAID",
+          "upi_id": "student@okaxis",
+          "card_masked": null,
+          "card_brand": null,
+          "order_status": "Completed",
+          "estimated_prep_time": "~8–10 mins",
+          "pickup_slot": "01:00 PM – 01:15 PM",
+          "pickup_counter": 1,
+          "special_instructions": "",
+          "created_at": "2026-10-11T11:58:12.483Z",
+          "updated_at": "2026-10-11T11:58:12.540Z",
+          "loyalty_points_earned": 8
+        },
+        "counter": 1
+      },
+      "created_at": "2026-10-11T11:58:12.493Z",
+      "read": false
     }
   ]
 }
