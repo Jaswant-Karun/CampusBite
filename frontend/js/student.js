@@ -4099,7 +4099,8 @@ const StudentApp = {
       // Render recent reviews list
       const containers = [
         document.getElementById('recent-reviews-list'),
-        document.getElementById('mob-recent-reviews-list')
+        document.getElementById('mob-recent-reviews-list'),
+        document.getElementById('page-feedback-reviews-list')
       ].filter(Boolean);
 
       const reviewsList = data.reviews || [];
